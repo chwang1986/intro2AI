@@ -18,6 +18,52 @@
 </section>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">原理</span>Git 保存的是快照，不是差异</h2>
+  <div class="lesson-explain">
+    <p>很多人以为 Git 像传统版本控制那样，只保存「这次改了什么」。实际上 Git 保存的是完整的快照——每次 <code>git commit</code>，Git 会把当前所有文件的内容打包成一个快照，用一个唯一的哈希值命名。</p>
+    <p>Git 内部用三种对象来组织数据：<strong>blob</strong> 存文件内容，<strong>tree</strong> 存目录结构，<strong>commit</strong> 存提交信息并指向一个 tree。这三个对象层层嵌套，构成了 Git 的「对象模型」。</p>
+  </div>
+  <div class="lesson-demo">
+    <div class="demo-label">对象模型图解</div>
+    <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg" class="git-flow-svg">
+      <defs>
+        <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+          <polygon points="0 0, 10 3.5, 0 7" fill="#0071e3"/>
+        </marker>
+      </defs>
+      <!-- commit -->
+      <rect x="260" y="20" width="200" height="70" rx="10" fill="#f0f7ff" stroke="#0071e3" stroke-width="2"/>
+      <text x="360" y="45" text-anchor="middle" font-size="14" font-weight="600" fill="#0071e3">commit</text>
+      <text x="360" y="65" text-anchor="middle" font-size="11" fill="#666">作者、时间、说明 + 指向 tree</text>
+      <text x="360" y="80" text-anchor="middle" font-size="10" fill="#86868b">a1b2c3d...</text>
+      <!-- 箭头 -->
+      <line x1="360" y1="90" x2="360" y2="120" stroke="#0071e3" stroke-width="2" marker-end="url(#arrowhead)"/>
+      <!-- tree -->
+      <rect x="260" y="120" width="200" height="55" rx="10" fill="#fff7e6" stroke="#ff9500" stroke-width="2"/>
+      <text x="360" y="145" text-anchor="middle" font-size="14" font-weight="600" fill="#ff9500">tree</text>
+      <text x="360" y="162" text-anchor="middle" font-size="11" fill="#666">目录结构，指向多个 blob</text>
+      <!-- 箭头分叉 -->
+      <line x1="360" y1="175" x2="360" y2="200" stroke="#ff9500" stroke-width="2"/>
+      <line x1="360" y1="200" x2="180" y2="200" stroke="#ff9500" stroke-width="2"/>
+      <line x1="360" y1="200" x2="540" y2="200" stroke="#ff9500" stroke-width="2"/>
+      <line x1="180" y1="200" x2="180" y2="210" stroke="#ff9500" stroke-width="2" marker-end="url(#arrowhead)"/>
+      <line x1="360" y1="200" x2="360" y2="210" stroke="#ff9500" stroke-width="2" marker-end="url(#arrowhead)"/>
+      <line x1="540" y1="200" x2="540" y2="210" stroke="#ff9500" stroke-width="2" marker-end="url(#arrowhead)"/>
+      <!-- blobs -->
+      <rect x="100" y="210" width="160" height="55" rx="10" fill="#e8f5e9" stroke="#34c759" stroke-width="2"/>
+      <text x="180" y="235" text-anchor="middle" font-size="13" font-weight="600" fill="#34c759">blob</text>
+      <text x="180" y="253" text-anchor="middle" font-size="10" fill="#666">README.md 的内容</text>
+      <rect x="280" y="210" width="160" height="55" rx="10" fill="#e8f5e9" stroke="#34c759" stroke-width="2"/>
+      <text x="360" y="235" text-anchor="middle" font-size="13" font-weight="600" fill="#34c759">blob</text>
+      <text x="360" y="253" text-anchor="middle" font-size="10" fill="#666">main.py 的内容</text>
+      <rect x="460" y="210" width="160" height="55" rx="10" fill="#e8f5e9" stroke="#34c759" stroke-width="2"/>
+      <text x="540" y="235" text-anchor="middle" font-size="13" font-weight="600" fill="#34c759">blob</text>
+      <text x="540" y="253" text-anchor="middle" font-size="10" fill="#666">其他文件内容</text>
+    </svg>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">要点</span>add 和 commit 的区别</h2>
   <div class="lesson-explain">
     <p><code>git add</code> 把文件从工作区放到暂存区。你可以多次 add 不同的文件，也可以 add 同一个文件多次（如果中间又修改了）。</p>
@@ -104,5 +150,6 @@ runCmd('git status');
 .cmd-output.error { color: var(--danger); }
 .btn-group { display: flex; gap: var(--spacer-8); flex-wrap: wrap; }
 .nav-footer { display: flex; justify-content: space-between; margin-top: var(--spacer-24); }
+.git-flow-svg { max-width: 100%; height: auto; }
 </style>
 {% endblock %}

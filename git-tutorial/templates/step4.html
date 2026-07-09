@@ -18,6 +18,48 @@
 </section>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">原理</span>历史是一条带箭头的链</h2>
+  <div class="lesson-explain">
+    <p>Git 的历史不是一条简单的直线，而是一个<strong>有向无环图</strong>（DAG）。每个 commit 都指向上一个 commit，形成一条链。分支只是在某个 commit 上贴的标签，<code>HEAD</code> 是一个特殊指针，指向你当前所在的位置。</p>
+    <p>当你创建新分支时，Git 并没有复制任何文件，只是新建了一个指针。当你切换分支时，Git 把 <code>HEAD</code> 移过去，然后把工作区的文件换成那个 commit 对应的内容。这就是为什么 Git 的分支操作快到不可思议——它只是在移动指针。</p>
+  </div>
+  <div class="lesson-demo">
+    <div class="demo-label">提交链与 HEAD 指针</div>
+    <svg viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg" class="git-flow-svg">
+      <defs>
+        <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+          <polygon points="0 0, 10 3.5, 0 7" fill="#0071e3"/>
+        </marker>
+      </defs>
+      <!-- commits -->
+      <circle cx="100" cy="110" r="28" fill="#e8f5e9" stroke="#34c759" stroke-width="2"/>
+      <text x="100" y="105" text-anchor="middle" font-size="10" font-weight="600" fill="#34c759">c3d4e5</text>
+      <text x="100" y="118" text-anchor="middle" font-size="9" fill="#666">init</text>
+      <line x1="128" y1="110" x2="172" y2="110" stroke="#0071e3" stroke-width="2" marker-end="url(#arrowhead)"/>
+      <circle cx="200" cy="110" r="28" fill="#e8f5e9" stroke="#34c759" stroke-width="2"/>
+      <text x="200" y="105" text-anchor="middle" font-size="10" font-weight="600" fill="#34c759">b2c3d4</text>
+      <text x="200" y="118" text-anchor="middle" font-size="9" fill="#666">feat A</text>
+      <line x1="228" y1="110" x2="272" y2="110" stroke="#0071e3" stroke-width="2" marker-end="url(#arrowhead)"/>
+      <circle cx="300" cy="110" r="28" fill="#f0f7ff" stroke="#0071e3" stroke-width="3"/>
+      <text x="300" y="105" text-anchor="middle" font-size="10" font-weight="600" fill="#0071e3">a1b2c3</text>
+      <text x="300" y="118" text-anchor="middle" font-size="9" fill="#666">feat B</text>
+      <!-- HEAD -->
+      <rect x="250" y="50" width="100" height="28" rx="14" fill="#ff3b30" fill-opacity="0.1" stroke="#ff3b30" stroke-width="1.5"/>
+      <text x="300" y="69" text-anchor="middle" font-size="12" font-weight="600" fill="#ff3b30">HEAD</text>
+      <line x1="300" y1="78" x2="300" y2="82" stroke="#ff3b30" stroke-width="1.5" stroke-dasharray="3 2"/>
+      <!-- main branch -->
+      <rect x="420" y="95" width="80" height="30" rx="15" fill="#fff7e6" stroke="#ff9500" stroke-width="1.5"/>
+      <text x="460" y="115" text-anchor="middle" font-size="12" font-weight="600" fill="#ff9500">main</text>
+      <line x1="420" y1="110" x2="328" y2="110" stroke="#ff9500" stroke-width="1.5" stroke-dasharray="4 2"/>
+      <!-- 说明 -->
+      <text x="560" y="100" text-anchor="start" font-size="11" fill="#666">圆圈 = commit（快照）</text>
+      <text x="560" y="120" text-anchor="start" font-size="11" fill="#666">箭头 = 指向上一个 commit</text>
+      <text x="560" y="140" text-anchor="start" font-size="11" fill="#666">虚线 = 分支标签指向 commit</text>
+    </svg>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">要点</span>历史相关命令</h2>
   <div class="lesson-explain">
     <p><code>git log</code> 查看提交历史。加上 <code>--oneline</code> 参数可以显示简洁的单行格式，加上 <code>-n 5</code> 可以只显示最近 5 条。</p>
@@ -105,5 +147,6 @@ runCmd('git log --oneline');
 .cmd-output.error { color: var(--danger); }
 .btn-group { display: flex; gap: var(--spacer-8); flex-wrap: wrap; }
 .nav-footer { display: flex; justify-content: space-between; margin-top: var(--spacer-24); }
+.git-flow-svg { max-width: 100%; height: auto; }
 </style>
 {% endblock %}

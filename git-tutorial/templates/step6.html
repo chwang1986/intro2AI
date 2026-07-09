@@ -18,6 +18,56 @@
 </section>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">原理</span>每个仓库都是完整的备份</h2>
+  <div class="lesson-explain">
+    <p>Git 是<strong>分布式</strong>版本控制系统。这意味着每个开发者的本地仓库都包含完整的项目历史，不依赖中央服务器。远程仓库只是另一个本地仓库的镜像，大家通过 push 和 pull 来同步。</p>
+    <p>可以把远程仓库想象成一个公共图书馆。你把自己的书（commit）送过去（push），也可以把别人新上架的书借回来（pull）。如果图书馆暂时关门，你手里的书（本地仓库）依然是完整的，不影响你继续阅读和工作。</p>
+  </div>
+  <div class="lesson-demo">
+    <div class="demo-label">本地与远程同步</div>
+    <svg viewBox="0 0 720 240" xmlns="http://www.w3.org/2000/svg" class="git-flow-svg">
+      <defs>
+        <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+          <polygon points="0 0, 10 3.5, 0 7" fill="#0071e3"/>
+        </marker>
+      </defs>
+      <!-- 本地仓库 -->
+      <rect x="40" y="40" width="180" height="160" rx="12" fill="#f0f7ff" stroke="#0071e3" stroke-width="2"/>
+      <text x="130" y="70" text-anchor="middle" font-size="15" font-weight="600" fill="#0071e3">你的本地仓库</text>
+      <text x="130" y="95" text-anchor="middle" font-size="11" fill="#666">完整的项目历史</text>
+      <circle cx="100" cy="130" r="18" fill="#e8f5e9" stroke="#34c759" stroke-width="1.5"/>
+      <text x="100" y="134" text-anchor="middle" font-size="8" fill="#34c759">c1</text>
+      <circle cx="130" cy="130" r="18" fill="#e8f5e9" stroke="#34c759" stroke-width="1.5"/>
+      <text x="130" y="134" text-anchor="middle" font-size="8" fill="#34c759">c2</text>
+      <circle cx="160" cy="130" r="18" fill="#e8f5e9" stroke="#34c759" stroke-width="1.5"/>
+      <text x="160" y="134" text-anchor="middle" font-size="8" fill="#34c759">c3</text>
+      <!-- 远程仓库 -->
+      <rect x="500" y="40" width="180" height="160" rx="12" fill="#fff7e6" stroke="#ff9500" stroke-width="2"/>
+      <text x="590" y="70" text-anchor="middle" font-size="15" font-weight="600" fill="#ff9500">远程仓库 (GitHub)</text>
+      <text x="590" y="95" text-anchor="middle" font-size="11" fill="#666">云端镜像备份</text>
+      <circle cx="560" cy="130" r="18" fill="#e8f5e9" stroke="#34c759" stroke-width="1.5"/>
+      <text x="560" y="134" text-anchor="middle" font-size="8" fill="#34c759">c1</text>
+      <circle cx="590" cy="130" r="18" fill="#e8f5e9" stroke="#34c759" stroke-width="1.5"/>
+      <text x="590" y="134" text-anchor="middle" font-size="8" fill="#34c759">c2</text>
+      <circle cx="620" cy="130" r="18" fill="#e8f5e9" stroke="#34c759" stroke-width="1.5"/>
+      <text x="620" y="134" text-anchor="middle" font-size="8" fill="#34c759">c3</text>
+      <!-- push 箭头 -->
+      <path d="M 240 100 Q 370 60, 480 100" stroke="#0071e3" stroke-width="2.5" fill="none" marker-end="url(#arrowhead)"/>
+      <text x="360" y="75" text-anchor="middle" font-size="12" fill="#0071e3" font-weight="500">git push</text>
+      <!-- pull 箭头 -->
+      <path d="M 480 140 Q 370 180, 240 140" stroke="#ff9500" stroke-width="2.5" fill="none" marker-end="url(#arrowhead)"/>
+      <text x="360" y="175" text-anchor="middle" font-size="12" fill="#ff9500" font-weight="500">git pull</text>
+      <!-- clone -->
+      <rect x="280" y="110" width="160" height="50" rx="8" fill="#f5f5f7" stroke="#86868b" stroke-width="1" stroke-dasharray="4 2"/>
+      <text x="360" y="135" text-anchor="middle" font-size="12" fill="#666">git clone</text>
+      <text x="360" y="150" text-anchor="middle" font-size="10" fill="#86868b">复制整个仓库到本地</text>
+      <line x1="280" y1="135" x2="220" y2="135" stroke="#86868b" stroke-width="1.5" stroke-dasharray="3 2"/>
+      <line x1="440" y1="135" x2="500" y2="135" stroke="#86868b" stroke-width="1.5" stroke-dasharray="3 2"/>
+    </svg>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">要点</span>远程操作的核心命令</h2>
   <div class="lesson-explain">
     <p><code>git remote add origin &lt;地址&gt;</code> 关联远程仓库。<code>origin</code> 是远程仓库的默认别名，就像给地址起了一个短名字。</p>
@@ -104,5 +154,6 @@ runCmd('git remote -v');
 .cmd-output.error { color: var(--danger); }
 .btn-group { display: flex; gap: var(--spacer-8); flex-wrap: wrap; }
 .nav-footer { display: flex; justify-content: space-between; margin-top: var(--spacer-24); }
+.git-flow-svg { max-width: 100%; height: auto; }
 </style>
 {% endblock %}

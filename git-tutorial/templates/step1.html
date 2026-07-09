@@ -19,6 +19,57 @@
 </section>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">原理</span>Git 就像一台智能相机</h2>
+  <div class="lesson-explain">
+    <p>想象 Git 是一台精密的相机系统。你在工作区编辑文件，就像在现实世界中布置场景。<code>git add</code> 相当于把想拍的物体放进取景框，你可以挑选哪些要拍、哪些不拍。<code>git commit</code> 则是按下快门，把取景框里的内容永久保存到相册——也就是本地仓库。每次快门都会生成一张带编号的照片，以后你可以随时翻出任何一张照片。</p>
+    <p>关键是：相册里保存的不是「变化」，而是完整的快照。这就是为什么 Git 能瞬间回到任意历史版本——它直接拿出那张照片即可，不需要逐条撤销。</p>
+  </div>
+  <div class="lesson-demo">
+    <div class="demo-label">三层模型图解</div>
+    <svg viewBox="0 0 720 240" xmlns="http://www.w3.org/2000/svg" class="git-flow-svg">
+      <defs>
+        <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+          <polygon points="0 0, 10 3.5, 0 7" fill="#0071e3"/>
+        </marker>
+      </defs>
+      <!-- 工作区 -->
+      <rect x="30" y="40" width="180" height="160" rx="12" fill="#f0f7ff" stroke="#0071e3" stroke-width="2"/>
+      <text x="120" y="70" text-anchor="middle" font-size="16" font-weight="600" fill="#0071e3">工作区</text>
+      <text x="120" y="95" text-anchor="middle" font-size="12" fill="#666">你实际编辑的文件夹</text>
+      <rect x="70" y="115" width="40" height="50" rx="4" fill="#fff" stroke="#ccc" stroke-width="1"/>
+      <text x="90" y="145" text-anchor="middle" font-size="10" fill="#333">file</text>
+      <rect x="130" y="115" width="40" height="50" rx="4" fill="#fff" stroke="#ccc" stroke-width="1"/>
+      <text x="150" y="145" text-anchor="middle" font-size="10" fill="#333">file</text>
+      <!-- 箭头 1 -->
+      <path d="M 220 120 L 290 120" stroke="#0071e3" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+      <text x="255" y="110" text-anchor="middle" font-size="11" fill="#0071e3" font-weight="500">git add</text>
+      <circle cx="230" cy="120" r="4" fill="#0071e3" class="flow-dot"/>
+      <circle cx="250" cy="120" r="4" fill="#0071e3" class="flow-dot" style="animation-delay:0.3s"/>
+      <circle cx="270" cy="120" r="4" fill="#0071e3" class="flow-dot" style="animation-delay:0.6s"/>
+      <!-- 暂存区 -->
+      <rect x="310" y="40" width="180" height="160" rx="12" fill="#fff7e6" stroke="#ff9500" stroke-width="2"/>
+      <text x="400" y="70" text-anchor="middle" font-size="16" font-weight="600" fill="#ff9500">暂存区</text>
+      <text x="400" y="95" text-anchor="middle" font-size="12" fill="#666">准备提交的快照</text>
+      <rect x="360" y="115" width="80" height="55" rx="4" fill="none" stroke="#ff9500" stroke-width="2" stroke-dasharray="4 2"/>
+      <text x="400" y="148" text-anchor="middle" font-size="11" fill="#ff9500">快照预览</text>
+      <!-- 箭头 2 -->
+      <path d="M 500 120 L 570 120" stroke="#0071e3" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+      <text x="535" y="110" text-anchor="middle" font-size="11" fill="#0071e3" font-weight="500">git commit</text>
+      <circle cx="510" cy="120" r="4" fill="#0071e3" class="flow-dot"/>
+      <circle cx="530" cy="120" r="4" fill="#0071e3" class="flow-dot" style="animation-delay:0.3s"/>
+      <circle cx="550" cy="120" r="4" fill="#0071e3" class="flow-dot" style="animation-delay:0.6s"/>
+      <!-- 仓库 -->
+      <rect x="590" y="40" width="180" height="160" rx="12" fill="#e8f5e9" stroke="#34c759" stroke-width="2"/>
+      <text x="680" y="70" text-anchor="middle" font-size="16" font-weight="600" fill="#34c759">本地仓库</text>
+      <text x="680" y="95" text-anchor="middle" font-size="12" fill="#666">永久保存的历史</text>
+      <rect x="630" y="115" width="100" height="55" rx="4" fill="#fff" stroke="#34c759" stroke-width="1"/>
+      <text x="680" y="135" text-anchor="middle" font-size="10" fill="#34c759">commit a1b2c3</text>
+      <text x="680" y="152" text-anchor="middle" font-size="10" fill="#666">"初次提交"</text>
+    </svg>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">要点</span>三个核心概念</h2>
   <div class="lesson-explain">
     <p>Git 的核心只需要理解三个东西：<strong>工作区</strong>、<strong>暂存区</strong>、<strong>仓库</strong>。它们之间的关系就像工厂的生产线。</p>
@@ -72,5 +123,8 @@ git diff              # 查看修改内容</code></pre>
 .concept-arrow { display: flex; flex-direction: column; align-items: center; color: var(--brand); font-size: 18px; font-weight: 700; }
 .concept-arrow span { font-size: 11px; font-weight: 500; color: var(--text-secondary); background: var(--brand-light); padding: 2px 8px; border-radius: var(--radius-full); margin-top: 4px; }
 .nav-footer { display: flex; justify-content: space-between; margin-top: var(--spacer-24); }
+.flow-dot { animation: flowMove 1.5s ease-in-out infinite; opacity: 0; }
+@keyframes flowMove { 0% { opacity: 0; transform: translateX(0); } 30% { opacity: 1; } 70% { opacity: 1; } 100% { opacity: 0; transform: translateX(20px); } }
+.git-flow-svg { max-width: 100%; height: auto; }
 </style>
 {% endblock %}
