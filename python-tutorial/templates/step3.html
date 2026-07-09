@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+{% block title %}03 控制流 - Python 教程{% endblock %}
+
+{% block content %}
+<a href="/" class="back-link">← 回到教程首页</a>
+
+<div class="page-header">
+  <h1>03 控制流</h1>
+  <p>条件判断与循环，让程序拥有决策能力</p>
+</div>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">场景</span>程序需要做出选择和重复</h2>
+  <div class="lesson-explain">
+    <p>想象你每天早上出门前的决策过程：如果下雨，就带伞；如果温度低于 10 度，就穿羽绒服；否则穿普通外套。这不是直线式的「做 A，然后做 B」，而是根据条件选择不同的路径。</p>
+    <p>程序也需要这种能力。一个购物网站要判断「用户是否登录」来决定显示登录页还是个人中心；一个数据处理脚本要「重复读取每一行」直到文件结束。没有控制流，程序就只能从上到下死板地执行，和计算器没什么区别。</p>
+    <p>控制流让程序拥有了「智商」——它能根据情况做判断，能重复执行任务，能跳过不必要的步骤。这是从「脚本」走向「程序」的关键一跃。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">原理</span>程序执行的三种基本结构</h2>
+  <div class="lesson-explain">
+    <p>无论多么复杂的程序，其控制流都可以分解为三种基本结构的组合：<strong>顺序</strong>、<strong>分支</strong>和<strong>循环</strong>。这是计算机科学家早在 1966 年就证明的定理——结构化程序定理。</p>
+    <p><strong>顺序结构：</strong>代码从上到下依次执行，就像按照菜谱一步一步做菜。这是默认的执行方式。</p>
+    <p><strong>分支结构（if）：</strong>根据条件选择执行路径，就像走到岔路口看路牌决定往哪边走。Python 用 <code>if</code>、<code>elif</code>、<code>else</code> 实现分支。</p>
+    <p><strong>循环结构（for / while）：</strong>重复执行某段代码，就像洗衣机按照设定程序反复转动。Python 提供了 <code>for</code>（遍历序列）和 <code>while</code>（条件为真时持续执行）两种循环。</p>
+  </div>
+  <div class="lesson-demo">
+    <div class="demo-label">图解</div>
+    <svg viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg" class="python-flow-svg">
+      <defs>
+        <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+          <polygon points="0 0, 10 3.5, 0 7" fill="#0071e3"/>
+        </marker>
+      </defs>
+      <!-- 顺序 -->
+      <rect x="30" y="30" width="190" height="160" rx="12" fill="#f0f7ff" stroke="#0071e3" stroke-width="2"/>
+      <text x="125" y="55" text-anchor="middle" font-size="14" font-weight="600" fill="#0071e3">顺序</text>
+      <rect x="60" y="70" width="130" height="28" rx="4" fill="#fff" stroke="#0071e3" stroke-width="1"/>
+      <text x="125" y="89" text-anchor="middle" font-size="11" fill="#333">步骤 A</text>
+      <line x1="125" y1="98" x2="125" y2="110" stroke="#0071e3" stroke-width="2"/>
+      <rect x="60" y="110" width="130" height="28" rx="4" fill="#fff" stroke="#0071e3" stroke-width="1"/>
+      <text x="125" y="129" text-anchor="middle" font-size="11" fill="#333">步骤 B</text>
+      <line x1="125" y1="138" x2="125" y2="150" stroke="#0071e3" stroke-width="2"/>
+      <rect x="60" y="150" width="130" height="28" rx="4" fill="#fff" stroke="#0071e3" stroke-width="1"/>
+      <text x="125" y="169" text-anchor="middle" font-size="11" fill="#333">步骤 C</text>
+
+      <!-- 分支 -->
+      <rect x="250" y="30" width="210" height="160" rx="12" fill="#fff7e6" stroke="#ff9500" stroke-width="2"/>
+      <text x="355" y="55" text-anchor="middle" font-size="14" font-weight="600" fill="#ff9500">分支</text>
+      <!-- 菱形判断 -->
+      <polygon points="355,70 405,95 355,120 305,95" fill="#fff" stroke="#ff9500" stroke-width="1.5"/>
+      <text x="355" y="99" text-anchor="middle" font-size="10" fill="#333">条件?</text>
+      <!-- True 分支 -->
+      <path d="M 405 95 L 435 95" stroke="#ff9500" stroke-width="1.5" fill="none" marker-end="url(#arrowhead)"/>
+      <text x="420" y="88" text-anchor="middle" font-size="9" fill="#34c759">是</text>
+      <rect x="435" y="80" width="90" height="28" rx="4" fill="#fff" stroke="#34c759" stroke-width="1"/>
+      <text x="480" y="99" text-anchor="middle" font-size="10" fill="#333">执行 A</text>
+      <!-- False 分支 -->
+      <path d="M 305 95 L 275 95" stroke="#ff9500" stroke-width="1.5" fill="none" marker-end="url(#arrowhead)"/>
+      <text x="290" y="88" text-anchor="middle" font-size="9" fill="#ff3b30">否</text>
+      <rect x="185" y="80" width="90" height="28" rx="4" fill="#fff" stroke="#ff3b30" stroke-width="1"/>
+      <text x="230" y="99" text-anchor="middle" font-size="10" fill="#333">执行 B</text>
+      <text x="355" y="155" text-anchor="middle" font-size="10" fill="#666">if / elif / else</text>
+
+      <!-- 循环 -->
+      <rect x="490" y="30" width="200" height="160" rx="12" fill="#e8f5e9" stroke="#34c759" stroke-width="2"/>
+      <text x="590" y="55" text-anchor="middle" font-size="14" font-weight="600" fill="#34c759">循环</text>
+      <rect x="525" y="75" width="130" height="28" rx="4" fill="#fff" stroke="#34c759" stroke-width="1"/>
+      <text x="590" y="94" text-anchor="middle" font-size="11" fill="#333">检查条件</text>
+      <!-- 循环箭头 -->
+      <path d="M 590 103 L 590 130" stroke="#34c759" stroke-width="1.5" fill="none" marker-end="url(#arrowhead)"/>
+      <rect x="525" y="130" width="130" height="28" rx="4" fill="#fff" stroke="#34c759" stroke-width="1"/>
+      <text x="590" y="149" text-anchor="middle" font-size="11" fill="#333">执行体</text>
+      <!-- 返回箭头 -->
+      <path d="M 525 144 L 480 144 L 480 89 L 525 89" stroke="#34c759" stroke-width="1.5" fill="none" marker-end="url(#arrowhead)"/>
+      <text x="500" y="115" text-anchor="middle" font-size="9" fill="#34c759" transform="rotate(-90,500,115)">继续循环</text>
+    </svg>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">要点</span>条件判断与循环</h2>
+  <div class="lesson-explain">
+    <p><code>if</code> 语句让程序做选择，<code>for</code> 和 <code>while</code> 让程序重复执行。<code>break</code> 可以立即跳出循环，<code>continue</code> 则跳过当前轮次直接进入下一轮。</p>
+    <p>Python 的 <code>for</code> 循环设计得非常直观：「对于列表中的每一个元素，做某事」。你不需要关心索引和边界，只需要描述「对每个 item 做什么」。这让代码读起来像英文句子一样自然。</p>
+  </div>
+  <div class="lesson-code">
+    <div class="demo-label">代码示例</div>
+    <pre><code># if / elif / else 条件判断
+score = 85
+
+if score >= 90:
+    print("优秀")
+elif score >= 60:
+    print("及格")      # 这一行会被执行
+else:
+    print("不及格")
+
+# for 循环遍历列表
+fruits = ["苹果", "香蕉", "橙子"]
+for fruit in fruits:
+    print(fruit)
+
+# while 循环
+n = 3
+while n > 0:
+    print(n)
+    n -= 1             # 不要忘记更新条件变量！
+
+# break 和 continue
+for num in range(10):
+    if num == 3:
+        continue       # 跳过 3，继续下一轮
+    if num == 7:
+        break          # 遇到 7，直接结束循环
+    print(num)         # 输出: 0, 1, 2, 4, 5, 6</code></pre>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">错误</span>初学者常犯的错误</h2>
+  <div class="lesson-explain">
+    <p><strong>忘记缩进：</strong>Python 用缩进来表示代码块，而不是大括号。if 体、循环体、函数体都必须有统一的缩进。一旦混用空格和 Tab，或者某一行少缩进了一格，就会抛出 <code>IndentationError</code>。</p>
+    <p><strong>while 死循环：</strong>如果 while 的条件永远为真，循环就永远不会结束。比如 <code>while n > 0: print(n)</code> 却忘了写 <code>n -= 1</code>，程序会疯狂打印 3 直到你强制终止。写 while 循环时，一定要确保条件最终会变为假。</p>
+    <p><strong>在循环中修改正在遍历的列表：</strong>下面这段代码的预期是删除所有偶数，但结果却是错的——因为删除元素后列表长度和索引都发生了变化，循环会跳过某些元素。正确做法是遍历副本 <code>for num in nums[:]:</code>，或者先收集要删除的元素。</p>
+  </div>
+  <div class="lesson-code">
+    <div class="demo-label">错误示例</div>
+    <pre><code># 错误：在遍历列表时直接删除元素
+nums = [1, 2, 3, 4]
+for num in nums:
+    if num % 2 == 0:
+        nums.remove(num)   # 危险！会跳过元素
+print(nums)                # 结果可能是 [1, 3] 或更奇怪的东西
+
+# 正确：遍历列表的副本
+nums = [1, 2, 3, 4]
+for num in nums[:]:
+    if num % 2 == 0:
+        nums.remove(num)
+print(nums)                # [1, 3]</code></pre>
+  </div>
+</section>
+
+<nav class="nav-footer">
+  <a href="/step2" class="btn btn-secondary">← 上一步</a>
+  <a href="/step4" class="btn btn-primary">下一步 →</a>
+</nav>
+{% endblock %}
+
+{% block scripts %}
+<style>
+.nav-footer { display: flex; justify-content: space-between; margin-top: var(--spacer-24); }
+.python-flow-svg { max-width: 100%; height: auto; }
+</style>
+{% endblock %}

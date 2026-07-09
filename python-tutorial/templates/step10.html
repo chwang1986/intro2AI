@@ -1,0 +1,297 @@
+{% extends "base.html" %}
+{% block title %}AI 协作工作流 - Python 教程{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1>AI 协作工作流</h1>
+  <p>把 AI 变成你的「编程搭档」——而不是「代码打印机」</p>
+</div>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">场景</span>一个人写项目太慢，两个人又太贵</h2>
+  <div class="lesson-explain">
+    <p>想象你要盖一座小木屋。你不会一口气画出整栋房子的图纸然后交给工人——而是先设计地基，等地基稳固了再搭框架，框架好了再上屋顶。每一步都检查、调整、确认。</p>
+    <p>用 AI 做编程项目也是如此。<strong>AI 协作工作流</strong>就是把一个复杂项目拆解成多个可管理的阶段，让 AI 在每个阶段扮演「超级助手」的角色：帮你生成初稿、提供思路、检查漏洞。但你始终是「项目经理」——审查、决策、把关质量。</p>
+    <p>本章将教你一套经过实战验证的协作流程，让 AI 真正成为你的「编程搭档」，而不是一个乱码生成器。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">原理</span>循环迭代：需求 → 生成 → 审查 → 测试 → 优化</h2>
+  <div class="lesson-explain">
+    <p>高质量的 AI 协作不是「一次性交易」，而是一个<strong>持续迭代的循环</strong>。就像雕塑家先用 clay 捏出大致形状，再反复打磨细节。</p>
+    <p>工作流分为五个阶段：<strong>需求拆解</strong>（把大目标拆成小模块）、<strong>AI 生成</strong>（为每个模块获取初稿）、<strong>人工审查</strong>（检查逻辑、安全、风格）、<strong>测试验证</strong>（运行代码、检查边界情况）、<strong>迭代优化</strong>（把问题反馈给 AI 继续改进）。</p>
+    <p>这个循环会重复多次，直到每个模块都达到可交付标准。秘诀是：<strong>小步快跑，频繁验证。</strong></p>
+  </div>
+  <div class="lesson-demo">
+    <div class="demo-label">图解</div>
+    <svg viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg">
+      <!-- 背景 -->
+      <rect x="0" y="0" width="720" height="220" fill="#f8fafc" rx="8"/>
+      
+      <!-- 标题 -->
+      <text x="360" y="28" font-size="14" font-weight="bold" fill="#334155" text-anchor="middle">AI 协作迭代循环</text>
+      
+      <!-- 中心圆：迭代 -->
+      <circle cx="360" cy="125" r="35" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+      <text x="360" y="122" font-size="11" font-weight="bold" fill="#92400e" text-anchor="middle">迭代</text>
+      <text x="360" y="136" font-size="9" fill="#92400e" text-anchor="middle">Loop</text>
+      
+      <!-- 节点1：需求拆解 -->
+      <rect x="30" y="50" width="110" height="55" fill="#dbeafe" stroke="#3b82f6" stroke-width="2" rx="8"/>
+      <text x="85" y="72" font-size="11" font-weight="bold" fill="#1e40af" text-anchor="middle">需求拆解</text>
+      <text x="85" y="88" font-size="9" fill="#1e40af" text-anchor="middle">拆分为小模块</text>
+      <text x="85" y="100" font-size="9" fill="#1e40af" text-anchor="middle">写清楚任务描述</text>
+      
+      <!-- 连线1 -->
+      <path d="M 140 77 Q 200 40 310 95" fill="none" stroke="#3b82f6" stroke-width="2" marker-end="url(#a1)"/>
+      <defs>
+        <marker id="a1" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#3b82f6"/>
+        </marker>
+      </defs>
+      
+      <!-- 节点2：AI 生成 -->
+      <rect x="220" y="90" width="110" height="55" fill="#dcfce7" stroke="#22c55e" stroke-width="2" rx="8"/>
+      <text x="275" y="112" font-size="11" font-weight="bold" fill="#166534" text-anchor="middle">AI 生成</text>
+      <text x="275" y="128" font-size="9" fill="#166534" text-anchor="middle">分模块获取代码</text>
+      <text x="275" y="140" font-size="9" fill="#166534" text-anchor="middle">提供示例和约束</text>
+      
+      <!-- 连线2 -->
+      <path d="M 330 117 Q 340 125 325 125" fill="none" stroke="#22c55e" stroke-width="2" marker-end="url(#a2)"/>
+      <defs>
+        <marker id="a2" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#22c55e"/>
+        </marker>
+      </defs>
+      
+      <!-- 节点3：人工审查 -->
+      <rect x="420" y="90" width="110" height="55" fill="#fee2e2" stroke="#ef4444" stroke-width="2" rx="8"/>
+      <text x="475" y="112" font-size="11" font-weight="bold" fill="#991b1b" text-anchor="middle">人工审查</text>
+      <text x="475" y="128" font-size="9" fill="#991b1b" text-anchor="middle">检查逻辑与安全</text>
+      <text x="475" y="140" font-size="9" fill="#991b1b" text-anchor="middle">对照代码清单</text>
+      
+      <!-- 连线3 -->
+      <path d="M 530 117 Q 580 117 580 125" fill="none" stroke="#ef4444" stroke-width="2" marker-end="url(#a3)"/>
+      <defs>
+        <marker id="a3" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#ef4444"/>
+        </marker>
+      </defs>
+      
+      <!-- 节点4：测试验证 -->
+      <rect x="580" y="50" width="110" height="55" fill="#f3e8ff" stroke="#a855f7" stroke-width="2" rx="8"/>
+      <text x="635" y="72" font-size="11" font-weight="bold" fill="#6b21a8" text-anchor="middle">测试验证</text>
+      <text x="635" y="88" font-size="9" fill="#6b21a8" text-anchor="middle">运行单元测试</text>
+      <text x="635" y="100" font-size="9" fill="#6b21a8" text-anchor="middle">验证边界情况</text>
+      
+      <!-- 连线4：回到中心 -->
+      <path d="M 580 77 Q 500 40 395 100" fill="none" stroke="#a855f7" stroke-width="2" marker-end="url(#a4)"/>
+      <defs>
+        <marker id="a4" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#a855f7"/>
+        </marker>
+      </defs>
+      
+      <!-- 循环返回箭头 -->
+      <path d="M 340 155 Q 200 200 85 115" fill="none" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#a5)"/>
+      <text x="200" y="195" font-size="9" fill="#64748b" text-anchor="middle">发现问题，回到 AI 重新生成</text>
+      <defs>
+        <marker id="a5" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#94a3b8"/>
+        </marker>
+      </defs>
+      
+      <!-- 完成箭头 -->
+      <path d="M 395 150 Q 480 190 580 140" fill="none" stroke="#22c55e" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#a6)"/>
+      <text x="500" y="185" font-size="9" fill="#22c55e" text-anchor="middle">通过测试 → 交付</text>
+      <defs>
+        <marker id="a6" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#22c55e"/>
+        </marker>
+      </defs>
+    </svg>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">要点</span>五个协作实战技巧</h2>
+  <div class="lesson-explain">
+    <p>下面是让 AI 协作工作流高效运转的五个核心技巧：</p>
+    <p><strong>1. 需求描述技巧</strong>：用用户故事（User Story）描述需求。"作为一个用户，我希望能够按截止日期排序任务，以便优先处理紧急事项。"这种格式天然适合拆解为函数和接口。</p>
+    <p><strong>2. 分模块让 AI 实现</strong>：不要要求 AI 一次性生成整个项目。先让它设计数据模型，确认后再写 CRUD 操作，然后再写业务逻辑。每步独立验证。</p>
+    <p><strong>3. 代码审查清单</strong>：建立自己的审查清单——是否处理了空值？是否有 SQL 注入风险？异常处理是否完整？命名是否清晰？像审查同事代码一样审查 AI 的代码。</p>
+    <p><strong>4. 测试驱动</strong>：先让 AI 写测试用例，再让它写实现代码。测试就像「自动审查员」，能快速发现 AI 代码的边界问题。</p>
+    <p><strong>5. 版本控制配合</strong>：每次让 AI 生成或修改代码后，及时 commit。这样当 AI「改坏」东西时，你可以轻松回滚。把对话历史也保存下来，方便追溯思路。</p>
+  </div>
+  <div class="lesson-code">
+    <div class="demo-label">代码示例</div>
+    <pre><code>"""
+AI 协作工作流实战示例：用 AI 协助开发一个「任务管理器」模块
+
+步骤1：让 AI 设计数据模型
+Prompt: "你是一位 Python 架构师。请设计一个 Task 数据类，
+包含 id、title、description、priority、due_date、completed 字段。
+使用 dataclass，添加类型注解，priority 用 Enum 约束为 LOW/MEDIUM/HIGH。"
+
+步骤2：让 AI 写单元测试
+Prompt: "基于上面的 Task 类，请用 pytest 写一组单元测试，
+验证：创建任务、标记完成、优先级排序。至少覆盖 5 个测试用例。"
+
+步骤3：让 AI 实现 CRUD 操作  
+Prompt: "请实现一个 TaskManager 类，提供以下方法：
+- add_task(task: Task) -> None
+- get_task(task_id: int) -> Task | None
+- list_tasks(completed_only: bool = False) -> list[Task]
+- complete_task(task_id: int) -> bool
+- delete_task(task_id: int) -> bool
+使用内存存储（list），添加适当的错误处理。"
+
+步骤4：人工审查并整合
+- 检查是否有线程安全问题
+- 检查 ID 自增逻辑是否正确
+- 检查异常类型是否恰当
+- 统一代码风格，添加文档字符串
+
+步骤5：运行测试并迭代
+"""
+
+import pytest
+from dataclasses import dataclass, field
+from datetime import datetime
+from enum import Enum
+from typing import Optional
+
+
+class Priority(Enum):
+    LOW = 1
+    MEDIUM = 2
+    HIGH = 3
+
+
+@dataclass
+class Task:
+    """任务数据模型"""
+    id: int
+    title: str
+    description: str = ""
+    priority: Priority = Priority.MEDIUM
+    due_date: Optional[datetime] = None
+    completed: bool = False
+    created_at: datetime = field(default_factory=datetime.now)
+
+
+class TaskManager:
+    """任务管理器：经过人工审查和优化后的版本"""
+    
+    def __init__(self):
+        self._tasks: list[Task] = []
+        self._next_id: int = 1
+    
+    def add_task(self, title: str, description: str = "",
+                 priority: Priority = Priority.MEDIUM,
+                 due_date: Optional[datetime] = None) -> Task:
+        """添加新任务，自动分配 ID"""
+        if not title or not title.strip():
+            raise ValueError("任务标题不能为空")
+        
+        task = Task(
+            id=self._next_id,
+            title=title.strip(),
+            description=description.strip(),
+            priority=priority,
+            due_date=due_date
+        )
+        self._tasks.append(task)
+        self._next_id += 1
+        return task
+    
+    def get_task(self, task_id: int) -> Optional[Task]:
+        """根据 ID 获取任务"""
+        for task in self._tasks:
+            if task.id == task_id:
+                return task
+        return None
+    
+    def list_tasks(self, completed_only: bool = False,
+                   sort_by_priority: bool = True) -> list[Task]:
+        """列出任务，支持过滤和排序"""
+        result = [t for t in self._tasks
+                  if not completed_only or t.completed]
+        if sort_by_priority:
+            result.sort(key=lambda t: t.priority.value, reverse=True)
+        return result
+    
+    def complete_task(self, task_id: int) -> bool:
+        """标记任务为已完成"""
+        task = self.get_task(task_id)
+        if task and not task.completed:
+            task.completed = True
+            return True
+        return False
+    
+    def delete_task(self, task_id: int) -> bool:
+        """删除任务"""
+        task = self.get_task(task_id)
+        if task:
+            self._tasks.remove(task)
+            return True
+        return False
+
+
+# 测试驱动验证
+class TestTaskManager:
+    def test_add_task(self):
+        tm = TaskManager()
+        task = tm.add_task("学习 Python", priority=Priority.HIGH)
+        assert task.id == 1
+        assert task.title == "学习 Python"
+        assert task.priority == Priority.HIGH
+    
+    def test_empty_title_raises_error(self):
+        tm = TaskManager()
+        with pytest.raises(ValueError, match="任务标题不能为空"):
+            tm.add_task("")
+    
+    def test_complete_task(self):
+        tm = TaskManager()
+        task = tm.add_task("阅读文档")
+        assert tm.complete_task(task.id) is True
+        assert task.completed is True
+        assert tm.complete_task(task.id) is False  # 已完成的不能再完成
+    
+    def test_list_tasks_sorted_by_priority(self):
+        tm = TaskManager()
+        tm.add_task("低优先级", priority=Priority.LOW)
+        tm.add_task("高优先级", priority=Priority.HIGH)
+        tm.add_task("中优先级", priority=Priority.MEDIUM)
+        tasks = tm.list_tasks()
+        assert tasks[0].priority == Priority.HIGH
+        assert tasks[1].priority == Priority.MEDIUM
+        assert tasks[2].priority == Priority.LOW
+
+
+if __name__ == "__main__":
+    pytest.main([__file__, "-v"])</code></pre>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">错误</span>协作工作流的四大禁忌</h2>
+  <div class="lesson-explain">
+    <p>AI 协作工作流最大的敌人不是 AI 不够聪明，而是人类太懒惰或太贪心：</p>
+    
+    <p><strong>1. 让 AI 一次生成整个项目</strong> —— 这就像让一位厨师同时做前菜、主菜、甜点，还要求一次上桌。结果必然是每道菜都马马虎虎。<strong>模块化管理，逐个击破。</strong></p>
+    
+    <p><strong>2. 不审查直接复制</strong> —— AI 会一本正经地生成有安全漏洞的代码。SQL 注入、路径遍历、敏感信息泄露……这些风险不会因为你「信任」AI 就消失。<strong>把 AI 代码当作「实习生提交的 PR」，逐行审查。</strong></p>
+    
+    <p><strong>3. 不测试就上线</strong> —— AI 写的代码可能在 90% 的情况下运行正确，但在边界条件下崩溃。空列表、超大输入、特殊字符——这些都是 AI 的盲区。<strong>测试覆盖率是 AI 协作项目的生命线。</strong></p>
+    
+    <p><strong>4. 和 AI 对话没有保存历史</strong> —— 你花了半小时和 AI 反复打磨出一个完美函数，结果手滑刷新了页面，所有上下文丢失。<strong>养成保存对话、导出代码、及时 commit 的习惯。用版本控制记录每一次 AI 协助的修改。</strong></p>
+  </div>
+</section>
+
+<nav class="nav-footer">
+  <a href="/step9" class="btn btn-secondary">← 上一步</a>
+  <a href="/practice" class="btn btn-primary">下一步 →</a>
+</nav>
+{% endblock %}

@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% block title %}02 变量与类型 - Python 教程{% endblock %}
+
+{% block content %}
+<a href="/" class="back-link">← 回到教程首页</a>
+
+<div class="page-header">
+  <h1>02 变量与类型</h1>
+  <p>数据存储的基本方式，理解变量和类型</p>
+</div>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">场景</span>程序需要记住数据</h2>
+  <div class="lesson-explain">
+    <p>想象你在整理房间。你有一些东西要存放——书、衣服、工具。你不会把它们随便扔在地上，而是会放进贴好标签的盒子里：「书籍」「冬衣」「螺丝刀」。当你需要某样东西时，只要看标签就能找到对应的盒子。</p>
+    <p>程序处理数据也是一样的道理。用户输入的名字、计算得到的分数、从网络下载的图片——这些都需要先存起来才能使用。<strong>变量</strong>就是程序里的「贴标签的盒子」，而<strong>类型</strong>则规定了盒子里能放什么东西。</p>
+    <p>比如 <code>name = "小明"</code> 就是创建了一个标签为 <code>name</code> 的盒子，里面放了一段文字。以后程序看到 <code>name</code> 这个标签，就知道去哪里取这段文字。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">原理</span>变量是指向数据的标签</h2>
+  <div class="lesson-explain">
+    <p>在 Python 中，变量不是「装数据的盒子」，而是「贴在数据上的标签」。更准确地说，变量是一个<strong>指向内存地址的指针</strong>。当你写 <code>a = 10</code> 时，Python 先在内存中创建一个整数对象 <code>10</code>，然后让变量 <code>a</code> 指向这个对象。</p>
+    <p>这与「静态类型语言」（如 C、Java）截然不同。在静态类型语言中，你必须先声明「a 是整数类型」，然后才能赋值。而在 Python 这样的<strong>动态类型语言</strong>中，类型由赋值的数据自动决定，同一个变量可以先指向整数，再指向字符串。</p>
+    <p>这种设计带来了极大的灵活性，但也意味着你需要清楚地知道自己手中的数据是什么类型，否则会在运行时遇到类型错误。</p>
+  </div>
+  <div class="lesson-demo">
+    <div class="demo-label">图解</div>
+    <svg viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg" class="python-flow-svg">
+      <defs>
+        <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+          <polygon points="0 0, 10 3.5, 0 7" fill="#0071e3"/>
+        </marker>
+      </defs>
+      <!-- 变量区 -->
+      <rect x="30" y="30" width="200" height="160" rx="12" fill="#f0f7ff" stroke="#0071e3" stroke-width="2"/>
+      <text x="130" y="55" text-anchor="middle" font-size="14" font-weight="600" fill="#0071e3">变量（标签）</text>
+      <!-- 变量 a -->
+      <rect x="55" y="75" width="60" height="32" rx="6" fill="#fff" stroke="#0071e3" stroke-width="1.5"/>
+      <text x="85" y="96" text-anchor="middle" font-size="13" fill="#0071e3" font-family="monospace" font-weight="600">a</text>
+      <!-- 变量 b -->
+      <rect x="145" y="75" width="60" height="32" rx="6" fill="#fff" stroke="#0071e3" stroke-width="1.5"/>
+      <text x="175" y="96" text-anchor="middle" font-size="13" fill="#0071e3" font-family="monospace" font-weight="600">b</text>
+      <!-- 变量 name -->
+      <rect x="55" y="125" width="150" height="32" rx="6" fill="#fff" stroke="#0071e3" stroke-width="1.5"/>
+      <text x="130" y="146" text-anchor="middle" font-size="13" fill="#0071e3" font-family="monospace" font-weight="600">name</text>
+
+      <!-- 箭头 a -> 10 -->
+      <path d="M 115 91 L 260 91" stroke="#0071e3" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+      <!-- 箭头 b -> 10 -->
+      <path d="M 175 91 L 260 91" stroke="#0071e3" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+      <!-- 箭头 name -> "小明" -->
+      <path d="M 130 141 L 260 141" stroke="#0071e3" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+
+      <!-- 内存对象区 -->
+      <rect x="280" y="30" width="410" height="160" rx="12" fill="#e8f5e9" stroke="#34c759" stroke-width="2"/>
+      <text x="485" y="55" text-anchor="middle" font-size="14" font-weight="600" fill="#34c759">内存中的数据对象</text>
+      <!-- 对象 10 -->
+      <rect x="310" y="70" width="120" height="42" rx="6" fill="#fff" stroke="#34c759" stroke-width="1.5"/>
+      <text x="370" y="90" text-anchor="middle" font-size="12" fill="#34c759" font-family="monospace">int: 10</text>
+      <text x="370" y="105" text-anchor="middle" font-size="10" fill="#666">地址 0x1a2b</text>
+      <!-- 对象 "小明" -->
+      <rect x="310" y="125" width="120" height="42" rx="6" fill="#fff" stroke="#34c759" stroke-width="1.5"/>
+      <text x="370" y="145" text-anchor="middle" font-size="12" fill="#34c759" font-family="monospace">str: "小明"</text>
+      <text x="370" y="160" text-anchor="middle" font-size="10" fill="#666">地址 0x3c4d</text>
+      <!-- 说明框 -->
+      <rect x="460" y="70" width="210" height="97" rx="6" fill="#fff" stroke="#ccc" stroke-width="1"/>
+      <text x="565" y="95" text-anchor="middle" font-size="11" fill="#333">a 和 b 指向同一个对象</text>
+      <text x="565" y="115" text-anchor="middle" font-size="11" fill="#333">name 指向另一个对象</text>
+      <text x="565" y="135" text-anchor="middle" font-size="11" fill="#333">类型信息保存在对象中</text>
+      <text x="565" y="155" text-anchor="middle" font-size="11" fill="#333">变量本身没有类型</text>
+    </svg>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">要点</span>基本类型与类型检查</h2>
+  <div class="lesson-explain">
+    <p>Python 有四种最常用的基础类型：<strong>int</strong>（整数）、<strong>float</strong>（浮点数）、<strong>str</strong>（字符串）、<strong>bool</strong>（布尔值）。你可以用 <code>type()</code> 函数随时查看一个变量的类型。</p>
+    <p>类型转换也很常用：用 <code>int()</code> 把字符串转成整数，<code>str()</code> 把数字转成字符串，<code>float()</code> 把整数转成小数。但转换时要注意——<code>int("abc")</code> 会报错，因为 "abc" 根本不是一个数字。</p>
+  </div>
+  <div class="lesson-code">
+    <div class="demo-label">代码示例</div>
+    <pre><code># 四种基础类型
+age = 25              # int 整数
+height = 1.75         # float 浮点数
+name = "Alice"        # str 字符串
+is_student = True     # bool 布尔值 (True / False)
+
+# 查看类型
+print(type(age))      # &lt;class 'int'&gt;
+print(type(name))     # &lt;class 'str'&gt;
+
+# 类型转换
+s = "100"
+num = int(s)          # 字符串转整数
+print(num + 1)        # 101
+
+pi_str = str(3.14)    # 数字转字符串
+print("pi = " + pi_str)  # pi = 3.14</code></pre>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">错误</span>初学者常犯的错误</h2>
+  <div class="lesson-explain">
+    <p><strong>字符串和数字直接相加：</strong><code>"年龄：" + 18</code> 会报错，因为 Python 不知道该怎么把字符串和数字拼在一起。正确的做法是先把数字转成字符串：<code>"年龄：" + str(18)</code>，或者使用 f-string：<code>f"年龄：{18}"</code>。</p>
+    <p><strong>用 == 比较浮点数：</strong>由于计算机存储浮点数存在精度误差，<code>0.1 + 0.2 == 0.3</code> 的结果是 <code>False</code>！正确的做法是判断两个浮点数的差是否小于一个很小的数，比如 <code>abs(a - b) &lt; 1e-9</code>。</p>
+    <p><strong>认为变量有固定类型：</strong>在 Python 中，同一个变量可以先存整数再存字符串。虽然合法，但这会让代码难以阅读和维护。好的实践是保持变量类型一致，或者换一个有意义的变量名。</p>
+  </div>
+</section>
+
+<nav class="nav-footer">
+  <a href="/step1" class="btn btn-secondary">← 上一步</a>
+  <a href="/step3" class="btn btn-primary">下一步 →</a>
+</nav>
+{% endblock %}
+
+{% block scripts %}
+<style>
+.nav-footer { display: flex; justify-content: space-between; margin-top: var(--spacer-24); }
+.python-flow-svg { max-width: 100%; height: auto; }
+</style>
+{% endblock %}

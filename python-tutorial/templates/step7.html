@@ -1,0 +1,204 @@
+{% extends "base.html" %}
+{% block title %}面向对象 - Python 教程{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1>面向对象</h1>
+  <p>用类和对象组织复杂的代码世界</p>
+</div>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">场景</span>代码膨胀了怎么办？</h2>
+  <div class="lesson-explain">
+    <p>假设你要开发一个宠物医院管理系统。如果只用函数，你会写出一堆零散的 <code>feed_dog()</code>、<code>cat_vaccine()</code>、<code>rabbit_age()</code>……数据和操作分离，越来越乱。</p>
+    <p>面向对象的思路是：把<strong>数据</strong>（属性）和<strong>操作数据的方法</strong>（行为）打包到一个"模板"里。就像玩具工厂先有<strong>设计图纸</strong>（类），再按图纸生产出一个个<strong>玩具</strong>（对象）。狗有名字、年龄、会叫；猫也有名字、年龄、但会喵喵叫——它们共享"宠物"的模板，又有各自的特色。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">原理</span>类、对象与继承</h2>
+  <div class="lesson-explain">
+    <p><strong>类（Class）</strong>是对象的蓝图，定义了这类事物有什么属性、能做什么。<strong>对象（Object）</strong>是类的实例，是内存中真实存在的数据。<strong>继承（Inheritance）</strong>则让子类复用父类的代码，同时扩展自己的特性，避免重复造轮子。</p>
+    <p><strong>self</strong> 是对象自身的引用，让每个对象能访问自己的属性和方法。它像每个对象随身携带的"身份证"，方法通过它找到"属于我自己的数据"。</p>
+  </div>
+  <div class="lesson-demo">
+    <div class="demo-label">图解</div>
+    <svg viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg">
+      <!-- 背景 -->
+      <rect x="0" y="0" width="720" height="220" fill="#f8fafc" rx="8"/>
+
+      <!-- 父类 Animal -->
+      <rect x="280" y="10" width="160" height="65" fill="#dbeafe" stroke="#3b82f6" stroke-width="2" rx="10"/>
+      <text x="360" y="32" text-anchor="middle" font-size="14" fill="#1e40af" font-weight="bold">Animal（父类）</text>
+      <text x="360" y="50" text-anchor="middle" font-size="11" fill="#334155">name, age</text>
+      <text x="360" y="65" text-anchor="middle" font-size="11" fill="#334155">speak(), eat()</text>
+
+      <!-- 继承箭头 -->
+      <path d="M 320 75 L 320 95" stroke="#64748b" stroke-width="2" marker-end="url(#arrow-gray)"/>
+      <path d="M 400 75 L 400 95" stroke="#64748b" stroke-width="2" marker-end="url(#arrow-gray)"/>
+      <path d="M 320 95 L 400 95" stroke="#64748b" stroke-width="2"/>
+
+      <!-- 子类 Dog -->
+      <rect x="140" y="105" width="160" height="65" fill="#d1fae5" stroke="#10b981" stroke-width="2" rx="10"/>
+      <text x="220" y="127" text-anchor="middle" font-size="14" fill="#065f46" font-weight="bold">Dog（子类）</text>
+      <text x="220" y="145" text-anchor="middle" font-size="11" fill="#334155">breed</text>
+      <text x="220" y="160" text-anchor="middle" font-size="11" fill="#334155">speak() → "汪汪"</text>
+
+      <!-- 继承箭头 -->
+      <path d="M 280 137 L 240 137" stroke="#64748b" stroke-width="2" marker-end="url(#arrow-gray)"/>
+
+      <!-- 子类 Cat -->
+      <rect x="420" y="105" width="160" height="65" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" rx="10"/>
+      <text x="500" y="127" text-anchor="middle" font-size="14" fill="#92400e" font-weight="bold">Cat（子类）</text>
+      <text x="500" y="145" text-anchor="middle" font-size="11" fill="#334155">color</text>
+      <text x="500" y="160" text-anchor="middle" font-size="11" fill="#334155">speak() → "喵喵"</text>
+
+      <!-- 继承箭头 -->
+      <path d="M 420 137 L 380 137" stroke="#64748b" stroke-width="2" marker-end="url(#arrow-gray)"/>
+
+      <!-- 对象实例 -->
+      <rect x="50" y="180" width="120" height="30" fill="#ecfdf5" stroke="#6ee7b7" stroke-width="1" rx="6"/>
+      <text x="110" y="199" text-anchor="middle" font-size="11" fill="#065f46">dog1 = Dog(...)</text>
+
+      <rect x="220" y="180" width="120" height="30" fill="#ecfdf5" stroke="#6ee7b7" stroke-width="1" rx="6"/>
+      <text x="280" y="199" text-anchor="middle" font-size="11" fill="#065f46">dog2 = Dog(...)</text>
+
+      <rect x="390" y="180" width="120" height="30" fill="#fffbeb" stroke="#fcd34d" stroke-width="1" rx="6"/>
+      <text x="450" y="199" text-anchor="middle" font-size="11" fill="#92400e">cat1 = Cat(...)</text>
+
+      <rect x="550" y="180" width="120" height="30" fill="#fffbeb" stroke="#fcd34d" stroke-width="1" rx="6"/>
+      <text x="610" y="199" text-anchor="middle" font-size="11" fill="#92400e">cat2 = Cat(...)</text>
+
+      <!-- 箭头指向实例 -->
+      <path d="M 220 170 L 110 180" stroke="#10b981" stroke-width="1.5" stroke-dasharray="3,2"/>
+      <path d="M 220 170 L 280 180" stroke="#10b981" stroke-width="1.5" stroke-dasharray="3,2"/>
+      <path d="M 500 170 L 450 180" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="3,2"/>
+      <path d="M 500 170 L 610 180" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="3,2"/>
+
+      <text x="360" y="215" text-anchor="middle" font-size="11" fill="#64748b">类是蓝图，对象是实际产品；继承让子类复用父类代码并扩展特性</text>
+
+      <!-- 箭头定义 -->
+      <defs>
+        <marker id="arrow-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+          <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+        </marker>
+      </defs>
+    </svg>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">要点</span>面向对象的核心语法</h2>
+  <div class="lesson-explain">
+    <p><strong>class</strong> 定义类；<strong>__init__</strong> 是构造方法，在创建对象时自动执行；<strong>self</strong> 代表实例自身，必须通过它访问实例属性；<strong>继承</strong>在类名后的括号中指定父类，子类自动拥有父类的全部属性和方法。</p>
+  </div>
+  <div class="lesson-code">
+    <div class="demo-label">代码示例</div>
+    <pre><code># 1. 定义类和构造方法
+class Animal:
+    """动物基类"""
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+    def speak(self):
+        return f"{self.name} 发出声音"
+
+    def introduce(self):
+        return f"我叫{self.name}，今年{self.age}岁"
+
+
+# 2. 继承：Dog 继承 Animal
+class Dog(Animal):
+    def __init__(self, name, age, breed):
+        super().__init__(name, age)   # 调用父类构造方法
+        self.breed = breed            # 子类自己的属性
+
+    def speak(self):
+        return f"{self.name} 说：汪汪！"   # 重写父类方法
+
+    def fetch(self):
+        return f"{self.name} 去捡球了"
+
+
+# 3. Cat 也继承 Animal
+class Cat(Animal):
+    def __init__(self, name, age, color):
+        super().__init__(name, age)
+        self.color = color
+
+    def speak(self):
+        return f"{self.name} 说：喵喵~"
+
+    def climb(self):
+        return f"{self.name} 爬上树了"
+
+
+# 4. 创建对象（实例化）
+dog = Dog("旺财", 3, "金毛")
+cat = Cat("咪咪", 2, "橘色")
+
+print(dog.introduce())   # 我叫旺财，今年3岁（继承自 Animal）
+print(dog.speak())       # 旺财 说：汪汪！（子类重写）
+print(dog.fetch())       # 旺财 去捡球了（子类新增）
+
+print(cat.speak())       # 咪咪 说：喵喵~
+
+
+# 5. 多态：同一消息，不同对象不同响应
+animals = [Dog("A", 1, "柯基"), Cat("B", 2, "白")]
+for animal in animals:
+    print(animal.speak())   # 各自发出不同的声音</code></pre>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">错误</span>常见陷阱</h2>
+  <div class="lesson-explain">
+    <p><strong>1. 忘记写 self</strong>：实例方法的第一个参数必须是 self，代表对象自身。忘记写会导致 TypeError。</p>
+    <pre><code>class Person:
+    def __init__(name):   # 错误！漏了 self
+        self.name = name
+
+# 正确
+class Person:
+    def __init__(self, name):
+        self.name = name</code></pre>
+    <p><strong>2. 方法名和属性名冲突</strong>：不要用相同的名字定义方法和属性，否则后定义的会覆盖前者。</p>
+    <pre><code>class Circle:
+    def __init__(self, radius):
+        self.radius = radius
+
+    def area(self):           # 方法
+        return 3.14 * self.radius ** 2
+
+# 不要这样做：
+c = Circle(5)
+c.area = 100   # 糟糕！把方法 area 覆盖成了整数 100
+# 现在 c.area() 会报错：'int' object is not callable</code></pre>
+    <p><strong>3. 过度使用继承</strong>："是一个"关系才用继承（Dog 是 Animal），"有一个"关系应该用组合（Car 有一个 Engine）。滥用继承会让类关系像意大利面条一样纠缠不清。</p>
+    <pre><code># 错误的继承：企鹅不是典型的鸟（不会飞）
+class Bird:
+    def fly(self): ...
+
+class Penguin(Bird):   # 企鹅继承鸟？
+    def fly(self):       # 被迫重写为空或抛异常
+        raise Exception("我不会飞")
+
+# 正确的组合：把"能否飞"拆成行为对象
+class FlyBehavior:
+    def fly(self): ...
+
+class CannotFly(FlyBehavior):
+    def fly(self): return "不会飞"
+
+class Bird:
+    def __init__(self, fly_behavior):
+        self.fly_behavior = fly_behavior</code></pre>
+  </div>
+</section>
+
+<nav class="nav-footer">
+  <a href="/step6" class="btn btn-secondary">← 上一步</a>
+  <a href="/step8" class="btn btn-primary">下一步 →</a>
+</nav>
+{% endblock %}

@@ -1,0 +1,196 @@
+{% extends "base.html" %}
+{% block title %}文件与异常 - Python 教程{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1>文件与异常</h1>
+  <p>让程序与外部世界安全地交互</p>
+</div>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">场景</span>程序不只是计算器</h2>
+  <div class="lesson-explain">
+    <p>想象你正在写一份报告：你需要从文件夹里<strong>读取</strong>参考资料，写完后<strong>保存</strong>到硬盘。如果笔没墨了、文件被误删了，你不能直接崩溃大哭，而得优雅地处理这些意外。</p>
+    <p>程序也一样：它需要读写文件来持久化数据，也需要在出错时不至于"炸掉"，而是给用户一个友好的提示。<strong>文件操作</strong>和<strong>异常处理</strong>就是解决这两个问题的关键技能。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">原理</span>文件指针与异常传播链</h2>
+  <div class="lesson-explain">
+    <p>打开文件时，操作系统会返回一个<strong>文件指针</strong>，像书签一样标记当前读写到哪个位置。read() 从头读到尾，write() 从当前位置写入。用完文件必须<strong>关闭</strong>，否则数据可能丢失，内存也会泄漏。</p>
+    <p>异常是程序运行时的"警报"。当错误发生时，Python 会创建一个异常对象并沿着调用链<strong>向上抛</strong>，直到被某个 try/except 捕获，否则会终止程序。finally 块则保证无论是否出错，清理代码都会执行。</p>
+  </div>
+  <div class="lesson-demo">
+    <div class="demo-label">图解</div>
+    <svg viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg">
+      <!-- 背景 -->
+      <rect x="0" y="0" width="720" height="220" fill="#f8fafc" rx="8"/>
+
+      <!-- try 块 -->
+      <rect x="30" y="30" width="200" height="170" fill="#dbeafe" stroke="#3b82f6" stroke-width="2" rx="10"/>
+      <text x="130" y="55" text-anchor="middle" font-size="14" fill="#1e40af" font-weight="bold">try</text>
+
+      <rect x="50" y="70" width="160" height="35" fill="#bfdbfe" stroke="#60a5fa" stroke-width="1" rx="4"/>
+      <text x="130" y="92" text-anchor="middle" font-size="12" fill="#1e3a8a">打开文件</text>
+
+      <rect x="50" y="115" width="160" height="35" fill="#bfdbfe" stroke="#60a5fa" stroke-width="1" rx="4"/>
+      <text x="130" y="137" text-anchor="middle" font-size="12" fill="#1e3a8a">读取 / 处理数据</text>
+
+      <rect x="50" y="160" width="160" height="28" fill="#bfdbfe" stroke="#60a5fa" stroke-width="1" rx="4"/>
+      <text x="130" y="178" text-anchor="middle" font-size="12" fill="#1e3a8a">正常完成 → else</text>
+
+      <!-- except 块 -->
+      <rect x="260" y="30" width="200" height="80" fill="#fee2e2" stroke="#ef4444" stroke-width="2" rx="10"/>
+      <text x="360" y="55" text-anchor="middle" font-size="14" fill="#991b1b" font-weight="bold">except</text>
+
+      <rect x="280" y="70" width="160" height="28" fill="#fecaca" stroke="#f87171" stroke-width="1" rx="4"/>
+      <text x="360" y="88" text-anchor="middle" font-size="12" fill="#7f1d1d">出错时捕获异常</text>
+
+      <!-- else 块 -->
+      <rect x="260" y="125" width="95" height="75" fill="#d1fae5" stroke="#10b981" stroke-width="2" rx="10"/>
+      <text x="307" y="150" text-anchor="middle" font-size="13" fill="#065f46" font-weight="bold">else</text>
+      <text x="307" y="170" text-anchor="middle" font-size="11" fill="#065f46">没异常时</text>
+      <text x="307" y="185" text-anchor="middle" font-size="11" fill="#065f46">执行</text>
+
+      <!-- finally 块 -->
+      <rect x="365" y="125" width="95" height="75" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" rx="10"/>
+      <text x="412" y="150" text-anchor="middle" font-size="13" fill="#92400e" font-weight="bold">finally</text>
+      <text x="412" y="170" text-anchor="middle" font-size="11" fill="#92400e">无论是否</text>
+      <text x="412" y="185" text-anchor="middle" font-size="11" fill="#92400e">出错都执行</text>
+
+      <!-- 流程箭头 -->
+      <path d="M 230 92 C 245 92, 245 92, 260 92" stroke="#ef4444" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#arrow-red)"/>
+      <text x="245" y="85" text-anchor="middle" font-size="10" fill="#ef4444">出错</text>
+
+      <path d="M 230 137 C 245 137, 245 137, 260 137" stroke="#10b981" stroke-width="2" marker-end="url(#arrow-green)"/>
+      <text x="245" y="130" text-anchor="middle" font-size="10" fill="#10b981">成功</text>
+
+      <path d="M 460 60 C 475 60, 475 60, 490 60" stroke="#64748b" stroke-width="2" marker-end="url(#arrow-gray)"/>
+      <text x="475" y="53" text-anchor="middle" font-size="10" fill="#64748b">处理</text>
+
+      <!-- 异常类型示例 -->
+      <rect x="490" y="20" width="200" height="80" fill="#fff1f2" stroke="#fda4af" stroke-width="1" rx="8"/>
+      <text x="590" y="40" text-anchor="middle" font-size="12" fill="#be123c" font-weight="bold">常见异常类型</text>
+      <text x="590" y="58" text-anchor="middle" font-size="11" fill="#9f1239">FileNotFoundError</text>
+      <text x="590" y="74" text-anchor="middle" font-size="11" fill="#9f1239">PermissionError</text>
+      <text x="590" y="90" text-anchor="middle" font-size="11" fill="#9f1239">ValueError / TypeError</text>
+
+      <!-- with 语句 -->
+      <rect x="490" y="115" width="200" height="85" fill="#f0f9ff" stroke="#0ea5e9" stroke-width="1" rx="8"/>
+      <text x="590" y="138" text-anchor="middle" font-size="12" fill="#0369a1" font-weight="bold">with 语句（推荐）</text>
+      <text x="590" y="158" text-anchor="middle" font-size="11" fill="#0369a1">自动管理文件上下文</text>
+      <text x="590" y="175" text-anchor="middle" font-size="11" fill="#0369a1">离开 with 块时自动关闭文件</text>
+      <text x="590" y="190" text-anchor="middle" font-size="11" fill="#0369a1">即使出错也会关闭</text>
+
+      <!-- 箭头定义 -->
+      <defs>
+        <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+          <polygon points="0 0, 10 3.5, 0 7" fill="#ef4444"/>
+        </marker>
+        <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+          <polygon points="0 0, 10 3.5, 0 7" fill="#10b981"/>
+        </marker>
+        <marker id="arrow-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+          <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+        </marker>
+      </defs>
+    </svg>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">要点</span>文件操作与异常处理</h2>
+  <div class="lesson-explain">
+    <p><strong>open()</strong> 函数接收文件名和模式（r 读/w 写/a 追加）；<strong>with</strong> 语句是最安全的文件操作方式，自动处理关闭。<strong>try/except/else/finally</strong> 构成完整的异常处理结构：try 放可能出错的代码，except 捕获特定异常，else 放成功后的逻辑，finally 放必须执行的清理。</p>
+  </div>
+  <div class="lesson-code">
+    <div class="demo-label">代码示例</div>
+    <pre><code># 1. 基本文件读写（不推荐，容易忘记关闭）
+f = open("data.txt", "r", encoding="utf-8")
+content = f.read()
+print(content)
+f.close()   # 千万别忘！
+
+
+# 2. with 语句（推荐）：自动关闭文件
+with open("data.txt", "r", encoding="utf-8") as f:
+    content = f.read()
+    # 离开 with 块，文件自动关闭，即使出错也会关闭
+
+
+# 3. 逐行读取（适合大文件，不占内存）
+with open("data.txt", "r", encoding="utf-8") as f:
+    for line in f:
+        print(line.strip())   # strip() 去掉换行符
+
+
+# 4. 写入文件
+with open("output.txt", "w", encoding="utf-8") as f:
+    f.write("第一行\n")
+    f.write("第二行\n")
+
+# 追加模式
+with open("output.txt", "a", encoding="utf-8") as f:
+    f.write("第三行（追加）\n")
+
+
+# 5. 完整的异常处理结构
+try:
+    with open("config.json", "r", encoding="utf-8") as f:
+        data = f.read()
+        number = int(data)   # 可能抛出 ValueError
+except FileNotFoundError:
+    print("错误：文件不存在，请检查路径")
+except ValueError:
+    print("错误：文件内容不是有效的数字")
+except Exception as e:
+    print(f"未知错误：{e}")
+else:
+    print(f"读取成功，数值为：{number}")   # 没异常时执行
+finally:
+    print("清理完成（无论是否出错都会执行）")</code></pre>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">错误</span>常见陷阱</h2>
+  <div class="lesson-explain">
+    <p><strong>1. 忘记关闭文件</strong>：打开文件不关闭会导致资源泄漏，在 Windows 上还可能锁定文件，其他程序无法访问。</p>
+    <pre><code># 错误
+f = open("data.txt", "r")
+data = f.read()
+# 没有 f.close()！
+
+# 正确：使用 with 语句
+with open("data.txt", "r") as f:
+    data = f.read()</code></pre>
+    <p><strong>2. 捕获所有异常却不处理</strong>：裸 except 会吞掉所有错误，包括系统退出信号，导致程序"死机"式卡死。</p>
+    <pre><code># 错误：捕获所有异常但什么都不做
+try:
+    risky_operation()
+except:           # 不要这样写！
+    pass          # 静默吞掉所有错误，调试时想死
+
+# 正确：捕获具体异常并记录
+except FileNotFoundError as e:
+    print(f"文件未找到：{e}")
+    raise           # 或重新抛出，让上层处理</code></pre>
+    <p><strong>3. 用 except 吞掉关键错误</strong>：不要在不理解错误的情况下静默处理，至少记录日志或重新抛出。</p>
+    <pre><code># 危险：让程序带着错误数据继续运行
+try:
+    result = calculate()
+except Exception:
+    result = 0   # 错误的默认值可能导致更大灾难
+
+# 正确：要么处理，要么抛出
+except ZeroDivisionError:
+    result = float('inf')   # 合理的回退值
+    logging.warning("除零，已设为正无穷")</code></pre>
+  </div>
+</section>
+
+<nav class="nav-footer">
+  <a href="/step5" class="btn btn-secondary">← 上一步</a>
+  <a href="/step7" class="btn btn-primary">下一步 →</a>
+</nav>
+{% endblock %}

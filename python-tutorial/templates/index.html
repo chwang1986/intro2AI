@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+{% block title %}Python 教程 - Intro2AI{% endblock %}
+
+{% block content %}
+<a href="/" class="back-link">← 回到 Intro2AI 首页</a>
+
+<div class="page-header">
+  <h1>Python 编程简明教程</h1>
+  <p>从零开始掌握 Python，为 AI 时代打下编程基础</p>
+</div>
+
+<!-- 纲领 -->
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">纲领</span>这个教程要达成什么</h2>
+  <div class="lesson-explain">
+    <p><strong>最终目标：</strong>读完这个教程后，你能够用 Python 编写完整的程序——理解变量与类型、掌握控制流和函数、操作数据结构、处理文件与异常，并能调用 AI API 与大型语言模型协作。</p>
+    <p><strong>面向读者：</strong>完全零基础，或者只写过简单脚本的人。不需要任何编程经验，每一步都有生动比喻和图解。</p>
+    <p><strong>学习路径：</strong>理解 Python 本质 → 掌握基础语法 → 学会流程控制 → 编写函数 → 操作数据结构 → 文件与异常处理 → 面向对象编程 → 调用 AI API → Prompt 工程 → AI 协作工作流 → 综合实战。</p>
+  </div>
+</section>
+
+<!-- 目标 -->
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">目标</span>11 个阶段逐步深入</h2>
+  <div class="lesson-explain">
+    <p>每个阶段对应一个可操作的页面，你可以在浏览器中边看边写真实代码。</p>
+  </div>
+  <div class="step-grid">
+    <a href="/step1" class="step-card">
+      <div class="step-num">01</div>
+      <div class="step-title">Python 是什么</div>
+      <div class="step-desc">解释器工作原理，安装与运行</div>
+    </a>
+    <a href="/step2" class="step-card">
+      <div class="step-num">02</div>
+      <div class="step-title">变量与类型</div>
+      <div class="step-desc">数据存储的基本方式</div>
+    </a>
+    <a href="/step3" class="step-card">
+      <div class="step-num">03</div>
+      <div class="step-title">控制流</div>
+      <div class="step-desc">条件判断与循环</div>
+    </a>
+    <a href="/step4" class="step-card">
+      <div class="step-num">04</div>
+      <div class="step-title">函数</div>
+      <div class="step-desc">封装可复用的代码块</div>
+    </a>
+    <a href="/step5" class="step-card">
+      <div class="step-num">05</div>
+      <div class="step-title">数据结构</div>
+      <div class="step-desc">列表、字典、元组、集合</div>
+    </a>
+    <a href="/step6" class="step-card">
+      <div class="step-num">06</div>
+      <div class="step-title">文件与异常</div>
+      <div class="step-desc">读写文件，处理错误</div>
+    </a>
+    <a href="/step7" class="step-card">
+      <div class="step-num">07</div>
+      <div class="step-title">面向对象</div>
+      <div class="step-desc">类与对象，继承与多态</div>
+    </a>
+    <a href="/step8" class="step-card">
+      <div class="step-num">08</div>
+      <div class="step-title">调用 AI API</div>
+      <div class="step-desc">用 Python 调用大语言模型</div>
+    </a>
+    <a href="/step9" class="step-card">
+      <div class="step-num">09</div>
+      <div class="step-title">Prompt 工程</div>
+      <div class="step-desc">设计高效的 AI 提示词</div>
+    </a>
+    <a href="/step10" class="step-card">
+      <div class="step-num">10</div>
+      <div class="step-title">AI 协作工作流</div>
+      <div class="step-desc">让 AI 成为你的编程助手</div>
+    </a>
+    <a href="/practice" class="step-card">
+      <div class="step-num">11</div>
+      <div class="step-title">综合实战</div>
+      <div class="step-desc">完成一个完整的 AI 应用</div>
+    </a>
+  </div>
+</section>
+
+<!-- 学习路径 -->
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">路径</span>学习路线说明</h2>
+  <div class="lesson-explain">
+    <p><strong>第一阶段（基础语法）：</strong>step1 到 step3 帮助你理解 Python 的本质，掌握变量、类型和控制流。这是所有编程的根基，就像学习写作前先认字。</p>
+    <p><strong>第二阶段（组织能力）：</strong>step4 到 step7 教你如何把代码组织得更好——函数让代码复用，数据结构让数据有序，面向对象让程序结构清晰。</p>
+    <p><strong>第三阶段（AI 实战）：</strong>step8 到 step11 进入 AI 时代的关键技能。你将学会调用 AI API、设计 Prompt、建立高效的人机协作工作流，最终完成一个完整的项目。</p>
+  </div>
+  <div class="lesson-demo">
+    <div class="demo-label">学习路径图</div>
+    <svg viewBox="0 0 720 160" xmlns="http://www.w3.org/2000/svg" class="path-svg">
+      <defs>
+        <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+          <polygon points="0 0, 10 3.5, 0 7" fill="#0071e3"/>
+        </marker>
+      </defs>
+      <!-- 基础语法 -->
+      <rect x="20" y="30" width="180" height="100" rx="12" fill="#f0f7ff" stroke="#0071e3" stroke-width="2"/>
+      <text x="110" y="65" text-anchor="middle" font-size="14" font-weight="600" fill="#0071e3">基础语法</text>
+      <text x="110" y="85" text-anchor="middle" font-size="11" fill="#666">step1 - step3</text>
+      <text x="110" y="105" text-anchor="middle" font-size="11" fill="#666">变量、类型、控制流</text>
+      <!-- 箭头 -->
+      <path d="M 210 80 L 260 80" stroke="#0071e3" stroke-width="3" fill="none" marker-end="url(#arr)"/>
+      <!-- 组织能力 -->
+      <rect x="280" y="30" width="180" height="100" rx="12" fill="#fff7e6" stroke="#ff9500" stroke-width="2"/>
+      <text x="370" y="65" text-anchor="middle" font-size="14" font-weight="600" fill="#ff9500">组织能力</text>
+      <text x="370" y="85" text-anchor="middle" font-size="11" fill="#666">step4 - step7</text>
+      <text x="370" y="105" text-anchor="middle" font-size="11" fill="#666">函数、数据结构、OOP</text>
+      <!-- 箭头 -->
+      <path d="M 470 80 L 520 80" stroke="#0071e3" stroke-width="3" fill="none" marker-end="url(#arr)"/>
+      <!-- AI 实战 -->
+      <rect x="540" y="30" width="170" height="100" rx="12" fill="#e8f5e9" stroke="#34c759" stroke-width="2"/>
+      <text x="625" y="65" text-anchor="middle" font-size="14" font-weight="600" fill="#34c759">AI 实战</text>
+      <text x="625" y="85" text-anchor="middle" font-size="11" fill="#666">step8 - step11</text>
+      <text x="625" y="105" text-anchor="middle" font-size="11" fill="#666">API、Prompt、项目</text>
+    </svg>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<style>
+.step-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--spacer-16);
+  margin-top: var(--spacer-16);
+}
+.step-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: var(--spacer-20);
+  background: var(--bg);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.2s;
+  border: 1px solid var(--border);
+}
+.step-card:hover {
+  background: #eaeaea;
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+.step-card .step-num {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--brand);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: var(--radius-sm);
+  margin-bottom: var(--spacer-12);
+}
+.step-card .step-title {
+  font-weight: 600;
+  font-size: 15px;
+  margin-bottom: 4px;
+}
+.step-card .step-desc {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+.path-svg { max-width: 100%; height: auto; }
+</style>
+{% endblock %}

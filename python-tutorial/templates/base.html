@@ -1,0 +1,18 @@
+{% extends "system_base.html" %}
+
+{% block sidebar_menu %}
+<ul class="sider-menu">
+  <li><a href="/" {% if request.path == '/' %}class="active"{% endif %}>教程首页</a></li>
+  <li><a href="/step1" {% if request.path == '/step1' %}class="active"{% endif %}>01 Python 是什么</a></li>
+  <li><a href="/step2" {% if request.path == '/step2' %}class="active"{% endif %}>02 变量与类型</a></li>
+  <li><a href="/step3" {% if request.path == '/step3' %}class="active"{% endif %}>03 控制流</a></li>
+  <li><a href="/step4" {% if request.path == '/step4' %}class="active"{% endif %}>04 函数</a></li>
+  <li><a href="/step5" {% if request.path == '/step5' %}class="active"{% endif %}>05 数据结构</a></li>
+  <li><a href="/step6" {% if request.path == '/step6' %}class="active"{% endif %}>06 文件与异常</a></li>
+  <li><a href="/step7" {% if request.path == '/step7' %}class="active"{% endif %}>07 面向对象</a></li>
+  <li><a href="/step8" {% if request.path == '/step8' %}class="active"{% endif %}>08 调用 AI API</a></li>
+  <li><a href="/step9" {% if request.path == '/step9' %}class="active"{% endif %}>09 Prompt 工程</a></li>
+  <li><a href="/step10" {% if request.path == '/step10' %}class="active"{% endif %}>10 AI 协作工作流</a></li>
+  <li><a href="/practice" {% if request.path == '/practice' %}class="active"{% endif %}>11 综合实战</a></li>
+</ul>
+{% endblock %}

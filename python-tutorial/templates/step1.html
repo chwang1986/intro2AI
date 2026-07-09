@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% block title %}01 Python 是什么 - Python 教程{% endblock %}
+
+{% block content %}
+<a href="/" class="back-link">← 回到教程首页</a>
+
+<div class="page-header">
+  <h1>01 Python 是什么</h1>
+  <p>解释器工作原理，安装与运行第一个程序</p>
+</div>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">场景</span>为什么要学 Python</h2>
+  <div class="lesson-explain">
+    <p>想象你想让电脑帮你做一件事——比如分析一份销售数据、自动下载图片、或者和 AI 对话。你需要用一种语言告诉电脑你的意图，而 Python 就是这种语言中最平易近人的一种。</p>
+    <p>在 AI 时代，Python 更像是一把万能钥匙。几乎所有主流的 AI 框架（TensorFlow、PyTorch）都用 Python 编写，各大 AI 公司的 API 也优先提供 Python  SDK。学会 Python，就等于拿到了进入 AI 世界的门票。</p>
+    <p>与其他编程语言相比，Python 的语法更接近自然语言。比如用中文说「打印你好」，Python 代码就是 <code>print("你好")</code>，几乎一模一样。这种简洁让你能把注意力放在解决问题上，而不是纠结于复杂的语法规则。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">原理</span>解释器就像一位翻译官</h2>
+  <div class="lesson-explain">
+    <p>电脑只认识由 0 和 1 组成的机器语言，看不懂 Python 代码。所以 Python 需要一个「翻译官」——也就是<strong>解释器</strong>。解释器的工作分为三步：</p>
+    <p><strong>1. 读取源码：</strong>解释器先读取你写的 <code>.py</code> 文件，检查语法是否正确。就像老师先通读你的作文，看看有没有错别字。</p>
+    <p><strong>2. 编译成字节码：</strong>源码被转换成一种中间语言——字节码（bytecode）。这有点像把中文翻译成世界语，不是最终目标，但是一种标准化的中间形态。</p>
+    <p><strong>3. 执行字节码：</strong>Python 虚拟机（PVM）逐条执行字节码指令，调用操作系统完成实际操作。这一步才是真正的「运行程序」。</p>
+    <p>整个过程是<strong>边解释边执行</strong>的。你每次运行 <code>python hello.py</code>，这个翻译过程都会重新进行。这正是 Python 被称为「解释型语言」的原因。</p>
+  </div>
+  <div class="lesson-demo">
+    <div class="demo-label">图解</div>
+    <svg viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg" class="python-flow-svg">
+      <defs>
+        <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+          <polygon points="0 0, 10 3.5, 0 7" fill="#0071e3"/>
+        </marker>
+      </defs>
+      <!-- 源码 -->
+      <rect x="30" y="50" width="170" height="120" rx="12" fill="#f0f7ff" stroke="#0071e3" stroke-width="2"/>
+      <text x="115" y="80" text-anchor="middle" font-size="15" font-weight="600" fill="#0071e3">Python 源码</text>
+      <text x="115" y="105" text-anchor="middle" font-size="11" fill="#666">hello.py</text>
+      <rect x="65" y="120" width="100" height="30" rx="4" fill="#fff" stroke="#ccc" stroke-width="1"/>
+      <text x="115" y="140" text-anchor="middle" font-size="10" fill="#333" font-family="monospace">print("hi")</text>
+
+      <!-- 箭头 1 -->
+      <path d="M 210 110 L 260 110" stroke="#0071e3" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+      <text x="235" y="100" text-anchor="middle" font-size="10" fill="#0071e3" font-weight="500">编译</text>
+
+      <!-- 字节码 -->
+      <rect x="280" y="50" width="170" height="120" rx="12" fill="#fff7e6" stroke="#ff9500" stroke-width="2"/>
+      <text x="365" y="80" text-anchor="middle" font-size="15" font-weight="600" fill="#ff9500">字节码</text>
+      <text x="365" y="105" text-anchor="middle" font-size="11" fill="#666">hello.pyc</text>
+      <rect x="315" y="120" width="100" height="30" rx="4" fill="#fff" stroke="#ff9500" stroke-width="1" stroke-dasharray="3 2"/>
+      <text x="365" y="140" text-anchor="middle" font-size="10" fill="#ff9500" font-family="monospace">BINARY_ADD</text>
+
+      <!-- 箭头 2 -->
+      <path d="M 460 110 L 510 110" stroke="#0071e3" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+      <text x="485" y="100" text-anchor="middle" font-size="10" fill="#0071e3" font-weight="500">执行</text>
+
+      <!-- 执行结果 -->
+      <rect x="530" y="50" width="170" height="120" rx="12" fill="#e8f5e9" stroke="#34c759" stroke-width="2"/>
+      <text x="615" y="80" text-anchor="middle" font-size="15" font-weight="600" fill="#34c759">执行结果</text>
+      <text x="615" y="105" text-anchor="middle" font-size="11" fill="#666">PVM 虚拟机</text>
+      <rect x="565" y="120" width="100" height="30" rx="4" fill="#fff" stroke="#34c759" stroke-width="1"/>
+      <text x="615" y="140" text-anchor="middle" font-size="10" fill="#34c759" font-family="monospace">输出: hi</text>
+
+      <!-- 底部说明 -->
+      <text x="360" y="195" text-anchor="middle" font-size="11" fill="#86868b">Python 解释器自动完成源码 → 字节码 → 执行的完整流程</text>
+    </svg>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">要点</span>安装 Python，运行第一个程序</h2>
+  <div class="lesson-explain">
+    <p>Python 有两个主要版本：<strong>Python 3</strong> 是目前的主流，<strong>Python 2</strong> 已经停止维护。本教程全部使用 Python 3。</p>
+    <p>安装完成后，打开终端输入 <code>python --version</code>，如果看到版本号就说明安装成功。然后创建一个名为 <code>hello.py</code> 的文件，写入一行代码，运行它。</p>
+  </div>
+  <div class="lesson-code">
+    <div class="demo-label">代码示例</div>
+    <pre><code># 这是你的第一个 Python 程序
+# 在终端运行: python hello.py
+
+print("Hello, World!")
+print("你好，Python！")</code></pre>
+  </div>
+  <div class="lesson-explain" style="margin-top: var(--spacer-12);">
+    <p><code>print()</code> 是 Python 的内置函数，作用是把括号里的内容输出到屏幕。字符串需要用引号包裹，单引号 <code>'</code> 和双引号 <code>"</code> 都可以。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">错误</span>初学者常犯的错误</h2>
+  <div class="lesson-explain">
+    <p><strong>Python 2 和 3 混用：</strong>网上有些旧教程使用 Python 2 语法，比如 <code>print "hello"</code>（不带括号）。在 Python 3 中这会直接报错。记住：Python 3 的 <code>print</code> 必须带括号。</p>
+    <p><strong>缩进混用空格和 Tab：</strong>Python 用缩进来表示代码层级，但对缩进方式很敏感。同一段代码里不能混用空格和 Tab，否则会出现 <code>IndentationError</code>。建议把编辑器设置成「按 Tab 键时插入 4 个空格」。</p>
+    <p><strong>文件名带中文或特殊符号：</strong>虽然 Python 支持中文文件名，但在某些系统上可能引发编码问题。初学时建议用纯英文文件名，比如 <code>hello.py</code> 而不是 <code>你好.py</code>。</p>
+  </div>
+</section>
+
+<nav class="nav-footer">
+  <span></span>
+  <a href="/step2" class="btn btn-primary">下一步 →</a>
+</nav>
+{% endblock %}
+
+{% block scripts %}
+<style>
+.nav-footer { display: flex; justify-content: space-between; margin-top: var(--spacer-24); }
+.python-flow-svg { max-width: 100%; height: auto; }
+</style>
+{% endblock %}

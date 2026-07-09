@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+{% block title %}函数 - Python 教程{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1>函数</h1>
+  <p>把重复代码打包成可复用的工具箱</p>
+</div>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">场景</span>为什么需要函数？</h2>
+  <div class="lesson-explain">
+    <p>想象你是一名厨师，每天要做 100 杯珍珠奶茶。如果没有标准化流程，你每次都要想"先放多少茶、多少奶、煮多久珍珠"——既累又容易出错。于是你写了一张<strong>配方卡</strong>：只要给出杯数和甜度，就能自动产出一致的奶茶。</p>
+    <p>函数就是程序里的<strong>配方卡</strong>。同一段代码在多处使用时，与其复制粘贴十几遍，不如把它装进一个"有名字的盒子"，需要时喊一声名字就能用。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">原理</span>函数的工作机制</h2>
+  <div class="lesson-explain">
+    <p>函数是一段<strong>有名字的代码块</strong>，遵循"输入 → 处理 → 输出"的流水线模式。你可以把它看作一台自动贩卖机：从投币口塞入原料（参数），机器内部加工（执行代码），最后从取货口拿出成品（返回值）。</p>
+    <p>当程序调用函数时，Python 会在内存中开辟一块临时空间（称为<strong>栈帧</strong>），存放局部变量；函数执行完毕后，这块空间自动释放，返回值传回调用处。</p>
+  </div>
+  <div class="lesson-demo">
+    <div class="demo-label">图解</div>
+    <svg viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg">
+      <!-- 背景 -->
+      <rect x="0" y="0" width="720" height="220" fill="#f8fafc" rx="8"/>
+
+      <!-- 调用方 -->
+      <rect x="30" y="80" width="140" height="70" fill="#dbeafe" stroke="#3b82f6" stroke-width="2" rx="8"/>
+      <text x="100" y="110" text-anchor="middle" font-size="14" fill="#1e40af" font-weight="bold">调用代码</text>
+      <text x="100" y="130" text-anchor="middle" font-size="12" fill="#334155">add(2, 3)</text>
+
+      <!-- 箭头：参数传入 -->
+      <path d="M 180 100 L 250 100" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowhead)"/>
+      <text x="215" y="92" text-anchor="middle" font-size="11" fill="#64748b">参数 a=2, b=3</text>
+
+      <!-- 函数盒子 -->
+      <rect x="260" y="50" width="200" height="130" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" rx="10"/>
+      <text x="360" y="75" text-anchor="middle" font-size="14" fill="#92400e" font-weight="bold">函数 add(a, b)</text>
+
+      <!-- 函数内部步骤 -->
+      <rect x="280" y="90" width="160" height="28" fill="#fffbeb" stroke="#fbbf24" stroke-width="1" rx="4"/>
+      <text x="360" y="108" text-anchor="middle" font-size="12" fill="#78350f">result = a + b</text>
+
+      <rect x="280" y="128" width="160" height="28" fill="#fffbeb" stroke="#fbbf24" stroke-width="1" rx="4"/>
+      <text x="360" y="146" text-anchor="middle" font-size="12" fill="#78350f">return result</text>
+
+      <!-- 箭头：返回值传出 -->
+      <path d="M 470 130 L 540 130" stroke="#10b981" stroke-width="2" marker-end="url(#arrowhead2)"/>
+      <text x="505" y="122" text-anchor="middle" font-size="11" fill="#64748b">返回 5</text>
+
+      <!-- 结果 -->
+      <rect x="550" y="100" width="140" height="60" fill="#d1fae5" stroke="#10b981" stroke-width="2" rx="8"/>
+      <text x="620" y="125" text-anchor="middle" font-size="14" fill="#065f46" font-weight="bold">调用结果</text>
+      <text x="620" y="145" text-anchor="middle" font-size="12" fill="#334155">sum = 5</text>
+
+      <!-- 箭头标记定义 -->
+      <defs>
+        <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+          <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
+        </marker>
+        <marker id="arrowhead2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+          <polygon points="0 0, 10 3.5, 0 7" fill="#10b981"/>
+        </marker>
+      </defs>
+
+      <!-- 栈帧示意 -->
+      <rect x="30" y="170" width="660" height="35" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1" rx="4"/>
+      <text x="360" y="192" text-anchor="middle" font-size="12" fill="#475569">调用时 Python 创建临时栈帧，函数结束后自动释放，局部变量随之消失</text>
+    </svg>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">要点</span>函数的核心语法</h2>
+  <div class="lesson-explain">
+    <p><strong>def</strong> 关键字用来定义函数；参数是函数的"入口"，可以设定默认值；<strong>return</strong> 是函数的"出口"，没有 return 默认返回 None。变量在函数内部创建的是<strong>局部变量</strong>，只在函数内可见。</p>
+  </div>
+  <div class="lesson-code">
+    <div class="demo-label">代码示例</div>
+    <pre><code># 1. 基本函数定义与调用
+def greet(name):
+    """向用户打招呼"""
+    message = f"你好，{name}！"
+    return message
+
+print(greet("小明"))   # 输出: 你好，小明！
+
+
+# 2. 默认参数：给参数设置默认值
+def make_coffee(type="美式", sugar=0):
+    return f"一杯{type}，{sugar}勺糖"
+
+print(make_coffee())               # 一杯美式，0勺糖
+print(make_coffee("拿铁", 2))      # 一杯拿铁，2勺糖
+print(make_coffee(sugar=1))        # 一杯美式，1勺糖（关键字传参）
+
+
+# 3. return 返回多个值（实际是元组）
+def calc(a, b):
+    return a + b, a - b, a * b
+
+sum_val, diff, prod = calc(10, 3)
+print(sum_val, diff, prod)   # 13 7 30
+
+
+# 4. 作用域：局部变量 vs 全局变量
+count = 0   # 全局变量
+
+def increment():
+    global count   # 声明使用全局变量
+    count += 1
+    local_var = "我只能在函数内使用"
+    return count
+
+increment()
+print(count)   # 1</code></pre>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">错误</span>常见陷阱</h2>
+  <div class="lesson-explain">
+    <p><strong>1. 忘记 return</strong>：函数没有 return 时默认返回 None，新手常误以为会得到计算结果。</p>
+    <pre><code>def add(a, b):
+    result = a + b
+    # 糟糕！忘记写 return result
+
+print(add(2, 3))   # 输出 None，不是 5</code></pre>
+    <p><strong>2. 在函数外访问局部变量</strong>：局部变量随函数结束而销毁，外部无法访问。</p>
+    <pre><code>def test():
+    x = 10
+
+test()
+print(x)   # NameError: name 'x' is not defined</code></pre>
+    <p><strong>3. 默认参数用可变对象</strong>：默认参数在函数定义时只创建一次，使用列表或字典作为默认值会导致意外累积。</p>
+    <pre><code># 错误示范
+def append_item(item, items=[]):
+    items.append(item)
+    return items
+
+print(append_item(1))   # [1]
+print(append_item(2))   # [1, 2]  —— 糟糕，列表记住了上次的结果！
+
+# 正确做法
+def append_item(item, items=None):
+    if items is None:
+        items = []
+    items.append(item)
+    return items</code></pre>
+  </div>
+</section>
+
+<nav class="nav-footer">
+  <a href="/step3" class="btn btn-secondary">← 上一步</a>
+  <a href="/step5" class="btn btn-primary">下一步 →</a>
+</nav>
+{% endblock %}

@@ -1,0 +1,415 @@
+{% extends "base.html" %}
+{% block title %}综合实战 - Python 教程{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1>综合实战</h1>
+  <p>用 AI 协助从零写一个「待办事项管理器」命令行程序</p>
+</div>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">场景</span>从 0 到 1，和 AI 一起盖一座「小房子」</h2>
+  <div class="lesson-explain">
+    <p>想象你要盖一座小房子。你不会自己烧砖、炼钢、做玻璃——而是准备好设计图，让专业的工人各司其职：地基队、框架队、装修队。你负责验收每个阶段，确保房子结实、实用、好看。</p>
+    <p>在这个实战项目中，我们要用 AI 协助开发一个完整的<strong>命令行待办事项管理器（Todo CLI）</strong>。它能添加任务、列出任务、标记完成、删除任务，数据持久化存储在 JSON 文件中。</p>
+    <p>这不是「让 AI 帮你写全部代码」的练习，而是「你指挥 AI，AI 出力，你把关」的实战演练。按照下面的五个步骤，体验完整的 AI 协作开发流程。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">实战</span>五步完成 Todo CLI 开发</h2>
+  <div class="lesson-explain">
+    
+    <p><strong>步骤 1：用 AI 设计程序架构</strong></p>
+    <p>先让 AI 做「系统架构师」。给它一个清晰的需求描述，让它设计整体结构和模块划分。</p>
+    <div class="lesson-code" style="margin-bottom: 20px;">
+      <pre><code># 给 AI 的 Prompt 示例：
+"""
+你是一位 Python CLI 应用架构师。我需要设计一个命令行待办事项管理器，
+功能包括：添加任务、列出所有任务、按优先级筛选、标记完成、删除任务。
+
+请提供：
+1. 项目目录结构
+2. 核心模块划分及每个模块的职责
+3. 数据模型设计（Task 类）
+4. 命令行接口设计（使用 argparse）
+5. 数据持久化方案（JSON 文件存储）
+
+要求：模块化设计、有错误处理、支持中文任务名。
+"""</code></pre>
+    </div>
+    <p>AI 生成的架构应该是这样的：<code>todo.py</code>（主入口，解析命令行参数）、<code>models.py</code>（Task 数据模型）、<code>storage.py</code>（JSON 文件读写）、<code>manager.py</code>（业务逻辑 CRUD）。</p>
+    
+    <p><strong>步骤 2：用 AI 生成数据存储模块</strong></p>
+    <p>数据层是应用的「地基」，先确保它能可靠地存取数据。</p>
+    <div class="lesson-code" style="margin-bottom: 20px;">
+      <pre><code># 给 AI 的 Prompt 示例：
+"""
+基于以下 Task 模型，请实现 storage.py 模块：
+- 使用 JSON 文件持久化存储任务列表
+- 提供 load_tasks() 和 save_tasks(tasks) 函数
+- 处理文件不存在的情况（自动创建空列表）
+- 处理 JSON 解码错误（文件损坏时返回空列表并打印警告）
+- 使用 UTF-8 编码确保中文正常存储
+
+Task 模型：
+@dataclass
+class Task:
+    id: int
+    title: str
+    priority: str  # "low", "medium", "high"
+    completed: bool = False
+    created_at: str = ""  # ISO 格式时间字符串
+"""</code></pre>
+    </div>
+    
+    <p><strong>步骤 3：用 AI 生成命令行界面模块</strong></p>
+    <p>CLI 界面是用户和程序交互的「门面」，要让命令直观易用。</p>
+    <div class="lesson-code" style="margin-bottom: 20px;">
+      <pre><code># 给 AI 的 Prompt 示例：
+"""
+请实现 todo.py 主模块，使用 argparse 提供以下命令：
+- python todo.py add "任务标题" --priority high
+- python todo.py list --filter pending
+- python todo.py complete 1
+- python todo.py delete 1
+
+要求：
+1. 每个命令执行后给出清晰的中文反馈
+2. list 命令用表格形式展示（id | 标题 | 优先级 | 状态）
+3. 添加颜色输出（已完成用绿色，高优先级用红色）
+4. 命令参数要有帮助信息
+"""</code></pre>
+    </div>
+    
+    <p><strong>步骤 4：人工审查并整合代码</strong></p>
+    <p>把 AI 生成的各模块代码整合到一个文件中，进行人工审查。重点检查：</p>
+    <ul>
+      <li>模块之间的接口是否匹配（函数名、参数类型、返回值）</li>
+      <li>是否有重复代码可以提取为公共函数</li>
+      <li>错误处理是否覆盖所有边界情况</li>
+      <li>代码风格是否统一（PEP 8）</li>
+    </ul>
+    
+    <p><strong>步骤 5：测试并迭代修复</strong></p>
+    <p>手动运行各种命令，测试边界情况：</p>
+    <ul>
+      <li>添加空标题的任务 → 应该报错</li>
+      <li>删除不存在的任务 ID → 应该给出友好提示</li>
+      <li>直接编辑 JSON 文件制造格式错误 → 程序应该优雅恢复</li>
+      <li>同时运行两个实例 → 观察是否有数据竞争（文件锁问题）</li>
+    </ul>
+    <p>发现问题后，回到 AI 对话，给它具体的错误信息和期望行为，让它修复。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">代码</span>完整实现参考</h2>
+  <div class="lesson-explain">
+    <p>下面是把 AI 生成代码经过人工审查、整合、优化后的完整实现。把它保存为 <code>todo.py</code>，然后运行 <code>python todo.py --help</code> 开始体验。</p>
+  </div>
+  <div class="lesson-code">
+    <div class="demo-label">代码示例</div>
+    <pre><code>#!/usr/bin/env python3
+"""
+Todo CLI - 命令行待办事项管理器
+由 AI 协助生成，经过人工审查和优化
+
+使用方法：
+    python todo.py add "买牛奶" --priority medium
+    python todo.py list
+    python todo.py list --filter completed
+    python todo.py complete 1
+    python todo.py delete 1
+"""
+
+import argparse
+import json
+import os
+import sys
+from dataclasses import asdict, dataclass, field
+from datetime import datetime
+from enum import Enum
+from typing import Optional
+
+
+# ============ 数据模型 ============
+
+class Priority(Enum):
+    LOW = "low"
+    MEDIUM = "medium"
+    HIGH = "high"
+
+    def __str__(self):
+        return self.value
+
+
+@dataclass
+class Task:
+    id: int
+    title: str
+    priority: str = "medium"
+    completed: bool = False
+    created_at: str = field(default_factory=lambda: datetime.now().isoformat())
+
+    def to_dict(self) -> dict:
+        return asdict(self)
+
+    @classmethod
+    def from_dict(cls, data: dict) -> "Task":
+        return cls(**data)
+
+
+# ============ 存储层 ============
+
+class TaskStorage:
+    """JSON 文件持久化存储"""
+    
+    def __init__(self, filepath: str = "tasks.json"):
+        self.filepath = filepath
+    
+    def load(self) -> list[Task]:
+        """从 JSON 文件加载任务列表"""
+        if not os.path.exists(self.filepath):
+            return []
+        
+        try:
+            with open(self.filepath, "r", encoding="utf-8") as f:
+                data = json.load(f)
+                if not isinstance(data, list):
+                    print(f"⚠️  警告：{self.filepath} 格式异常，已重置为空列表")
+                    return []
+                return [Task.from_dict(item) for item in data]
+        except json.JSONDecodeError:
+            print(f"⚠️  警告：{self.filepath} 已损坏，已重置为空列表")
+            return []
+        except Exception as e:
+            print(f"❌ 读取文件失败：{e}")
+            return []
+    
+    def save(self, tasks: list[Task]) -> bool:
+        """保存任务列表到 JSON 文件"""
+        try:
+            with open(self.filepath, "w", encoding="utf-8") as f:
+                json.dump([t.to_dict() for t in tasks], f, ensure_ascii=False, indent=2)
+            return True
+        except Exception as e:
+            print(f"❌ 保存文件失败：{e}")
+            return False
+
+
+# ============ 业务逻辑层 ============
+
+class TaskManager:
+    """任务管理器：负责所有业务逻辑"""
+    
+    def __init__(self, storage: TaskStorage):
+        self.storage = storage
+        self.tasks = self.storage.load()
+        self._next_id = max((t.id for t in self.tasks), default=0) + 1
+    
+    def add(self, title: str, priority: str = "medium") -> Task:
+        """添加新任务"""
+        if not title or not title.strip():
+            raise ValueError("❌ 任务标题不能为空")
+        
+        task = Task(
+            id=self._next_id,
+            title=title.strip(),
+            priority=priority.lower()
+        )
+        self.tasks.append(task)
+        self._next_id += 1
+        self.storage.save(self.tasks)
+        return task
+    
+    def list_tasks(self, filter_status: Optional[str] = None) -> list[Task]:
+        """列出任务，支持按状态筛选"""
+        result = self.tasks
+        if filter_status == "pending":
+            result = [t for t in result if not t.completed]
+        elif filter_status == "completed":
+            result = [t for t in result if t.completed]
+        
+        # 按优先级排序：high > medium > low
+        priority_order = {"high": 0, "medium": 1, "low": 2}
+        return sorted(result, key=lambda t: priority_order.get(t.priority, 99))
+    
+    def complete(self, task_id: int) -> bool:
+        """标记任务为已完成"""
+        for task in self.tasks:
+            if task.id == task_id:
+                if task.completed:
+                    return False  # 已经是完成状态
+                task.completed = True
+                self.storage.save(self.tasks)
+                return True
+        return False
+    
+    def delete(self, task_id: int) -> bool:
+        """删除任务"""
+        for i, task in enumerate(self.tasks):
+            if task.id == task_id:
+                self.tasks.pop(i)
+                self.storage.save(self.tasks)
+                return True
+        return False
+
+
+# ============ 命令行界面 ============
+
+# ANSI 颜色代码
+COLOR_GREEN = "\033[32m"
+COLOR_RED = "\033[31m"
+COLOR_YELLOW = "\033[33m"
+COLOR_RESET = "\033[0m"
+BOLD = "\033[1m"
+
+
+def color_priority(priority: str) -> str:
+    """给优先级添加颜色"""
+    colors = {
+        "high": COLOR_RED,
+        "medium": COLOR_YELLOW,
+        "low": COLOR_GREEN,
+    }
+    color = colors.get(priority, "")
+    return f"{color}{priority.upper()}{COLOR_RESET}"
+
+
+def color_status(completed: bool) -> str:
+    """给状态添加颜色"""
+    if completed:
+        return f"{COLOR_GREEN}✓ 已完成{COLOR_RESET}"
+    return f"{COLOR_RED}○ 待办{COLOR_RESET}"
+
+
+def print_tasks(tasks: list[Task]):
+    """打印任务表格"""
+    if not tasks:
+        print("📭 暂无任务")
+        return
+    
+    print(f"\n{BOLD}{'ID':<5} {'标题':<30} {'优先级':<10} {'状态':<12}{COLOR_RESET}")
+    print("-" * 60)
+    for task in tasks:
+        title = task.title[:28] + ".." if len(task.title) > 30 else task.title
+        print(f"{task.id:<5} {title:<30} {color_priority(task.priority):<18} {color_status(task.completed)}")
+    print()
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="📝 命令行待办事项管理器",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+示例：
+  python todo.py add "学习 Python" --priority high
+  python todo.py list
+  python todo.py list --filter pending
+  python todo.py complete 1
+  python todo.py delete 1
+        """
+    )
+    subparsers = parser.add_subparsers(dest="command", help="可用命令")
+    
+    # add 命令
+    add_parser = subparsers.add_parser("add", help="添加新任务")
+    add_parser.add_argument("title", help="任务标题")
+    add_parser.add_argument("--priority", choices=["low", "medium", "high"],
+                           default="medium", help="优先级（默认 medium）")
+    
+    # list 命令
+    list_parser = subparsers.add_parser("list", help="列出所有任务")
+    list_parser.add_argument("--filter", choices=["all", "pending", "completed"],
+                            default="all", help="筛选条件（默认 all）")
+    
+    # complete 命令
+    complete_parser = subparsers.add_parser("complete", help="标记任务为已完成")
+    complete_parser.add_argument("task_id", type=int, help="任务 ID")
+    
+    # delete 命令
+    delete_parser = subparsers.add_parser("delete", help="删除任务")
+    delete_parser.add_argument("task_id", type=int, help="任务 ID")
+    
+    args = parser.parse_args()
+    
+    if not args.command:
+        parser.print_help()
+        sys.exit(0)
+    
+    # 初始化
+    storage = TaskStorage()
+    manager = TaskManager(storage)
+    
+    try:
+        if args.command == "add":
+            task = manager.add(args.title, args.priority)
+            print(f"✅ 已添加任务 #{task.id}：{task.title} [{task.priority}]")
+        
+        elif args.command == "list":
+            filter_map = {"all": None, "pending": "pending", "completed": "completed"}
+            tasks = manager.list_tasks(filter_map[args.filter])
+            status_label = {"all": "全部", "pending": "待办", "completed": "已完成"}
+            print(f"\n📋 {status_label[args.filter]}任务列表：")
+            print_tasks(tasks)
+            print(f"共 {len(tasks)} 个任务")
+        
+        elif args.command == "complete":
+            if manager.complete(args.task_id):
+                print(f"✅ 任务 #{args.task_id} 已标记为完成")
+            else:
+                print(f"❌ 任务 #{args.task_id} 不存在或已是完成状态")
+        
+        elif args.command == "delete":
+            if manager.delete(args.task_id):
+                print(f"🗑️  任务 #{args.task_id} 已删除")
+            else:
+                print(f"❌ 任务 #{args.task_id} 不存在")
+    
+    except ValueError as e:
+        print(f"❌ 输入错误：{e}")
+        sys.exit(1)
+    except Exception as e:
+        print(f"❌ 发生错误：{e}")
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()</code></pre>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">错误</span>实战中最常见的三个翻车现场</h2>
+  <div class="lesson-explain">
+    <p>即使是这个小小的 Todo CLI，新手也容易在 AI 协作中踩坑：</p>
+    
+    <p><strong>1. 不做需求分析直接让 AI 写代码</strong> —— 你脑子里只有一个模糊的想法"做个 Todo 程序"，就让 AI 开始写。结果 AI 生成的功能和你想的完全不一样——它没有命令行参数、没有持久化、不支持中文。<strong>先花 5 分钟把自己的需求写清楚，列出功能清单和约束条件，再让 AI 动手。</strong></p>
+    
+    <p><strong>2. 不测试边界情况</strong> —— 你运行了 <code>python todo.py add "测试"</code>，成功了，就以为万事大吉。但有没有试过添加 1000 个任务？有没有试过任务标题是 500 个字符？有没有在 JSON 文件中间删掉一个逗号再运行程序？<strong>边界测试是发现 AI 代码隐藏 Bug 的最有效手段。</strong></p>
+    
+    <p><strong>3. 不处理异常</strong> —— AI 生成的代码往往在「Happy Path」（正常路径）上运行良好，但一旦遇到异常就崩溃。磁盘满了无法写文件怎么办？用户输入了负数 ID 怎么办？JSON 文件被其他程序篡改了怎么办？<strong>每当你看到 AI 代码里没有 try-except 的地方，都要警惕。</strong></p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">总结</span>你已完成 Python + AI 协作入门</h2>
+  <div class="lesson-explain">
+    <p>恭喜！你已经完成了从 Python 基础到 AI 协作开发的完整学习路径。回顾这 11 章的内容：</p>
+    <ul>
+      <li>你学会了 Python 的基础语法、数据结构、函数和面向对象编程</li>
+      <li>你掌握了如何调用 AI API，让程序拥有智能</li>
+      <li>你理解了 Prompt 工程的精髓——精准提问</li>
+      <li>你实践了 AI 协作工作流，把大项目拆解为可控的小模块</li>
+      <li>你亲手完成了一个完整的命令行应用</li>
+    </ul>
+    <p>编程是一门手艺，AI 是你的电动工具。工具再先进，也需要一双熟练的手来驾驭。继续练习、继续迭代、继续和 AI 对话——你正在成为这个 AI 时代的「超级开发者」。</p>
+    <p style="text-align: center; margin-top: 30px; font-size: 1.1em; color: #3b82f6;"><strong>🚀 下一步：用你学到的知识，做一个真正属于你的项目吧！</strong></p>
+  </div>
+</section>
+
+<nav class="nav-footer">
+  <a href="/step10" class="btn btn-secondary">← 上一步</a>
+  <span class="btn-placeholder"></span>
+</nav>
+{% endblock %}

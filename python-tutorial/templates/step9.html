@@ -1,0 +1,212 @@
+{% extends "base.html" %}
+{% block title %}Prompt 工程 - Python 教程{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1>Prompt 工程</h1>
+  <p>学会「精准提问」——让 AI 一次性听懂你的需求</p>
+</div>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">场景</span>为什么 AI 总是答非所问？</h2>
+  <div class="lesson-explain">
+    <p>想象你走进一家餐厅，对服务员说："给我来点吃的。"结果上来了一份你不爱吃的菜。这不是服务员的问题，而是你的指令太模糊了。</p>
+    <p>和 AI 对话也是如此。很多人抱怨"AI 很蠢"，其实是因为<strong>Prompt（提示词）</strong>写得像随手涂鸦，而不是清晰的施工图纸。Prompt 工程就是一门「如何精准表达需求」的艺术——让 AI 在第一次尝试时，就给出你想要的答案。</p>
+    <p>例如，与其说"写个 Python 函数"，不如说"你是一个 Python 专家，请写一个函数，接收一个字符串列表，返回按长度排序后的列表，要求使用类型注解并处理空列表的边界情况。"后者得到的代码质量天差地别。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">原理</span>好 Prompt = 角色 + 任务 + 约束 + 格式</h2>
+  <div class="lesson-explain">
+    <p>AI 模型的「大脑」是一个巨大的概率机器，它根据你提供的上下文来预测下一个最可能出现的词。Prompt 就是你给这台机器设定的<strong>上下文窗口</strong>——窗口里的信息越完整、结构越清晰，AI 的「猜测」就越准确。</p>
+    <p>一个高质量的 Prompt 就像一份完整的建筑设计图：先说明<strong>角色</strong>（谁来做）、再描述<strong>任务</strong>（做什么）、然后设定<strong>约束</strong>（边界条件）、最后指定<strong>格式</strong>（输出样式）。四个要素缺一不可。</p>
+  </div>
+  <div class="lesson-demo">
+    <div class="demo-label">图解</div>
+    <svg viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg">
+      <!-- 背景 -->
+      <rect x="0" y="0" width="720" height="220" fill="#f8fafc" rx="8"/>
+      
+      <!-- 标题 -->
+      <text x="360" y="30" font-size="14" font-weight="bold" fill="#334155" text-anchor="middle">Prompt 结构四要素</text>
+      
+      <!-- 角色 -->
+      <rect x="30" y="55" width="150" height="140" fill="#dbeafe" stroke="#3b82f6" stroke-width="2" rx="8"/>
+      <circle cx="105" cy="85" r="18" fill="#3b82f6" opacity="0.2"/>
+      <text x="105" y="90" font-size="16" fill="#3b82f6" text-anchor="middle">👤</text>
+      <text x="105" y="115" font-size="13" font-weight="bold" fill="#1e40af" text-anchor="middle">角色 Role</text>
+      <text x="105" y="135" font-size="10" fill="#1e40af" text-anchor="middle">设定身份与 expertise</text>
+      <text x="105" y="150" font-size="10" fill="#1e40af" text-anchor="middle">"你是一位 Python 专家"</text>
+      <text x="105" y="165" font-size="10" fill="#1e40af" text-anchor="middle">"你是一位数据分析师"</text>
+      
+      <!-- 箭头 -->
+      <line x1="180" y1="125" x2="205" y2="125" stroke="#94a3b8" stroke-width="2" marker-end="url(#arr)"/>
+      
+      <!-- 任务 -->
+      <rect x="210" y="55" width="150" height="140" fill="#dcfce7" stroke="#22c55e" stroke-width="2" rx="8"/>
+      <circle cx="285" cy="85" r="18" fill="#22c55e" opacity="0.2"/>
+      <text x="285" y="90" font-size="16" fill="#22c55e" text-anchor="middle">📝</text>
+      <text x="285" y="115" font-size="13" font-weight="bold" fill="#166534" text-anchor="middle">任务 Task</text>
+      <text x="285" y="135" font-size="10" fill="#166534" text-anchor="middle">明确具体要做什么</text>
+      <text x="285" y="150" font-size="10" fill="#166534" text-anchor="middle">"写一个排序函数"</text>
+      <text x="285" y="165" font-size="10" fill="#166534" text-anchor="middle">"分析这段代码的 Bug"</text>
+      
+      <!-- 箭头 -->
+      <line x1="360" y1="125" x2="385" y2="125" stroke="#94a3b8" stroke-width="2" marker-end="url(#arr)"/>
+      
+      <!-- 约束 -->
+      <rect x="390" y="55" width="150" height="140" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" rx="8"/>
+      <circle cx="465" cy="85" r="18" fill="#f59e0b" opacity="0.2"/>
+      <text x="465" y="90" font-size="16" fill="#f59e0b" text-anchor="middle">⚠️</text>
+      <text x="465" y="115" font-size="13" font-weight="bold" fill="#92400e" text-anchor="middle">约束 Constraint</text>
+      <text x="465" y="135" font-size="10" fill="#92400e" text-anchor="middle">设定边界与限制条件</text>
+      <text x="465" y="150" font-size="10" fill="#92400e" text-anchor="middle">"使用标准库 only"</text>
+      <text x="465" y="165" font-size="10" fill="#92400e" text-anchor="middle">"处理空输入"</text>
+      
+      <!-- 箭头 -->
+      <line x1="540" y1="125" x2="565" y2="125" stroke="#94a3b8" stroke-width="2" marker-end="url(#arr)"/>
+      
+      <!-- 格式 -->
+      <rect x="570" y="55" width="130" height="140" fill="#f3e8ff" stroke="#a855f7" stroke-width="2" rx="8"/>
+      <circle cx="635" cy="85" r="18" fill="#a855f7" opacity="0.2"/>
+      <text x="635" y="90" font-size="16" fill="#a855f7" text-anchor="middle">📐</text>
+      <text x="635" y="115" font-size="13" font-weight="bold" fill="#6b21a8" text-anchor="middle">格式 Format</text>
+      <text x="635" y="135" font-size="10" fill="#6b21a8" text-anchor="middle">指定输出样式</text>
+      <text x="635" y="150" font-size="10" fill="#6b21a8" text-anchor="middle">"返回 JSON 格式"</text>
+      <text x="635" y="165" font-size="10" fill="#6b21a8" text-anchor="middle">"用表格展示"</text>
+      
+      <!-- 箭头定义 -->
+      <defs>
+        <marker id="arr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#94a3b8"/>
+        </marker>
+      </defs>
+    </svg>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">要点</span>五个技巧让 Prompt 脱胎换骨</h2>
+  <div class="lesson-explain">
+    <p>下面五个技巧是 Prompt 工程的「黄金法则」，掌握它们，你的 AI 调用成功率将大幅提升：</p>
+    <p><strong>1. 角色设定</strong>：给 AI 一个明确的身份，它会自动调动相关知识领域。"你是一位资深 Python 后端工程师" 比 "请写代码" 效果好十倍。</p>
+    <p><strong>2. 明确任务</strong>：把大任务拆解为小步骤。不要说"帮我做一个网站"，而要说"第一步，设计用户登录的数据模型；第二步，写登录 API 的视图函数"。</p>
+    <p><strong>3. 提供示例（Few-shot）</strong>：给 AI 看几个正确示例，它就能「举一反三」。这是让 AI 理解你期望风格的最快方式。</p>
+    <p><strong>4. 约束输出格式</strong>：明确要求 JSON、Markdown 表格、代码块等格式，避免解析噩梦。</p>
+    <p><strong>5. 迭代优化</strong>：第一次结果不完美很正常，把问题反馈给 AI，像打磨钻石一样反复雕琢。</p>
+  </div>
+  <div class="lesson-code">
+    <div class="demo-label">代码示例</div>
+    <pre><code>import os
+import requests
+import json
+
+API_KEY = os.getenv("OPENAI_API_KEY")
+API_URL = "https://api.openai.com/v1/chat/completions"
+
+def build_structured_prompt(user_request):
+    """
+    构建一个结构化的 Prompt，让 AI 一次性输出高质量结果。
+    就像给厨师一张完整的订单：角色 + 任务 + 示例 + 约束 + 格式。
+    """
+    
+    system_prompt = """你是一位经验丰富的 Python 代码审查专家。
+你的任务是分析用户提供的 Python 代码，找出潜在的 Bug 和性能问题。
+请严格按照以下 JSON 格式输出，不要添加任何额外解释。"""
+
+    # Few-shot 示例：给 AI 看一个正确输出的样板
+    few_shot_example = """
+示例输入：
+def get_user(user_id):
+    return database.query("SELECT * FROM users WHERE id = " + user_id)
+
+示例输出：
+{
+  "issues": [
+    {
+      "severity": "high",
+      "line": 2,
+      "description": "SQL 注入风险：直接拼接用户输入到 SQL 语句中",
+      "fix": "使用参数化查询：database.query('SELECT * FROM users WHERE id = ?', (user_id,))"
+    }
+  ],
+  "overall_score": 3,
+  "summary": "存在严重的 SQL 注入安全漏洞，需立即修复"
+}
+"""
+
+    user_prompt = f"""请分析以下代码：
+
+{user_request}
+
+要求：
+1. 找出所有 Bug、安全漏洞和性能问题
+2. 每个问题标注严重程度（high / medium / low）
+3. 给出具体的修复代码
+4. 返回有效的 JSON，不要 Markdown 代码块包裹
+5. 必须包含字段：issues（列表）、overall_score（1-10）、summary（字符串）"""
+
+    headers = {
+        "Authorization": f"Bearer {API_KEY}",
+        "Content-Type": "application/json"
+    }
+    
+    payload = {
+        "model": "gpt-4o-mini",
+        "messages": [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": few_shot_example},
+            {"role": "user", "content": user_prompt}
+        ],
+        "temperature": 0.2,  # 低温度让输出更稳定、更可预测
+        "response_format": {"type": "json_object"}  # 强制 JSON 输出
+    }
+    
+    response = requests.post(API_URL, json=payload, headers=headers, timeout=30)
+    response.raise_for_status()
+    
+    data = response.json()
+    result_text = data["choices"][0]["message"]["content"]
+    
+    # 解析并验证 JSON 结构
+    result_json = json.loads(result_text)
+    assert "issues" in result_json, "响应缺少 issues 字段"
+    assert "overall_score" in result_json, "响应缺少 overall_score 字段"
+    
+    return result_json
+
+
+# 使用示例：让 AI 审查一段有问题的代码
+code_to_review = '''
+def calculate_average(numbers):
+    total = 0
+    for n in numbers:
+        total += n
+    return total / len(numbers)
+'''
+
+result = build_structured_prompt(code_to_review)
+print(json.dumps(result, indent=2, ensure_ascii=False))</code></pre>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">错误</span>Prompt 编写的四大雷区</h2>
+  <div class="lesson-explain">
+    <p>即使掌握了技巧，这些常见错误仍然会让你的 Prompt 功亏一篑：</p>
+    
+    <p><strong>1. 指令太模糊</strong> —— "帮我优化一下""写个好点的版本"。AI 不知道"好"的标准是什么。就像你对理发师说"剪短一点"，结果可能完全不是你想的。<strong>要量化、要具体："将函数行数减少到 20 行以内，并添加类型注解"。</strong></p>
+    
+    <p><strong>2. 不给上下文</strong> —— 直接丢给 AI 一段代码说"修 Bug"，却不解释这段代码是干什么的、在什么环境下运行。AI 没有读心术。<strong>提供背景信息："这是一个处理用户登录的 Flask 视图函数，使用的是 PostgreSQL 数据库"。</strong></p>
+    
+    <p><strong>3. 要求一次做太多事</strong> —— "设计数据库、写后端 API、做前端页面、部署到服务器"。AI 的上下文窗口有限，一次性塞太多任务会导致每个部分都做得敷衍。<strong>分步骤进行，每轮对话聚焦一个明确目标。</strong></p>
+    
+    <p><strong>4. 不验证输出</strong> —— 盲目相信 AI 的每一行代码，直接复制粘贴到生产环境。AI 会「幻觉」——生成看起来对但实际错误的代码。<strong>永远把 AI 当作「草稿生成器」，最终代码必须经过人工审查和测试。</strong></p>
+  </div>
+</section>
+
+<nav class="nav-footer">
+  <a href="/step8" class="btn btn-secondary">← 上一步</a>
+  <a href="/step10" class="btn btn-primary">下一步 →</a>
+</nav>
+{% endblock %}

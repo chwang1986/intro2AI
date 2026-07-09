@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+{% block title %}调用 AI API - Python 教程{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1>调用 AI API</h1>
+  <p>让你的程序学会「开口说话」——与人工智能对话</p>
+</div>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">场景</span>程序也需要「打电话」</h2>
+  <div class="lesson-explain">
+    <p>想象你是一位忙碌的总经理，每天需要处理大量信息：总结会议记录、翻译外文邮件、分析客户反馈。你不可能事事亲为，于是你拨通了一位超级助手的电话——这位助手就是 AI 模型。</p>
+    <p>在编程世界里，<strong>调用 AI API</strong> 就像给这位助手打电话。你的程序拨通号码（发送 HTTP 请求），告诉助手要做什么（传递 Prompt），助手思考后给出回答（返回 JSON 响应）。你只需要学会「打电话」的正确姿势，就能让程序拥有理解语言、生成内容、分析情感的超能力。</p>
+    <p>例如，你写了一个自动总结文章的小工具：程序读取一篇长文，「打给」AI 说"请用三句话总结以下内容"，AI 立刻返回精炼的摘要——全程无需人工干预。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">原理</span>一次 API 调用的旅程</h2>
+  <div class="lesson-explain">
+    <p>当你调用 AI API 时，数据经历了怎样的旅程？就像寄一封特快专递：</p>
+    <p><strong>你的程序</strong>把请求写好（信）→ <strong>HTTP 协议</strong>负责运输（快递车）→ <strong>API 网关</strong>检查身份并分拣（邮局）→ <strong>AI 模型</strong>处理思考（收件人读信写回信）→ 原路返回 <strong>JSON 响应</strong>（回信送达）。</p>
+    <p>API Key 相当于你的「身份证」，证明你有权使用这项服务。JSON 则是通用的「信封格式」，无论里面装的是文本、数字还是列表，都能被双方理解。</p>
+  </div>
+  <div class="lesson-demo">
+    <div class="demo-label">图解</div>
+    <svg viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg">
+      <!-- 背景 -->
+      <rect x="0" y="0" width="720" height="220" fill="#f8fafc" rx="8"/>
+      
+      <!-- 你的程序 -->
+      <rect x="40" y="70" width="110" height="80" fill="#dbeafe" stroke="#3b82f6" stroke-width="2" rx="8"/>
+      <text x="95" y="105" font-size="13" font-weight="bold" fill="#1e40af" text-anchor="middle">你的程序</text>
+      <text x="95" y="125" font-size="11" fill="#1e40af" text-anchor="middle">Python 脚本</text>
+      
+      <!-- 箭头1：请求 -->
+      <line x1="150" y1="100" x2="230" y2="100" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowhead1)"/>
+      <text x="190" y="92" font-size="10" fill="#3b82f6" text-anchor="middle">POST 请求</text>
+      <defs>
+        <marker id="arrowhead1" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+          <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
+        </marker>
+      </defs>
+      
+      <!-- API 网关 -->
+      <rect x="240" y="60" width="110" height="80" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" rx="8"/>
+      <text x="295" y="85" font-size="12" font-weight="bold" fill="#92400e" text-anchor="middle">API 网关</text>
+      <text x="295" y="105" font-size="10" fill="#92400e" text-anchor="middle">验证 API Key</text>
+      <text x="295" y="120" font-size="10" fill="#92400e" text-anchor="middle">路由分发</text>
+      
+      <!-- 箭头2：转发 -->
+      <line x1="350" y1="100" x2="430" y2="100" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrowhead2)"/>
+      <text x="390" y="92" font-size="10" fill="#f59e0b" text-anchor="middle">转发</text>
+      <defs>
+        <marker id="arrowhead2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+          <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+        </marker>
+      </defs>
+      
+      <!-- AI 模型 -->
+      <rect x="440" y="60" width="110" height="80" fill="#dcfce7" stroke="#22c55e" stroke-width="2" rx="8"/>
+      <text x="495" y="85" font-size="12" font-weight="bold" fill="#166534" text-anchor="middle">AI 模型</text>
+      <text x="495" y="105" font-size="10" fill="#166534" text-anchor="middle">处理 Prompt</text>
+      <text x="495" y="120" font-size="10" fill="#166534" text-anchor="middle">生成回复</text>
+      
+      <!-- 返回箭头（虚线） -->
+      <path d="M 495 140 Q 495 180 350 180 Q 205 180 95 150" fill="none" stroke="#22c55e" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrowhead3)"/>
+      <text x="295" y="195" font-size="10" fill="#22c55e" text-anchor="middle">JSON 响应返回</text>
+      <defs>
+        <marker id="arrowhead3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+          <polygon points="0 0, 10 3.5, 0 7" fill="#22c55e"/>
+        </marker>
+      </defs>
+      
+      <!-- API Key 标识 -->
+      <rect x="260" y="155" width="70" height="22" fill="#fee2e2" stroke="#ef4444" stroke-width="1" rx="4"/>
+      <text x="295" y="170" font-size="9" fill="#991b1b" text-anchor="middle">🔑 API Key</text>
+      
+      <!-- 底部说明 -->
+      <text x="360" y="30" font-size="14" font-weight="bold" fill="#334155" text-anchor="middle">AI API 调用流程图</text>
+    </svg>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">要点</span>如何正确「拨打电话」</h2>
+  <div class="lesson-explain">
+    <p>调用 AI API 的核心技能包括：使用 <code>requests</code> 库发送 HTTP 请求、安全地管理 API Key、构造正确的请求体、解析 JSON 响应，以及优雅地处理各种异常情况。</p>
+    <p>下面的示例展示了如何安全地调用 OpenAI API 进行文本总结。注意我们把 API Key 存放在环境变量中，而不是直接写在代码里——就像你不会把家门钥匙贴在门牌上一样。</p>
+  </div>
+  <div class="lesson-code">
+    <div class="demo-label">代码示例</div>
+    <pre><code>import os
+import requests
+from dotenv import load_dotenv
+
+# 1. 从环境变量加载 API Key（安全第一！）
+load_dotenv()
+API_KEY = os.getenv("OPENAI_API_KEY")
+API_URL = "https://api.openai.com/v1/chat/completions"
+
+def summarize_article(article_text):
+    """调用 AI API 总结文章，像打电话一样礼貌而清晰"""
+    
+    # 2. 构造请求头：带上你的「身份证」
+    headers = {
+        "Authorization": f"Bearer {API_KEY}",
+        "Content-Type": "application/json"
+    }
+    
+    # 3. 构造请求体：告诉 AI 要做什么
+    payload = {
+        "model": "gpt-4o-mini",
+        "messages": [
+            {"role": "system", "content": "你是一位擅长总结的编辑。"},
+            {"role": "user", "content": f"请用三句话总结以下文章：\n\n{article_text}"}
+        ],
+        "temperature": 0.7,
+        "max_tokens": 150
+    }
+    
+    try:
+        # 4. 发送 POST 请求（拨号）
+        response = requests.post(API_URL, json=payload, headers=headers, timeout=30)
+        
+        # 5. 检查 HTTP 状态码
+        response.raise_for_status()
+        
+        # 6. 解析 JSON 响应（读取回信）
+        data = response.json()
+        summary = data["choices"][0]["message"]["content"]
+        return summary
+        
+    except requests.exceptions.Timeout:
+        return "错误：请求超时，AI 助手可能太忙了，请稍后再试。"
+    except requests.exceptions.ConnectionError:
+        return "错误：网络连接失败，请检查你的网络。"
+    except requests.exceptions.HTTPError as e:
+        if response.status_code == 429:
+            return "错误：请求太频繁了，请放慢速度（API 限流）。"
+        return f"错误：HTTP {response.status_code} - {e}"
+    except KeyError:
+        return "错误：响应格式异常，无法提取总结内容。"
+    except Exception as e:
+        return f"错误：未知异常 - {e}"
+
+# 使用示例
+article = """
+Python 是一种高级编程语言，由 Guido van Rossum 于 1991 年创建。
+它以简洁、易读的语法著称，广泛应用于数据分析、人工智能、Web 开发等领域。
+Python 拥有庞大的第三方库生态系统，让开发者能够快速构建复杂应用。
+"""
+
+result = summarize_article(article)
+print("文章总结：")
+print(result)</code></pre>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">错误</span>这些坑千万别踩</h2>
+  <div class="lesson-explain">
+    <p>新手调用 AI API 时，总会犯一些「低级错误」。下面三个是最常见、也最危险的：</p>
+    
+    <p><strong>1. 硬编码 API Key</strong> —— 把密钥直接写在代码里，然后不小心提交到了 GitHub。这就像把银行卡密码写在名片上到处发。攻击者拿到你的 Key 后，可以疯狂调用 API，让你一夜之间欠下巨额账单。<strong>务必使用环境变量或专用密钥管理服务。</strong></p>
+    
+    <p><strong>2. 不处理网络异常</strong> —— 以为网络永远畅通无阻。现实中，WiFi 会断、服务器会挂、DNS 会失效。如果不加 <code>try-except</code> 和超时设置，程序遇到一点网络波动就会崩溃，用户体验极差。<strong>永远为网络请求加上异常处理和超时参数。</strong></p>
+    
+    <p><strong>3. 忽略 API 限流（Rate Limit）</strong> —— 像机关枪一样连续发送请求，结果被服务商封禁。API 提供商通常限制每分钟/每小时的调用次数。不处理 429 状态码，不仅会导致请求失败，还可能触发账号风控。<strong>实现指数退避重试机制，遇到限流时主动等待。</strong></p>
+  </div>
+</section>
+
+<nav class="nav-footer">
+  <a href="/step7" class="btn btn-secondary">← 上一步</a>
+  <a href="/step9" class="btn btn-primary">下一步 →</a>
+</nav>
+{% endblock %}
