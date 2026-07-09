@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+{% block title %}07 多人协作 - Git 教程{% endblock %}
+
+{% block content %}
+<a href="/" class="back-link">← 回到教程首页</a>
+
+<div class="page-header">
+  <h1>07 多人协作</h1>
+  <p>模拟两人协作：开发、推送、拉取、合并冲突</p>
+</div>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">场景</span>两个人怎么一起工作</h2>
+  <div class="lesson-explain">
+    <p>实际工作中，一个项目通常由多个人共同开发。每个人在本地开发自己的功能，然后把代码推送到远程仓库。Git 会自动合并不冲突的修改，如果两个人改了同一处代码，就需要手动解决冲突。</p>
+    <p>这个页面模拟了两个人（用户A 和 用户B）共同开发一个项目的完整流程。点击下方「创建协作环境」按钮，系统会自动生成远程仓库和两个本地克隆。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">要点</span>协作的核心流程</h2>
+  <div class="lesson-explain">
+    <p><strong>1. 各自开发：</strong>每个人在自己的分支上开发，互不干扰。开发完成后 push 到远程。</p>
+    <p><strong>2. 获取更新：</strong>在开始工作前，先 <code>git pull</code> 获取队友的最新代码，避免在过时的代码基础上开发。</p>
+    <p><strong>3. 解决冲突：</strong>如果两个人的修改重叠了，Git 会标记冲突位置。需要手动编辑文件，保留正确的内容，然后重新 add 和 commit。</p>
+    <p><strong>4. 代码审查：</strong>通过 Pull Request（GitHub）或 Merge Request（GitLab）让队友审查代码，确认无误后再合并到主分支。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">实例</span>模拟两人协作</h2>
+  <div class="lesson-explain">
+    <p>点击「创建协作环境」后，会出现两个终端：左边是用户A，右边是用户B。你可以分别在这两个终端中执行命令，观察协作效果。</p>
+  </div>
+
+  <div class="btn-group" style="margin-bottom: 16px;">
+    <button class="btn btn-primary" onclick="setupCollab()">创建协作环境</button>
+    <button class="btn btn-secondary" onclick="showStatus()">查看状态</button>
+  </div>
+
+  <div class="row">
+    <div class="col-6">
+      <div class="lesson-demo">
+        <div class="demo-label">用户 A（开发者A）</div>
+        <div class="terminal" id="terminalA"></div>
+        <div class="btn-group">
+          <button class="btn btn-primary btn-sm" onclick="runCmdA('git status')">status</button>
+          <button class="btn btn-primary btn-sm" onclick="runCmdA('git log --oneline')">log</button>
+          <button class="btn btn-secondary btn-sm" onclick="runCmdA('echo "# A的新功能" >> README.md && git add . && git commit -m \"A: 添加新功能\"')">开发并提交</button>
+          <button class="btn btn-secondary btn-sm" onclick="runCmdA('git push origin main')">push</button>
+          <button class="btn btn-secondary btn-sm" onclick="runCmdA('git pull origin main')">pull</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="lesson-demo">
+        <div class="demo-label">用户 B（开发者B）</div>
+        <div class="terminal" id="terminalB"></div>
+        <div class="btn-group">
+          <button class="btn btn-primary btn-sm" onclick="runCmdB('git status')">status</button>
+          <button class="btn btn-primary btn-sm" onclick="runCmdB('git log --oneline')">log</button>
+          <button class="btn btn-secondary btn-sm" onclick="runCmdB('echo "# B的改进" >> main.py && git add . && git commit -m \"B: 改进代码\"')">开发并提交</button>
+          <button class="btn btn-secondary btn-sm" onclick="runCmdB('git push origin main')">push</button>
+          <button class="btn btn-secondary btn-sm" onclick="runCmdB('git pull origin main')">pull</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="nav-footer">
+  <a href="/step6" class="btn btn-secondary">← 上一步</a>
+  <a href="/practice" class="btn btn-primary">下一步：综合实战 →</a>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const termA = document.getElementById('terminalA');
+const termB = document.getElementById('terminalB');
+
+async function runCmdA(cmd) {
+  termA.innerHTML += `<div class="cmd-line"><span class="prompt">A$</span> ${cmd}</div>`;
+  try {
+    const res = await fetch('/api/exec', {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({cmd, target: 'collab_a'})
+    });
+    const data = await res.json();
+    const output = data.stdout || data.stderr || '(无输出)';
+    termA.innerHTML += `<pre class="cmd-output">${output}</pre>`;
+  } catch (e) {
+    termA.innerHTML += `<pre class="cmd-output error">${e.message}</pre>`;
+  }
+  termA.scrollTop = termA.scrollHeight;
+}
+
+async function runCmdB(cmd) {
+  termB.innerHTML += `<div class="cmd-line"><span class="prompt">B$</span> ${cmd}</div>`;
+  try {
+    const res = await fetch('/api/exec', {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({cmd, target: 'collab_b'})
+    });
+    const data = await res.json();
+    const output = data.stdout || data.stderr || '(无输出)';
+    termB.innerHTML += `<pre class="cmd-output">${output}</pre>`;
+  } catch (e) {
+    termB.innerHTML += `<pre class="cmd-output error">${e.message}</pre>`;
+  }
+  termB.scrollTop = termB.scrollHeight;
+}
+
+async function setupCollab() {
+  termA.innerHTML += `<div class="cmd-line"><span class="prompt">系统</span> 正在创建协作环境...</div>`;
+  termB.innerHTML += `<div class="cmd-line"><span class="prompt">系统</span> 正在创建协作环境...</div>`;
+  try {
+    const res = await fetch('/api/collab/setup', {method: 'POST'});
+    const data = await res.json();
+    termA.innerHTML += `<pre class="cmd-output">${data.message}</pre>`;
+    termB.innerHTML += `<pre class="cmd-output">${data.message}</pre>`;
+  } catch (e) {
+    termA.innerHTML += `<pre class="cmd-output error">${e.message}</pre>`;
+  }
+  termA.scrollTop = termA.scrollHeight;
+  termB.scrollTop = termB.scrollHeight;
+}
+
+async function showStatus() {
+  runCmdA('git status');
+  runCmdB('git status');
+}
+</script>
+<style>
+.terminal {
+  background: #1d1d1f; color: #f5f5f7; padding: var(--spacer-12);
+  border-radius: var(--radius-sm); font-family: var(--font-mono);
+  font-size: 12px; line-height: 1.5; min-height: 140px;
+  max-height: 250px; overflow-y: auto; margin-bottom: var(--spacer-8);
+}
+.cmd-line { margin-bottom: 4px; }
+.prompt { color: var(--success); margin-right: 6px; }
+.cmd-output { margin: 0 0 6px 16px; white-space: pre-wrap; color: #d1d1d6; font-size: 11px; }
+.cmd-output.error { color: var(--danger); }
+.btn-group { display: flex; gap: var(--spacer-6); flex-wrap: wrap; }
+.nav-footer { display: flex; justify-content: space-between; margin-top: var(--spacer-24); }
+</style>
+{% endblock %}

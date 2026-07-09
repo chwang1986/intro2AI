@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}01 Git 是什么 - Git 教程{% endblock %}
+
+{% block content %}
+<a href="/" class="back-link">← 回到教程首页</a>
+
+<div class="page-header">
+  <h1>01 Git 是什么</h1>
+  <p>版本控制的基本概念，为什么需要 Git</p>
+</div>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">场景</span>为什么需要版本控制</h2>
+  <div class="lesson-explain">
+    <p>想象你在写一份重要的文档。你改了又改，保存了很多个版本：<code>报告_v1.doc</code>、<code>报告_v2.doc</code>、<code>报告_最终版.doc</code>、<code>报告_最终版_真的.doc</code>。最后你也不知道哪个才是真正的最终版。</p>
+    <p>当你和另一个人同时修改同一份文件时，问题更复杂。你改了 A 部分，他改了 B 部分，最后需要手动把两个人的修改合并到一起，一不小心就覆盖了对方的内容。</p>
+    <p>Git 就是来解决这些问题的。它自动记录每一次修改，你可以随时回到任意历史版本，也可以让多人同时工作并自动合并修改。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">要点</span>三个核心概念</h2>
+  <div class="lesson-explain">
+    <p>Git 的核心只需要理解三个东西：<strong>工作区</strong>、<strong>暂存区</strong>、<strong>仓库</strong>。它们之间的关系就像工厂的生产线。</p>
+  </div>
+  <div class="lesson-demo">
+    <div class="demo-label">概念图解</div>
+    <div class="concept-flow">
+      <div class="concept-box"><div class="concept-title">工作区</div><div class="concept-desc">你实际编辑的文件夹，所有文件都在这里</div></div>
+      <div class="concept-arrow">→<span>git add</span></div>
+      <div class="concept-box"><div class="concept-title">暂存区</div><div class="concept-desc">准备提交的快照，可以挑选要提交的文件</div></div>
+      <div class="concept-arrow">→<span>git commit</span></div>
+      <div class="concept-box"><div class="concept-title">本地仓库</div><div class="concept-desc">历史版本记录，每次提交生成一个快照</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">错误</span>初学者常犯的错误</h2>
+  <div class="lesson-explain">
+    <p>以为 <code>git add</code> 就是「添加到仓库」。实际上 add 只是把文件放到暂存区，真正的保存是 <code>git commit</code>。</p>
+    <p>提交信息写得太随意，比如 <code>改了点东西</code>、<code>更新</code>。一个月后回头看，完全不知道这次提交做了什么。</p>
+    <p>直接在工作目录里复制文件做备份（<code>备份_2024</code>），而不是用 Git 管理版本。这样既占空间，又容易搞混。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">实例</span>常用命令速查</h2>
+  <div class="lesson-code">
+    <div class="demo-label">核心命令</div>
+    <pre><code>git init              # 初始化仓库
+git status            # 查看当前状态
+git add 文件名         # 将文件加入暂存区
+git commit -m "说明"   # 提交到本地仓库
+git log               # 查看提交历史
+git diff              # 查看修改内容</code></pre>
+  </div>
+</section>
+
+<div class="nav-footer">
+  <a href="/" class="btn btn-secondary">← 返回首页</a>
+  <a href="/step2" class="btn btn-primary">下一步：初始化仓库 →</a>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<style>
+.concept-flow { display: flex; align-items: center; gap: var(--spacer-12); flex-wrap: wrap; justify-content: center; padding: var(--spacer-20); }
+.concept-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: var(--spacer-16); text-align: center; min-width: 140px; }
+.concept-title { font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+.concept-desc { font-size: 12px; color: var(--text-secondary); }
+.concept-arrow { display: flex; flex-direction: column; align-items: center; color: var(--brand); font-size: 18px; font-weight: 700; }
+.concept-arrow span { font-size: 11px; font-weight: 500; color: var(--text-secondary); background: var(--brand-light); padding: 2px 8px; border-radius: var(--radius-full); margin-top: 4px; }
+.nav-footer { display: flex; justify-content: space-between; margin-top: var(--spacer-24); }
+</style>
+{% endblock %}

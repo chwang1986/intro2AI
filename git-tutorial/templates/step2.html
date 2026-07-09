@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% block title %}02 初始化仓库 - Git 教程{% endblock %}
+
+{% block content %}
+<a href="/" class="back-link">← 回到教程首页</a>
+
+<div class="page-header">
+  <h1>02 初始化仓库</h1>
+  <p>git init、工作区与暂存区</p>
+</div>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">场景</span>什么时候初始化仓库</h2>
+  <div class="lesson-explain">
+    <p>每当你开始一个新项目，或者想让一个已有项目被 Git 管理时，第一步就是初始化仓库。这会在项目根目录创建一个隐藏的 <code>.git</code> 文件夹，Git 的所有记录都保存在这里。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">要点</span>初始化后 Git 在做什么</h2>
+  <div class="lesson-explain">
+    <p>执行 <code>git init</code> 后，Git 会在当前目录创建 <code>.git</code> 子目录。这个目录包含了所有版本历史、分支信息、配置等。你不应该手动修改里面的内容。</p>
+    <p>初始化后，所有文件都处于「未跟踪」状态。Git 知道你目录里有哪些文件，但还没有开始记录它们的变化。你需要用 <code>git add</code> 告诉 Git 哪些文件要纳入版本控制。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">错误</span>常见错误</h2>
+  <div class="lesson-explain">
+    <p>在错误的目录执行 <code>git init</code>，比如在「下载」或「桌面」这种包含很多无关文件的目录。结果 Git 把所有文件都标记为未跟踪，<code>git status</code> 输出一大串无关内容。</p>
+    <p>忘记配置用户名和邮箱就提交。Git 要求每次提交都记录作者信息，如果没有配置，提交会失败或显示匿名作者。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">实例</span>动手操作</h2>
+  <div class="lesson-explain">
+    <p>下面是一个真实的工作区。点击按钮执行命令，观察 <code>.git</code> 目录和文件状态的变化。</p>
+  </div>
+  <div class="lesson-demo">
+    <div class="demo-label">命令操作台</div>
+    <div class="terminal" id="terminal"></div>
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="runCmd('git status')">git status</button>
+      <button class="btn btn-primary" onclick="runCmd('ls -la')">查看文件</button>
+      <button class="btn btn-secondary" onclick="runCmd('git config user.name')">查看用户名</button>
+      <button class="btn btn-secondary" onclick="runCmd('git config user.email')">查看邮箱</button>
+      <button class="btn btn-danger" onclick="resetWorkspace()">重置工作区</button>
+    </div>
+  </div>
+</section>
+
+<div class="nav-footer">
+  <a href="/step1" class="btn btn-secondary">← 上一步</a>
+  <a href="/step3" class="btn btn-primary">下一步：添加与提交 →</a>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const terminal = document.getElementById('terminal');
+
+async function runCmd(cmd) {
+  terminal.innerHTML += `<div class="cmd-line"><span class="prompt">$</span> ${cmd}</div>`;
+  try {
+    const res = await fetch('/api/exec', {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({cmd})
+    });
+    const data = await res.json();
+    const output = data.stdout || data.stderr || '(无输出)';
+    terminal.innerHTML += `<pre class="cmd-output">${output}</pre>`;
+  } catch (e) {
+    terminal.innerHTML += `<pre class="cmd-output error">${e.message}</pre>`;
+  }
+  terminal.scrollTop = terminal.scrollHeight;
+}
+
+async function resetWorkspace() {
+  terminal.innerHTML += `<div class="cmd-line"><span class="prompt">$</span> 重置工作区...</div>`;
+  await fetch('/api/reset', {method: 'POST'});
+  terminal.innerHTML += `<pre class="cmd-output">工作区已重置</pre>`;
+  terminal.scrollTop = terminal.scrollHeight;
+}
+
+// 初始化显示
+runCmd('git status');
+</script>
+<style>
+.terminal {
+  background: #1d1d1f; color: #f5f5f7; padding: var(--spacer-16);
+  border-radius: var(--radius-sm); font-family: var(--font-mono);
+  font-size: 13px; line-height: 1.6; min-height: 160px;
+  max-height: 300px; overflow-y: auto; margin-bottom: var(--spacer-12);
+}
+.cmd-line { margin-bottom: 4px; }
+.prompt { color: var(--success); margin-right: 8px; }
+.cmd-output { margin: 0 0 8px 20px; white-space: pre-wrap; color: #d1d1d6; }
+.cmd-output.error { color: var(--danger); }
+.btn-group { display: flex; gap: var(--spacer-8); flex-wrap: wrap; }
+.nav-footer { display: flex; justify-content: space-between; margin-top: var(--spacer-24); }
+</style>
+{% endblock %}

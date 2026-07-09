@@ -2,17 +2,14 @@
 
 {% block sidebar_menu %}
 <ul class="sider-menu">
-  <li>
-    <a href="/" {% if request.path == '/' %}class="active"{% endif %}>
-      <svg viewBox="0 0 48 48" fill="none"><path d="M8 8h32v32H8z" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/><path d="M16 16h16" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path d="M16 24h12" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path d="M16 32h8" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>
-      教程首页
-    </a>
-  </li>
-  <li>
-    <a href="https://github.com/chwang1986/intro2AI/tree/main/git-tutorial" target="_blank">
-      <svg viewBox="0 0 48 48" fill="none"><path d="M24 4C12.95 4 4 12.95 4 24c0 8.84 5.73 16.33 13.68 18.96.99.18 1.36-.43 1.36-.96v-3.37c-5.57 1.21-6.74-2.69-6.74-2.69-.91-2.31-2.22-2.92-2.22-2.92-1.82-1.24.14-1.22.14-1.22 2.01.14 3.07 2.06 3.07 2.06 1.79 3.06 4.69 2.18 5.83 1.67.18-1.29.7-2.18 1.27-2.68-4.45-.51-9.13-2.23-9.13-9.91 0-2.19.78-3.98 2.06-5.38-.21-.51-.89-2.55.19-5.32 0 0 1.68-.54 5.5 2.05 1.59-.44 3.3-.66 5-.67 1.69.01 3.4.23 5 .67 3.82-2.59 5.49-2.05 5.49-2.05 1.08 2.77.4 4.81.2 5.32 1.28 1.4 2.06 3.19 2.06 5.38 0 7.7-4.69 9.4-9.15 9.9.72.62 1.36 1.84 1.36 3.71v5.5c0 .53.36 1.15 1.37.96C38.28 40.33 44 32.84 44 24c0-11.05-8.95-20-20-20z" stroke="currentColor" stroke-width="3"/></svg>
-      查看源码
-    </a>
-  </li>
+  <li><a href="/" {% if request.path == '/' %}class="active"{% endif %}>教程首页</a></li>
+  <li><a href="/step1" {% if request.path == '/step1' %}class="active"{% endif %}>01 Git 是什么</a></li>
+  <li><a href="/step2" {% if request.path == '/step2' %}class="active"{% endif %}>02 初始化仓库</a></li>
+  <li><a href="/step3" {% if request.path == '/step3' %}class="active"{% endif %}>03 添加与提交</a></li>
+  <li><a href="/step4" {% if request.path == '/step4' %}class="active"{% endif %}>04 查看历史与回退</a></li>
+  <li><a href="/step5" {% if request.path == '/step5' %}class="active"{% endif %}>05 分支管理</a></li>
+  <li><a href="/step6" {% if request.path == '/step6' %}class="active"{% endif %}>06 远程仓库</a></li>
+  <li><a href="/collab" {% if request.path == '/collab' %}class="active"{% endif %}>07 多人协作</a></li>
+  <li><a href="/practice" {% if request.path == '/practice' %}class="active"{% endif %}>08 综合实战</a></li>
 </ul>
 {% endblock %}

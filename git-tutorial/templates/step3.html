@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block title %}03 添加与提交 - Git 教程{% endblock %}
+
+{% block content %}
+<a href="/" class="back-link">← 回到教程首页</a>
+
+<div class="page-header">
+  <h1>03 添加与提交</h1>
+  <p>git add、git commit、提交信息规范</p>
+</div>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">场景</span>什么时候 add 和 commit</h2>
+  <div class="lesson-explain">
+    <p>当你完成了一部分有意义的工作，比如「写好了登录功能」或「修复了某个 bug」，就应该 add 和 commit。这相当于给当前的工作拍了一张快照，以后随时可以回到这个状态。</p>
+    <p>不要等所有功能都做完才提交。一个好的习惯是：每完成一个小功能就提交一次。这样如果你的新改动引入了 bug，可以精确回退到出问题之前的状态。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">要点</span>add 和 commit 的区别</h2>
+  <div class="lesson-explain">
+    <p><code>git add</code> 把文件从工作区放到暂存区。你可以多次 add 不同的文件，也可以 add 同一个文件多次（如果中间又修改了）。</p>
+    <p><code>git commit</code> 把暂存区的所有内容保存到本地仓库，生成一个永久的历史记录。commit 后暂存区清空，工作区保持现状。</p>
+    <p>提交信息（commit message）用 <code>-m</code> 参数指定。好的提交信息应该说明「做了什么」和「为什么做」，比如 <code>"修复登录页面密码验证逻辑"</code>。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">错误</span>常见错误</h2>
+  <div class="lesson-explain">
+    <p>修改了文件但忘记 add 就直接 commit。结果提交的是旧版本，新改动没有进入仓库。</p>
+    <p>提交信息写 <code>"update"</code>、<code>"fix"</code>、<code>"改了东西"</code>。一周后再看完全不知道这次提交改了什么。</p>
+    <p>一次性 add 所有文件（<code>git add .</code>）而不检查，把临时文件、日志文件也提交了。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">实例</span>动手操作</h2>
+  <div class="lesson-explain">
+    <p>下面的终端连接真实工作区。你可以创建文件、添加到暂存区、提交到仓库，然后查看状态变化。</p>
+  </div>
+  <div class="lesson-demo">
+    <div class="demo-label">命令操作台</div>
+    <div class="terminal" id="terminal"></div>
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="runCmd('git status')">查看状态</button>
+      <button class="btn btn-primary" onclick="runCmd('git add README.md')">add README</button>
+      <button class="btn btn-primary" onclick="runCmd('git add main.py')">add main.py</button>
+      <button class="btn btn-primary" onclick="runCmd('git commit -m \"初次提交：添加项目基础文件\"')">commit</button>
+      <button class="btn btn-secondary" onclick="runCmd('git log --oneline')">查看日志</button>
+      <button class="btn btn-secondary" onclick="runCmd('echo \"新功能代码\" >> main.py')">修改文件</button>
+      <button class="btn btn-secondary" onclick="runCmd('cat main.py')">查看文件内容</button>
+      <button class="btn btn-danger" onclick="resetWorkspace()">重置工作区</button>
+    </div>
+  </div>
+</section>
+
+<div class="nav-footer">
+  <a href="/step2" class="btn btn-secondary">← 上一步</a>
+  <a href="/step4" class="btn btn-primary">下一步：查看历史与回退 →</a>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const terminal = document.getElementById('terminal');
+
+async function runCmd(cmd) {
+  terminal.innerHTML += `<div class="cmd-line"><span class="prompt">$</span> ${cmd}</div>`;
+  try {
+    const res = await fetch('/api/exec', {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({cmd})
+    });
+    const data = await res.json();
+    const output = data.stdout || data.stderr || '(无输出)';
+    terminal.innerHTML += `<pre class="cmd-output">${output}</pre>`;
+  } catch (e) {
+    terminal.innerHTML += `<pre class="cmd-output error">${e.message}</pre>`;
+  }
+  terminal.scrollTop = terminal.scrollHeight;
+}
+
+async function resetWorkspace() {
+  terminal.innerHTML += `<div class="cmd-line"><span class="prompt">$</span> 重置工作区...</div>`;
+  await fetch('/api/reset', {method: 'POST'});
+  terminal.innerHTML += `<pre class="cmd-output">工作区已重置</pre>`;
+  terminal.scrollTop = terminal.scrollHeight;
+}
+
+runCmd('git status');
+</script>
+<style>
+.terminal {
+  background: #1d1d1f; color: #f5f5f7; padding: var(--spacer-16);
+  border-radius: var(--radius-sm); font-family: var(--font-mono);
+  font-size: 13px; line-height: 1.6; min-height: 160px;
+  max-height: 300px; overflow-y: auto; margin-bottom: var(--spacer-12);
+}
+.cmd-line { margin-bottom: 4px; }
+.prompt { color: var(--success); margin-right: 8px; }
+.cmd-output { margin: 0 0 8px 20px; white-space: pre-wrap; color: #d1d1d6; }
+.cmd-output.error { color: var(--danger); }
+.btn-group { display: flex; gap: var(--spacer-8); flex-wrap: wrap; }
+.nav-footer { display: flex; justify-content: space-between; margin-top: var(--spacer-24); }
+</style>
+{% endblock %}

@@ -15,3 +15,9 @@ venv/
 # Flask
 instance/
 .env
+
+# git-tutorial 运行时生成的工作区
+git-tutorial/workspace/
+git-tutorial/collab_a/
+git-tutorial/collab_b/
+git-tutorial/remote_repo.git/
