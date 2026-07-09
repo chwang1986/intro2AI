@@ -4,9 +4,17 @@ git-tutorial —— 如何使用 Git
 Intro2AI 项目的第一个教程子目录
 """
 
+import os
 from flask import Flask, render_template
+import jinja2
 
 app = Flask(__name__)
+
+# 模板搜索路径：子项目 templates + 根目录 design-system
+app.jinja_loader = jinja2.FileSystemLoader([
+    os.path.join(os.path.dirname(__file__), 'templates'),
+    os.path.join(os.path.dirname(__file__), '..', 'design-system'),
+])
 
 
 @app.route("/")
