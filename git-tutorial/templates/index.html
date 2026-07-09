@@ -1,0 +1,225 @@
+{% extends "base.html" %}
+{% block title %}Git 教程 - Intro2AI{% endblock %}
+
+{% block content %}
+<!-- 回到项目首页 -->
+<a href="/" class="back-link">← 回到 Intro2AI 首页</a>
+
+<!-- 页面标题 -->
+<div class="page-header">
+  <h1>如何使用 Git</h1>
+  <p>从零开始掌握版本控制，让代码管理不再混乱</p>
+</div>
+
+<!-- ============================================================ -->
+<!-- 第一部分：总体纲领 -->
+<!-- ============================================================ -->
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">纲领</span>这个教程要达成什么</h2>
+  <div class="lesson-explain">
+    <p><strong>最终目标：</strong>读完这个教程后，你能够独立使用 Git 管理自己的项目——从初始化仓库到推送到远程，从日常提交到分支合并，整个过程心中有数。</p>
+    <p><strong>面向读者：</strong>完全零基础，或者只会用 GitHub 网页上传文件的人。不需要命令行基础，每一步都有解释。</p>
+    <p><strong>学习路径：</strong>先理解「为什么需要版本控制」→ 再掌握「基本工作流（添加-提交-推送）」→ 最后学会「分支管理和团队协作」。</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- 第二部分：当前目标 -->
+<!-- ============================================================ -->
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">目标</span>现在要做到哪里</h2>
+  <div class="lesson-explain">
+    <p>本教程分 6 个阶段，当前已完成前 2 个阶段。每个阶段对应一个可运行的 Flask 页面，你可以在浏览器中边看边操作。</p>
+  </div>
+
+  <div class="lesson-demo">
+    <div class="demo-label">阶段进度</div>
+    <div class="step-list">
+      {% for step in steps %}
+      <div class="step-item {% if step.done %}step-done{% endif %}">
+        <div class="step-num">{{ step.num }}</div>
+        <div class="step-info">
+          <div class="step-title">{{ step.title }}</div>
+          <div class="step-desc">{{ step.desc }}</div>
+        </div>
+        {% if step.done %}
+        <span class="badge badge-success">已完成</span>
+        {% else %}
+        <span class="badge badge-warning">待完成</span>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- 第三部分：讲解与实例 -->
+<!-- ============================================================ -->
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">讲解</span>Git 是什么</h2>
+
+  <div class="lesson-explain">
+    <p>想象你在写一份重要的文档。你改了又改，保存了很多个版本：「报告_v1.doc」「报告_v2.doc」「报告_最终版.doc」「报告_最终版_真的.doc」。最后你也不知道哪个才是真的最终版。</p>
+    <p>Git 就是来解决这个问题的。它帮你记录每一次修改，你可以随时回到任意一个历史版本，也可以对比两个版本之间的差异。更重要的是，它让你可以放心地尝试新想法——如果改坏了，随时可以回退。</p>
+    <p>Git 的核心概念只有三个：<strong>工作区</strong>（你正在编辑的文件）、<strong>暂存区</strong>（准备提交的文件快照）、<strong>仓库</strong>（所有历史版本的记录）。理解这三者的关系，就理解了一半的 Git。</p>
+  </div>
+
+  <div class="lesson-demo">
+    <div class="demo-label">概念图解</div>
+    <div class="concept-flow">
+      <div class="concept-box">
+        <div class="concept-title">工作区</div>
+        <div class="concept-desc">你实际编辑的文件夹</div>
+      </div>
+      <div class="concept-arrow">→<span>git add</span></div>
+      <div class="concept-box">
+        <div class="concept-title">暂存区</div>
+        <div class="concept-desc">准备提交的快照</div>
+      </div>
+      <div class="concept-arrow">→<span>git commit</span></div>
+      <div class="concept-box">
+        <div class="concept-title">本地仓库</div>
+        <div class="concept-desc">历史版本记录</div>
+      </div>
+      <div class="concept-arrow">→<span>git push</span></div>
+      <div class="concept-box">
+        <div class="concept-title">远程仓库</div>
+        <div class="concept-desc">GitHub 上的备份</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">实例</span>初始化你的第一个仓库</h2>
+
+  <div class="lesson-explain">
+    <p>打开终端，进入一个你想要管理的项目文件夹，运行下面的命令。这些命令会创建一个隐藏的 <code>.git</code> 目录，Git 的所有记录都保存在这里。</p>
+  </div>
+
+  <div class="lesson-demo">
+    <div class="demo-label">动手操作</div>
+    <pre><code># 进入项目文件夹
+cd my-project
+
+# 初始化 Git 仓库
+git init
+
+# 查看仓库状态
+git status</code></pre>
+    <p class="demo-caption">运行 <code>git status</code> 后，你会看到当前分支是 main，还没有提交记录。</p>
+  </div>
+
+  <div class="lesson-code">
+    <div class="demo-label">代码实现</div>
+    <pre><code># 创建一个新文件
+echo "Hello Git" > README.md
+
+# 把文件加入暂存区
+git add README.md
+
+# 提交到本地仓库（-m 后面是提交说明）
+git commit -m "初次提交：添加 README"
+
+# 查看提交历史
+git log</code></pre>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<style>
+  /* 步骤列表 */
+  .step-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacer-12);
+  }
+  .step-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacer-16);
+    padding: var(--spacer-16);
+    background: var(--bg);
+    border-radius: var(--radius-sm);
+    transition: all 0.2s;
+  }
+  .step-item:hover {
+    background: #eaeaea;
+  }
+  .step-num {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--brand);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    border-radius: var(--radius-sm);
+    flex-shrink: 0;
+  }
+  .step-info {
+    flex: 1;
+  }
+  .step-title {
+    font-weight: 600;
+    font-size: 15px;
+    margin-bottom: 2px;
+  }
+  .step-desc {
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+  .step-done .step-num {
+    background: var(--success);
+  }
+
+  /* 概念流程图 */
+  .concept-flow {
+    display: flex;
+    align-items: center;
+    gap: var(--spacer-12);
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: var(--spacer-20);
+  }
+  .concept-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: var(--spacer-16);
+    text-align: center;
+    min-width: 120px;
+  }
+  .concept-title {
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 4px;
+  }
+  .concept-desc {
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+  .concept-arrow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--brand);
+    font-size: 18px;
+    font-weight: 700;
+  }
+  .concept-arrow span {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    background: var(--brand-light);
+    padding: 2px 8px;
+    border-radius: var(--radius-full);
+    margin-top: 4px;
+  }
+</style>
+{% endblock %}
