@@ -68,6 +68,30 @@
 - 字体：阿里普惠体（免费商用）
 - 端口：5003
 
+## 示例脚本
+
+每个学习阶段都配有独立的示例脚本，位于 `examples/` 目录下的对应子文件夹中。每个脚本都可以单独运行：
+
+```bash
+cd examples/step1
+python3 01_hello.py
+python3 02_calculator.py
+```
+
+| 阶段 | 示例脚本 | 说明 |
+|------|----------|------|
+| step1 | `01_hello.py`, `02_calculator.py` | print 用法、四则运算 |
+| step2 | `01_variables.py`, `02_type_conversion.py`, `03_string_ops.py` | 变量、类型转换、字符串操作 |
+| step3 | `01_if_else.py`, `02_for_loop.py`, `03_while_loop.py` | 条件判断、循环 |
+| step4 | `01_define_function.py`, `02_parameters.py`, `03_return_values.py` | 函数定义、参数、返回值 |
+| step5 | `01_list_ops.py`, `02_dict_ops.py`, `03_set_tuple.py` | 列表、字典、集合、元组 |
+| step6 | `01_read_file.py`, `02_write_file.py`, `03_try_except.py` | 文件读写、异常处理 |
+| step7 | `01_class_basics.py`, `02_inheritance.py` | 类基础、继承 |
+| step8 | `01_mock_api.py`, `02_api_with_key.py` | 模拟 API 调用、API Key 管理 |
+| step9 | `01_structured_prompt.py`, `02_few_shot.py` | Prompt 构建、Few-shot 示例 |
+| step10 | `01_modular_ai.py` | 模块化 AI 协作 |
+| practice | `todo_cli.py` | 完整命令行待办事项程序 |
+
 ## 启动方式
 
 ```bash
