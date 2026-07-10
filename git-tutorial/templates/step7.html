@@ -1,0 +1,331 @@
+{% extends "base.html" %}
+{% block title %}07 协作冲突 - Git 教程{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+  <h1>07 协作冲突</h1>
+  <p>git pull 冲突、冲突的产生与解决</p>
+</div>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">起源</span>冲突是如何被定义的</h2>
+  <div class="lesson-explain">
+    <p>版本控制中的「冲突」概念并不是 Git 发明的。早在 1986 年，RCS（Revision Control System）就已经需要处理多人修改同一文件的情况。但 RCS 和早期的 CVS 处理冲突的方式比较粗糙：如果两个人改了同一个文件，后提交的人会被拒绝，必须先手动把对方的改动复制到自己的文件中。</p>
+    <p>Git 在 2005 年引入了一套更系统化的冲突处理机制，其核心是<strong>三方合并算法</strong>（Three-way merge）。这个算法的思想可以追溯到 1970 年代的 diff3 工具——它比较三个版本：两个分支的最新版本，以及它们的共同祖先版本。通过引入「共同祖先」作为参照物，Git 可以判断哪些改动是「你添加的」、哪些改动是「对方添加的」、哪些改动是「你们都改了的」。</p>
+    <p>Git 的贡献在于：它把三方合并算法与分布式工作流深度结合。在集中式系统中，冲突相对少见，因为大家通常串行工作；但在 Git 的分布式环境中，每个人在本地独立开发，冲突变得更加频繁，因此自动合并和冲突标记的设计就显得尤为重要。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">思考</span>计算机如何面对「谁的对」这个哲学问题</h2>
+  <div class="lesson-explain">
+    <p>当两个开发者修改了同一行代码时，计算机面临一个根本性的困境：它不知道哪个版本更「正确」。代码没有绝对的对错，只有是否符合开发者的意图。</p>
+    <p>Linus Torvalds 在设计 Git 时思考了三种处理冲突的策略：</p>
+    <p><strong>策略一：后到者优先。</strong>谁的提交晚，就覆盖谁的内容。优点是永远不会冲突，缺点是「沉默的数据丢失」——先提交的人辛辛苦苦写的代码被无声无息地删掉了，他甚至不会知道自己被覆盖了。</p>
+    <p><strong>策略二：自动猜测合并。</strong>让算法尝试「智能地」合并两边的修改，比如把两个函数都保留下来。优点是减少了人工干预，缺点是算法不可能理解代码的语义，自动合并的结果可能引入编译错误或逻辑 bug。</p>
+    <p><strong>策略三：标记冲突并强制人工确认（Git 的做法）。</strong>对于不冲突的部分自动合并，对于冲突的部分插入标记，停止合并过程，要求开发者手动解决。优点是最大程度保证了代码的正确性，缺点是开发者必须花时间理解两边的修改。</p>
+    <p>Linus 选择了策略三，因为他认为：<strong>代码合并的正确性比方便性更重要。</strong>Git 宁愿让合并过程「吵吵闹闹」地停下来，也不愿意让错误的代码悄无声息地进入仓库。这个设计哲学体现了对代码质量的尊重。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">场景</span>两个人怎么一起工作</h2>
+  <div class="lesson-explain">
+    <p>实际工作中，一个项目通常由多个人共同开发。每个人在本地开发自己的功能，然后把代码推送到远程仓库。Git 会自动合并不冲突的修改，如果两个人改了同一处代码，就需要手动解决冲突。</p>
+    <p>这个页面模拟了两个人（用户A 和 用户B）共同开发一个项目的完整流程。点击下方「创建协作环境」按钮，系统会自动生成远程仓库和两个本地克隆。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">原理</span>冲突是怎么产生的</h2>
+  <div class="lesson-explain">
+    <p>冲突产生的根本原因是：两个分支对<strong>同一个文件的同一区域</strong>都做了修改，而 Git 无法判断应该以哪个版本为准。</p>
+    <p>具体来说，当你执行 <code>git merge</code> 或 <code>git pull</code> 时，Git 会执行三方合并：找到两个分支的最近共同祖先，然后比较祖先版本、你的版本、对方的版本。如果某个区域只有一方修改了，Git 直接采用那一方；如果双方都修改了，就标记为冲突。</p>
+    <p>冲突文件中会出现这样的标记：<code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</code> 表示你当前分支的内容，<code>=======</code> 是分隔线，<code>&gt;&gt;&gt;&gt;&gt;&gt;&gt; 分支名</code> 表示对方分支的内容。你需要编辑文件，删掉标记，保留正确的代码。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">论证</span>为什么三方合并是最合理的方案</h2>
+  <div class="lesson-explain">
+    <p>三方合并算法的正确性可以从信息论的角度来理解。假设没有共同祖先，只有两个版本 A 和 B，算法面临的是一个「二选一」的问题，没有任何上下文来判断哪个更合理。但引入共同祖先 O 后，情况完全不同：</p>
+    <p><strong>1. 明确的修改归属：</strong>通过比较 O→A 和 O→B 的差异，Git 可以精确知道「A 改了什么」和「B 改了什么」。如果 A 和 B 改的是不同区域，这两个修改互不干扰，可以同时保留。这正是 Git 能自动合并不冲突修改的理论基础。</p>
+    <p><strong>2. 冲突定位的精确性：</strong>只有当 O→A 和 O→B 的修改发生重叠时，才需要人工介入。这种「最小化冲突」的策略避免了不必要的干扰。相比之下，一些简单的合并工具只要看到同一文件被双方修改就报冲突，效率低得多。</p>
+    <p><strong>3. 安全底线：</strong>Git 永远不会「猜测」代码应该怎么合并。对于冲突区域，它选择停下来让人类做决定。这看似不够智能，实则是对代码安全性的最大保障。因为代码合并不是简单的文本拼接，它涉及业务逻辑、函数调用关系、变量作用域等语义层面的考量，这些是当前任何算法都无法完全理解的。</p>
+    <p>对比其他方案：一些图形化合并工具提供了「自动选择ours/theirs」的选项，这在某些场景下很方便，但滥用会导致代码丢失。Git 的默认行为是强制人工确认，这个设计被证明是最稳健的。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">要点</span>协作冲突的核心处理流程</h2>
+  <div class="lesson-explain">
+    <p><strong>1. 冲突发生时的信号：</strong>执行 git pull 或 git merge 时，如果终端显示「CONFLICT」字样，说明存在冲突。此时合并过程被暂停，Git 要求你先解决冲突才能继续。</p>
+    <p><strong>2. 定位冲突文件：</strong>用 <code>git status</code> 查看哪些文件存在冲突。Unmerged paths 下列出的就是需要处理的文件。</p>
+    <p><strong>3. 编辑冲突文件：</strong>打开文件，找到 <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code> 标记的区域。理解 HEAD 版本和对方版本的意图，手动编辑出最优的合并结果，然后删掉所有冲突标记。</p>
+    <p><strong>4. 完成合并：</strong>修改完所有冲突文件后，执行 <code>git add .</code> 标记冲突已解决，然后 <code>git commit</code> 完成合并提交。合并提交会有两个父提交，分别指向合并前的两个分支。</p>
+    <p><strong>5. 预防冲突的好习惯：</strong>频繁地 pull 最新代码、每个功能独立分支、避免大范围重构、提交前与队友沟通——这些都能显著减少冲突的发生。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">错误</span>冲突处理中的常见错误</h2>
+  <div class="lesson-explain">
+    <p><strong>冲突解决不当：</strong>遇到冲突时，有人直接用 <code>git checkout --ours</code> 或 <code>--theirs</code> 强制选一边，结果把队友的功能删掉了。正确做法是打开冲突文件，理解两边的修改意图，手动合并出最好的方案。</p>
+    <p><strong>代码被覆盖：</strong>A 改了文件 X 的第 10 行，B 也改了文件 X 的第 10 行，B 先 push，A pull 时产生冲突。A 解决冲突时没注意，把 B 的改动覆盖了。这种情况只能通过代码审查和测试来预防。</p>
+    <p><strong>忘记删除冲突标记：</strong>匆忙编辑后没有检查是否还有残留的 <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code>，导致代码无法编译或运行异常。提交前一定要全局搜索这些标记。</p>
+    <p><strong>在 main 上直接开发：</strong>为了省事直接在 main 分支上写代码，结果把未完成的功能或带 bug 的代码推到了生产环境。main 分支应该始终保持可发布状态。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">实验</span>亲手制造并解决冲突</h2>
+  <div class="lesson-explain">
+    <p>下面的实验步骤将带你亲手制造一个真实的冲突场景，然后一步步解决它。只有亲自经历过，你才能真正理解冲突的本质。</p>
+  </div>
+  <div class="lesson-code">
+    <pre><code># 实验 1：准备环境
+# 初始化仓库并创建初始文件
+git init
+git config user.name "学习者"
+git config user.email "learner@example.com"
+echo "line1: 原始内容" > demo.txt
+git add . && git commit -m "初始提交"
+
+# 实验 2：创建两个分支并修改同一行
+git branch feature-A
+git branch feature-B
+
+# 在 feature-A 上修改第一行
+git switch feature-A
+echo "line1: A 的修改版本" > demo.txt
+git add . && git commit -m "A 修改了 demo.txt"
+
+# 在 feature-B 上也修改第一行（基于同一个 main）
+git switch feature-B
+echo "line1: B 的修改版本" > demo.txt
+git add . && git commit -m "B 修改了 demo.txt"
+
+# 实验 3：合并并观察冲突
+git switch main
+git merge feature-A
+# 这一步应该成功（快进合并）
+git merge feature-B
+# 这一步会产生冲突！因为 main 和 feature-B 都修改了同一行
+
+# 实验 4：查看冲突标记
+cat demo.txt
+# 你会看到类似下面的内容：
+# &lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+# line1: A 的修改版本
+# =======
+# line1: B 的修改版本
+# &gt;&gt;&gt;&gt;&gt;&gt;&gt; feature-B
+
+# 实验 5：解决冲突
+echo "line1: 融合后的最佳版本" > demo.txt
+git add . && git commit -m "解决 feature-B 的合并冲突"
+
+# 实验 6：观察合并提交的结构
+git log --oneline --graph --all
+# 你会看到合并提交有两个父提交，形成一个「Y」字形
+</code></pre>
+  </div>
+  <div class="lesson-explain">
+    <p><strong>观察现象：</strong>冲突发生时 Git 不会破坏任何代码，它只是把两个版本都展示给你，让你决定最终内容。合并提交有两个父节点，这正是三方合并算法在历史上的印记。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">练习</span>冲突处理验证与设计</h2>
+  <div class="exercise-box">
+    <div class="lesson-explain">
+      <p><strong>验证题 1：</strong>严格按照上面的实验步骤操作，在本地仓库中制造一个冲突并解决它。用 <code>git log --oneline --graph --all</code> 查看合并提交，确认它有两个父提交。截图保存你看到的分支图。</p>
+    </div>
+  </div>
+  <div class="exercise-box">
+    <div class="lesson-explain">
+      <p><strong>验证题 2：</strong>在冲突文件中，HEAD 代表什么？<code>=======</code> 分隔线的作用是什么？&gt;&gt;&gt;&gt;&gt;&gt;&gt; 后面跟的是什么？如果冲突涉及多个区域，文件中会出现几组这样的标记？</p>
+    </div>
+  </div>
+  <div class="exercise-box">
+    <div class="lesson-explain">
+      <p><strong>验证题 3：</strong>制造一个冲突后，在解决之前执行 <code>git status</code>，观察输出中的 "Unmerged paths" 区域。然后执行 <code>git merge --abort</code> 取消合并，观察工作区恢复到合并前的状态。理解这个命令的用途：当你发现冲突太复杂、暂时不想解决时，可以安全地退回。</p>
+    </div>
+  </div>
+  <div class="exercise-box">
+    <div class="lesson-explain">
+      <p><strong>设计题：</strong>假设你和小红合作写一个 Python 程序。你负责优化算法性能，小红负责添加异常处理。你们很可能会修改同一个文件的同一区域。请设计一套工作流程，最大限度地减少冲突发生的概率。同时设计一个冲突发生时的处理 checklist（检查清单），确保不会因为匆忙而漏掉关键步骤。</p>
+    </div>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">实例</span>模拟两人协作</h2>
+  <div class="lesson-explain">
+    <p>点击「创建协作环境」后，会出现两个终端：左边是用户A，右边是用户B。你可以分别在这两个终端中执行命令，观察协作效果。尝试让 A 和 B 都修改 README.md 的同一行，然后 push/pull 观察冲突的产生和解决。</p>
+  </div>
+
+  <div class="btn-group mb-4">
+    <button class="btn btn-primary" onclick="setupCollab()">创建协作环境</button>
+    <button class="btn btn-secondary" onclick="showStatus()">查看状态</button>
+  </div>
+
+  <div class="row">
+    <div class="col-6">
+      <div class="lesson-demo">
+        <div class="demo-label">用户 A（开发者A）</div>
+        <div class="terminal" id="terminalA"></div>
+        <div class="btn-group">
+          <button class="btn btn-primary btn-sm" onclick="runCmdA('git status')">status</button>
+          <button class="btn btn-primary btn-sm" onclick="runCmdA('git log --oneline')">log</button>
+          <button class="btn btn-secondary btn-sm" onclick="runCmdA('echo "# A的新功能" >> README.md && git add . && git commit -m \"A: 添加新功能\"')">开发并提交</button>
+          <button class="btn btn-secondary btn-sm" onclick="runCmdA('git push origin main')">push</button>
+          <button class="btn btn-secondary btn-sm" onclick="runCmdA('git pull origin main')">pull</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="lesson-demo">
+        <div class="demo-label">用户 B（开发者B）</div>
+        <div class="terminal" id="terminalB"></div>
+        <div class="btn-group">
+          <button class="btn btn-primary btn-sm" onclick="runCmdB('git status')">status</button>
+          <button class="btn btn-primary btn-sm" onclick="runCmdB('git log --oneline')">log</button>
+          <button class="btn btn-secondary btn-sm" onclick="runCmdB('echo "# B的改进" >> README.md && git add . && git commit -m \"B: 改进代码\"')">开发并提交</button>
+          <button class="btn btn-secondary btn-sm" onclick="runCmdB('git push origin main')">push</button>
+          <button class="btn btn-secondary btn-sm" onclick="runCmdB('git pull origin main')">pull</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">测验</span>协作冲突知识检验</h2>
+  <div class="demo-card">
+    <div class="lesson-explain">
+      <p><strong>1. Git 判断冲突的核心依据是什么？</strong></p>
+      <p>A. 两个分支修改了同一个文件</p>
+      <p>B. 两个分支对同一个文件的同一区域都做了修改</p>
+      <p>C. 两个分支的提交时间太接近</p>
+      <p>D. 两个分支的作者不同</p>
+    </div>
+  </div>
+  <div class="demo-card">
+    <div class="lesson-explain">
+      <p><strong>2. 冲突文件中的 <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</code> 表示什么内容？</strong></p>
+      <p>A. 远程仓库的最新内容</p>
+      <p>B. 当前分支（执行合并时所在分支）的内容</p>
+      <p>C. 共同祖先版本的内容</p>
+      <p>D. 最近一次提交的内容</p>
+    </div>
+  </div>
+  <div class="demo-card">
+    <div class="lesson-explain">
+      <p><strong>3. 解决冲突后，需要执行哪些命令才能完成合并？</strong></p>
+      <p>A. git resolve</p>
+      <p>B. git add . 然后 git commit</p>
+      <p>C. git merge --finish</p>
+      <p>D. git push 直接推送</p>
+    </div>
+  </div>
+  <div class="demo-card">
+    <div class="lesson-explain">
+      <p><strong>4. 当你发现当前冲突太复杂、暂时不想解决时，可以执行什么命令安全地取消合并？</strong></p>
+      <p>A. git reset --hard HEAD</p>
+      <p>B. git merge --abort</p>
+      <p>C. git checkout --ours</p>
+      <p>D. git pull --force</p>
+    </div>
+  </div>
+  <div class="demo-card">
+    <div class="lesson-explain">
+      <p><strong>5. Git 使用三方合并算法解决冲突，其中「三方」指的是哪三个版本？</strong></p>
+      <p>A. 本地版本、远程版本、缓存版本</p>
+      <p>B. 当前分支版本、被合并分支版本、它们的最近共同祖先版本</p>
+      <p>C. HEAD 版本、index 版本、工作区版本</p>
+      <p>D. 上一个提交、当前提交、下一个提交</p>
+    </div>
+  </div>
+</section>
+
+<div class="nav-footer">
+  <a href="/step6" class="btn btn-secondary">← 上一步</a>
+  <a href="/step8" class="btn btn-primary">下一步：高级技巧 →</a>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const termA = document.getElementById('terminalA');
+const termB = document.getElementById('terminalB');
+
+async function runCmdA(cmd) {
+  termA.innerHTML += `<div class="cmd-line"><span class="prompt">A$</span> ${cmd}</div>`;
+  try {
+    const res = await fetch('/api/exec', {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({cmd, target: 'collab_a'})
+    });
+    const data = await res.json();
+    const output = data.stdout || data.stderr || '(无输出)';
+    termA.innerHTML += `<pre class="cmd-output">${output}</pre>`;
+  } catch (e) {
+    termA.innerHTML += `<pre class="cmd-output error">${e.message}</pre>`;
+  }
+  termA.scrollTop = termA.scrollHeight;
+}
+
+async function runCmdB(cmd) {
+  termB.innerHTML += `<div class="cmd-line"><span class="prompt">B$</span> ${cmd}</div>`;
+  try {
+    const res = await fetch('/api/exec', {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({cmd, target: 'collab_b'})
+    });
+    const data = await res.json();
+    const output = data.stdout || data.stderr || '(无输出)';
+    termB.innerHTML += `<pre class="cmd-output">${output}</pre>`;
+  } catch (e) {
+    termB.innerHTML += `<pre class="cmd-output error">${e.message}</pre>`;
+  }
+  termB.scrollTop = termB.scrollHeight;
+}
+
+async function setupCollab() {
+  termA.innerHTML += `<div class="cmd-line"><span class="prompt">系统</span> 正在创建协作环境...</div>`;
+  termB.innerHTML += `<div class="cmd-line"><span class="prompt">系统</span> 正在创建协作环境...</div>`;
+  try {
+    const res = await fetch('/api/collab/setup', {method: 'POST'});
+    const data = await res.json();
+    termA.innerHTML += `<pre class="cmd-output">${data.message}</pre>`;
+    termB.innerHTML += `<pre class="cmd-output">${data.message}</pre>`;
+  } catch (e) {
+    termA.innerHTML += `<pre class="cmd-output error">${e.message}</pre>`;
+  }
+  termA.scrollTop = termA.scrollHeight;
+  termB.scrollTop = termB.scrollHeight;
+}
+
+async function showStatus() {
+  runCmdA('git status');
+  runCmdB('git status');
+}
+</script>
+<style>
+.terminal {
+  background: #1d1d1f; color: #f5f5f7; padding: var(--space-3);
+  border-radius: var(--border-radius-md); font-family: var(--font-mono);
+  font-size: var(--font-size-xs); line-height: 1.5; min-height: 140px;
+  max-height: 250px; overflow-y: auto; margin-bottom: var(--space-2);
+}
+.cmd-line { margin-bottom: 4px; }
+.prompt { color: var(--success); margin-right: 6px; }
+.cmd-output { margin: 0 0 6px 16px; white-space: pre-wrap; color: #d1d1d6; font-size: var(--font-size-xs); }
+.cmd-output.error { color: var(--danger); }
+.btn-group { display: flex; gap: var(--space-2); flex-wrap: wrap; }
+.nav-footer { display: flex; justify-content: space-between; margin-top: var(--space-6); }
+.git-flow-svg { max-width: 100%; height: auto; }
+</style>
+{% endblock %}

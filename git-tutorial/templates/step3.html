@@ -9,6 +9,25 @@
 </div>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">起源</span>Git 的对象模型是怎么来的</h2>
+  <div class="lesson-explain">
+    <p>Linus Torvalds 在写 Git 的时候，借鉴了他在 Linux 内核开发中的经验。Linux 内核本身就是一个巨大的文件系统，Linus 对"如何高效地存储和索引文件"有着深刻的理解。</p>
+    <p>2005 年设计 Git 时，他明确提出：Git 不应该只是一个版本控制工具，它应该是一个"内容寻址的文件系统"。什么是内容寻址？简单来说，就是根据文件内容本身来命名和查找文件，而不是根据文件名或路径。只要两个文件内容一样，无论它们叫什么名字、放在哪里，在 Git 看来都是同一个对象。</p>
+    <p>这个想法直接催生了 Git 的三大核心对象：blob（存内容）、tree（存目录结构）、commit（存提交信息）。这三种对象层层嵌套，构成了 Git 的底层数据结构。当你执行 git add 和 git commit 时，本质上就是在创建这些对象，然后把它们链接起来。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">思考</span>为什么要把 add 和 commit 分成两步</h2>
+  <div class="lesson-explain">
+    <p>很多同学第一次用 Git 时都会有这个疑问：为什么不能像保存文档一样，改完直接 commit，非要先 add 再 commit？这不是多此一举吗？</p>
+    <p>Linus 设计这两步分离，其实是经过深思熟虑的。想象你在写一篇期末论文：你可能同时修改了引言、方法论和结论三个部分。但等你准备保存的时候，你发现结论部分还有几个数据没核对完，暂时不想保存。这时候你怎么办？</p>
+    <p>git add 的作用就是让你"挑选"本次要保存的内容。你可以只 add 引言和方法论，把没写完的结论留到下次再提交。这种"暂存区"（也叫索引区）的设计，给了你一次"整理思绪"的机会，让你能把相关的改动打包成一次有意义的提交，而不是改一点就提交一点，最后历史记录乱成一团。</p>
+    <p>当然，如果你确定所有修改都要提交，也可以直接用 git commit -a 跳过显式 add 的步骤。但理解暂存区的存在，是掌握 Git 精细控制的关键。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">场景</span>什么时候 add 和 commit</h2>
   <div class="lesson-explain">
     <p>当你完成了一部分有意义的工作，比如「写好了登录功能」或「修复了某个 bug」，就应该 add 和 commit。这相当于给当前的工作拍了一张快照，以后随时可以回到这个状态。</p>
@@ -63,6 +82,16 @@
 </section>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">论证</span>快照模型为什么比增量模型更好</h2>
+  <div class="lesson-explain">
+    <p>传统的版本控制系统（比如早期的 SVN 和 CVS）使用的是"增量模型"：每次提交只保存与上一个版本的差异（diff）。想象一下，你有一本 100 页的书，每次修订只记录"第 5 页改了什么、第 20 页删了什么"。如果这本书经历了 1000 次修订，你想看第 500 个版本的内容，系统就得从第一个版本开始，依次应用 500 个差异补丁。</p>
+    <p>Git 使用的是"快照模型"：每次提交保存的是当时所有文件的完整内容。这听起来很浪费空间，但 Git 用了很多巧妙的技术来压缩（比如把内容相同的文件只存一份，用哈希值引用）。而且快照模型带来了一个巨大的好处：切换版本的速度极快。因为每个版本都是完整的快照，Git 不需要逐步应用补丁，直接取出对应的文件内容即可。</p>
+    <p>打个比方：增量模型就像一部只能快进的录像带，想跳到中间某一段，得从头慢慢放；快照模型就像一本相册，每一页都是完整的照片，翻到哪页就是哪页。对于需要频繁查看历史、回退版本的开发者来说，快照模型的体验好太多了。</p>
+    <p>另外，快照模型让分支和合并变得异常简单。因为每个分支本质上只是一个指向某个快照的指针，创建分支只需要创建一个新指针，不需要复制任何文件。这也是为什么 Git 的分支操作快到几乎无感知的原因。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">要点</span>add 和 commit 的区别</h2>
   <div class="lesson-explain">
     <p><code>git add</code> 把文件从工作区放到暂存区。你可以多次 add 不同的文件，也可以 add 同一个文件多次（如果中间又修改了）。</p>
@@ -77,6 +106,103 @@
     <p>修改了文件但忘记 add 就直接 commit。结果提交的是旧版本，新改动没有进入仓库。</p>
     <p>提交信息写 <code>"update"</code>、<code>"fix"</code>、<code>"改了东西"</code>。一周后再看完全不知道这次提交改了什么。</p>
     <p>一次性 add 所有文件（<code>git add .</code>）而不检查，把临时文件、日志文件也提交了。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">实验</span>观察 add 和 commit 的每一步变化</h2>
+  <div class="lesson-explain">
+    <p>下面的实验会带你追踪一个文件从"未被追踪"到"被提交到仓库"的完整生命周期。请特别注意 git status 的输出变化，它会告诉你文件当前处于哪个区域。</p>
+  </div>
+  <div class="lesson-code"><pre><code># 前置：确保你在一个已初始化的 Git 仓库中
+$ git status
+# 应该显示 "On branch main" 且没有未跟踪文件（或有一些）
+
+# 实验 1：创建一个新文件
+$ echo "Hello Git" &gt; hello.txt
+$ git status
+# 观察：hello.txt 出现在 "Untracked files" 区域
+
+# 实验 2：将文件添加到暂存区
+$ git add hello.txt
+$ git status
+# 观察：hello.txt 出现在 "Changes to be committed" 区域
+
+# 实验 3：修改暂存后的文件（不重新 add）
+$ echo "Hello World" &gt;&gt; hello.txt
+$ git status
+# 观察：同一个文件同时出现在两个区域！
+# 一个是已暂存的版本，一个是未暂存的修改
+
+# 实验 4：查看暂存区和工作区的差异
+$ git diff
+# 显示工作区与暂存区的差异
+$ git diff --cached
+# 显示暂存区与最新提交的差异
+
+# 实验 5：提交暂存区的内容
+$ git commit -m "添加 hello.txt"
+$ git status
+# 观察：暂存区清空，未暂存的修改还在工作区
+
+# 实验 6：查看提交日志
+$ git log --oneline
+# 你应该能看到刚才的提交记录</code></pre></div>
+  <div class="lesson-explain">
+    <p>这个实验最关键的一步是"实验 3"——当你 add 后又修改了文件，Git 会同时追踪两个版本：暂存区里的旧版本和工作区里的新版本。理解这一点，你就掌握了 Git 暂存机制的核心。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">练习</span>验证你的理解</h2>
+  <div class="exercise-box">
+    <p><strong>验证题 1（动手操作）：</strong>创建一个文件并 add 它，然后修改文件但不重新 add，直接执行 git commit -m "test"。提交后查看文件内容，问：仓库里保存的是第一次 add 的版本，还是第二次修改后的版本？为什么？</p>
+  </div>
+  <div class="exercise-box">
+    <p><strong>验证题 2（动手操作）：</strong>创建两个文件 a.txt 和 b.txt。先 add a.txt，然后执行 git commit -m "只提交a"。提交后查看 git status，问：b.txt 现在处于什么状态？它为什么没有被一起提交？</p>
+  </div>
+  <div class="exercise-box">
+    <p><strong>设计题 1（开放思考）：</strong>假设你正在开发一个功能，同时修改了三个文件。但提交前你发现其中一个文件的改动引入了 bug，你只想提交另外两个文件。请设计一个操作流程，不需要撤销那个有 bug 的文件的修改，就能完成提交。</p>
+  </div>
+  <div class="exercise-box">
+    <p><strong>设计题 2（开放思考）：</strong>你和同学合作一个项目，你们约定每次提交信息都要遵循一定的格式。请你为你们的课程设计项目设计一套提交信息规范，要求至少能区分"新增功能"、"修复 bug"、"文档更新"三种类型。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">测验</span>快速检验一下</h2>
+  <div class="demo-card">
+    <p><strong>1. git add 命令的作用是什么？</strong></p>
+    <p>A. 把文件直接提交到本地仓库</p>
+    <p>B. 把文件从工作区移动到暂存区</p>
+    <p>C. 把文件上传到远程服务器</p>
+    <p>D. 删除工作区中的文件</p>
+  </div>
+  <div class="demo-card">
+    <p><strong>2. 关于 Git 的快照模型，以下说法正确的是？</strong></p>
+    <p>A. Git 每次提交只保存修改过的部分，未修改的文件不保存</p>
+    <p>B. Git 每次提交保存所有文件的完整内容，但通过引用避免重复存储</p>
+    <p>C. Git 每次提交都会复制整个项目文件夹到一个备份目录</p>
+    <p>D. Git 的快照模型比增量模型更节省磁盘空间</p>
+  </div>
+  <div class="demo-card">
+    <p><strong>3. 执行 git add file.txt 后，又修改了 file.txt 的内容。此时 git status 会显示什么？</strong></p>
+    <p>A. file.txt 只在 "Changes to be committed" 中</p>
+    <p>B. file.txt 只在 "Changes not staged" 中</p>
+    <p>C. file.txt 同时出现在 "Changes to be committed" 和 "Changes not staged" 中</p>
+    <p>D. file.txt 不再出现在任何区域</p>
+  </div>
+  <div class="demo-card">
+    <p><strong>4. 一个好的提交信息应该包含什么？</strong></p>
+    <p>A. 当前日期和时间</p>
+    <p>B. 作者的手机号码</p>
+    <p>C. 做了什么修改以及为什么做</p>
+    <p>D. 项目总代码行数</p>
+  </div>
+  <div class="demo-card">
+    <p><strong>5. 判断正误：git commit 执行后，暂存区的内容会被清空，但工作区的文件保持不变。</strong></p>
+    <p>A. 正确</p>
+    <p>B. 错误</p>
   </div>
 </section>
 

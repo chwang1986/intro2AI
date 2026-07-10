@@ -9,6 +9,27 @@
 </div>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">起源</span>分布式设计的诞生背景</h2>
+  <div class="lesson-explain">
+    <p>2005 年 Linus Torvalds 设计 Git 时，一个核心目标就是摆脱对中央服务器的依赖。在此之前，Linux 内核团队使用 BitKeeper 进行版本控制。BitKeeper 虽然是分布式的，但它是商业软件，许可协议限制颇多。Linus 想要一个完全开源、任何人都能自由使用的工具。</p>
+    <p>在 Git 出现之前，主流的版本控制系统是 CVS 和 SVN，它们都是<strong>集中式</strong>的。也就是说，所有的代码历史只保存在中央服务器上，每个开发者的电脑上只有当前工作的一个「副本」。提交代码必须连接服务器，查看历史也必须连接服务器。</p>
+    <p>Linus 的设计哲学完全不同：他认为每个开发者的电脑上都应该有<strong>完整的仓库</strong>，包括全部历史记录。远程仓库不是「权威数据源」，而只是开发者之间交换代码的一个「中转站」。这个设计在当时的版本控制领域是革命性的。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">思考</span>集中式 vs 分布式的抉择</h2>
+  <div class="lesson-explain">
+    <p>当时 Linus 面临的核心问题是：<strong>如何让上千名分布在世界各地的开发者高效协作，同时保证数据安全？</strong></p>
+    <p>他分析了三种可能的方案：</p>
+    <p><strong>方案一：加强集中式服务器（SVN 的改良版）。</strong>把中央服务器做得更稳定、备份更频繁。但问题是：开发者必须联网才能提交，服务器一旦宕机所有人停工，而且服务器是单点故障——如果数据中心发生火灾，历史记录可能永久丢失。</p>
+    <p><strong>方案二：纯 P2P 同步（没有中央节点）。</strong>每个开发者直接把自己的修改推送给其他开发者。但问题是：没有明确的「权威版本」，1000 个人互相推送会变成混乱的网状结构，不知道以谁的版本为准。</p>
+    <p><strong>方案三：技术分布式 + 社会集中式（Git 的做法）。</strong>每个克隆都是完整仓库，技术上完全平等；但社会层面约定一个「官方仓库」作为协作中心。平时离线工作随意提交，有网了再和官方仓库同步。这既保证了对单点故障的免疫力，又保留了清晰的协作秩序。</p>
+    <p>Linus 选择方案三，因为 Linux 内核开发本身就有「Linus 维护官方树」的传统。Git 的设计与这个工作流程天然契合。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">场景</span>为什么需要远程仓库</h2>
   <div class="lesson-explain">
     <p>本地仓库只能在你自己的电脑上访问。如果硬盘坏了、电脑丢了，或者你想在另一台电脑上继续工作，本地仓库就帮不上忙了。</p>
@@ -67,6 +88,17 @@
 </section>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">论证</span>为什么分布式架构更可靠</h2>
+  <div class="lesson-explain">
+    <p>Git 的分布式设计不是炫技，而是从工程和安全角度深思熟虑的结果。我们可以从三个维度论证它的正确性：</p>
+    <p><strong>1. 数据安全维度：</strong>在 SVN 中，中央服务器是唯一的完整历史持有者，N 个开发者只有 1 份完整备份。在 Git 中，每个开发者克隆时都会下载完整历史，N 个开发者就有 N 份完整备份。即使 GitHub 数据中心被陨石砸中，只要任何一台开发者的电脑还在，项目历史就能完整恢复。这是从「单点故障」到「多点冗余」的本质飞跃。</p>
+    <p><strong>2. 工作流维度：</strong>在集中式系统中，「提交」等同于「发布」——你一旦提交，整个团队都能看到。这导致开发者不敢频繁提交半成品代码。Git 把「提交」和「发布」解耦了：本地提交只是记录自己的工作快照，push 到远程才是分享。开发者可以一天提交 20 次，整理好了再 push，工作节奏更自然。</p>
+    <p><strong>3. 性能维度：</strong>查看历史、对比版本、切换分支这些常用操作在 Git 中都是本地操作，速度是毫秒级。SVN 中这些操作都要连接服务器，延迟取决于网速。对于大型项目（如 Linux 内核有数百万次提交），本地操作的优势更加明显。</p>
+    <p>对比其他方案：Mercurial 和 Git 一样采用分布式架构，这证明分布式是开源协作的共识选择。而 SVN 和 CVS 的集中式架构虽然管理简单，但在大规模协作场景下已被淘汰。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">要点</span>远程操作的核心命令</h2>
   <div class="lesson-explain">
     <p><code>git remote add origin &lt;地址&gt;</code> 关联远程仓库。<code>origin</code> 是远程仓库的默认别名，就像给地址起了一个短名字。</p>
@@ -82,6 +114,67 @@
     <p>push 被拒绝，提示「更新被拒绝，因为远程包含本地没有的工作」。这通常是因为有人在远程提交了新的内容。解决方案：先 <code>git pull</code> 拉取合并，再 push。</p>
     <p>clone 时用了 HTTPS 地址，每次 push 都要输入密码。更好的方式是配置 SSH 密钥，或者使用个人访问令牌（PAT）。</p>
     <p>在错误的分支上 push。比如你在 feature 分支上开发了新功能，但 push 到了远程的 main 分支，把未完成的功能发布到了生产环境。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">实验</span>探索远程仓库的内部机制</h2>
+  <div class="lesson-explain">
+    <p>下面的实验将带你理解远程仓库在 Git 内部是如何表示的。你会发现「远程」并没有那么神秘，它只是一组配置和引用。</p>
+  </div>
+  <div class="lesson-code">
+    <pre><code># 实验 1：查看远程配置存储位置
+# 远程仓库的配置保存在 .git/config 文件中
+cat .git/config
+
+# 实验 2：添加远程仓库后观察配置变化
+git remote add origin https://github.com/example/demo.git
+cat .git/config
+# 你会看到 [remote "origin"] 段，里面有 url 和 fetch 的配置
+
+# 实验 3：观察远程分支引用
+git branch -r
+# 远程分支保存在 .git/refs/remotes/ 目录下
+ls .git/refs/remotes/
+
+# 实验 4：对比 fetch 和 pull 的区别
+git fetch origin
+# fetch 只下载远程的提交和引用，不修改你的工作区
+git status
+# 你会发现工作区没有变化，但 origin/main 指针更新了
+
+# 实验 5：追踪关系观察
+git branch -vv
+# 带 -vv 可以看到本地分支追踪的远程分支
+# 第一次 push 加 -u 参数，就是建立这个追踪关系
+</code></pre>
+  </div>
+  <div class="lesson-explain">
+    <p><strong>观察现象：</strong>远程仓库的信息全部保存在本地 .git 目录中。git fetch 只是把远程的提交对象下载到本地的 .git/objects 中，并更新 .git/refs/remotes/ 下的引用。真正改变你工作区文件的，是 git merge（而 git pull = git fetch + git merge）。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">练习</span>远程操作验证与设计</h2>
+  <div class="exercise-box">
+    <div class="lesson-explain">
+      <p><strong>验证题 1：</strong>在本地仓库执行 <code>git remote add origin &lt;某个地址&gt;</code>，然后打开 .git/config 文件，找到 [remote "origin"] 段。记录 url 和 fetch 的值，理解它们分别代表什么。</p>
+    </div>
+  </div>
+  <div class="exercise-box">
+    <div class="lesson-explain">
+      <p><strong>验证题 2：</strong>执行 <code>git fetch origin</code> 后，用 <code>git log --oneline --graph --all</code> 查看提交图。注意 origin/main 和 main 的位置关系。如果 origin/main 在 main 前面，说明远程有新的提交你还没有合并。</p>
+    </div>
+  </div>
+  <div class="exercise-box">
+    <div class="lesson-explain">
+      <p><strong>验证题 3：</strong>用 <code>git clone</code> 克隆一个公开仓库（比如某个 GitHub 上的开源项目），观察克隆完成后 .git 目录的大小。对比项目工作区文件总大小和 .git 目录大小，思考为什么 .git 可能比工作区还大。</p>
+    </div>
+  </div>
+  <div class="exercise-box">
+    <div class="lesson-explain">
+      <p><strong>设计题：</strong>假设你们宿舍 4 个同学要合作完成一个课程设计项目。请设计一套基于 Git 的协作流程：谁创建远程仓库？每个人怎么获取代码？每天开始工作前和结束工作后要执行什么命令？如果有人在睡梦中 push 了有 bug 的代码，其他人应该怎么处理？</p>
+    </div>
   </div>
 </section>
 
@@ -105,9 +198,58 @@
   </div>
 </section>
 
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">测验</span>远程仓库知识检验</h2>
+  <div class="demo-card">
+    <div class="lesson-explain">
+      <p><strong>1. Git 被称为「分布式」版本控制系统，这意味着什么？</strong></p>
+      <p>A. 每个开发者的本地仓库都包含完整的项目历史</p>
+      <p>B. 代码分布在多个服务器上，每个服务器只存一部分</p>
+      <p>C. 没有远程仓库，只能在本地使用</p>
+      <p>D. 所有开发者共享同一个中央数据库</p>
+    </div>
+  </div>
+  <div class="demo-card">
+    <div class="lesson-explain">
+      <p><strong>2. <code>git push</code> 和 <code>git pull</code> 的作用分别是什么？</strong></p>
+      <p>A. push 是从远程下载代码，pull 是上传代码到远程</p>
+      <p>B. push 是把本地提交上传到远程，pull 是从远程下载并合并到本地</p>
+      <p>C. push 创建新分支，pull 删除分支</p>
+      <p>D. push 和 pull 效果相同，只是方向不同</p>
+    </div>
+  </div>
+  <div class="demo-card">
+    <div class="lesson-explain">
+      <p><strong>3. 第一次推送时为什么要加 <code>-u</code>（或 <code>--set-upstream</code>）参数？</strong></p>
+      <p>A. 加速推送速度</p>
+      <p>B. 建立本地分支与远程分支的追踪关系，以后可以直接用 git push</p>
+      <p>C. 强制覆盖远程仓库的内容</p>
+      <p>D. 上传所有分支，而不仅仅是当前分支</p>
+    </div>
+  </div>
+  <div class="demo-card">
+    <div class="lesson-explain">
+      <p><strong>4. <code>git pull</code> 相当于哪两个命令的组合？</strong></p>
+      <p>A. git add + git commit</p>
+      <p>B. git fetch + git merge</p>
+      <p>C. git clone + git push</p>
+      <p>D. git branch + git checkout</p>
+    </div>
+  </div>
+  <div class="demo-card">
+    <div class="lesson-explain">
+      <p><strong>5. 当 push 被拒绝，提示远程包含本地没有的工作时，正确的处理顺序是？</strong></p>
+      <p>A. 强制推送 git push --force</p>
+      <p>B. 先 git pull 拉取合并远程更新，再 git push</p>
+      <p>C. 删除本地仓库重新 clone</p>
+      <p>D. 修改远程仓库地址</p>
+    </div>
+  </div>
+</section>
+
 <div class="nav-footer">
   <a href="/step5" class="btn btn-secondary">← 上一步</a>
-  <a href="/collab" class="btn btn-primary">下一步：多人协作 →</a>
+  <a href="/step7" class="btn btn-primary">下一步：协作冲突 →</a>
 </div>
 {% endblock %}
 

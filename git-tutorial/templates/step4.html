@@ -9,6 +9,24 @@
 </div>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">起源</span>Git 的历史链设计灵感来自哪里</h2>
+  <div class="lesson-explain">
+    <p>Git 的核心数据结构——"有向无环图"（DAG）——并不是 Linus Torvalds 凭空发明的。在 BitKeeper 中，就已经有了类似的提交链概念。Linus 在设计 Git 时，吸收了 BitKeeper 中关于"每个提交都知道自己的父提交"这一思想，但做了重大改进。</p>
+    <p>在 BitKeeper 和早期的 CVS 中，历史虽然也是链式结构，但操作起来非常缓慢，因为每次回退或查看历史都需要与服务器交互。Linus 把整条历史链完整地搬到了本地，让每个开发者的电脑上都有一份完整的提交图。这样一来，git log、git diff、git checkout 这些操作都可以在本地瞬间完成。</p>
+    <p>另一个关键的设计来源是文件系统的"硬链接"概念。Git 中的分支本质上就是一个指向某次提交的"指针"，切换分支不需要复制任何文件，只需要移动指针。这种设计的巧妙之处在于：它让 Git 在支持复杂历史结构的同时，保持了极高的效率。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">思考</span>为什么回退操作需要多种方式</h2>
+  <div class="lesson-explain">
+    <p>很多初学者会被 Git 的各种"回退"命令搞晕：git reset、git revert、git checkout……为什么一件事要有这么多不同的做法？</p>
+    <p>这其实是 Git 设计哲学的一个体现：不同场景下，"回退"的含义完全不同。有时候你想"撤销某次提交的效果，但保留历史记录"（比如公共仓库中你推错了代码）；有时候你想"彻底回到过去的某个状态，扔掉之后的所有改动"（比如本地实验搞砸了）；有时候你只是想"看看过去某个版本长什么样，但不打算长期停留"。</p>
+    <p>Linus 在设计这些命令时，刻意让它们保持独立，而不是用一个"万能回退"命令包揽所有场景。这样做的好处是：你必须明确知道自己的意图，才能选择合适的命令。虽然学习曲线更陡一些，但它极大地降低了误操作的风险。想想看，如果有一个"回退"按钮，你点下去却不知道它会删除历史还是保留历史，那该多危险。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">场景</span>什么时候需要查看历史</h2>
   <div class="lesson-explain">
     <p>代码出问题了，想知道是哪次提交引入的 bug。或者你想参考两周前某个功能的实现方式。又或者你不小心删了一段代码，想把它找回来。这些时候都需要查看历史。</p>
@@ -59,6 +77,17 @@
 </section>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">论证</span>reset、revert 和 checkout 的本质区别</h2>
+  <div class="lesson-explain">
+    <p>要理解这三个命令的区别，关键在于理解它们对"历史记录"和"工作区"的影响不同。</p>
+    <p><strong>git reset --hard</strong> 是最激进的。它把当前分支的指针直接移到你指定的提交上，同时把工作区和暂存区都重置成那个提交的样子。之后的提交历史会从分支上"脱落"，虽然它们还暂时保存在 reflog 里，但如果不及时处理，就会被 Git 的垃圾回收机制清理掉。这就像你把一本书撕掉了后面几章——那些内容真的消失了。</p>
+    <p><strong>git revert</strong> 是最安全的。它不会删除任何历史记录，而是创建一个新的提交，这个提交的内容恰好抵消你想要撤销的那次提交的修改。打个比方：reset 是擦掉黑板上的字，revert 是在黑板上再写一行字，说明"上一行字作废"。在团队协作中，revert 是首选，因为你已经推送到公共仓库的历史不应该被删除，否则其他协作者会混乱。</p>
+    <p><strong>git checkout</strong> 是最温和的。它只是移动 HEAD 指针，让你可以查看某个历史版本的内容。默认情况下它不会修改工作区中已经提交的内容，但如果工作区有未提交的改动，checkout 可能会覆盖它们，所以需要小心。</p>
+    <p>总结一下：reset 改变历史（危险），revert 追加历史（安全），checkout 查看历史（温和）。理解了这三者的区别，你就不会再在回退时手忙脚乱了。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">要点</span>历史相关命令</h2>
   <div class="lesson-explain">
     <p><code>git log</code> 查看提交历史。加上 <code>--oneline</code> 参数可以显示简洁的单行格式，加上 <code>-n 5</code> 可以只显示最近 5 条。</p>
@@ -74,6 +103,111 @@
     <p>用 <code>git reset --hard</code> 回退后发现删错了，但已经关掉了终端，找不到之前的 commit ID。实际上可以用 <code>git reflog</code> 找回。</p>
     <p>在「分离 HEAD」状态下修改了代码并提交，然后切换回 main 分支，结果那些提交「消失」了。分离 HEAD 的提交不会被任何分支引用，切换后就找不到了。</p>
     <p><code>git checkout</code> 时没保存工作区的修改，导致未提交的改动丢失。checkout 前应该先 add/commit 或 stash。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">实验</span>体验 diff、checkout 和 reset 的不同效果</h2>
+  <div class="lesson-explain">
+    <p>这个实验需要你预先准备一个有多次提交的仓库。如果你手头没有，可以先按照下面的前置步骤快速建立一个实验环境。</p>
+  </div>
+  <div class="lesson-code"><pre><code># ===== 前置：建立实验环境 =====
+$ mkdir diff-lab &amp;&amp; cd diff-lab &amp;&amp; git init
+$ echo "v1" &gt; app.txt &amp;&amp; git add . &amp;&amp; git commit -m "版本1：基础功能"
+$ echo "v2" &gt; app.txt &amp;&amp; git add . &amp;&amp; git commit -m "版本2：新增功能"
+$ echo "v3" &gt; app.txt &amp;&amp; git add . &amp;&amp; git commit -m "版本3：优化体验"
+$ echo "v4" &gt; app.txt &amp;&amp; git add . &amp;&amp; git commit -m "版本4：修复问题"
+
+# 实验 1：查看历史，记录各版本的提交哈希
+$ git log --oneline
+# 记录下四个版本的哈希值（前 7 位即可），后面会用到
+
+# 实验 2：用 diff 查看相邻版本的差异
+$ git diff HEAD~1 HEAD
+# 观察输出：它显示的是倒数第二个版本和最后一个版本的差异
+
+# 实验 3：查看工作区与最新提交的差异
+$ echo "未提交的修改" &gt;&gt; app.txt
+$ git diff
+# 观察输出：应该显示你刚添加的 "未提交的修改"
+
+# 实验 4：checkout 到历史版本（分离 HEAD 状态）
+$ git checkout HEAD~2
+# 观察终端提示："You are in 'detached HEAD' state"
+$ cat app.txt
+# 问：文件内容显示的是哪个版本？
+
+# 实验 5：回到主分支
+$ git checkout main
+# 或 git checkout master（取决于你的默认分支名）
+
+# 实验 6：用 reset --hard 回退一个版本（危险操作！）
+$ git reset --hard HEAD~1
+$ git log --oneline
+# 观察：最后一个提交"版本4"从历史中消失了
+$ cat app.txt
+# 问：文件内容变回了哪个版本？
+
+# 实验 7：用 reflog 找回被 reset 掉的提交
+$ git reflog
+# 找到 "版本4" 对应的哈希值，然后执行：
+# git reset --hard &lt;版本4的哈希值&gt;
+# 观察："版本4" 被找回来了</code></pre></div>
+  <div class="lesson-explain">
+    <p>这个实验最值得注意的是"实验 4"和"实验 6"的区别：checkout 让你临时查看历史，不影响分支走向；reset 则直接改写了分支历史。实验 7 则展示了 reflog 这个"时光机"——即使你用 reset 删掉了提交，只要没超过一定时间，都能找回来。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">练习</span>验证你的理解</h2>
+  <div class="exercise-box">
+    <p><strong>验证题 1（动手操作）：</strong>在一个有多个提交的仓库中，执行 git diff HEAD~2 HEAD~1。问：这个命令比较的是哪两个版本？diff 的输出中，以 + 开头的行和以 - 开头的行分别代表什么？</p>
+  </div>
+  <div class="exercise-box">
+    <p><strong>验证题 2（动手操作）：</strong>修改一个已跟踪的文件但不 add，然后执行 git checkout -- 文件名。问：checkout 后工作区的修改还在吗？这个操作和 git reset HEAD 文件名有什么区别？</p>
+  </div>
+  <div class="exercise-box">
+    <p><strong>设计题 1（开放思考）：</strong>假设你在 main 分支上提交了 5 次，然后发现第 3 次提交引入了一个严重 bug，但第 4、5 次提交是基于第 3 次的。请设计一个操作方案，既能撤销第 3 次提交的 bug，又能保留第 4、5 次提交的内容。提示：考虑 git revert 和手动解决冲突。</p>
+  </div>
+  <div class="exercise-box">
+    <p><strong>设计题 2（开放思考）：</strong>你的同学小明在团队项目中误用了 git reset --hard HEAD~3，丢掉了三天的工作。他很慌张，问你有没有办法恢复。请你设计一套帮小明恢复数据的操作步骤，并解释为什么 reflog 能找回这些"丢失"的提交。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">测验</span>快速检验一下</h2>
+  <div class="demo-card">
+    <p><strong>1. git diff 不带任何参数时，默认比较的是什么？</strong></p>
+    <p>A. 最新提交和倒数第二次提交之间的差异</p>
+    <p>B. 工作区和暂存区之间的差异</p>
+    <p>C. 本地仓库和远程仓库之间的差异</p>
+    <p>D. 两个不同分支之间的差异</p>
+  </div>
+  <div class="demo-card">
+    <p><strong>2. 关于 git reset --hard，以下说法正确的是？</strong></p>
+    <p>A. 它会创建一个新的提交来撤销之前的修改</p>
+    <p>B. 它会保留所有被移除的提交，随时可以找回</p>
+    <p>C. 它会移动分支指针并清空工作区和暂存区，被跳过的提交可能丢失</p>
+    <p>D. 它只能回退一步，不能回退多步</p>
+  </div>
+  <div class="demo-card">
+    <p><strong>3. 在团队协作的公共分支上，如果你想撤销某次已经推送的提交，应该优先使用哪个命令？</strong></p>
+    <p>A. git reset --hard</p>
+    <p>B. git revert</p>
+    <p>C. git checkout</p>
+    <p>D. git delete</p>
+  </div>
+  <div class="demo-card">
+    <p><strong>4. git reflog 的作用是什么？</strong></p>
+    <p>A. 显示当前仓库的所有分支列表</p>
+    <p>B. 记录 HEAD 指针的所有移动历史，帮助找回"丢失"的提交</p>
+    <p>C. 显示远程仓库的 URL 配置</p>
+    <p>D. 清理仓库中不需要的临时文件</p>
+  </div>
+  <div class="demo-card">
+    <p><strong>5. 判断正误：git checkout 某次旧提交后，再创建新的提交，这些新提交会自动附加到原来的分支上。</strong></p>
+    <p>A. 正确</p>
+    <p>B. 错误</p>
   </div>
 </section>
 

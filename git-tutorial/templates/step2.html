@@ -9,6 +9,24 @@
 </div>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">起源</span>Git 为什么要被发明出来</h2>
+  <div class="lesson-explain">
+    <p>2005 年，Linux 内核的开发遇到了一个大麻烦。当时全球有上千名开发者在为 Linux 写代码，他们需要一种工具来管理这些代码的变更。之前他们用的是一款叫 BitKeeper 的商业软件，但那一年 BitKeeper 的版权方收回了免费使用权。</p>
+    <p>Linus Torvalds——也就是 Linux 的创始人——面临两个选择：要么花钱买 BitKeeper 的授权，要么自己写一个。Linus 觉得现有的版本控制工具要么太慢，要么不够好使，于是他决定自己动手。短短两周内，他写出了 Git 的第一个版本。</p>
+    <p>Linus 设计 Git 时定了几个核心目标：第一，速度必须极快；第二，必须支持分布式协作，每个开发者都能在本地独立完成工作；第三，要能够可靠地管理超大型项目（比如 Linux 内核这种有数百万行代码的项目）。git init 就是这一切的起点——它在你本地搭建起一个完整的仓库。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">思考</span>为什么从"初始化仓库"开始</h2>
+  <div class="lesson-explain">
+    <p>想象你要开始写日记。第一步是什么？不是直接拿起笔写，而是先准备一个本子。这个本子要有页码，要有目录，要有固定的格式，这样你以后翻阅才不会乱。</p>
+    <p>Git 也是同样的道理。在开始记录代码变更之前，Git 需要先在你的项目文件夹里搭建一个"档案室"——也就是 .git 目录。这个档案室有自己的组织架构：哪里放文件快照，哪里放分支记录，哪里放配置信息。没有这个档案室，Git 就无从知道该把数据存在哪里。</p>
+    <p>Linus 在设计时其实也可以让 Git 自动追踪所有文件，不需要显式初始化。但他选择了让用户主动执行 git init，因为这样可以明确区分"这是一个被 Git 管理的项目"和"这只是一个普通文件夹"。这种显式的边界感，避免了很多意外的误操作。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">场景</span>什么时候初始化仓库</h2>
   <div class="lesson-explain">
     <p>每当你开始一个新项目，或者想让一个已有项目被 Git 管理时，第一步就是初始化仓库。这会在项目根目录创建一个隐藏的 <code>.git</code> 文件夹，Git 的所有记录都保存在这里。</p>
@@ -60,6 +78,16 @@
 </section>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">论证</span>为什么 Git 选择在本地建"档案室"</h2>
+  <div class="lesson-explain">
+    <p>在 Git 出现之前，最流行的版本控制工具是 CVS 和 SVN，它们都是"集中式"的。这意味着所有的版本历史都保存在一台中央服务器上，你的本地只保存当前版本的文件。每次查看历史、每次提交变更，都必须联网连接到服务器。</p>
+    <p>Linus 认为这种设计对于 Linux 内核开发来说是不可接受的。试想一下：如果你坐十几个小时的飞机去参加会议，在飞机上无法联网，你就不能提交代码、不能查看历史、不能回退版本——这对于一个全球协作的项目来说太脆弱了。</p>
+    <p>所以 Git 选择了"分布式"设计。执行 git init 后，你的本地就有了一个完整的仓库，包含了版本控制所需的全部基础设施。你可以离线提交、查看历史、创建分支，等联网后再把变更同步给其他人。这种设计的代价是每个开发者本地都有一份完整的数据副本，但在今天硬盘容量以 TB 计的时代，这点代价完全可以接受。</p>
+    <p>对比一下：SVN 的".svn"目录只保存了一些元数据，真正的历史在服务器上；而 Git 的".git"目录就是一个完整的数据库。这正是两者最根本的区别。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">要点</span>初始化后 Git 在做什么</h2>
   <div class="lesson-explain">
     <p>执行 <code>git init</code> 后，Git 会在当前目录创建 <code>.git</code> 子目录。这个目录包含了所有版本历史、分支信息、配置等。你不应该手动修改里面的内容。</p>
@@ -72,6 +100,98 @@
   <div class="lesson-explain">
     <p>在错误的目录执行 <code>git init</code>，比如在「下载」或「桌面」这种包含很多无关文件的目录。结果 Git 把所有文件都标记为未跟踪，<code>git status</code> 输出一大串无关内容。</p>
     <p>忘记配置用户名和邮箱就提交。Git 要求每次提交都记录作者信息，如果没有配置，提交会失败或显示匿名作者。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">实验</span>亲手揭开 .git 目录的面纱</h2>
+  <div class="lesson-explain">
+    <p>下面这组操作会带你一步步观察 git init 到底做了什么。建议你在本地跟着做一遍，亲眼看看 .git 目录是怎么诞生的。</p>
+  </div>
+  <div class="lesson-code"><pre><code># 实验 1：创建一个新目录并进入
+$ mkdir my-first-repo
+$ cd my-first-repo
+
+# 实验 2：确认此时没有 .git 目录
+$ ls -la
+# 观察输出，确认没有 .git
+
+# 实验 3：执行初始化
+$ git init
+# 注意终端输出的 "Initialized empty Git repository"
+
+# 实验 4：再次查看目录内容
+$ ls -la
+# 现在你应该能看到 .git 目录了
+
+# 实验 5：查看 .git 内部的结构
+$ ls -la .git/
+# 你会看到 objects/、refs/、hooks/、config、HEAD 等文件和目录
+
+# 实验 6：查看当前分支指针
+$ cat .git/HEAD
+# 输出应该是 "ref: refs/heads/main" 或 "ref: refs/heads/master"
+
+# 实验 7：配置用户信息后查看配置文件
+$ git config user.name "你的名字"
+$ git config user.email "你的邮箱"
+$ cat .git/config
+# 观察 [user] 段落是否被写入了 config 文件</code></pre></div>
+  <div class="lesson-explain">
+    <p>做完这组实验，你应该对"初始化仓库"有了更具体的理解。git init 不是做了什么神秘的操作，它只是在你的项目文件夹里建立了一套规范的文件结构。这套结构就是 Git 工作的基础。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">练习</span>验证你的理解</h2>
+  <div class="exercise-box">
+    <p><strong>验证题 1（动手操作）：</strong>在任意空目录中执行 git init，然后用 ls -la .git/ 列出所有内容。请回答：objects 目录下有几个子目录？它们分别是什么？</p>
+  </div>
+  <div class="exercise-box">
+    <p><strong>验证题 2（动手操作）：</strong>执行 git config user.name "Test"，然后打开 .git/config 文件查看内容。接着再执行一次 git config user.name "NewName"，观察 config 文件发生了什么变化。这说明了什么？</p>
+  </div>
+  <div class="exercise-box">
+    <p><strong>设计题 1（开放思考）：</strong>假设你和三位同学要合作完成一个课程设计项目。你负责初始化仓库。请思考：应该在项目开始的第一天就执行 git init，还是等写了一部分代码之后再做？为什么？</p>
+  </div>
+  <div class="exercise-box">
+    <p><strong>设计题 2（开放思考）：</strong>如果你不小心把整个用户主目录（比如 /home/username 或 C:\Users\username）执行了 git init，会发生什么问题？你会如何修复？</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">测验</span>快速检验一下</h2>
+  <div class="demo-card">
+    <p><strong>1. git init 命令的主要作用是什么？</strong></p>
+    <p>A. 把当前目录的所有文件提交到 Git 仓库</p>
+    <p>B. 在当前目录创建一个 .git 子目录，建立仓库的基础结构</p>
+    <p>C. 把本地仓库上传到远程服务器</p>
+    <p>D. 删除项目中的所有临时文件</p>
+  </div>
+  <div class="demo-card">
+    <p><strong>2. 下面关于 .git 目录的说法，哪个是正确的？</strong></p>
+    <p>A. .git 目录里只保存了文件的修改记录，不保存完整内容</p>
+    <p>B. .git 目录可以手动删除，删除后项目文件不受影响，只是失去了版本控制</p>
+    <p>C. .git 目录必须每天手动备份，否则数据会丢失</p>
+    <p>D. .git 目录越大，说明 Git 的运行速度越慢</p>
+  </div>
+  <div class="demo-card">
+    <p><strong>3. 在使用 git commit 之前，为什么要先配置 user.name 和 user.email？</strong></p>
+    <p>A. 这是 Git 的强制广告推送功能</p>
+    <p>B. 为了生成更漂亮的提交日志图表</p>
+    <p>C. 因为每次提交都要记录作者信息，没有配置会导致提交失败</p>
+    <p>D. 这只是可选项，不配也能正常使用</p>
+  </div>
+  <div class="demo-card">
+    <p><strong>4. Git 属于哪种类型的版本控制系统？</strong></p>
+    <p>A. 集中式（Centralized）</p>
+    <p>B. 分布式（Distributed）</p>
+    <p>C. 云端式（Cloud-based）</p>
+    <p>D. 离线式（Offline-only）</p>
+  </div>
+  <div class="demo-card">
+    <p><strong>5. 判断正误：git init 执行后，当前目录下的所有文件会自动被 Git 追踪。</strong></p>
+    <p>A. 正确</p>
+    <p>B. 错误</p>
   </div>
 </section>
 

@@ -1,0 +1,306 @@
+{% extends "base.html" %}
+{% block title %}08 高级技巧 - Git 教程{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+  <h1>08 高级技巧</h1>
+  <p>git stash、git rebase、git tag 的原理与应用</p>
+</div>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">起源</span>高级命令的诞生故事</h2>
+  <div class="lesson-explain">
+    <p><strong>git stash</strong> 的诞生源于一个日常困境：开发者正在写一个新功能，工作区里有大量未完成的改动，突然经理说「线上出了紧急 bug，需要你马上修复」。如果直接切换分支，Git 会阻止你，因为未提交的改动可能会和目标分支冲突。如果匆忙提交半成品，提交历史里就会多出一个「临时保存」的 commit，污染历史。</p>
+    <p>2007 年左右，Git 社区引入了 stash 命令，它可以把工作区和暂存区的改动打包成一个「草稿」，保存在一个独立的空间里。切换分支处理完紧急事务后，再把草稿恢复出来继续工作。</p>
+    <p><strong>git rebase</strong> 的历史可以追溯到早期版本控制系统的「补丁队列」概念。在分布式协作中，如果每个人都用 merge 合并分支，提交历史会变成复杂的「意大利面条」。一些团队希望历史是干净、线性的，就像所有人在同一条时间线上依次提交一样。rebase 就是实现这个目标的工具——它把分支上的提交「摘下来」，在目标分支的最新位置重新「嫁接」上去。</p>
+    <p><strong>git tag</strong> 的灵感来自传统的软件版本发布实践。软件开发到一定阶段会发布「1.0版」「2.0版」，开发者需要一个永不移动的标记来记住这些里程碑。branch 会随着新提交不断前进，而 tag 一旦被创建就固定指向某个 commit，永远不会变。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">思考</span>为什么要发明这些「额外」的工具</h2>
+  <div class="lesson-explain">
+    <p>你已经学会了 add、commit、branch、merge、push、pull，这些命令足以完成日常开发。那为什么还需要 stash、rebase、tag 呢？因为真实世界的开发场景比教科书复杂得多。</p>
+    <p><strong>关于 stash 的思考：</strong>工作区里的代码只有三种归宿——丢弃、提交、或保存。丢弃太可惜，提交会污染历史，所以需要一个「第四选项」：暂时存放但不进入正式历史。这就是 stash 的设计动机。</p>
+    <p><strong>关于 rebase 的思考：</strong>merge 会把两条开发线「拧」在一起，形成一个带两个父节点的合并提交。如果团队频繁使用 feature 分支，历史图会变成一团乱麻。rebase 提供了一种替代方案：不「拧」在一起，而是把其中一条线「拉直」接在另一条线后面。代价是改写了历史——原来的提交被替换成了新的提交（hash 变了）。</p>
+    <p><strong>关于 tag 的思考：</strong>commit hash（比如 a1b2c3d）对人类极不友好。开发者和用户交流时不会说「请使用 a1b2c3d 版本」，而是说「请使用 v1.2.0 版本」。tag 就是 hash 的人类可读别名，而且 tag 不会移动，适合标记发布节点。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">原理</span>stash、rebase、tag 的本质</h2>
+  <div class="lesson-explain">
+    <p><strong>git stash</strong> 的原理是：把工作区和暂存区的改动打包成几个 commit（默认存到 refs/stash），然后把工作区恢复到干净状态。这些 commit 不在正常的分支历史中，而是放在一个特殊的「储藏栈」里。你可以多次 stash，它们会按栈的结构堆叠，最后 pop 时按后进先出的顺序恢复。</p>
+    <p><strong>git rebase</strong> 的原理是：找到当前分支和目标分支的共同祖先，计算当前分支上每个提交相对于祖先的「差异」（patch），然后把目标分支的最新提交作为新基底，依次重放这些差异。每个提交都会被重新创建，所以 commit hash 会改变。形象地说，rebase 就是「搬家」——把你的工作从旧地址搬到新地址。</p>
+    <p><strong>git tag</strong> 的原理和分支几乎一样：它也是一个指向 commit 的引用。区别在于 branch 会随着新提交自动移动，而 tag 创建后就固定不动。tag 分为轻量标签（lightweight，只是一个引用）和附注标签（annotated，包含标签名、作者、日期、签名等元数据）。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">论证</span>这些工具为什么这样设计</h2>
+  <div class="lesson-explain">
+    <p><strong>stash 的论证：</strong>为什么 stash 不直接创建一个普通 commit？因为普通 commit 会进入当前分支的历史，而 stash 的意图是「临时存放」，不应该被未来的代码审查者看到。 stash 把草稿放在独立的空间里，既保留了改动，又不会污染任何分支的历史。这体现了「关注点分离」的设计思想。</p>
+    <p><strong>rebase 的论证：</strong>rebase 的核心价值是<strong>历史可读性</strong>。一个线性的历史图（A→B→C→D）比一张分叉的网（A→B→C 和 A→D→E→merge）更容易理解。但 rebase 有一个重要前提：<strong>不要对已经 push 到公共仓库的提交执行 rebase。</strong>因为 rebase 改写了 commit hash，如果别人已经基于旧 hash 做了开发，你的 rebase 会让他们的工作基础「悬空」。所以 rebase 只适合清理本地尚未分享的历史。</p>
+    <p><strong>tag 的论证：</strong>branch 和 tag 都是指向 commit 的引用，为什么需要两种机制？因为它们的语义完全不同：branch 表示「开发线的前端」，是动态的；tag 表示「某个特定的历史节点」，是静态的。用 tag 标记发布版本，几年后你仍然可以精确地回到那个版本。如果用 branch 标记，由于 branch 会前进，「v1.0 分支」几个月后可能指向的是 v1.0.17 的代码，失去了标记的精确性。</p>
+    <p>对比其他方案：Mercurial 也有类似的 queue/strip 机制对应 stash，有 rebase 扩展对应 git rebase，也有 tag 机制。这说明这些高级工具解决的是分布式版本控制的共性问题，不是 Git 独有的设计。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">要点</span>高级技巧的核心命令</h2>
+  <div class="lesson-explain">
+    <p><code>git stash</code> 把工作区和暂存区的改动保存起来，工作区恢复干净。<code>git stash push -m "描述"</code> 可以给 stash 加备注。<code>git stash list</code> 查看所有 stash。<code>git stash pop</code> 恢复最近一次 stash 并从列表中删除。<code>git stash apply</code> 恢复但不删除。</p>
+    <p><code>git rebase 目标分支</code> 把当前分支的提交「嫁接」到目标分支的最新提交之后。<code>git rebase -i HEAD~3</code> 交互式 rebase，可以合并提交（squash）、修改提交信息、删除提交等。<strong>注意：已经 push 到远程的提交不要 rebase。</strong></p>
+    <p><code>git tag 标签名</code> 给当前 commit 打轻量标签。<code>git tag -a v1.0 -m "版本 1.0 发布"</code> 打附注标签。<code>git push origin 标签名</code> 把标签推送到远程。<code>git push origin --tags</code> 推送所有标签。<code>git tag -d 标签名</code> 删除本地标签。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">错误</span>高级命令的常见陷阱</h2>
+  <div class="lesson-explain">
+    <p><strong>stash 陷阱：</strong>stash 了很久之后忘记恢复， list 列表越来越长。建议给每个 stash 加描述（-m），定期清理不再需要的 stash。</p>
+    <p><strong>rebase 陷阱一：</strong>在公共分支上 rebase 然后 force push，导致队友的代码基础「悬空」，他们 pull 时会产生大量冲突。黄金法则：<strong>只 rebase 本地未 push 的提交。</strong></p>
+    <p><strong>rebase 陷阱二：</strong>rebase 过程中遇到冲突，解决后忘记执行 <code>git rebase --continue</code>，导致 rebase 一直处于暂停状态。</p>
+    <p><strong>tag 陷阱：</strong>打了标签但忘记 push 到远程，导致队友看不到标签。标签默认不会随 push 自动上传，需要显式推送。</p>
+    <p><strong>混用陷阱：</strong>stash 里存放了未提交的改动，pop 出来后直接 rebase。如果 stash 的内容和 rebase 目标有冲突，会让情况变得更复杂。建议先 pop 确认工作区干净，再考虑 rebase。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">实验</span>探索 stash、rebase 和 tag 的内部机制</h2>
+  <div class="lesson-explain">
+    <p>下面的实验将揭示这些高级命令在 Git 内部的真实行为。你会发现它们并没有那么神秘。</p>
+  </div>
+  <div class="lesson-code">
+    <pre><code># ========== 实验 1：验证 stash 的存储位置 ==========
+# 先修改一个文件但不提交
+echo "临时改动" >> README.md
+git stash push -m "我的临时改动"
+
+# 观察 stash 引用
+cat .git/refs/stash
+# stash 本质上也是一个 commit 引用
+
+# 查看 stash 列表
+git stash list
+# 恢复 stash
+git stash pop
+
+# ========== 实验 2：观察 rebase 如何改写历史 ==========
+# 准备环境：创建 feature 分支并做两个提交
+git branch feature-rebase && git switch feature-rebase
+echo "feature 第一行" >> main.py && git add . && git commit -m "feat: 添加第一行"
+echo "feature 第二行" >> main.py && git add . && git commit -m "feat: 添加第二行"
+
+# 记录提交 hash
+git log --oneline
+# 记下这两个 feature 提交的 hash
+
+# 切换回 main 并做一次新提交
+git switch main
+echo "main 新功能" >> main.py && git add . && git commit -m "main: 新功能"
+
+# 执行 rebase
+git switch feature-rebase
+git rebase main
+
+# 再次查看 hash
+git log --oneline
+# 你会发现 feature-rebase 上的两个提交 hash 变了！这就是 rebase 改写历史的证据
+
+# ========== 实验 3：观察 tag 的本质 ==========
+git switch main
+git tag v1.0
+git tag -a v2.0 -m "附注标签"
+
+# 观察标签引用
+ls .git/refs/tags/
+cat .git/refs/tags/v1.0
+
+# 附注标签不同，它是一个独立的 Git 对象
+git cat-file -t refs/tags/v2.0
+# 输出应该是 "tag" 类型，而不是 "commit"
+git show v2.0
+# 可以看到标签的作者、日期和附注信息
+</code></pre>
+  </div>
+  <div class="lesson-explain">
+    <p><strong>观察现象：</strong>stash 是一个特殊的引用（refs/stash），底层也是 commit 对象。rebase 会重新创建提交，hash 改变是最直接的证据。轻量标签直接指向 commit，附注标签则是一个独立的 tag 对象，再间接指向 commit。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">练习</span>高级技巧验证与设计</h2>
+  <div class="exercise-box">
+    <div class="lesson-explain">
+      <p><strong>验证题 1：</strong>按照实验 2 的步骤，在 feature-rebase 分支上做两次提交，记录它们的 hash。然后回到 main 做一次新提交，再对 feature-rebase 执行 rebase。对比 rebase 前后 feature 提交的 hash，确认它们已经改变。思考：为什么 hash 会改变？</p>
+    </div>
+  </div>
+  <div class="exercise-box">
+    <div class="lesson-explain">
+      <p><strong>验证题 2：</strong>创建一个附注标签 <code>git tag -a v0.1 -m "第一个测试版本"</code>，然后用 <code>git cat-file -p v0.1</code> 查看它的内部结构。对比轻量标签和附注标签在 .git/refs/tags/ 下的区别。</p>
+    </div>
+  </div>
+  <div class="exercise-box">
+    <div class="lesson-explain">
+      <p><strong>验证题 3：</strong>在工作区修改两个文件，执行 <code>git stash push -m "双文件改动"</code>。用 <code>git stash show -p</code> 查看 stash 里保存的详细差异。然后执行 <code>git stash pop</code> 恢复，观察工作区是否完全恢复到 stash 前的状态。</p>
+    </div>
+  </div>
+  <div class="exercise-box">
+    <div class="lesson-explain">
+      <p><strong>设计题：</strong>假设你正在开发一个校园二手交易平台，代码已经部署到服务器上运行。现在有两个任务同时出现：任务 A 是添加「搜索过滤」功能（预计 3 天完成），任务 B 是修复一个导致订单丢失的紧急 bug（需要立即处理）。你已经在任务 A 上写了半天代码，工作区里有未提交的改动。请设计一个完整的工作流程：如何使用 stash 切换到任务 B？修复完成后如何恢复任务 A 的工作？任务 A 完成后，选择用 merge 还是 rebase 合并到 main？为什么？</p>
+    </div>
+  </div>
+  <div class="exercise-box">
+    <div class="lesson-explain">
+      <p><strong>设计题：</strong>你的项目准备发布 1.0 正式版。请设计一套标签管理策略：打什么类型的标签（轻量还是附注）？标签命名遵循什么规范？标签如何推送到远程？发布后如果发现严重 bug 需要发修复版，标签应该如何演进？</p>
+    </div>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">实例</span>动手操作</h2>
+  <div class="lesson-explain">
+    <p>下面是真实工作区，你可以自由执行 stash、rebase、tag 等命令，观察它们的效果。</p>
+  </div>
+  <div class="lesson-demo">
+    <div class="demo-label">命令操作台</div>
+    <div class="terminal" id="terminal"></div>
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="runCmd('git status')">查看状态</button>
+      <button class="btn btn-primary" onclick="runCmd('git log --oneline --graph --all')">图形化历史</button>
+      <button class="btn btn-secondary" onclick="runCmd('git stash list')">查看 stash 列表</button>
+      <button class="btn btn-secondary" onclick="runCmd('echo "临时代码" >> main.py && git stash push -m "保存临时工作"')">stash 保存改动</button>
+      <button class="btn btn-secondary" onclick="runCmd('git stash pop')">恢复 stash</button>
+      <button class="btn btn-secondary" onclick="runCmd('git branch feature-x && git switch feature-x')">创建 feature 分支</button>
+      <button class="btn btn-secondary" onclick="runCmd('echo "新功能代码" >> main.py && git add . && git commit -m "feat: 添加新功能"')">在 feature 上提交</button>
+      <button class="btn btn-secondary" onclick="runCmd('git switch main')">切换回 main</button>
+      <button class="btn btn-secondary" onclick="runCmd('echo "main 更新" >> main.py && git add . && git commit -m "main: 更新内容"')">在 main 上提交</button>
+      <button class="btn btn-secondary" onclick="runCmd('git switch feature-x && git rebase main')">rebase feature 到 main</button>
+      <button class="btn btn-secondary" onclick="runCmd('git switch main && git merge feature-x')">合并 feature</button>
+      <button class="btn btn-secondary" onclick="runCmd('git tag v1.0')">打轻量标签</button>
+      <button class="btn btn-secondary" onclick="runCmd('git tag -a v2.0 -m \"版本 2.0\"')">打附注标签</button>
+      <button class="btn btn-secondary" onclick="runCmd('git tag')">查看标签</button>
+      <button class="btn btn-secondary" onclick="runCmd('git show v2.0')">查看标签详情</button>
+      <button class="btn btn-danger" onclick="resetWorkspace()">重置工作区</button>
+    </div>
+    <div class="mt-3 flex gap-2">
+      <input type="text" id="customCmd" placeholder="输入自定义命令..." class="input" style="flex:1;">
+      <button class="btn btn-primary" onclick="runCustom()">执行</button>
+    </div>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">测验</span>高级技巧知识检验</h2>
+  <div class="demo-card">
+    <div class="lesson-explain">
+      <p><strong>1. git stash 的主要作用是什么？</strong></p>
+      <p>A. 永久删除工作区的改动</p>
+      <p>B. 临时保存工作区和暂存区的改动，让工作区恢复干净</p>
+      <p>C. 把改动推送到远程仓库</p>
+      <p>D. 创建一个新的分支</p>
+    </div>
+  </div>
+  <div class="demo-card">
+    <div class="lesson-explain">
+      <p><strong>2. 关于 git rebase，下列说法正确的是？</strong></p>
+      <p>A. rebase 会保留原来的 commit hash 不变</p>
+      <p>B. rebase 可以在任何分支上安全执行，包括已经 push 到远程的公共分支</p>
+      <p>C. rebase 会把当前分支的提交在目标分支上重新应用，commit hash 会改变</p>
+      <p>D. rebase 和 merge 的效果完全一样，只是命令不同</p>
+    </div>
+  </div>
+  <div class="demo-card">
+    <div class="lesson-explain">
+      <p><strong>3. 轻量标签（lightweight tag）和附注标签（annotated tag）的主要区别是什么？</strong></p>
+      <p>A. 轻量标签可以移动，附注标签不能移动</p>
+      <p>B. 轻量标签直接指向 commit，附注标签是一个包含元数据的独立对象</p>
+      <p>C. 轻量标签可以推送到远程，附注标签不能</p>
+      <p>D. 两者没有任何区别</p>
+    </div>
+  </div>
+  <div class="demo-card">
+    <div class="lesson-explain">
+      <p><strong>4. 为什么不应该对已经 push 到远程的提交执行 rebase？</strong></p>
+      <p>A. 因为 rebase 会自动删除远程分支</p>
+      <p>B. 因为 rebase 改写了 commit hash，会导致基于旧 hash 工作的队友出现混乱</p>
+      <p>C. 因为远程服务器禁止 rebase 操作</p>
+      <p>D. 因为 rebase 只能在本地的 main 分支上执行</p>
+    </div>
+  </div>
+  <div class="demo-card">
+    <div class="lesson-explain">
+      <p><strong>5. 执行 git stash pop 后，stash 列表中的这条记录会怎样？</strong></p>
+      <p>A. 仍然保留在列表中</p>
+      <p>B. 从列表中删除</p>
+      <p>C. 自动转换为一个普通 commit</p>
+      <p>D. 被推送到远程仓库</p>
+    </div>
+  </div>
+</section>
+
+<div class="nav-footer">
+  <a href="/step7" class="btn btn-secondary">← 上一步</a>
+  <a href="/practice" class="btn btn-primary">综合实战 →</a>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const terminal = document.getElementById('terminal');
+
+async function runCmd(cmd) {
+  terminal.innerHTML += `<div class="cmd-line"><span class="prompt">$</span> ${cmd}</div>`;
+  try {
+    const res = await fetch('/api/exec', {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({cmd})
+    });
+    const data = await res.json();
+    const output = data.stdout || data.stderr || '(无输出)';
+    terminal.innerHTML += `<pre class="cmd-output">${output}</pre>`;
+  } catch (e) {
+    terminal.innerHTML += `<pre class="cmd-output error">${e.message}</pre>`;
+  }
+  terminal.scrollTop = terminal.scrollHeight;
+}
+
+async function resetWorkspace() {
+  terminal.innerHTML += `<div class="cmd-line"><span class="prompt">$</span> 重置工作区...</div>`;
+  await fetch('/api/reset', {method: 'POST'});
+  terminal.innerHTML += `<pre class="cmd-output">工作区已重置</pre>`;
+  terminal.scrollTop = terminal.scrollHeight;
+}
+
+function runCustom() {
+  const input = document.getElementById('customCmd');
+  const cmd = input.value.trim();
+  if (cmd) {
+    runCmd(cmd);
+    input.value = '';
+  }
+}
+
+document.getElementById('customCmd').addEventListener('keypress', function(e) {
+  if (e.key === 'Enter') runCustom();
+});
+
+runCmd('git status');
+</script>
+<style>
+.terminal {
+  background: #1d1d1f; color: #f5f5f7; padding: var(--space-4);
+  border-radius: var(--border-radius-md); font-family: var(--font-mono);
+  font-size: var(--font-size-sm); line-height: 1.6; min-height: 160px;
+  max-height: 300px; overflow-y: auto; margin-bottom: var(--space-3);
+}
+.cmd-line { margin-bottom: 4px; }
+.prompt { color: var(--success); margin-right: 8px; }
+.cmd-output { margin: 0 0 8px 20px; white-space: pre-wrap; color: #d1d1d6; }
+.cmd-output.error { color: var(--danger); }
+.btn-group { display: flex; gap: var(--space-2); flex-wrap: wrap; }
+.nav-footer { display: flex; justify-content: space-between; margin-top: var(--space-6); }
+</style>
+{% endblock %}

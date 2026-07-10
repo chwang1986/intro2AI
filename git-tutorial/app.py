@@ -84,8 +84,8 @@ def index():
         {"num": "04", "title": "查看历史与回退", "desc": "git log、diff、checkout", "path": "/step4", "done": True},
         {"num": "05", "title": "分支管理", "desc": "branch、merge、冲突解决", "path": "/step5", "done": True},
         {"num": "06", "title": "远程仓库", "desc": "remote、push、pull、clone", "path": "/step6", "done": True},
-        {"num": "07", "title": "多人协作", "desc": "模拟两人协作流程", "path": "/collab", "done": True},
-        {"num": "08", "title": "综合实战", "desc": "完整工作流操作", "path": "/practice", "done": True},
+        {"num": "07", "title": "协作冲突", "desc": "git pull 冲突、冲突的产生与解决", "path": "/step7", "done": True},
+        {"num": "08", "title": "高级技巧", "desc": "stash、rebase、tag 的原理与应用", "path": "/step8", "done": True},
     ]
     return render_template("index.html", steps=steps)
 
@@ -124,6 +124,18 @@ def step5():
 def step6():
     """远程仓库"""
     return render_template("step6.html", status=get_repo_status())
+
+
+@app.route("/step7")
+def step7():
+    """协作冲突"""
+    return render_template("step7.html")
+
+
+@app.route("/step8")
+def step8():
+    """高级技巧"""
+    return render_template("step8.html", status=get_repo_status())
 
 
 @app.route("/collab")

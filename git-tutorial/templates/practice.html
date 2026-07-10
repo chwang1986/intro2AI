@@ -9,6 +9,45 @@
 </div>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">起源</span>从随意提交到标准工作流</h2>
+  <div class="lesson-explain">
+    <p>Git 诞生后的最初几年，人们使用它的方式非常简单：一个 master 分支，所有人直接往上 commit，然后 push。这种「直接提交」的方式在小型项目中没什么问题，反正就一两个人，彼此知根知底。</p>
+    <p>但到了 2008 年以后，GitHub 的出现彻底改变了开源协作的模式。越来越多的人开始使用 Git，团队规模也从两三个人变成了几十人、上百人。问题开始暴露：有人在 master 上提交了半成品代码，导致其他人 pull 下来后项目跑不起来；有人写了一堆 commit 但信息都是「fix」「update」，一个月后没人知道这些提交到底做了什么；有人直接把功能分支合并到主线，没有经过任何审查。</p>
+    <p>于是，社区和各大公司开始总结「标准工作流」。2010 年左右，Git Flow 工作流被提出，定义了 feature、develop、release、hotfix 等分支的规范。后来又出现了更简化的 GitHub Flow 和 GitLab Flow。这些工作流本质上都是在回答同一个问题：如何让多人协作既高效又不出错。</p>
+    <p>今天我们使用的「8 步标准工作流」，是从这些实践中提炼出来的、最适合大学项目和中小型团队的简化版本。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">思考</span>为什么需要一个固定的流程？</h2>
+  <div class="lesson-explain">
+    <p>很多同学可能会想：用 Git 不就是 add、commit、push 吗？搞那么多步骤是不是太麻烦了？这确实是个好问题。如果只有你一个人开发，确实不需要太复杂的流程。但当团队超过两个人，问题就开始变得复杂。</p>
+    <p>想象一下这个场景：你和两个同学合作一个大作业。A 同学直接在 main 上写了一半的功能就 push 了，B 同学 pull 下来后发现代码跑不通，自己的功能也没法测试。A 说「我还没写完呢」，B 说「那你 push 干嘛」。这就是没有流程约束的后果。</p>
+    <p>再想象一下：你们各自开发了三天，每个人都觉得自己写得很顺。到了要合并的时候，发现三个人改了同一个文件的同一个函数，冲突密密麻麻几十处。如果没有每天同步的习惯，这种冲突会摧毁团队的士气。</p>
+    <p>所以，标准工作流的核心目的不是「增加步骤」，而是「减少意外」。每一步都有明确的意图：更新代码是为了拿到最新版本，创建分支是为了隔离风险，提交代码是为了保存进度，代码审查是为了提前发现 bug。流程越规范，协作越顺畅。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">论证</span>为什么这 8 步是合理的？</h2>
+  <div class="lesson-explain">
+    <p>这 8 步工作流看起来很长，但每一步都有不可替代的作用。我们可以把它和两种极端情况做对比：一种是「极简流程」，另一种是「过度复杂流程」。</p>
+    <p><strong>对比极简流程（直接在 main 上开发）：</strong>有的同学为了省事，直接在 main 分支上写代码，改完就 push。这种方式的问题在于：你无法同时开发两个功能，因为第二个功能必须等第一个功能完成；你也没有机会让队友审查代码，bug 会直接流入主线；如果某个功能需要回滚，你会把其他已完成的功能一起回滚掉。8 步流程中的「创建 feature 分支」和「Pull Request」就是为了解决这些问题。</p>
+    <p><strong>对比过度复杂流程（严格的 Git Flow）：</strong>Git Flow 要求有 develop、release、hotfix 等多个长期分支，每次发布都要走完整的流程。这套流程在大型商业软件中很有效，但对于大学作业或初创项目来说太重了。维护多个长期分支需要额外的心智负担，很多时候 release 分支就是空转。8 步流程保留了 Git Flow 的核心思想（分支隔离 + 代码审查），但去掉了不必要的分支层级。</p>
+    <p><strong>论证每一步的必要性：</strong></p>
+    <p>1. <code>git pull</code>：避免基于过时代码开发，减少冲突。</p>
+    <p>2. <code>git branch</code>：隔离功能，确保 main 始终可用。</p>
+    <p>3. 开发功能：这是核心工作，不解释。</p>
+    <p>4. <code>git commit</code>：保存进度，方便回滚和审查。</p>
+    <p>5. 再次 <code>git pull</code>：在推送前解决冲突，防止把冲突推上去。</p>
+    <p>6. <code>git push</code>：把代码送到远程，让队友能看到。</p>
+    <p>7. Pull Request：代码审查，是质量保证的最后一道防线。</p>
+    <p>8. 删除分支：保持仓库整洁，避免分支堆积。</p>
+    <p>这 8 步不是凭空编出来的，而是无数开发团队在踩过坑之后总结出的最小可行流程。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">场景</span>一个完整的开发流程</h2>
   <div class="lesson-explain">
     <p>假设你接到了一个新任务：给项目添加用户登录功能。下面是使用 Git 的完整工作流，从接到任务到代码上线。</p>
@@ -26,6 +65,55 @@
     <p><strong>6. 推送到远程：</strong><code>git push origin feature-login</code> —— 把分支推送到远程，方便代码审查。</p>
     <p><strong>7. 合并到主分支：</strong>在 GitHub 上发起 Pull Request，审查通过后合并到 main。</p>
     <p><strong>8. 清理分支：</strong><code>git branch -d feature-login</code> —— 删除已合并的功能分支，保持仓库整洁。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">实验</span>完整走一遍 8 步工作流</h2>
+  <div class="lesson-explain">
+    <p>理论归理论，动手才是最重要的。下面的实验带你完整执行一次标准工作流。你需要一个已经初始化的 Git 仓库，或者可以在下面的操作台中完成。</p>
+    <p>实验目标：模拟「给项目添加用户登录功能」的完整流程，从拉取最新代码到最终清理分支。</p>
+  </div>
+  <div class="lesson-code">
+    <pre><code># 步骤 1：更新代码（确保基于最新版本开发）
+git pull origin main
+
+# 步骤 2：创建并切换到 feature 分支
+git branch feature-login
+git switch feature-login
+
+# 步骤 3：开发功能（模拟写代码）
+echo "def login(): pass" >> auth.py
+git add auth.py
+git commit -m "feat: 添加登录函数骨架"
+
+# 继续开发，模拟多次提交
+echo "def validate_password(): pass" >> auth.py
+git add auth.py
+git commit -m "feat: 添加密码验证"
+
+# 步骤 4：开发过程中再次同步主线（防止落后太多）
+git pull origin main
+
+# 步骤 5：推送到远程
+git push origin feature-login
+
+# 步骤 6：发起 Pull Request（在 GitHub/GitLab 网页上操作）
+# 审查通过后，合并到 main
+
+# 步骤 7：切换回 main 并拉取合并后的代码
+git switch main
+git pull origin main
+
+# 步骤 8：清理已合并的分支
+git branch -d feature-login
+
+# 验证：查看当前分支和提交历史
+git branch -a
+git log --oneline --graph</code></pre>
+  </div>
+  <div class="lesson-explain">
+    <p>在这个实验中，有几个地方需要特别注意：第一，步骤 2 中 <code>git branch</code> 和 <code>git switch</code> 可以合并为 <code>git switch -c feature-login</code>；第二，步骤 4 的 pull 很重要，如果你在开发期间队友合并了新代码，这时可以提前解决冲突，避免 push 后才发现问题；第三，步骤 8 删除分支前，一定要确认分支已经合并到 main，否则会用 <code>-D</code> 强制删除，可能丢失代码。</p>
   </div>
 </section>
 
@@ -61,8 +149,73 @@
   </div>
 </section>
 
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">练习</span>流程验证与设计挑战</h2>
+  
+  <div class="exercise-box">
+    <p><strong>验证题 1：</strong>在 8 步工作流中，为什么要在「创建分支」之前执行一次 <code>git pull</code>？如果跳过这一步直接创建分支，会有什么潜在风险？</p>
+  </div>
+  
+  <div class="exercise-box">
+    <p><strong>验证题 2：</strong>假设你在 feature 分支上开发了三天，期间 main 分支上有五个新提交。你在推送前执行了 <code>git pull origin main</code>，结果产生了冲突。请问这个冲突是在哪里解决的？是在远程服务器上，还是在你本地的 feature 分支上？</p>
+  </div>
+  
+  <div class="exercise-box">
+    <p><strong>验证题 3：</strong>删除 feature 分支后，这个分支上的提交记录会消失吗？为什么 <code>git log</code> 仍然能看到那些提交？</p>
+  </div>
+  
+  <div class="exercise-box">
+    <p><strong>设计题 1：</strong>你的团队有 5 个人，同时在进行 3 个功能的开发。请设计一个分支策略，说明每个人应该在什么分支上工作，什么时候合并，合并前需要什么检查。画一个简单的分支图（用文字描述即可）。</p>
+  </div>
+  
+  <div class="exercise-box">
+    <p><strong>设计题 2：</strong>假设你正在 feature-login 分支上开发，突然接到通知需要紧急修复一个生产环境的 bug。你需要暂停当前工作，切换到 main 分支修复 bug，然后再回到 feature-login 继续开发。请设计一个操作步骤，确保你当前的未提交代码不会丢失，并且修复的 bug 能正确合并到 main。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">测验</span>工作流知识自检</h2>
+  
+  <div class="demo-card">
+    <p><strong>判断题 1：</strong>在标准工作流中，feature 分支开发完成后应该直接 push 到 main 分支，不需要经过 Pull Request 审查。</p>
+    <p style="color: var(--muted); font-size: var(--font-size-sm);">答案：错误。直接 push 到 main 跳过了代码审查，是协作中的大忌。正确的做法是通过 Pull Request 让队友审查后再合并。</p>
+  </div>
+  
+  <div class="demo-card">
+    <p><strong>判断题 2：</strong><code>git branch -d feature-x</code> 只能删除已经合并到当前分支的分支，如果分支没有合并，命令会失败。</p>
+    <p style="color: var(--muted); font-size: var(--font-size-sm);">答案：正确。<code>-d</code> 是安全删除，Git 会检查该分支是否已经合并。如果要强制删除未合并的分支，需要使用 <code>-D</code>。</p>
+  </div>
+  
+  <div class="demo-card">
+    <p><strong>选择题 3：</strong>在开发过程中，你在 feature 分支上执行 <code>git pull origin main</code>，这会把 main 的更新合并到你的 feature 分支。这个操作的目的是什么？</p>
+    <p>A. 把 feature 分支的代码推送到 main</p>
+    <p>B. 让 feature 分支基于最新的 main，减少最终合并时的冲突</p>
+    <p>C. 删除 feature 分支上旧的提交</p>
+    <p>D. 自动发起 Pull Request</p>
+    <p style="color: var(--muted); font-size: var(--font-size-sm);">答案：B。在 feature 分支上 pull main，相当于把主线的最新改动合并进来，让自己的分支保持最新，这样最终合并回 main 时冲突更少。</p>
+  </div>
+  
+  <div class="demo-card">
+    <p><strong>选择题 4：</strong>以下哪个命令可以在创建新分支的同时直接切换到该分支？</p>
+    <p>A. <code>git branch feature-x</code></p>
+    <p>B. <code>git switch feature-x</code></p>
+    <p>C. <code>git checkout -b feature-x</code></p>
+    <p>D. <code>git merge feature-x</code></p>
+    <p style="color: var(--muted); font-size: var(--font-size-sm);">答案：C。<code>git checkout -b</code>（或 <code>git switch -c</code>）会在创建分支的同时切换过去。单独的 <code>git branch</code> 只创建不切换。</p>
+  </div>
+  
+  <div class="demo-card">
+    <p><strong>选择题 5：</strong>当你执行 <code>git stash</code> 后，以下描述正确的是？</p>
+    <p>A. 未提交的改动被保存到一个临时区域，工作区恢复干净</p>
+    <p>B. 所有改动被自动提交到一个临时分支</p>
+    <p>C. 未提交的改动被永久删除</p>
+    <p>D. 工作区的改动被推送到远程仓库</p>
+    <p style="color: var(--muted); font-size: var(--font-size-sm);">答案：A。stash 会把当前未提交的改动（包括暂存区和 working directory）保存到一个栈中，工作区恢复到最后一次提交的状态。之后可以用 <code>git stash pop</code> 恢复。</p>
+  </div>
+</section>
+
 <div class="nav-footer">
-  <a href="/collab" class="btn btn-secondary">← 上一步</a>
+  <a href="/step8" class="btn btn-secondary">← 上一步</a>
   <a href="/" class="btn btn-primary">完成教程 →</a>
 </div>
 {% endblock %}

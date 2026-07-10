@@ -18,6 +18,27 @@
 </section>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">起源</span>Linux 之父的两周杰作</h2>
+  <div class="lesson-explain">
+    <p>2005 年，Linux 内核的开发团队遇到了一个大麻烦。他们一直免费使用的版本控制工具 BitKeeper，突然宣布不再对开源项目免费。这意味着全世界最大的开源项目——Linux 内核——失去了一直依赖的版本管理系统。</p>
+    <p>Linus Torvalds（Linux 的创始人）评估了当时市面上的替代方案：CVS 和 SVN。但他很快发现，这些集中式版本控制工具在处理像 Linux 这样庞大的项目时，速度太慢了。比如，SVN 在提交一个改动时，需要和远程服务器通信，而 Linux 内核每天有成百上千个改动。</p>
+    <p>Linus 决定自己动手写一个。他对新工具有三个硬性要求：第一，<strong>速度必须极快</strong>；第二，<strong>支持真正的分布式开发</strong>（每个开发者本地都有完整的仓库）；第三，<strong>数据绝对不能丢失</strong>。2005 年 4 月 3 日，Linus 发出了第一封关于 Git 的邮件。两周后，Git 已经可以自我管理自己的代码了。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">思考</span>为什么是"快照"而不是"增量"</h2>
+  <div class="lesson-explain">
+    <p>当时主流的版本控制系统（CVS、SVN）采用的都是<strong>增量存储</strong>：它们只记录每次修改了哪些行。比如，你有一个 1000 行的文件，修改了第 50 行，系统就只保存"第 50 行从 A 改成了 B"。</p>
+    <p>这种设计在理论上很省空间，但有一个致命问题：<strong>回溯历史版本非常慢</strong>。如果你想回到 100 次提交之前的版本，系统必须依次应用 100 个增量补丁。对于 Linux 内核这种级别的项目，这可能需要几分钟。</p>
+    <p>Linus 的想法完全不同："我不在乎多占一点磁盘空间，我在乎的是速度。"他选择了<strong>快照存储</strong>：每次提交，Git 都会把整个项目的状态拍一张照片存起来。回到任意历史版本时，直接拿出那张照片即可——耗时几乎是零。</p>
+    <div class="highlight-box">
+      <p><strong>核心洞察：</strong>在 2005 年，磁盘空间已经便宜到可以忽略不计，但开发者的时间永远宝贵。Git 用空间换时间，这是一个典型的工程权衡。</p>
+    </div>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">原理</span>Git 就像一台智能相机</h2>
   <div class="lesson-explain">
     <p>想象 Git 是一台精密的相机系统。你在工作区编辑文件，就像在现实世界中布置场景。<code>git add</code> 相当于把想拍的物体放进取景框，你可以挑选哪些要拍、哪些不拍。<code>git commit</code> 则是按下快门，把取景框里的内容永久保存到相册——也就是本地仓库。每次快门都会生成一张带编号的照片，以后你可以随时翻出任何一张照片。</p>
@@ -69,6 +90,16 @@
 </section>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">论证</span>为什么三层模型是最佳设计</h2>
+  <div class="lesson-explain">
+    <p>你可能会问：为什么 Git 不设计成"修改一次文件就自动保存"？为什么要多一个"暂存区"的环节？</p>
+    <p>这是一个非常好的问题。想象你在写一篇论文，同时修改了三个部分：标题、摘要、结论。这三个改动是相关的——它们共同构成了"完成摘要修订"这个逻辑单元。但如果 Git 每次保存文件都自动提交，你的历史记录里就会充斥着"改了标题"、"改了摘要"、"改了结论"这样的零散提交，而不是一个完整的"完成摘要修订"。</p>
+    <p><strong>暂存区的存在，让你可以把多个文件的修改组合成一个有意义的提交。</strong>你可以先把标题和摘要的改动放进暂存区，确认它们构成了一个完整的逻辑单元后，再一次性提交。这就是"暂存区"的设计哲学：给开发者一个"整理包裹"的机会，而不是被迫每次改文件都发一个快递。</p>
+    <p>对比一下其他设计：如果 Git 只有工作区和仓库两层（没有暂存区），那么每次提交要么提交所有改动，要么只能提交单个文件。前者导致提交信息模糊，后者导致历史记录碎片化。暂存区是 Git 最精妙的设计之一。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">要点</span>三个核心概念</h2>
   <div class="lesson-explain">
     <p>Git 的核心只需要理解三个东西：<strong>工作区</strong>、<strong>暂存区</strong>、<strong>仓库</strong>。它们之间的关系就像工厂的生产线。</p>
@@ -95,6 +126,46 @@
 </section>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">实验</span>亲手观察 Git 的三层模型</h2>
+  <div class="lesson-explain">
+    <p>打开终端，跟着以下步骤操作，观察每个命令后 <code>git status</code> 的输出变化。这是理解 Git 三层模型最直接的方式。</p>
+  </div>
+  <div class="lesson-code">
+    <div class="demo-label">实验步骤</div>
+    <pre><code># 第 1 步：创建一个测试目录并进入
+mkdir git-lab && cd git-lab
+
+# 第 2 步：初始化仓库，观察 .git 目录的诞生
+git init
+ls -la   # 你会看到一个 .git 目录
+
+# 第 3 步：查看状态（此时应该是空的）
+git status
+
+# 第 4 步：创建一个文件，再次查看状态
+# 注意：文件现在处于"工作区"（红色显示）
+echo "hello world" > hello.txt
+git status
+
+# 第 5 步：把文件加入暂存区，观察状态变化
+# 注意：文件现在处于"暂存区"（绿色显示）
+git add hello.txt
+git status
+
+# 第 6 步：提交到仓库，观察状态变化
+# 注意：工作区变干净了
+git commit -m "添加 hello.txt"
+git status
+
+# 第 7 步：查看提交历史
+git log --oneline</code></pre>
+  </div>
+  <div class="lesson-explain">
+    <p><strong>实验任务：</strong>在实验过程中，每次运行 <code>git status</code> 时，仔细观察输出中的文字提示。你能用自己的话解释"Untracked files"、"Changes to be committed" 和 "nothing to commit" 分别对应三层模型中的哪一层吗？</p>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">实例</span>常用命令速查</h2>
   <div class="lesson-code">
     <div class="demo-label">核心命令</div>
@@ -104,6 +175,55 @@ git add 文件名         # 将文件加入暂存区
 git commit -m "说明"   # 提交到本地仓库
 git log               # 查看提交历史
 git diff              # 查看修改内容</code></pre>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">练习</span>巩固与思考</h2>
+  <div class="lesson-explain">
+    <div class="exercise-box">
+      <p><strong>练习 1（验证）：</strong>按照"实验"部分的步骤，在本地创建一个 git-lab 目录并完成全部 7 步操作。截图或记录每次 <code>git status</code> 的输出，对比三层模型的对应关系。</p>
+      <p><strong>练习 2（设计）：</strong>假设你要为班级课程项目设计一个版本控制流程。项目有 3 个同学参与，每人负责不同的章节。请设计一个"提交规范"，包括：什么时候提交、提交信息怎么写、什么时候把修改推送到共享仓库。写出至少 3 条规则。</p>
+      <p><strong>练习 3（思考）：</strong>如果把 Git 的三层模型（工作区→暂存区→仓库）类比成生活中的某个流程，你会选择什么类比？（比如：购物车的"加入购物车→确认订单→支付"）请写出你的类比，并解释每个步骤的对应关系。</p>
+    </div>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">测验</span>自检一下</h2>
+  <div class="lesson-explain">
+    <div class="demo-card">
+      <p><strong>1. Git 的创始人是谁？</strong></p>
+      <ul>
+        <li>A. Guido van Rossum</li>
+        <li>B. Linus Torvalds</li>
+        <li>C. James Gosling</li>
+      </ul>
+      <p><strong>2. Git 采用的核心存储方式是？</strong></p>
+      <ul>
+        <li>A. 增量存储（只保存修改的行）</li>
+        <li>B. 快照存储（保存完整状态）</li>
+        <li>C. 文件备份（复制整个文件）</li>
+      </ul>
+      <p><strong>3. 暂存区（Staging Area）的主要作用是？</strong></p>
+      <ul>
+        <li>A. 临时存放被删除的文件</li>
+        <li>B. 让用户挑选和组织本次要提交的改动</li>
+        <li>C. 自动备份所有修改</li>
+      </ul>
+      <p><strong>4. 以下哪个命令把文件从工作区移到暂存区？</strong></p>
+      <ul>
+        <li>A. git commit</li>
+        <li>B. git add</li>
+        <li>C. git push</li>
+      </ul>
+      <p><strong>5. Git 诞生于哪一年？</strong></p>
+      <ul>
+        <li>A. 1991</li>
+        <li>B. 2005</li>
+        <li>C. 2015</li>
+      </ul>
+    </div>
   </div>
 </section>
 

@@ -9,6 +9,38 @@
 </div>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">起源</span>从 Linux 内核开发到 Git 的诞生</h2>
+  <div class="lesson-explain">
+    <p>2005 年以前，Linux 内核开发团队一直使用一款商业版本控制软件 BitKeeper。这款软件是专有的，Linux 创始人 Linus Torvalds 和 BitKeeper 公司达成了一项特殊协议，允许内核开发者免费使用。</p>
+    <p>但是到了 2005 年 4 月，BitKeeper 公司决定停止向开源社区提供免费授权。这意味着 Linux 内核项目突然失去了版本控制工具。Linus 面临一个选择：要么回到旧的 CVS 或 SVN，要么自己写一个新的。</p>
+    <p>Linus 对当时的集中式版本控制系统很不满意。他认为这些系统要么太慢，要么不支持真正的并行开发。于是他花了大约两周时间，写出了 Git 的第一个版本。Git 的设计目标很明确：支持大规模分布式协作，速度快，数据完整性好。</p>
+    <p>两周后，Linux 内核代码就迁移到了 Git 上。这意味着 Git 从诞生第一天起，就必须解决「几百个开发者同时修改同一份代码」这个问题。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">思考</span>集中式 vs 分布式：该怎么协作？</h2>
+  <div class="lesson-explain">
+    <p>在 Git 出现之前，大多数团队使用 CVS 或 SVN。这些系统是集中式的：只有一个中央服务器保存所有代码，每个人的电脑上只有当前工作的一个副本。你要提交代码，必须连接到服务器。</p>
+    <p>这种模式的缺点是显而易见的。如果服务器宕机，所有人都无法工作；如果两个开发者同时修改了同一个文件，SVN 会锁住文件，导致后面的人必须等待；最麻烦的是，如果没有网络，你连提交代码都做不到。</p>
+    <p>Linus 思考的问题是：为什么必须有一个「中心」？每个开发者的电脑都有完整的仓库历史，为什么不让他们在本地完成所有操作，只在需要同步时才交换代码？</p>
+    <p>基于这个思路，Git 采用了分布式模型。每个开发者的本地仓库都是完整的，可以独立提交、分支、合并。冲突不是在服务器上发生的，而是在每个人的本地解决。这彻底改变了协作的方式。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">论证</span>为什么分布式协作是更好的方案？</h2>
+  <div class="lesson-explain">
+    <p>分布式协作之所以被现代开发团队普遍接受，不是因为「新」，而是因为它解决了集中式系统的根本问题。</p>
+    <p><strong>论证一：离线工作能力。</strong>在分布式模式下，开发者可以在没有网络的情况下继续提交代码。你可以坐飞机时写代码，在咖啡馆断网时继续工作。每个提交都保存在本地，等有网络时再一次性推送。集中式系统（如 SVN）要求每次提交都必须连接服务器，这在移动办公场景下是致命的。</p>
+    <p><strong>论证二：并行开发的自然支持。</strong>在 Git 中，创建分支和合并是日常操作，成本极低。每个功能都可以在独立分支上开发，互不干扰。SVN 也有分支，但实现方式是复制整个目录，操作成本高，团队往往避免使用。结果是大家都在 trunk 上直接开发，冲突频发。</p>
+    <p><strong>论证三：数据安全与冗余。</strong>在集中式系统中，中央服务器是唯一的数据源，如果硬盘损坏且备份失败，历史记录就彻底丢失。在 Git 中，每个开发者的电脑上都有一份完整的历史。即使服务器挂了，从任意一台开发者电脑上都能恢复整个仓库。</p>
+    <p><strong>论证四：工作流灵活性。</strong>Git 不强制任何特定的工作流。你可以用「集成管理者」模型（Linux 内核的方式），也可以用「功能分支」模型（大多数公司的方式），还可以用「Forking」模型（开源社区的方式）。这种灵活性让不同规模的团队都能找到适合自己的协作方式。</p>
+    <p>当然，分布式也有代价。你需要理解本地和远程的区别，需要学习 pull、push、fetch 等同步操作。但相比它带来的好处，这些学习成本是值得的。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">场景</span>两个人怎么一起工作</h2>
   <div class="lesson-explain">
     <p>实际工作中，一个项目通常由多个人共同开发。每个人在本地开发自己的功能，然后把代码推送到远程仓库。Git 会自动合并不冲突的修改，如果两个人改了同一处代码，就需要手动解决冲突。</p>
@@ -69,6 +101,61 @@
 </section>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">实验</span>亲手制造并解决一次冲突</h2>
+  <div class="lesson-explain">
+    <p>冲突是协作中不可避免的，但真正理解冲突如何解决，最好的方式是亲手制造一次。下面我们用两个本地目录模拟两个开发者，让他们修改同一个文件的同一行，然后观察 Git 的行为。</p>
+    <p>按照下面的步骤操作，你会看到冲突标记 <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code> 是怎么产生的，以及如何手动解决它。</p>
+  </div>
+  <div class="lesson-code">
+    <pre><code># 步骤 1：创建模拟环境
+mkdir collab-lab && cd collab-lab
+git init --bare remote.git        # 创建「远程」裸仓库
+git clone remote.git alice        # 开发者 Alice 克隆
+git clone remote.git bob          # 开发者 Bob 克隆
+
+# 步骤 2：Alice 创建初始文件并推送
+cd alice
+echo "print('hello')" > app.py
+git add app.py && git commit -m "init"
+git push origin main
+
+# 步骤 3：Bob 拉取，然后修改同一行
+cd ../bob
+git pull origin main
+echo "print('hello from bob')" > app.py
+git add . && git commit -m "bob's change"
+git push origin main
+
+# 步骤 4：Alice 也修改同一行（先不 pull）
+cd ../alice
+echo "print('hello from alice')" > app.py
+git add . && git commit -m "alice's change"
+
+# 步骤 5：Alice 推送，会被拒绝，必须先 pull
+git push origin main              # 失败！远程有 Bob 的新提交
+git pull origin main              # 产生冲突！
+
+# 步骤 6：查看冲突标记
+cat app.py
+# 你会看到类似下面的内容：
+# &lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+# print('hello from alice')
+# =======
+# print('hello from bob')
+# &gt;&gt;&gt;&gt;&gt;&gt;&gt; 分支名
+
+# 步骤 7：手动解决冲突，保留双方内容
+echo "print('hello from alice and bob')" > app.py
+git add app.py
+git commit -m "resolve conflict: merge alice and bob changes"
+git push origin main</code></pre>
+  </div>
+  <div class="lesson-explain">
+    <p>完成上面的实验后，你应该理解了三个关键点：第一，Git 会在冲突处插入标记，而不是自动选择某一方；第二，解决冲突后必须重新 add 和 commit；第三，冲突的本质是「同一处代码有不同的意图」，解决冲突需要理解双方的修改目的，而不是随便选一个版本。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">实例</span>模拟两人协作</h2>
   <div class="lesson-explain">
     <p>点击「创建协作环境」后，会出现两个终端：左边是用户A，右边是用户B。你可以分别在这两个终端中执行命令，观察协作效果。</p>
@@ -106,6 +193,71 @@
         </div>
       </div>
     </div>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">练习</span>协作场景的设计与验证</h2>
+  
+  <div class="exercise-box">
+    <p><strong>验证题 1：</strong>在多人协作中，为什么「先 pull 再 push」是一个必须遵守的规则？如果不这样做会发生什么？</p>
+  </div>
+  
+  <div class="exercise-box">
+    <p><strong>验证题 2：</strong>假设你和队友同时修改了同一个文件的不同行（比如你在第 10 行加代码，他在第 20 行加代码），Git 会怎么处理？会产生冲突吗？</p>
+  </div>
+  
+  <div class="exercise-box">
+    <p><strong>设计题 1：</strong>你和另外两名同学要合作完成一个大作业项目。请设计一套分支命名规范、提交信息格式和代码审查流程，写成一份简短的团队约定（200 字以内）。</p>
+  </div>
+  
+  <div class="exercise-box">
+    <p><strong>设计题 2：</strong>假设你的团队中有人习惯直接在 main 分支上开发，经常把未完成的功能 push 上去，导致其他同学 pull 下来后代码跑不通。请设计一个工作流或技术方案，从流程上防止这种情况发生。</p>
+  </div>
+  
+  <div class="exercise-box">
+    <p><strong>设计题 3：</strong>在一次合并冲突中，你发现自己和队友的实现思路完全不同，你的方案效率更高但改动大，队友的方案改动小但效率一般。双方都有合理的理由。作为冲突的解决者，你应该怎么做？</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">测验</span>协作知识自检</h2>
+  
+  <div class="demo-card">
+    <p><strong>判断题 1：</strong>在 Git 中，如果两个人修改了同一个文件的不同行，Git 通常会自动合并，不需要手动解决冲突。</p>
+    <p style="color: var(--muted); font-size: var(--font-size-sm);">答案：正确。只有修改了同一行或相邻行时，Git 才无法自动判断意图，需要手动解决。</p>
+  </div>
+  
+  <div class="demo-card">
+    <p><strong>判断题 2：</strong>解决冲突时，使用 <code>git checkout --ours</code> 保留自己的版本是最安全的做法。</p>
+    <p style="color: var(--muted); font-size: var(--font-size-sm);">答案：错误。直接选择一方可能会丢弃另一方的合理修改，正确做法应该是理解双方意图后手动合并。</p>
+  </div>
+  
+  <div class="demo-card">
+    <p><strong>选择题 3：</strong>以下哪个操作最有助于减少最终合并时的冲突？</p>
+    <p>A. 每天开始工作前执行 <code>git pull origin main</code></p>
+    <p>B. 等所有功能开发完再一次性 pull</p>
+    <p>C. 尽量避免和队友修改同一个文件</p>
+    <p>D. 直接在 main 上开发，不用分支</p>
+    <p style="color: var(--muted); font-size: var(--font-size-sm);">答案：A。频繁同步可以减少分支之间的差异，降低冲突概率。</p>
+  </div>
+  
+  <div class="demo-card">
+    <p><strong>选择题 4：</strong>把敏感信息（如密码）误提交到 Git 仓库后，以下哪种说法是正确的？</p>
+    <p>A. 立即删除文件并 commit，这样就不存在了</p>
+    <p>B. 删除文件后，历史记录中仍然会保留该信息</p>
+    <p>C. 只要文件不在当前工作目录，就是安全的</p>
+    <p>D. Git 会自动加密存储，所以不用担心</p>
+    <p style="color: var(--muted); font-size: var(--font-size-sm);">答案：B。Git 保存了完整历史，简单删除文件并不能从历史中移除敏感信息，需要使用 git filter-repo 等工具重写历史。</p>
+  </div>
+  
+  <div class="demo-card">
+    <p><strong>选择题 5：</strong>Pull Request 的主要作用是什么？</p>
+    <p>A. 把代码从本地推送到远程</p>
+    <p>B. 让队友审查代码，防止有问题的代码进入 main</p>
+    <p>C. 自动运行代码并部署到服务器</p>
+    <p>D. 替代 git merge 命令</p>
+    <p style="color: var(--muted); font-size: var(--font-size-sm);">答案：B。Pull Request 是代码审查的载体，是防止 bug 进入主线的最后一道防线。</p>
   </div>
 </section>
 

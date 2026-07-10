@@ -9,6 +9,28 @@
 </div>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">起源</span>分支的概念从哪来</h2>
+  <div class="lesson-explain">
+    <p>2005 年，Linus Torvalds 在创建 Git 时，面临一个严峻的问题：Linux 内核有上千名开发者，有人正在修复紧急漏洞，有人在开发新功能，还有人在做实验性重构。这些工作必须同时进行，但不能互相干扰。</p>
+    <p>在 Git 之前，Linux 内核团队用过一款叫 BitKeeper 的商业版本控制工具。BitKeeper 支持轻量级的分支，但它不是开源软件，使用许可随时可能被收回。Linus 设计 Git 时，决心要做出一款开源的、分支操作极快的工具。</p>
+    <p>当时的 CVS 和 SVN 也有分支功能，但它们是「目录拷贝」式的分支——创建分支相当于把整个仓库复制一份到另一个目录，耗时几分钟甚至更久。开发者因为怕麻烦，很少使用分支。</p>
+    <p>Linus 的突破在于：他发现分支根本不需要复制任何代码。Git 的分支只是一个指向某个 commit 的<strong>轻量级指针</strong>（一个 41 字节的文件）。创建分支只需要写这个文件，切换分支只需要移动这个指针。这个设计彻底改变了开发者的工作方式。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">思考</span>当时面临的问题与选择</h2>
+  <div class="lesson-explain">
+    <p>当时最核心的矛盾是：<strong>协作需要并行，但并行容易互相干扰。</strong>如果所有人都在同一条代码线上工作，一个开发者的实验性代码可能让整条线崩溃，所有人都受影响。</p>
+    <p>Linus 思考了三种可能的解决方案：</p>
+    <p><strong>方案一：目录拷贝（SVN 的做法）。</strong>每次开新分支都复制整个项目目录。缺点是创建和切换都很慢，而且占用大量磁盘空间。开发者会因为成本太高而避免使用分支。</p>
+    <p><strong>方案二：打标签标记版本。</strong>用标签记录稳定版本，开发者自己在本地管理不同版本。缺点是没有系统化的合并机制，两个人基于同一版本开发的代码很难整合到一起。</p>
+    <p><strong>方案三：指针式分支（Git 的做法）。</strong>分支只是一个引用，指向某个 commit。创建工作瞬间完成，切换工作也只是更新工作区的文件。因为成本极低，开发者可以频繁创建和销毁分支。</p>
+    <p>Linus 选择方案三的原因是：Git 的底层存储结构是有向无环图（DAG），每个 commit 已经记录了其父 commit。既然历史本身就是一张网，那分支只需要在网的不同节点上放几个「书签」就可以了。这个设计与 Git 的底层数据结构天然契合。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">场景</span>为什么要用分支</h2>
   <div class="lesson-explain">
     <p>想象你正在开发一个稳定运行的项目。突然想尝试一个新功能，但不确定能不能成功。如果你直接在主代码上改，万一改坏了，整个项目就崩了。</p>
@@ -69,6 +91,18 @@
 </section>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">论证</span>为什么指针式分支是对的</h2>
+  <div class="lesson-explain">
+    <p>你可能会问：分支只是一个指针，那不同的代码版本存在哪里？答案是：所有的代码版本都保存在 Git 的对象数据库中，分支只是帮你标记「当前应该看哪一个版本」。</p>
+    <p>这个方案的正确性可以从三个角度论证：</p>
+    <p><strong>1. 数据结构层面：</strong>Git 的历史是一棵有向无环图，每个 commit 节点都包含指向父节点的指针。分支引用只是在这张图上增加了一个「入口点」。无论有多少个分支，底层数据都不会重复存储。这和 SVN 的目录拷贝有本质区别——SVN 的分支是 O(n) 操作，Git 是 O(1) 操作。</p>
+    <p><strong>2. 合并算法层面：</strong>当两个分支需要合并时，Git 会自动找到它们的「最近共同祖先」（merge base）。这个祖先节点天然存在于 DAG 结构中。三方合并算法只需要比较「祖先版本」「分支 A 版本」「分支 B 版本」三个快照，就能自动合并不冲突的部分。这个算法的正确性建立在 DAG 结构之上，而指针式分支完美利用了这一点。</p>
+    <p><strong>3. 工程实践层面：</strong>因为分支足够廉价，开发者养成了「一个任务一个分支」的习惯。功能开发、bug 修复、代码审查都在独立分支上进行，大大降低了代码互相干扰的概率。Linux 内核至今每天创建和合并数百个分支，这在 SVN 时代是不可想象的。</p>
+    <p>对比其他方案：Mercurial（hg）也采用了类似 Git 的指针式分支，这从侧面证明了这个设计的优越性。而 SVN 和 CVS 的目录拷贝式分支已经被现代版本控制系统淘汰。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">要点</span>分支操作的核心命令</h2>
   <div class="lesson-explain">
     <p><code>git branch</code> 查看所有分支，当前分支前面带 <code>*</code>。<code>git branch 新分支名</code> 创建新分支。<code>git branch -d 分支名</code> 删除已合并的分支。</p>
@@ -88,6 +122,66 @@
 </section>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">实验</span>验证分支的本质</h2>
+  <div class="lesson-explain">
+    <p>下面的实验将带你亲眼看到「分支只是一个指针」这个事实。你会观察创建分支前后 Git 内部文件的变化。</p>
+  </div>
+  <div class="lesson-code">
+    <pre><code># 实验 1：观察分支引用文件
+# 先查看 .git/refs/heads 目录，这里存放着所有分支指针
+cat .git/refs/heads/main
+
+# 实验 2：创建新分支并观察变化
+# 创建分支后，你会发现新增了一个 41 字节的文件
+git branch test-branch
+ls .git/refs/heads/
+cat .git/refs/heads/test-branch
+# 注意：test-branch 文件的内容和 main 完全一样，因为它们指向同一个 commit
+
+# 实验 3：在新分支上提交后观察变化
+git switch test-branch
+echo "测试内容" >> README.md
+git add . && git commit -m "test: 在 test-branch 上提交"
+cat .git/refs/heads/test-branch
+cat .git/refs/heads/main
+# 你会发现 test-branch 的内容变了，而 main 保持不变
+
+# 实验 4：快进合并的观察
+git switch main
+git merge test-branch
+# 观察 git log，你会发现没有产生新的 merge commit，main 的指针直接移到了 test-branch 的位置
+</code></pre>
+  </div>
+  <div class="lesson-explain">
+    <p><strong>观察现象：</strong>创建分支时 Git 没有复制任何代码文件，只新建了一个引用文件。切换分支时工作区的文件内容变了，但 .git/objects 目录里的对象没有任何变化。这验证了分支的轻量性。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">练习</span>动手验证与设计思考</h2>
+  <div class="exercise-box">
+    <div class="lesson-explain">
+      <p><strong>验证题 1：</strong>按照上面的实验步骤，在终端中执行命令，确认 .git/refs/heads/ 目录下分支引用文件的内容变化。用 <code>git log --oneline --graph --all</code> 观察分支图，截图或记录你看到的结构。</p>
+    </div>
+  </div>
+  <div class="exercise-box">
+    <div class="lesson-explain">
+      <p><strong>验证题 2：</strong>创建两个分支 feature-A 和 feature-B，都从 main 切出。在 feature-A 上修改 main.py 的第一行，在 feature-B 上修改 main.py 的第二行。依次合并 feature-A 和 feature-B 到 main，观察是否产生冲突。思考：为什么修改不同行不会冲突？</p>
+    </div>
+  </div>
+  <div class="exercise-box">
+    <div class="lesson-explain">
+      <p><strong>验证题 3：</strong>在 feature-A 和 feature-B 上都修改 main.py 的同一行，然后尝试合并。观察冲突标记 <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code> 的格式，手动解决冲突并提交。理解冲突文件中的 HEAD、分支名分别代表什么。</p>
+    </div>
+  </div>
+  <div class="exercise-box">
+    <div class="lesson-explain">
+      <p><strong>设计题：</strong>假设你正在开发一个校园二手交易平台，团队有 3 个人：小明负责用户系统，小红负责商品发布系统，你自己负责订单系统。请设计一套分支管理策略：需要哪些分支？命名规则是什么？什么时候创建、什么时候合并？每个人如何协作才能避免冲突？</p>
+    </div>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">实例</span>动手操作</h2>
   <div class="lesson-explain">
     <p>创建 feature 分支，在上面添加新功能，然后合并回 main。</p>
@@ -99,12 +193,61 @@
       <button class="btn btn-primary" onclick="runCmd('git branch')">查看分支</button>
       <button class="btn btn-primary" onclick="runCmd('git branch feature-login')">创建 feature 分支</button>
       <button class="btn btn-primary" onclick="runCmd('git switch feature-login')">切换到 feature</button>
-      <button class="btn btn-secondary" onclick="runCmd('echo \"// 登录功能代码\" >> main.py && git add . && git commit -m \"feature: 添加登录功能\"')">在 feature 上提交</button>
+      <button class="btn btn-secondary" onclick="runCmd('echo "// 登录功能代码" >> main.py && git add . && git commit -m "feature: 添加登录功能"')">在 feature 上提交</button>
       <button class="btn btn-primary" onclick="runCmd('git switch main')">切换回 main</button>
       <button class="btn btn-primary" onclick="runCmd('git merge feature-login')">合并 feature</button>
       <button class="btn btn-secondary" onclick="runCmd('git branch -d feature-login')">删除 feature 分支</button>
       <button class="btn btn-secondary" onclick="runCmd('git log --oneline --graph --all')">图形化查看</button>
       <button class="btn btn-danger" onclick="resetWorkspace()">重置工作区</button>
+    </div>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">测验</span>分支管理知识检验</h2>
+  <div class="demo-card">
+    <div class="lesson-explain">
+      <p><strong>1. Git 中的分支本质上是什么？</strong></p>
+      <p>A. 代码的完整副本</p>
+      <p>B. 指向某个 commit 的轻量级指针</p>
+      <p>C. 一个补丁文件的集合</p>
+      <p>D. 工作区的备份目录</p>
+    </div>
+  </div>
+  <div class="demo-card">
+    <div class="lesson-explain">
+      <p><strong>2. 快进合并（Fast-forward merge）会产生新的合并提交吗？</strong></p>
+      <p>A. 会，每次合并都会产生一个新的 commit</p>
+      <p>B. 不会，只是把目标分支的指针向前移动</p>
+      <p>C. 只有在有冲突时才会产生</p>
+      <p>D. 取决于合并时是否加了 --no-ff 参数</p>
+    </div>
+  </div>
+  <div class="demo-card">
+    <div class="lesson-explain">
+      <p><strong>3. 当合并出现冲突时，Git 会在冲突文件中插入什么标记？</strong></p>
+      <p>A. ======= 和 -------</p>
+      <p>B. &lt;&lt;&lt;&lt;&lt;&lt;&lt;、======= 和 &gt;&gt;&gt;&gt;&gt;&gt;&gt;</p>
+      <p>C. CONFLICT START 和 CONFLICT END</p>
+      <p>D. [LOCAL] 和 [REMOTE]</p>
+    </div>
+  </div>
+  <div class="demo-card">
+    <div class="lesson-explain">
+      <p><strong>4. 解决冲突后，需要执行什么操作才能完成合并？</strong></p>
+      <p>A. 直接执行 git merge --continue</p>
+      <p>B. 修改文件后执行 git add 和 git commit</p>
+      <p>C. 执行 git conflict --resolve</p>
+      <p>D. 删除冲突文件重新拉取</p>
+    </div>
+  </div>
+  <div class="demo-card">
+    <div class="lesson-explain">
+      <p><strong>5. 与 SVN 的分支相比，Git 分支的主要优势是什么？</strong></p>
+      <p>A. Git 分支可以存储更多的历史记录</p>
+      <p>B. Git 分支创建和切换的速度极快，几乎瞬间完成</p>
+      <p>C. Git 分支可以自动修复代码中的 bug</p>
+      <p>D. Git 分支不需要合并就可以直接推送到远程</p>
     </div>
   </div>
 </section>
