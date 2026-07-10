@@ -1798,49 +1798,31 @@ pre code {
 
 /* ================ 教学笔记专用样式 ================ */
 
-/* 教学区块容器 */
+/* 教学区块容器 —— 与 .lesson-section 视觉统一（开放式，无背景卡片） */
 .lesson-block {
-  background: var(--surface);
-  border-radius: var(--radius);
-  padding: var(--spacer-32);
-  margin-bottom: var(--spacer-24);
-  box-shadow: var(--shadow);
+  margin-bottom: 32px;
 }
 
-/* 区块标题：序号 + 文字 */
+/* 区块标题 —— 与 .lesson-section h2 视觉统一 */
 .lesson-title {
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 600;
-  margin-bottom: var(--spacer-20);
-  display: flex;
-  align-items: center;
-  gap: var(--spacer-12);
-  color: var(--text);
+  margin-bottom: 16px;
+  color: var(--text-primary);
 }
 
 .lesson-num {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  background: var(--brand);
-  color: #fff;
-  font-size: 14px;
-  font-weight: 700;
-  border-radius: var(--radius-sm);
-  flex-shrink: 0;
+  display: none; /* 隐藏旧式序号，sidebar 已有 step-badge */
 }
 
-/* 讲解区 */
+/* 讲解区 —— 与 .lesson-section p 视觉统一 */
 .lesson-explain {
-  margin-bottom: var(--spacer-24);
-  line-height: var(--leading-body);
+  line-height: 1.75;
 }
 
 .lesson-explain p {
-  margin-bottom: var(--spacer-12);
-  color: var(--text);
+  margin-bottom: 12px;
+  color: var(--text-secondary);
 }
 
 .lesson-explain p:last-child {
@@ -1852,13 +1834,13 @@ pre code {
   padding: 1px 5px;
 }
 
-/* 效果展示区 */
+/* 效果展示区 —— 与 .demo-card 视觉统一 */
 .lesson-demo {
   background: #fafafa;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  padding: var(--spacer-24);
-  margin-bottom: var(--spacer-24);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  padding: 20px 24px;
+  margin: 16px 0;
 }
 
 /* 代码区 */
