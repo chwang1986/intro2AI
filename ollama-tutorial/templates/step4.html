@@ -1,0 +1,222 @@
+{% extends "base.html" %}
+
+{% block title %}Step 4 — 高级用法{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1>Step 4 — 高级用法</h1>
+  <p>流式输出、系统提示、温度参数、多轮对话</p>
+</div>
+
+<div class="lesson-section">
+  <h2>场景</h2>
+  <p>基础调用已经跑通了。但生产环境的要求更高：用户不想盯着空白屏幕等 10 秒才看到结果；你希望控制模型的"创造力"，让它有时严谨有时发散；你想做一个真正的聊天机器人，能记住之前说过的话。</p>
+</div>
+
+<div class="lesson-section">
+  <h2>原理</h2>
+
+  <div class="concept-card">
+    <h4>流式输出：让用户先看到第一个字</h4>
+    <p>默认情况下，模型生成完整答案后才一次性返回。对于长回答，用户可能要等好几秒。流式输出（Streaming）让模型每生成一个 Token 就发送一次，用户可以立刻看到第一个字逐渐"打字"出来。</p>
+    <p>开启方式：设置 <code>stream=True</code>（默认值）。</p>
+    <pre style="background:var(--bg-code);padding:16px;border-radius:8px;overflow-x:auto;"><code>import ollama
+
+stream = ollama.generate(
+    model="qwen2.5:7b",
+    prompt="写一首关于夏天的短诗",
+    stream=True
+)
+
+# stream 是一个生成器，每次 yield 一个 Token
+for chunk in stream:
+    print(chunk["response"], end="", flush=True)
+</code></pre>
+    <p>底层原理：Ollama 把 HTTP 响应的 <code>Transfer-Encoding</code> 设为 <code>chunked</code>，每个 chunk 是一个 JSON 行，包含刚生成的 Token。客户端边收边显示，就实现了"打字机效果"。</p>
+    <div class="highlight-box">
+      <p><strong>什么时候用流式：</strong>交互式应用（聊天机器人、AI 助手）必须用流式，让用户有反馈感。后台批处理任务（批量翻译、数据清洗）不需要流式，一次性返回更省事。</p>
+    </div>
+  </div>
+
+  <div class="concept-card">
+    <h4>系统提示：给模型设定"人设"</h4>
+    <p><code>system</code> 消息是聊天接口中的第一条消息，它的作用是告诉模型"你是谁、你应该怎么说话、你的知识边界是什么"。系统提示在整个对话中始终有效。</p>
+    <pre style="background:var(--bg-code);padding:16px;border-radius:8px;overflow-x:auto;"><code>messages = [
+    {
+        "role": "system",
+        "content": "你是一位严谨的 Python 导师。回答时只给出代码和简短解释，不添加闲聊。所有代码必须包含类型注解。"
+    },
+    {"role": "user", "content": "写个函数，计算列表的平均值"}
+]
+
+response = ollama.chat(
+    model="qwen2.5:7b",
+    messages=messages
+)
+print(response["message"]["content"])
+</code></pre>
+    <p>好的系统提示直接影响输出质量。写系统提示的几个原则：</p>
+    <ul>
+      <li><strong>具体</strong>：不要写"你是一个有帮助的助手"，要写"你是一个 SQL 优化专家，回答时先指出原查询的问题，再给出优化后的代码"</li>
+      <li><strong>限定边界</strong>：告诉模型什么不该做（"如果你不确定，就说不知道，不要编造"）</li>
+      <li><strong>指定格式</strong>：如果需要结构化输出，提前说明格式（"用 Markdown 表格返回"）</li>
+    </ul>
+  </div>
+
+  <div class="concept-card">
+    <h4>温度与 top_p：控制"创造力"</h4>
+    <p>模型生成下一个 Token 时，会给词表中的每个词算一个概率。温度和 top_p 就是控制"怎么从这个概率分布里选词"的两个旋钮。</p>
+
+    <p><strong>温度（temperature）</strong>：控制概率分布的"平坦程度"。</p>
+    <ul>
+      <li><code>temperature=0</code>：总是选概率最高的词，输出最确定、最保守</li>
+      <li><code>temperature=0.7</code>：默认值，概率分布适当平滑，有一定随机性</li>
+      <li><code>temperature=1.5</code>：概率分布很平，小概率词也有机会被选中，输出更发散、更有创意</li>
+    </ul>
+
+    <p><strong>top_p（核采样）</strong>：不是从整个词表选，而是只从累积概率达到 p 的最小词集合里选。</p>
+    <ul>
+      <li><code>top_p=0.1</code>：只考虑最可能的 10% 的词，输出很集中</li>
+      <li><code>top_p=0.9</code>：考虑最可能的 90% 的词，默认常用的值</li>
+    </ul>
+
+    <pre style="background:var(--bg-code);padding:16px;border-radius:8px;overflow-x:auto;"><code># 严谨模式：代码生成、事实问答
+response = ollama.generate(
+    model="qwen2.5:7b",
+    prompt="解释 Python 的 GIL",
+    options={"temperature": 0.2, "top_p": 0.5}
+)
+
+# 创意模式：写诗、头脑风暴
+response = ollama.generate(
+    model="qwen2.5:7b",
+    prompt="给一家奶茶店起 5 个有创意的名字",
+    options={"temperature": 1.2, "top_p": 0.95}
+)
+</code></pre>
+    <div class="highlight-box">
+      <p><strong>经验法则：</strong>事实性任务用低温（0~0.3），创意性任务用高温（0.8~1.2）。top_p 通常和 temperature 配合使用，温度低时 top_p 也可以低一些。</p>
+    </div>
+  </div>
+
+  <div class="concept-card">
+    <h4>多轮对话：维护对话历史</h4>
+    <p>模型本身没有记忆。每次调用都是独立的——你第二次发送的消息，模型默认不知道你第一次说了什么。要实现"记住对话"，你必须自己把历史消息拼接好，一起发送。</p>
+    <pre style="background:var(--bg-code);padding:16px;border-radius:8px;overflow-x:auto;"><code>class ChatBot:
+    def __init__(self, model="qwen2.5:7b"):
+        self.model = model
+        self.messages = [
+            {"role": "system", "content": "你是一个友好的助手"}
+        ]
+
+    def chat(self, user_input):
+        # 1. 把用户的话加入历史
+        self.messages.append({"role": "user", "content": user_input})
+
+        # 2. 调用模型（带上完整历史）
+        response = ollama.chat(
+            model=self.model,
+            messages=self.messages
+        )
+
+        # 3. 把模型的回复也加入历史
+        reply = response["message"]["content"]
+        self.messages.append({"role": "assistant", "content": reply})
+
+        return reply
+
+# 使用
+bot = ChatBot()
+print(bot.chat("你好"))
+print(bot.chat("我刚才问了什么？"))  # 模型能回答"你好"，因为有历史记录
+</code></pre>
+    <p>需要注意的问题：</p>
+    <ul>
+      <li><strong>上下文窗口限制</strong>：消息越来越多，总有一天会超过模型的 Token 上限。需要实现"滑动窗口"或"摘要机制"，丢掉太旧的消息</li>
+      <li><strong>历史污染</strong>：如果之前对话中模型给了错误答案，这个错误会一直留在历史里影响后续回答</li>
+    </ul>
+  </div>
+</div>
+
+<div class="lesson-section">
+  <h2>要点</h2>
+  <ul>
+    <li><strong>流式输出</strong>：交互应用必开，提升用户体验；批处理可关</li>
+    <li><strong>系统提示</strong>：控制模型行为的最强手段，要具体、限定边界、指定格式</li>
+    <li><strong>温度</strong>：低 = 确定/严谨，高 = 随机/创意</li>
+    <li><strong>top_p</strong>：控制候选词范围，和温度配合使用</li>
+    <li><strong>多轮对话</strong>：模型无记忆，历史需要你自己维护并传入</li>
+  </ul>
+</div>
+
+<div class="lesson-section">
+  <h2>常见错误</h2>
+  <div class="highlight-box">
+    <p><strong>错误 1：多轮对话里忘记把 assistant 的回复加回历史</strong></p>
+    <p>如果 messages 里只有 user 的消息，模型看不到自己之前说了什么，多轮对话就失效了。</p>
+  </div>
+  <div class="highlight-box">
+    <p><strong>错误 2：温度设成 0 以为能消除幻觉</strong></p>
+    <p>温度 0 只是让输出更确定，但如果模型本来就"不知道"，它仍然可能一本正经地胡说。消除幻觉要靠知识库检索（RAG），不是靠调温度。</p>
+  </div>
+  <div class="highlight-box">
+    <p><strong>错误 3：系统提示写得太笼统</strong></p>
+    <p>"你是一个有帮助的助手"等于没说。系统提示的质量直接决定输出质量，值得花时间打磨。</p>
+  </div>
+</div>
+
+<div class="lesson-section">
+  <h2>示例：带参数控制的通用调用函数</h2>
+  <pre style="background:var(--bg-code);padding:16px;border-radius:8px;overflow-x:auto;"><code>import ollama
+
+def generate_with_options(
+    prompt,
+    model="qwen2.5:7b",
+    temperature=0.7,
+    top_p=0.9,
+    system=None,
+    stream=False
+):
+    """通用生成函数，支持系统提示和参数调节"""
+    messages = []
+    if system:
+        messages.append({"role": "system", "content": system})
+    messages.append({"role": "user", "content": prompt})
+
+    response = ollama.chat(
+        model=model,
+        messages=messages,
+        options={"temperature": temperature, "top_p": top_p},
+        stream=stream
+    )
+
+    if stream:
+        return response  # 返回生成器，由调用方处理
+    return response["message"]["content"]
+
+# 严谨模式：回答技术问题
+print(generate_with_options(
+    "解释 TCP 三次握手",
+    temperature=0.2,
+    system="你是一位网络工程师，回答要准确、简洁"
+))
+
+# 创意模式：起名字
+print(generate_with_options(
+    "给猫起名",
+    temperature=1.2,
+    system="你是一位富有想象力的作家"
+))
+</code></pre>
+</div>
+
+<div class="lesson-section">
+  <h2>练习</h2>
+  <ol>
+    <li>把上面的 <code>ChatBot</code> 类改成支持流式输出，让回复像打字一样逐字出现。</li>
+    <li>写两个系统提示，一个让模型用"鲁迅文风"说话，一个让模型用"说明书风格"说话，用同一个问题测试效果差异。</li>
+    <li>测试 temperature 从 0 到 1.5 的变化：用同一个 prompt 调用 5 次，观察输出差异。</li>
+    <li>给 ChatBot 加一个"记忆上限"：当历史消息超过 10 条时，自动删除最早的一对对话。</li>
+  </ol>
+</div>
+{% endblock %}

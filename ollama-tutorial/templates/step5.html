@@ -1,0 +1,228 @@
+{% extends "base.html" %}
+
+{% block title %}Step 5 — 实际应用{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1>Step 5 — 实际应用</h1>
+  <p>文本生成、代码辅助、结构化输出 / JSON Mode</p>
+</div>
+
+<div class="lesson-section">
+  <h2>场景</h2>
+  <p>你已经掌握了 Ollama 的所有核心用法。现在的问题是：怎么把这些能力变成真正有用的功能？比如自动从一段文字里提取关键信息、帮用户写代码、或者让模型返回可以被程序直接解析的数据结构。</p>
+</div>
+
+<div class="lesson-section">
+  <h2>原理</h2>
+
+  <div class="concept-card">
+    <h4>文本生成与摘要</h4>
+    <p>最基础的应用：让模型帮你写东西。但"帮我写"这个指令太模糊。好的 prompt 要包含角色、任务、格式、约束四个要素。</p>
+    <pre style="background:var(--bg-code);padding:16px;border-radius:8px;overflow-x:auto;"><code>prompt = """你是一位技术文档编辑。
+
+任务：把下面的发布说明改写成面向普通用户的版本，用 3 句话概括核心变化。
+
+原文：
+本次更新重构了数据持久层，引入了连接池复用机制，将查询延迟降低了 40%。同时修复了并发场景下的竞态条件，升级了 ORM 依赖至 3.2 版本。
+
+要求：
+- 不要出现技术术语（如 ORM、连接池、竞态条件）
+- 每句话不超过 20 个字
+- 语气轻松自然
+"""
+
+response = ollama.generate(model="qwen2.5:7b", prompt=prompt, stream=False)
+print(response["response"])
+</code></pre>
+    <p>这个 prompt 为什么有效：</p>
+    <ul>
+      <li><strong>角色</strong>：技术文档编辑（设定了专业视角）</li>
+      <li><strong>任务</strong>：改写发布说明（明确要做什么）</li>
+      <li><strong>格式</strong>：3 句话、每句不超过 20 字（限制了输出结构）</li>
+      <li><strong>约束</strong>：不出现技术术语、语气轻松（限定了内容边界）</li>
+    </ul>
+  </div>
+
+  <div class="concept-card">
+    <h4>代码辅助：让模型当你的编程搭档</h4>
+    <p>模型最擅长的任务之一是代码相关的工作：写代码、解释代码、找 bug、优化性能。</p>
+    <pre style="background:var(--bg-code);padding:16px;border-radius:8px;overflow-x:auto;"><code>prompt = """你是一位 Python 专家。请找出下面代码中的问题并给出修复版本。
+
+代码：
+def divide(a, b):
+    return a / b
+
+result = divide(10, 0)
+print(result)
+
+要求：
+1. 指出问题所在
+2. 给出修复后的完整代码
+3. 解释为什么这样修复
+"""
+
+response = ollama.generate(model="deepseek-coder:6.7b", prompt=prompt)
+print(response["response"])
+</code></pre>
+    <p>代码任务的技巧：</p>
+    <ul>
+      <li>选择代码专用模型（如 <code>deepseek-coder</code>、<code>codellama</code>），比普通模型效果好很多</li>
+      <li>在 prompt 里明确说"给出完整代码"，否则模型可能只给片段</li>
+      <li>如果代码很长，先给关键部分，说"其他部分省略"</li>
+    </ul>
+  </div>
+
+  <div class="concept-card">
+    <h4>结构化输出：让模型返回 JSON</h4>
+    <p>程序处理文本很困难，处理 JSON 很容易。如果能让模型直接返回 JSON，你的后续处理代码会简单很多。</p>
+    <p>Ollama 支持 <strong>JSON Mode</strong>：在请求中设置 <code>format="json"</code>，模型会强制输出合法的 JSON。</p>
+    <pre style="background:var(--bg-code);padding:16px;border-radius:8px;overflow-x:auto;"><code>prompt = """从下面的用户评论中提取信息，返回 JSON 格式。
+
+评论："这款手机电池很耐用，但相机在暗光下表现一般，价格 2999 元有点贵。"
+
+返回格式：
+{
+  "sentiment": "positive/negative/mixed",
+  "pros": ["优点1", "优点2"],
+  "cons": ["缺点1", "缺点2"],
+  "price_mentioned": true/false,
+  "price": 数字或 null
+}
+"""
+
+response = ollama.generate(
+    model="qwen2.5:7b",
+    prompt=prompt,
+    format="json",  # 开启 JSON Mode
+    stream=False
+)
+
+import json
+data = json.loads(response["response"])
+print(data["sentiment"])   # "mixed"
+print(data["pros"])        # ["电池很耐用"]
+</code></pre>
+    <p>JSON Mode 的使用要点：</p>
+    <ul>
+      <li>必须在 prompt 中给出期望的 JSON 结构示例，否则模型不知道你要什么字段</li>
+      <li>设置 <code>stream=False</code>，流式输出不适合 JSON Mode</li>
+      <li>返回的字符串用 <code>json.loads()</code> 解析，仍然需要 try/except 处理解析错误</li>
+      <li>不是所有模型都完美支持 JSON Mode，如果输出格式不对，可以在 prompt 里加"必须严格按以上格式返回，不要添加额外文字"</li>
+    </ul>
+  </div>
+
+  <div class="concept-card">
+    <h4>嵌入向量：让文本变成数字</h4>
+    <p>除了生成文字，模型还能把一段文本变成一串数字（向量）。这个向量的神奇之处在于：语义相近的文本，它们的向量距离也近。</p>
+    <pre style="background:var(--bg-code);padding:16px;border-radius:8px;overflow-x:auto;"><code>import ollama
+
+# 把两段话变成向量
+vec1 = ollama.embeddings(model="nomic-embed-text", prompt="猫坐在垫子上")
+vec2 = ollama.embeddings(model="nomic-embed-text", prompt="一只猫趴在毯子上")
+vec3 = ollama.embeddings(model="nomic-embed-text", prompt="今天股市大涨")
+
+# 计算向量相似度（余弦相似度）
+import numpy as np
+
+def cosine_similarity(a, b):
+    return np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))
+
+print(cosine_similarity(vec1["embedding"], vec2["embedding"]))  # ~0.95，很相似
+print(cosine_similarity(vec1["embedding"], vec3["embedding"]))  # ~0.3，不相似
+</code></pre>
+    <p>嵌入向量的应用场景：</p>
+    <ul>
+      <li><strong>语义搜索</strong>：用户搜索"猫咪"，也能找到包含"小猫""喵星人"的文档</li>
+      <li><strong>文本分类</strong>：把文本向量聚类，自动分组</li>
+      <li><strong>推荐系统</strong>：找与用户历史兴趣向量最接近的内容</li>
+    </ul>
+    <p>注意：生成嵌入需要专门的嵌入模型（如 <code>nomic-embed-text</code>、<code>mxbai-embed-large</code>），不要用生成文本的模型来做嵌入。</p>
+  </div>
+</div>
+
+<div class="lesson-section">
+  <h2>要点</h2>
+  <ul>
+    <li>好的 prompt = 角色 + 任务 + 格式 + 约束，四个要素越具体，输出越可控</li>
+    <li>代码任务优先选代码专用模型（DeepSeek Coder、CodeLlama）</li>
+    <li>JSON Mode（<code>format="json"</code>）让模型返回结构化数据，但 prompt 里必须给格式示例</li>
+    <li>嵌入向量把语义变成数字，是语义搜索和分类的基础</li>
+    <li>不同任务选不同模型：聊天用通用模型、代码用代码模型、嵌入用嵌入模型</li>
+  </ul>
+</div>
+
+<div class="lesson-section">
+  <h2>常见错误</h2>
+  <div class="highlight-box">
+    <p><strong>错误 1：JSON Mode 返回了非法 JSON</strong></p>
+    <p>即使开了 <code>format="json"</code>，模型仍可能输出带额外说明文字的 JSON。在 prompt 里强调"只返回 JSON，不要任何其他文字"。</p>
+  </div>
+  <div class="highlight-box">
+    <p><strong>错误 2：用生成模型做嵌入</strong></p>
+    <p><code>qwen2.5:7b</code> 是生成模型，不适合做嵌入。嵌入任务要用专门的嵌入模型，否则向量质量很差。</p>
+  </div>
+  <div class="highlight-box">
+    <p><strong>错误 3：prompt 太模糊导致输出不稳定</strong></p>
+    <p>"帮我分析一下"这种 prompt，每次输出可能完全不同。加入角色、格式、约束后，输出会稳定很多。</p>
+  </div>
+</div>
+
+<div class="lesson-section">
+  <h2>示例：完整的信息提取流水线</h2>
+  <p>把前面学到的内容组合起来，做一个实际可用的信息提取工具：</p>
+  <pre style="background:var(--bg-code);padding:16px;border-radius:8px;overflow-x:auto;">{% raw %}<code>import ollama
+import json
+
+def extract_info(text):
+    """从任意文本中提取结构化信息"""
+    prompt = f"""从下面的文本中提取关键信息，严格按 JSON 格式返回。
+
+文本：{text}
+
+返回格式：
+{{
+  "topic": "主题",
+  "entities": ["实体1", "实体2"],
+  "keywords": ["关键词1", "关键词2"],
+  "summary": "一句话总结"
+}}
+
+只返回 JSON，不要任何其他文字。"""
+
+    response = ollama.generate(
+        model="qwen2.5:7b",
+        prompt=prompt,
+        format="json",
+        options={"temperature": 0.2}  # 低温度，输出更稳定
+    )
+
+    try:
+        return json.loads(response["response"])
+    except json.JSONDecodeError:
+        return {"error": "模型返回了非法 JSON", "raw": response["response"]}
+
+# 使用
+text = "苹果公司于 2024 年 9 月发布 iPhone 16，搭载 A18 芯片，起售价 799 美元。"
+result = extract_info(text)
+print(json.dumps(result, ensure_ascii=False, indent=2))
+# {
+#   "topic": "iPhone 16 发布",
+#   "entities": ["苹果公司", "iPhone 16", "A18 芯片"],
+#   "keywords": ["发布", "芯片", "售价"],
+#   "summary": "苹果发布 iPhone 16，搭载 A18 芯片，售价 799 美元起"
+# }
+</code>{% endraw %}</pre>
+  <p>这个例子展示了如何把模型能力封装成一个可靠的函数：低温度保证稳定性、JSON Mode 保证格式、try/except 保证健壮性。</p>
+</div>
+
+<div class="lesson-section">
+  <h2>练习</h2>
+  <ol>
+    <li>写一个函数，接收一段中文文本，返回它的英文摘要（50 词以内）。要求用系统提示设定角色，用低温度保证一致性。</li>
+    <li>用 JSON Mode 实现一个"地址解析器"：输入"北京市海淀区中关村大街 1 号"，返回包含省、市、区、街道、门牌号的 JSON。</li>
+    <li>下载嵌入模型 <code>nomic-embed-text</code>，计算 5 句话两两之间的相似度矩阵，找出最相似的一对。</li>
+    <li>（综合）做一个简单的命令行工具：用户输入一段话，程序自动判断是"请求写代码""请求翻译"还是"请求总结"，然后调用对应的 prompt 模板处理。</li>
+  </ol>
+</div>
+{% endblock %}

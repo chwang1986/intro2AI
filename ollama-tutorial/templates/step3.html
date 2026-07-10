@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+
+{% block title %}Step 3 — 基础调用方式{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1>Step 3 — 基础调用方式</h1>
+  <p>Python requests / ollama 库、生成与聊天接口</p>
+</div>
+
+<div class="lesson-section">
+  <h2>场景</h2>
+  <p>Ollama 已经安装好了，模型也拉下来了。现在你要写一个 Python 脚本，让它自动调用模型来回答用户的问题。你可以用两种方式：直接用 HTTP 请求，或者用 Ollama 官方提供的 Python 库。</p>
+</div>
+
+<div class="lesson-section">
+  <h2>原理</h2>
+
+  <div class="concept-card">
+    <h4>方式一：直接用 requests</h4>
+    <p>Ollama 的 API 就是普通的 HTTP REST 接口，任何能发 HTTP 请求的库都能调用。这是最底层、最灵活的方式。</p>
+    <pre style="background:var(--bg-code);padding:16px;border-radius:8px;overflow-x:auto;"><code>import requests
+
+url = "http://localhost:11434/api/generate"
+
+data = {
+    "model": "qwen2.5:7b",
+    "prompt": "请用中文解释什么是 HTTP 请求",
+    "stream": False
+}
+
+response = requests.post(url, json=data)
+result = response.json()
+print(result["response"])
+</code></pre>
+    <p>关键点：</p>
+    <ul>
+      <li><code>json=data</code> 会自动把字典转成 JSON 并设置 <code>Content-Type: application/json</code></li>
+      <li><code>stream: False</code> 表示一次性返回完整结果，适合快速测试</li>
+      <li>响应中的 <code>response</code> 字段就是模型生成的文本</li>
+    </ul>
+  </div>
+
+  <div class="concept-card">
+    <h4>方式二：用 ollama 官方库</h4>
+    <p>Ollama 提供了一个 Python 库，封装了 HTTP 调用的细节，代码更简洁。</p>
+    <pre style="background:var(--bg-code);padding:16px;border-radius:8px;overflow-x:auto;"><code># 安装
+pip install ollama
+
+# 调用
+import ollama
+
+response = ollama.generate(
+    model="qwen2.5:7b",
+    prompt="请用中文解释什么是 HTTP 请求"
+)
+print(response["response"])
+</code></pre>
+    <p>官方库的优势：</p>
+    <ul>
+      <li>不需要自己处理 URL、HTTP 状态码、JSON 解析</li>
+      <li>API 与 Ollama CLI 的命令命名一致，好记</li>
+      <li>自动处理流式输出的解析（后面会讲）</li>
+    </ul>
+    <p>劣势：如果你需要自定义 HTTP 行为（比如代理、超时、重试），官方库反而不如 requests 灵活。</p>
+  </div>
+
+  <div class="concept-card">
+    <h4>generate vs chat：两个核心接口</h4>
+    <p>Ollama 提供两个主要的生成接口，用途不同：</p>
+
+    <table style="width:100%;border-collapse:collapse;margin:16px 0;">
+      <thead>
+        <tr style="border-bottom:2px solid var(--border-color);text-align:left;">
+          <th style="padding:8px;">接口</th>
+          <th style="padding:8px;">适用场景</th>
+          <th style="padding:8px;">特点</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom:1px solid var(--border-color-split);">
+          <td style="padding:8px;"><code>/api/generate</code></td>
+          <td style="padding:8px;">单轮文本补全、续写、翻译</td>
+          <td style="padding:8px;">只传一个 prompt，模型补全后面的内容</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border-color-split);">
+          <td style="padding:8px;"><code>/api/chat</code></td>
+          <td style="padding:8px;">多轮对话、聊天机器人</td>
+          <td style="padding:8px;">传消息列表，模型理解对话历史</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p><code>/api/chat</code> 的消息格式（OpenAI 兼容）：</p>
+    <pre style="background:var(--bg-code);padding:16px;border-radius:8px;overflow-x:auto;"><code>messages = [
+    {"role": "system", "content": "你是一个乐于助人的助手"},
+    {"role": "user", "content": "你好"},
+    {"role": "assistant", "content": "你好！很高兴见到你。"},
+    {"role": "user", "content": "今天天气怎么样？"}
+]
+
+response = ollama.chat(
+    model="qwen2.5:7b",
+    messages=messages
+)
+print(response["message"]["content"])
+</code></pre>
+    <p>每条消息有三个角色：</p>
+    <ul>
+      <li><code>system</code>：给模型设定全局行为规则（比如"你是一个严谨的程序员"）</li>
+      <li><code>user</code>：用户的输入</li>
+      <li><code>assistant</code>：模型的回复（用于多轮对话时提供历史上下文）</li>
+    </ul>
+  </div>
+</div>
+
+<div class="lesson-section">
+  <h2>要点</h2>
+  <ul>
+    <li>两种调用方式：底层 <code>requests</code>（灵活）和高层 <code>ollama</code> 库（简洁）</li>
+    <li><code>/api/generate</code> 适合单轮补全，<code>/api/chat</code> 适合多轮对话</li>
+    <li>消息列表中的 <code>role</code> 决定这段话的"身份"：system、user、assistant</li>
+    <li><code>system</code> 提示是控制模型行为的有力工具，后面会详细讲</li>
+  </ul>
+</div>
+
+<div class="lesson-section">
+  <h2>常见错误</h2>
+  <div class="highlight-box">
+    <p><strong>错误 1：忘记设置 stream=False，结果被流式响应搞混</strong></p>
+    <p>Ollama 默认是流式输出（stream=True）。如果直接用 <code>response.json()</code> 解析，会报错。要么显式设置 <code>stream=False</code>，要么用循环读取流。</p>
+  </div>
+  <div class="highlight-box">
+    <p><strong>错误 2：把 generate 和 chat 混用</strong></p>
+    <p><code>generate</code> 只接受 <code>prompt</code> 字段；<code>chat</code> 只接受 <code>messages</code> 字段。传给 generate 一个 messages 列表会报错。</p>
+  </div>
+  <div class="highlight-box">
+    <p><strong>错误 3：模型名写错或模型未下载</strong></p>
+    <p>如果收到 <code>model not found</code>，先运行 <code>ollama list</code> 确认本地有这个模型，再检查名称拼写和大小写。</p>
+  </div>
+</div>
+
+<div class="lesson-section">
+  <h2>示例：封装一个调用函数</h2>
+  <p>实际项目中，你不会每次都写一遍完整的请求代码。封装一个函数是更好的做法：</p>
+  <pre style="background:var(--bg-code);padding:16px;border-radius:8px;overflow-x:auto;"><code>import ollama
+
+def ask_model(prompt, model="qwen2.5:7b"):
+    """向本地 Ollama 模型提问，返回生成的文本"""
+    try:
+        response = ollama.generate(
+            model=model,
+            prompt=prompt,
+            stream=False
+        )
+        return response["response"]
+    except ollama.ResponseError as e:
+        return f"调用失败: {e.error}"
+    except Exception as e:
+        return f"未知错误: {str(e)}"
+
+# 使用
+answer = ask_model("用一句话总结 Transformer 的核心思想")
+print(answer)
+</code></pre>
+  <p>封装的好处：</p>
+  <ul>
+    <li>调用方只需要关心 prompt 和返回的文本</li>
+    <li>错误处理集中在一处</li>
+    <li>以后如果要切换模型或加参数，只需要改这个函数</li>
+  </ul>
+</div>
+
+<div class="lesson-section">
+  <h2>练习</h2>
+  <ol>
+    <li>用 requests 和 ollama 库两种方式分别调用 <code>/api/generate</code>，比较代码量的差异。</li>
+    <li>用 <code>/api/chat</code> 实现一个简单的多轮对话：先问"你好"，再问"你叫什么名字"，观察模型是否能记住上下文。</li>
+    <li>把上面的 <code>ask_model</code> 函数改成支持 <code>chat</code> 接口的版本，能接受 messages 列表作为输入。</li>
+  </ol>
+</div>
+{% endblock %}

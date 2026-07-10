@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+
+{% block title %}Step 1 — 大模型基本原理{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1>Step 1 — 大模型基本原理</h1>
+  <p>Transformer、注意力机制、Token 与参数规模</p>
+</div>
+
+<div class="lesson-section">
+  <h2>场景</h2>
+  <p>你正在写一个 Python 脚本，希望调用一个 AI 来帮用户总结文章。你选择了 Ollama，因为它免费、本地运行、不需要联网。但在写代码之前，你需要理解这个"黑盒"里面到底在发生什么——这样当输出结果不理想时，你才知道该调哪个参数。</p>
+</div>
+
+<div class="lesson-section">
+  <h2>原理</h2>
+
+  <div class="concept-card">
+    <h4>Transformer：大模型的骨架</h4>
+    <p>2017 年 Google 提出的 Transformer 架构，是目前几乎所有大语言模型的基础。它的核心思想是：<strong>把输入的每一句话拆成小块，然后让每个小块都能看到其他所有小块，根据相关性决定应该关注谁。</strong></p>
+    <p>想象你在读一句话："猫坐在垫子上，因为它很温暖。" 当读到"它"的时候，你需要知道"它"指的是"垫子"而不是"猫"。Transformer 的注意力机制就是干这个的——它让每个词都能"看到"上下文中的所有其他词，并计算彼此之间的关联度。</p>
+    <div class="highlight-box">
+      <p><strong>注意力机制的本质：</strong>给每个词一个"聚光灯"，让它能照亮上下文中最重要的其他词。关联度越高，光线越强。</p>
+    </div>
+  </div>
+
+  <div class="concept-card">
+    <h4>Token：模型的"单词"</h4>
+    <p>模型并不直接处理人类眼中的"字"或"词"。它把文本拆成更小的单位，叫做 <strong>Token</strong>。</p>
+    <ul>
+      <li>英文：一个 Token 大约相当于 0.75 个单词，"Hello world" ≈ 2~3 个 Token</li>
+      <li>中文：一个汉字通常占 1~2 个 Token，"你好世界" ≈ 4~6 个 Token</li>
+    </ul>
+    <p>Token 决定了模型的"视野范围"。一个模型的"上下文窗口"（比如 4096 Token）意味着它一次最多能同时"记住"这么多 Token。超出这个范围，前面的内容就会被遗忘。</p>
+    <div class="highlight-box">
+      <p><strong>记忆边界：</strong>上下文窗口就像一张固定大小的纸，写满了就得擦除最上面的内容。所以长文档需要分段处理，不能直接丢给模型。</p>
+    </div>
+  </div>
+
+  <div class="concept-card">
+    <h4>参数规模：模型的"脑容量"</h4>
+    <p>你常听到"70 亿参数"、"700 亿参数"，这些数字是什么意思？</p>
+    <p>参数就是模型内部可调节的"旋钮"数量。每个旋钮存储一个浮点数，表示某种连接的强度。参数越多，模型能学到的模式越复杂，但同时需要的计算资源和内存也越大。</p>
+    <table style="width:100%;border-collapse:collapse;margin:16px 0;">
+      <thead>
+        <tr style="border-bottom:2px solid var(--border-color);text-align:left;">
+          <th style="padding:8px;">规模</th>
+          <th style="padding:8px;">典型模型</th>
+          <th style="padding:8px;">显存需求</th>
+          <th style="padding:8px;">适用场景</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom:1px solid var(--border-color-split);">
+          <td style="padding:8px;">7B</td>
+          <td style="padding:8px;">Llama 3 8B、Qwen 2.5 7B</td>
+          <td style="padding:8px;">~8 GB</td>
+          <td style="padding:8px;">个人电脑、快速原型</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border-color-split);">
+          <td style="padding:8px;">13~14B</td>
+          <td style="padding:8px;">Qwen 2.5 14B</td>
+          <td style="padding:8px;">~16 GB</td>
+          <td style="padding:8px;">Mac M 系列、中高端 PC</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border-color-split);">
+          <td style="padding:8px;">70B+</td>
+          <td style="padding:8px;">Llama 3 70B、DeepSeek V3</td>
+          <td style="padding:8px;">~80 GB+</td>
+          <td style="padding:8px;">服务器、专业工作站</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>Ollama 支持量化（Quantization），可以把模型压缩到更小的体积。比如一个 70B 模型经过 4-bit 量化后，显存需求从 140GB 降到约 40GB，代价是精度轻微下降。</p>
+  </div>
+
+  <div class="concept-card">
+    <h4>生成过程：一个 Token 一个 Token 地"写"</h4>
+    <p>当你向模型提问时，它并不是一瞬间输出整段答案。它的内部过程是：</p>
+    <ol>
+      <li>把你的输入拆成 Token，送入模型</li>
+      <li>模型计算出下一个最可能的 Token 是什么</li>
+      <li>把这个 Token 追加到输出末尾</li>
+      <li>重复步骤 2~3，直到遇到结束标记或达到最大长度</li>
+    </ol>
+    <p>这个过程叫做<strong>自回归生成</strong>——每次只预测下一个字，然后把预测结果作为新的输入继续预测。就像一个人写文章，每写一个字就要停下来想一想下一个字该写什么。</p>
+  </div>
+</div>
+
+<div class="lesson-section">
+  <h2>要点</h2>
+  <ul>
+    <li>Transformer 的核心是<strong>注意力机制</strong>，它让模型理解词与词之间的关系</li>
+    <li><strong>Token</strong>是模型处理文本的最小单位，不是人类眼中的"字"</li>
+    <li><strong>上下文窗口</strong>限制了模型一次能"记住"的内容长度</li>
+    <li><strong>参数规模</strong>决定了模型的复杂度和硬件需求，量化可以降低门槛</li>
+    <li>模型生成是<strong>逐 Token 预测</strong>的过程，不是一次性输出整段答案</li>
+  </ul>
+</div>
+
+<div class="lesson-section">
+  <h2>常见错误</h2>
+  <div class="highlight-box">
+    <p><strong>错误 1：以为模型"理解"了内容</strong></p>
+    <p>模型并不真正"理解"语言，它只是在统计意义上学会了 Token 之间的关联模式。它可能会给出听起来很对但实际上错误的答案（幻觉）。</p>
+  </div>
+  <div class="highlight-box">
+    <p><strong>错误 2：忽略上下文窗口限制</strong></p>
+    <p>把一本 10 万字的小说直接丢给上下文窗口只有 4096 Token 的模型，前面的内容会被截断。需要先分段或总结。</p>
+  </div>
+  <div class="highlight-box">
+    <p><strong>错误 3：认为参数越多越好</strong></p>
+    <p>70B 模型在消费级电脑上跑不动。对于日常任务，7B 或 14B 的量化模型往往足够，速度还快得多。</p>
+  </div>
+</div>
+
+<div class="lesson-section">
+  <h2>示例：Token 计数</h2>
+  <p>用 Python 大致估算一段文本的 Token 数量（简化版）：</p>
+  <pre style="background:var(--bg-code);padding:16px;border-radius:8px;overflow-x:auto;"><code>def rough_token_count(text):
+    """粗略估算 Token 数：中文按 1 字 ≈ 1.5 Token，英文按 1 词 ≈ 1.3 Token"""
+    import re
+    chinese_chars = len(re.findall(r'[\u4e00-\u9fff]', text))
+    english_words = len(re.findall(r'[a-zA-Z]+', text))
+    return int(chinese_chars * 1.5 + english_words * 1.3)
+
+text = "Hello world，这是一个测试。"
+print(f"估算 Token 数: {rough_token_count(text)}")
+# 输出: 估算 Token 数: 9
+</code></pre>
+  <p>实际 Token 数因分词器不同而有差异。Ollama 使用的模型有各自的分词器（如 Llama 用 SentencePiece，GPT 用 BPE）。</p>
+</div>
+
+<div class="lesson-section">
+  <h2>练习</h2>
+  <ol>
+    <li>用上面的函数估算你平时写的一段邮件/消息有多少 Token。如果上下文窗口是 4096，你的内容占了多少比例？</li>
+    <li>思考：为什么模型处理"苹果"和"Apple"时，可能把它们当作完全不同的 Token？这对你的程序设计有什么影响？</li>
+    <li>如果你的电脑只有 8GB 内存，想在本地运行一个 70B 参数的模型，需要用什么技术？代价是什么？</li>
+  </ol>
+</div>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}Ollama 调用教程 — 大纲{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1>Ollama 调用教程</h1>
+  <p>理解大模型接口、基本原理与高级用法</p>
+  <div class="tag tag-brand">大模型</div>
+  <div class="tag tag-cyan ml-2">本地部署</div>
+  <div class="tag tag-success ml-2">API 调用</div>
+</div>
+
+<div class="lesson-section">
+  <h2>为什么要学这个</h2>
+  <p>大语言模型（LLM）已经不只是聊天工具，它正在变成新一代的"计算基础设施"。理解它的原理和调用方式，意味着你能把 AI 能力真正嵌入到自己的程序里，而不是只会打开网页对话框。</p>
+  <p>Ollama 是一个让你在自己的电脑上运行开源大模型的工具。不需要 GPU 集群，不需要云服务商账号，一行命令就能跑起来。学会调用它，你就拥有了一个完全私有的、不依赖网络的 AI 引擎。</p>
+</div>
+
+<div class="lesson-section">
+  <h2>学习路线</h2>
+  <div class="row">
+    {% for step in steps %}
+    <div class="col-6 mb-4">
+      <a href="/step{{ loop.index }}" style="text-decoration:none;">
+        <div class="card card-flat" style="height:100%;">
+          <div class="card-body">
+            <div class="flex items-center gap-2 mb-3">
+              <span class="tag tag-brand">Step {{ loop.index }}</span>
+            </div>
+            <h3 style="margin:0 0 8px;font-size:18px;">{{ step.title }}</h3>
+            <p style="margin:0;color:var(--text-secondary);font-size:14px;">{{ step.desc }}</p>
+          </div>
+        </div>
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<div class="lesson-section">
+  <h2>前置知识</h2>
+  <ul>
+    <li>Python 基础（会写函数、懂 requests 更好）</li>
+    <li>命令行基本操作（能运行安装命令）</li>
+    <li>HTTP 请求的基本概念（GET / POST、JSON）</li>
+  </ul>
+</div>
+
+<div class="lesson-section">
+  <h2>资源清单</h2>
+  <ul>
+    <li><strong>Ollama 官网</strong>：https://ollama.com（下载客户端）</li>
+    <li><strong>Python 库</strong>：<code>pip install ollama</code></li>
+    <li><strong>模型仓库</strong>：https://ollama.com/library（Llama、DeepSeek、Qwen 等）</li>
+  </ul>
+</div>
+{% endblock %}
