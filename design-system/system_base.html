@@ -44,7 +44,7 @@
     .sider {
       width: 220px;
       background: #fff;
-      border-right: 1px solid var(--border);
+      border-right: 1px solid var(--border-color);
       position: fixed;
       top: 0; left: 0; bottom: 0;
       z-index: 100;
@@ -58,15 +58,15 @@
       align-items: center;
       gap: 12px;
       padding: 0 24px;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid var(--border-color);
       font-weight: 600;
-      font-size: 18px;
-      color: var(--text);
+      font-size: var(--font-size-lg);
+      color: var(--text-primary);
     }
 
     .sider-brand svg {
       width: 32px; height: 32px;
-      color: var(--brand);
+      color: var(--color-primary);
     }
 
     .sider-menu {
@@ -83,20 +83,20 @@
       padding: 10px 24px;
       color: var(--text-secondary);
       text-decoration: none;
-      font-size: 14px;
+      font-size: var(--font-size-sm);
       transition: all 0.2s;
       margin: 0 8px;
       border-radius: var(--radius-sm);
     }
 
     .sider-menu li a:hover {
-      color: var(--brand);
-      background: var(--brand-light);
+      color: var(--color-primary);
+      background: var(--color-primary-bg);
     }
 
     .sider-menu li a.active {
-      color: var(--brand);
-      background: var(--brand-light);
+      color: var(--color-primary);
+      background: var(--color-primary-bg);
       font-weight: 500;
     }
 
@@ -117,14 +117,14 @@
     }
 
     .page-header h1 {
-      font-size: 24px;
+      font-size: var(--font-size-2xl);
       font-weight: 600;
       margin-bottom: 4px;
     }
 
     .page-header p {
       color: var(--text-secondary);
-      font-size: 14px;
+      font-size: var(--font-size-sm);
     }
 
     /* 回到首页链接 */
@@ -133,13 +133,20 @@
       align-items: center;
       gap: 6px;
       color: var(--text-secondary);
-      font-size: 13px;
+      font-size: var(--font-size-xs);
       text-decoration: none;
       margin-bottom: 16px;
     }
 
     .back-link:hover {
-      color: var(--brand);
+      color: var(--color-primary);
+    }
+
+    .sider-footer {
+      padding: 12px 24px;
+      border-top: 1px solid var(--border-color-split);
+      font-size: var(--font-size-xs);
+      color: var(--text-tertiary);
     }
 
     /* 响应式 */
