@@ -67,10 +67,10 @@
   <h3>标准卡片</h3>
   <div class="demo-card">
     <div class="demo-label">CARD</div>
-    <div class="card" style="max-width:400px;">
+    <div class="card demo-s6-1">
       <div class="card-header">卡片标题</div>
       <div class="card-body">
-        <p style="margin:0;color:var(--text-secondary);">这是卡片的主体内容区域。可以放置文字、图表、列表等各种信息。</p>
+        <p class="demo-s6-2">这是卡片的主体内容区域。可以放置文字、图表、列表等各种信息。</p>
       </div>
       <div class="card-footer">
         <button class="btn btn-primary btn-sm">确认</button>
@@ -82,10 +82,10 @@
   <h3>扁平卡片（无边框）</h3>
   <div class="demo-card">
     <div class="demo-label">FLAT CARD</div>
-    <div class="card card-flat" style="max-width:400px;">
+    <div class="card card-flat demo-s6-1">
       <div class="card-body">
-        <div style="font-weight:600;margin-bottom:8px;">设置项名称</div>
-        <p style="margin:0;color:var(--text-secondary);font-size:14px;">这是一段设置的描述文字，帮助用户理解这个选项的作用。</p>
+        <div class="demo-s6-3">设置项名称</div>
+        <p class="demo-s6-4">这是一段设置的描述文字，帮助用户理解这个选项的作用。</p>
       </div>
     </div>
   </div>
@@ -93,7 +93,7 @@
   <h3>导航栏</h3>
   <div class="demo-card">
     <div class="demo-label">NAVIGATION</div>
-    <ul class="nav" style="margin-bottom:16px;">
+    <ul class="nav demo-s6-5">
       <li><a class="nav-link active" href="#">首页</a></li>
       <li><a class="nav-link" href="#">教程</a></li>
       <li><a class="nav-link" href="#">组件</a></li>
@@ -109,12 +109,12 @@
   <h3>模态框示意</h3>
   <div class="demo-card">
     <div class="demo-label">MODAL</div>
-    <div class="card" style="max-width:400px;box-shadow:var(--shadow-3);">
+    <div class="card demo-s6-6">
       <div class="card-header">确认删除</div>
       <div class="card-body">
         <p class="m-0 text-secondary">删除后数据无法恢复，是否继续？</p>
       </div>
-      <div class="card-footer" style="display:flex;justify-content:flex-end;gap:8px;">
+      <div class="card-footer demo-s6-7">
         <button class="btn btn-text">取消</button>
         <button class="btn btn-danger">确认删除</button>
       </div>
@@ -147,6 +147,18 @@
   &lt;li&gt;&lt;a class="nav-link" href="#"&gt;安全设置&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;</pre>
 </div>
+
+{% block scripts %}
+<style>
+.demo-s6-1 { max-width: 400px; }
+.demo-s6-2 { margin: 0; color: var(--text-secondary); }
+.demo-s6-3 { font-weight: 600; margin-bottom: 8px; }
+.demo-s6-4 { margin: 0; color: var(--text-secondary); font-size: 14px; }
+.demo-s6-5 { margin-bottom: 16px; }
+.demo-s6-6 { max-width: 400px; box-shadow: var(--shadow-3); }
+.demo-s6-7 { display: flex; justify-content: flex-end; gap: 8px; }
+</style>
+{% endblock %}
 
 <div class="exercise-box">
   <h3>练习</h3>

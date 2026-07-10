@@ -143,7 +143,7 @@ git log --oneline --graph</code></pre>
       <button class="btn btn-danger" onclick="resetWorkspace()">重置工作区</button>
     </div>
     <div class="mt-3 flex gap-2">
-      <input type="text" id="customCmd" placeholder="输入自定义命令..." class="input" style="flex:1;">
+      <input type="text" id="customCmd" placeholder="输入自定义命令..." class="input flex-1">
       <button class="btn btn-primary" onclick="runCustom()">执行</button>
     </div>
   </div>
@@ -178,12 +178,12 @@ git log --oneline --graph</code></pre>
   
   <div class="demo-card">
     <p><strong>判断题 1：</strong>在标准工作流中，feature 分支开发完成后应该直接 push 到 main 分支，不需要经过 Pull Request 审查。</p>
-    <p style="color: var(--muted); font-size: var(--font-size-sm);">答案：错误。直接 push 到 main 跳过了代码审查，是协作中的大忌。正确的做法是通过 Pull Request 让队友审查后再合并。</p>
+    <p class="text-secondary text-sm">答案：错误。直接 push 到 main 跳过了代码审查，是协作中的大忌。正确的做法是通过 Pull Request 让队友审查后再合并。</p>
   </div>
   
   <div class="demo-card">
     <p><strong>判断题 2：</strong><code>git branch -d feature-x</code> 只能删除已经合并到当前分支的分支，如果分支没有合并，命令会失败。</p>
-    <p style="color: var(--muted); font-size: var(--font-size-sm);">答案：正确。<code>-d</code> 是安全删除，Git 会检查该分支是否已经合并。如果要强制删除未合并的分支，需要使用 <code>-D</code>。</p>
+    <p class="text-secondary text-sm">答案：正确。<code>-d</code> 是安全删除，Git 会检查该分支是否已经合并。如果要强制删除未合并的分支，需要使用 <code>-D</code>。</p>
   </div>
   
   <div class="demo-card">
@@ -192,7 +192,7 @@ git log --oneline --graph</code></pre>
     <p>B. 让 feature 分支基于最新的 main，减少最终合并时的冲突</p>
     <p>C. 删除 feature 分支上旧的提交</p>
     <p>D. 自动发起 Pull Request</p>
-    <p style="color: var(--muted); font-size: var(--font-size-sm);">答案：B。在 feature 分支上 pull main，相当于把主线的最新改动合并进来，让自己的分支保持最新，这样最终合并回 main 时冲突更少。</p>
+    <p class="text-secondary text-sm">答案：B。在 feature 分支上 pull main，相当于把主线的最新改动合并进来，让自己的分支保持最新，这样最终合并回 main 时冲突更少。</p>
   </div>
   
   <div class="demo-card">
@@ -201,7 +201,7 @@ git log --oneline --graph</code></pre>
     <p>B. <code>git switch feature-x</code></p>
     <p>C. <code>git checkout -b feature-x</code></p>
     <p>D. <code>git merge feature-x</code></p>
-    <p style="color: var(--muted); font-size: var(--font-size-sm);">答案：C。<code>git checkout -b</code>（或 <code>git switch -c</code>）会在创建分支的同时切换过去。单独的 <code>git branch</code> 只创建不切换。</p>
+    <p class="text-secondary text-sm">答案：C。<code>git checkout -b</code>（或 <code>git switch -c</code>）会在创建分支的同时切换过去。单独的 <code>git branch</code> 只创建不切换。</p>
   </div>
   
   <div class="demo-card">
@@ -210,7 +210,7 @@ git log --oneline --graph</code></pre>
     <p>B. 所有改动被自动提交到一个临时分支</p>
     <p>C. 未提交的改动被永久删除</p>
     <p>D. 工作区的改动被推送到远程仓库</p>
-    <p style="color: var(--muted); font-size: var(--font-size-sm);">答案：A。stash 会把当前未提交的改动（包括暂存区和 working directory）保存到一个栈中，工作区恢复到最后一次提交的状态。之后可以用 <code>git stash pop</code> 恢复。</p>
+    <p class="text-secondary text-sm">答案：A。stash 会把当前未提交的改动（包括暂存区和 working directory）保存到一个栈中，工作区恢复到最后一次提交的状态。之后可以用 <code>git stash pop</code> 恢复。</p>
   </div>
 </section>
 

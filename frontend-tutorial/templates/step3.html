@@ -68,45 +68,45 @@
     <div class="demo-label">TYPE SCALE</div>
     <div class="type-demo">
       <div class="type-label">--font-size-4xl / 38px — 页面大标题</div>
-      <div style="font-size:38px;font-weight:700;line-height:1.25;">前端设计系统教程</div>
+      <div class="demo-s3-1">前端设计系统教程</div>
     </div>
     <div class="type-demo">
       <div class="type-label">--font-size-3xl / 30px — 区块标题</div>
-      <div style="font-size:30px;font-weight:600;line-height:1.25;">色彩系统</div>
+      <div class="demo-s3-2">色彩系统</div>
     </div>
     <div class="type-demo">
       <div class="type-label">--font-size-2xl / 24px — 步骤标题</div>
-      <div style="font-size:24px;font-weight:600;line-height:1.25;">Step 1 设计原则</div>
+      <div class="demo-s3-3">Step 1 设计原则</div>
     </div>
     <div class="type-demo">
       <div class="type-label">--font-size-xl / 20px — 小节标题</div>
-      <div style="font-size:20px;font-weight:600;line-height:1.25;">为什么需要这套规范</div>
+      <div class="demo-s3-4">为什么需要这套规范</div>
     </div>
     <div class="type-demo">
       <div class="type-label">--font-size-lg / 18px — 卡片标题</div>
-      <div style="font-size:18px;font-weight:600;line-height:1.4;">项目总览</div>
+      <div class="demo-s3-5">项目总览</div>
     </div>
     <div class="type-demo">
       <div class="type-label">--font-size-md / 16px — 正文</div>
-      <div style="font-size:16px;line-height:1.5;">每次新建项目都从零设计样式，不仅费时，还容易做出不一致的界面。</div>
+      <div class="demo-s3-6">每次新建项目都从零设计样式，不仅费时，还容易做出不一致的界面。</div>
     </div>
     <div class="type-demo">
       <div class="type-label">--font-size-sm / 14px — 辅助文字、按钮</div>
-      <div style="font-size:14px;line-height:1.5;color:var(--text-secondary);">查看所有项目的运行状态和统计数据</div>
+      <div class="demo-s3-7">查看所有项目的运行状态和统计数据</div>
     </div>
     <div class="type-demo">
       <div class="type-label">--font-size-xs / 12px — 标签、备注</div>
-      <div style="font-size:12px;line-height:1.5;color:var(--text-tertiary);">参考 Ant Design / TDesign 规范</div>
+      <div class="demo-s3-8">参考 Ant Design / TDesign 规范</div>
     </div>
   </div>
 
   <h3>字重对比</h3>
   <div class="demo-card">
     <div class="demo-label">FONT WEIGHT</div>
-    <div style="font-size:18px;font-weight:400;margin-bottom:8px;">Regular 400 — 正文阅读</div>
-    <div style="font-size:18px;font-weight:500;margin-bottom:8px;">Medium 500 — 小标题、按钮</div>
-    <div style="font-size:18px;font-weight:600;margin-bottom:8px;">Semibold 600 — 区块标题</div>
-    <div style="font-size:18px;font-weight:700;">Bold 700 — 大标题、数据</div>
+    <div class="demo-s3-9">Regular 400 — 正文阅读</div>
+    <div class="demo-s3-10">Medium 500 — 小标题、按钮</div>
+    <div class="demo-s3-11">Semibold 600 — 区块标题</div>
+    <div class="demo-s3-12">Bold 700 — 大标题、数据</div>
   </div>
 </div>
 
@@ -159,4 +159,21 @@
   <p><strong>练习 2</strong>：用阿里巴巴普惠体（CDN 引入）写一个标题 + 两段正文的页面，测试 12px、14px、16px 在屏幕上的可读性。</p>
   <p><strong>练习 3</strong>：把一段长文本（超过 300 字）分别用 line-height 1.2、1.5、1.75 展示，对比阅读舒适度。</p>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<style>
+.demo-s3-1 { font-size:38px;font-weight:700;line-height:1.25; }
+.demo-s3-2 { font-size:30px;font-weight:600;line-height:1.25; }
+.demo-s3-3 { font-size:24px;font-weight:600;line-height:1.25; }
+.demo-s3-4 { font-size:20px;font-weight:600;line-height:1.25; }
+.demo-s3-5 { font-size:18px;font-weight:600;line-height:1.4; }
+.demo-s3-6 { font-size:16px;line-height:1.5; }
+.demo-s3-7 { font-size:14px;line-height:1.5;color:var(--text-secondary); }
+.demo-s3-8 { font-size:12px;line-height:1.5;color:var(--text-tertiary); }
+.demo-s3-9 { font-size:18px;font-weight:400;margin-bottom:8px; }
+.demo-s3-10 { font-size:18px;font-weight:500;margin-bottom:8px; }
+.demo-s3-11 { font-size:18px;font-weight:600;margin-bottom:8px; }
+.demo-s3-12 { font-size:18px;font-weight:700; }
+</style>
 {% endblock %}

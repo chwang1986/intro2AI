@@ -78,19 +78,19 @@
   <h3>响应式卡片布局</h3>
   <div class="demo-card">
     <div class="demo-label">RESPONSIVE CARDS</div>
-    <p style="font-size:12px;color:var(--text-tertiary);margin-bottom:12px;">缩小浏览器窗口，观察下方卡片如何变化</p>
-    <div style="display:flex;gap:16px;flex-wrap:wrap;">
-      <div style="flex:1;min-width:280px;background:var(--color-primary-light);padding:20px;border-radius:8px;text-align:center;">
-        <div style="font-weight:600;">卡片 1</div>
-        <div style="font-size:14px;color:var(--text-secondary);margin-top:4px;">flex:1, min-width:280px</div>
+    <p class="demo-s8-1">缩小浏览器窗口，观察下方卡片如何变化</p>
+    <div class="demo-s8-2">
+      <div class="demo-s8-3">
+        <div class="demo-s8-4">卡片 1</div>
+        <div class="demo-s8-5">flex:1, min-width:280px</div>
       </div>
-      <div style="flex:1;min-width:280px;background:var(--color-success-bg);padding:20px;border-radius:8px;text-align:center;">
-        <div style="font-weight:600;">卡片 2</div>
-        <div style="font-size:14px;color:var(--text-secondary);margin-top:4px;">flex:1, min-width:280px</div>
+      <div class="demo-s8-6">
+        <div class="demo-s8-7">卡片 2</div>
+        <div class="demo-s8-8">flex:1, min-width:280px</div>
       </div>
-      <div style="flex:1;min-width:280px;background:var(--color-warning-bg);padding:20px;border-radius:8px;text-align:center;">
-        <div style="font-weight:600;">卡片 3</div>
-        <div style="font-size:14px;color:var(--text-secondary);margin-top:4px;">flex:1, min-width:280px</div>
+      <div class="demo-s8-9">
+        <div class="demo-s8-10">卡片 3</div>
+        <div class="demo-s8-11">flex:1, min-width:280px</div>
       </div>
     </div>
   </div>
@@ -100,21 +100,21 @@
     <div class="demo-label">BREAKPOINTS</div>
     <div class="row">
       <div class="col-4">
-        <div style="background:var(--color-primary-light);padding:16px;border-radius:8px;text-align:center;">
-          <div style="font-weight:600;color:var(--color-primary);">&lt; 768px</div>
-          <div style="font-size:12px;color:var(--text-secondary);margin-top:4px;">手机：单列，内边距 16px</div>
+        <div class="demo-s8-12">
+          <div class="demo-s8-13">&lt; 768px</div>
+          <div class="demo-s8-14">手机：单列，内边距 16px</div>
         </div>
       </div>
       <div class="col-4">
-        <div style="background:var(--color-success-bg);padding:16px;border-radius:8px;text-align:center;">
-          <div style="font-weight:600;color:var(--color-success);">768px - 1200px</div>
-          <div style="font-size:12px;color:var(--text-secondary);margin-top:4px;">平板：两列，内边距 24px</div>
+        <div class="demo-s8-15">
+          <div class="demo-s8-16">768px - 1200px</div>
+          <div class="demo-s8-17">平板：两列，内边距 24px</div>
         </div>
       </div>
       <div class="col-4">
-        <div style="background:var(--color-warning-bg);padding:16px;border-radius:8px;text-align:center;">
-          <div style="font-weight:600;color:var(--color-warning);">&gt; 1200px</div>
-          <div style="font-size:12px;color:var(--text-secondary);margin-top:4px;">桌面：多列，最大宽度 1200px</div>
+        <div class="demo-s8-18">
+          <div class="demo-s8-19">&gt; 1200px</div>
+          <div class="demo-s8-20">桌面：多列，最大宽度 1200px</div>
         </div>
       </div>
     </div>
@@ -170,4 +170,28 @@
   <p><strong>练习 2</strong>：打开你的项目，在 Chrome DevTools 的手机模拟模式下测试每个页面，记录布局崩坏的地方。</p>
   <p><strong>练习 3</strong>：为前端设计系统教程的侧边栏添加响应式逻辑：PC 显示侧边栏，手机隐藏侧边栏并添加一个汉堡菜单按钮。</p>
 </div>
+{% endblock %}
+{% block scripts %}
+<style>
+.demo-s8-1 { font-size:12px;color:var(--text-tertiary);margin-bottom:12px; }
+.demo-s8-2 { display:flex;gap:16px;flex-wrap:wrap; }
+.demo-s8-3 { flex:1;min-width:280px;background:var(--color-primary-light);padding:20px;border-radius:8px;text-align:center; }
+.demo-s8-4 { font-weight:600; }
+.demo-s8-5 { font-size:14px;color:var(--text-secondary);margin-top:4px; }
+.demo-s8-6 { flex:1;min-width:280px;background:var(--color-success-bg);padding:20px;border-radius:8px;text-align:center; }
+.demo-s8-7 { font-weight:600; }
+.demo-s8-8 { font-size:14px;color:var(--text-secondary);margin-top:4px; }
+.demo-s8-9 { flex:1;min-width:280px;background:var(--color-warning-bg);padding:20px;border-radius:8px;text-align:center; }
+.demo-s8-10 { font-weight:600; }
+.demo-s8-11 { font-size:14px;color:var(--text-secondary);margin-top:4px; }
+.demo-s8-12 { background:var(--color-primary-light);padding:16px;border-radius:8px;text-align:center; }
+.demo-s8-13 { font-weight:600;color:var(--color-primary); }
+.demo-s8-14 { font-size:12px;color:var(--text-secondary);margin-top:4px; }
+.demo-s8-15 { background:var(--color-success-bg);padding:16px;border-radius:8px;text-align:center; }
+.demo-s8-16 { font-weight:600;color:var(--color-success); }
+.demo-s8-17 { font-size:12px;color:var(--text-secondary);margin-top:4px; }
+.demo-s8-18 { background:var(--color-warning-bg);padding:16px;border-radius:8px;text-align:center; }
+.demo-s8-19 { font-weight:600;color:var(--color-warning); }
+.demo-s8-20 { font-size:12px;color:var(--text-secondary);margin-top:4px; }
+</style>
 {% endblock %}

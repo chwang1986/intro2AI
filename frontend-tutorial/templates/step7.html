@@ -95,7 +95,7 @@
     <div class="empty">
       <svg class="empty-icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2"><rect x="12" y="12" width="40" height="40" rx="4"/><path d="M20 28h24M20 36h16"/></svg>
       <div class="empty-title">暂无项目</div>
-      <p style="margin:0 0 16px;">您还没有创建任何项目，点击下方按钮开始</p>
+      <p class="demo-s7-1">您还没有创建任何项目，点击下方按钮开始</p>
       <button class="btn btn-primary">创建项目</button>
     </div>
   </div>
@@ -104,21 +104,21 @@
   <div class="demo-card">
     <div class="demo-label">LOADING</div>
     <div class="flex gap-4 items-center">
-      <div style="text-align:center;">
+      <div class="demo-s7-2">
         <div class="spinner"></div>
-        <div style="font-size:12px;color:var(--text-tertiary);margin-top:8px;">加载中...</div>
+        <div class="demo-s7-3">加载中...</div>
       </div>
-      <div style="width:200px;">
-        <div style="font-size:12px;color:var(--text-tertiary);margin-bottom:4px;">骨架屏</div>
-        <div class="skeleton" style="height:16px;margin-bottom:8px;"></div>
-        <div class="skeleton" style="height:16px;width:80%;"></div>
+      <div class="demo-s7-4">
+        <div class="demo-s7-5">骨架屏</div>
+        <div class="skeleton demo-s7-6"></div>
+        <div class="skeleton demo-s7-7"></div>
       </div>
-      <div style="width:200px;">
-        <div style="font-size:12px;color:var(--text-tertiary);margin-bottom:4px;">进度条</div>
+      <div class="demo-s7-8">
+        <div class="demo-s7-9">进度条</div>
         <div class="progress">
-          <div class="progress-bar" style="width:65%;"></div>
+          <div class="progress-bar demo-s7-10"></div>
         </div>
-        <div style="font-size:12px;color:var(--text-secondary);margin-top:4px;">65%</div>
+        <div class="demo-s7-11">65%</div>
       </div>
     </div>
   </div>
@@ -152,7 +152,7 @@
 
 &lt;!-- 进度条 --&gt;
 &lt;div class="progress"&gt;
-  &lt;div class="progress-bar" style="width:65%;"&gt;&lt;/div&gt;
+  &lt;div class="progress-bar demo-s7-10"&gt;&lt;/div&gt;
 &lt;/div&gt;</pre>
 </div>
 
@@ -162,4 +162,19 @@
   <p><strong>练习 2</strong>：为上面的表格添加空状态。当用户列表为空时，显示"暂无用户"和一个"添加用户"按钮。</p>
   <p><strong>练习 3</strong>：模拟一个文件上传场景，包含上传按钮、进度条、上传完成后的成功提示。</p>
 </div>
+{% endblock %}
+{% block scripts %}
+<style>
+.demo-s7-1 { margin:0 0 16px; }
+.demo-s7-2 { text-align:center; }
+.demo-s7-3 { font-size:12px;color:var(--text-tertiary);margin-top:8px; }
+.demo-s7-4 { width:200px; }
+.demo-s7-5 { font-size:12px;color:var(--text-tertiary);margin-bottom:4px; }
+.demo-s7-6 { height:16px;margin-bottom:8px; }
+.demo-s7-7 { height:16px;width:80%; }
+.demo-s7-8 { width:200px; }
+.demo-s7-9 { font-size:12px;color:var(--text-tertiary);margin-bottom:4px; }
+.demo-s7-10 { width:65%; }
+.demo-s7-11 { font-size:12px;color:var(--text-secondary);margin-top:4px; }
+</style>
 {% endblock %}

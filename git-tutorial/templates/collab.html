@@ -225,12 +225,12 @@ git push origin main</code></pre>
   
   <div class="demo-card">
     <p><strong>判断题 1：</strong>在 Git 中，如果两个人修改了同一个文件的不同行，Git 通常会自动合并，不需要手动解决冲突。</p>
-    <p style="color: var(--muted); font-size: var(--font-size-sm);">答案：正确。只有修改了同一行或相邻行时，Git 才无法自动判断意图，需要手动解决。</p>
+    <p class="text-secondary text-sm">答案：正确。只有修改了同一行或相邻行时，Git 才无法自动判断意图，需要手动解决。</p>
   </div>
   
   <div class="demo-card">
     <p><strong>判断题 2：</strong>解决冲突时，使用 <code>git checkout --ours</code> 保留自己的版本是最安全的做法。</p>
-    <p style="color: var(--muted); font-size: var(--font-size-sm);">答案：错误。直接选择一方可能会丢弃另一方的合理修改，正确做法应该是理解双方意图后手动合并。</p>
+    <p class="text-secondary text-sm">答案：错误。直接选择一方可能会丢弃另一方的合理修改，正确做法应该是理解双方意图后手动合并。</p>
   </div>
   
   <div class="demo-card">
@@ -239,7 +239,7 @@ git push origin main</code></pre>
     <p>B. 等所有功能开发完再一次性 pull</p>
     <p>C. 尽量避免和队友修改同一个文件</p>
     <p>D. 直接在 main 上开发，不用分支</p>
-    <p style="color: var(--muted); font-size: var(--font-size-sm);">答案：A。频繁同步可以减少分支之间的差异，降低冲突概率。</p>
+    <p class="text-secondary text-sm">答案：A。频繁同步可以减少分支之间的差异，降低冲突概率。</p>
   </div>
   
   <div class="demo-card">
@@ -248,7 +248,7 @@ git push origin main</code></pre>
     <p>B. 删除文件后，历史记录中仍然会保留该信息</p>
     <p>C. 只要文件不在当前工作目录，就是安全的</p>
     <p>D. Git 会自动加密存储，所以不用担心</p>
-    <p style="color: var(--muted); font-size: var(--font-size-sm);">答案：B。Git 保存了完整历史，简单删除文件并不能从历史中移除敏感信息，需要使用 git filter-repo 等工具重写历史。</p>
+    <p class="text-secondary text-sm">答案：B。Git 保存了完整历史，简单删除文件并不能从历史中移除敏感信息，需要使用 git filter-repo 等工具重写历史。</p>
   </div>
   
   <div class="demo-card">
@@ -257,7 +257,7 @@ git push origin main</code></pre>
     <p>B. 让队友审查代码，防止有问题的代码进入 main</p>
     <p>C. 自动运行代码并部署到服务器</p>
     <p>D. 替代 git merge 命令</p>
-    <p style="color: var(--muted); font-size: var(--font-size-sm);">答案：B。Pull Request 是代码审查的载体，是防止 bug 进入主线的最后一道防线。</p>
+    <p class="text-secondary text-sm">答案：B。Pull Request 是代码审查的载体，是防止 bug 进入主线的最后一道防线。</p>
   </div>
 </section>
 

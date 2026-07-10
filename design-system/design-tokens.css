@@ -217,6 +217,9 @@ code, pre {
 .gap-4 { gap: var(--space-4); }
 
 .h-full { height: 100%; }
+.flex-1 { flex: 1; }
+.delay-1 { animation-delay: 0.3s; }
+.delay-2 { animation-delay: 0.6s; }
 
 /* 侧边栏图标 */
 .sidebar-icon {

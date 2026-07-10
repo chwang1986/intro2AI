@@ -69,37 +69,37 @@
   <h3>✅ 正确的对齐与层级</h3>
   <div class="demo-card">
     <div class="demo-label">DEMO</div>
-    <div style="max-width:400px;">
-      <div style="font-size:20px;font-weight:600;margin-bottom:8px;">项目总览</div>
-      <div style="font-size:14px;color:var(--text-secondary);margin-bottom:16px;">查看所有项目的运行状态和统计数据</div>
-      <div class="card" style="margin-bottom:12px;">
+    <div class="demo-s1-1">
+      <div class="demo-s1-2">项目总览</div>
+      <div class="demo-s1-3">查看所有项目的运行状态和统计数据</div>
+      <div class="card demo-s1-4">
         <div class="card-body">
-          <div style="font-weight:600;">在线用户数</div>
-          <div style="font-size:24px;font-weight:700;color:var(--color-primary);">1,284</div>
+          <div class="demo-s1-5">在线用户数</div>
+          <div class="demo-s1-6">1,284</div>
         </div>
       </div>
       <div class="card">
         <div class="card-body">
-          <div style="font-weight:600;">今日请求量</div>
-          <div style="font-size:24px;font-weight:700;color:var(--color-primary);">45.2K</div>
+          <div class="demo-s1-7">今日请求量</div>
+          <div class="demo-s1-8">45.2K</div>
         </div>
       </div>
     </div>
   </div>
 
   <h3>❌ 错误的对齐与层级</h3>
-  <div class="demo-card" style="border-color:var(--color-error);">
-    <div class="demo-label" style="color:var(--color-error);">BAD DEMO</div>
-    <div style="max-width:400px;">
-      <div style="font-size:18px;font-weight:400;text-align:center;margin-bottom:12px;">项目总览</div>
-      <div style="font-size:13px;color:#666;margin-bottom:8px;padding-left:5px;">查看所有项目的运行状态和统计数据</div>
-      <div style="border:1px solid #ccc;padding:10px;margin-bottom:8px;">
-        <div style="font-weight:600;font-size:15px;">在线用户数</div>
-        <div style="font-size:22px;color:blue;">1,284</div>
+  <div class="demo-card demo-s1-9">
+    <div class="demo-label demo-s1-10">BAD DEMO</div>
+    <div class="demo-s1-11">
+      <div class="demo-s1-12">项目总览</div>
+      <div class="demo-s1-13">查看所有项目的运行状态和统计数据</div>
+      <div class="demo-s1-14">
+        <div class="demo-s1-15">在线用户数</div>
+        <div class="demo-s1-16">1,284</div>
       </div>
-      <div style="border:1px solid #ccc;padding:10px;">
-        <div style="font-weight:600;font-size:15px;">今日请求量</div>
-        <div style="font-size:20px;color:green;">45.2K</div>
+      <div class="demo-s1-17">
+        <div class="demo-s1-18">今日请求量</div>
+        <div class="demo-s1-19">45.2K</div>
       </div>
     </div>
   </div>
@@ -108,20 +108,20 @@
 <div class="lesson-section">
   <h2>完整代码</h2>
   <p>上面"正确"示例的核心 HTML 结构：</p>
-  <pre class="code-block">&lt;div style="max-width:400px;"&gt;
+  <pre class="code-block">&lt;div class="demo-s1-20"&gt;
   &lt;!-- 标题左对齐，字号、字重形成层级 --&gt;
-  &lt;div style="font-size:20px;font-weight:600;margin-bottom:8px;"&gt;
+  &lt;div class="demo-s1-21"&gt;
     项目总览
   &lt;/div&gt;
-  &lt;div style="font-size:14px;color:var(--text-secondary);margin-bottom:16px;"&gt;
+  &lt;div class="demo-s1-22"&gt;
     查看所有项目的运行状态和统计数据
   &lt;/div&gt;
 
   &lt;!-- 卡片容器：圆角、阴影、统一内边距 --&gt;
-  &lt;div class="card" style="margin-bottom:12px;"&gt;
+  &lt;div class="card demo-s1-23"&gt;
     &lt;div class="card-body"&gt;
-      &lt;div style="font-weight:600;"&gt;在线用户数&lt;/div&gt;
-      &lt;div style="font-size:24px;font-weight:700;color:var(--color-primary);"&gt;
+      &lt;div class="demo-s1-24"&gt;在线用户数&lt;/div&gt;
+      &lt;div class="demo-s1-25"&gt;
         1,284
       &lt;/div&gt;
     &lt;/div&gt;
@@ -135,4 +135,34 @@
   <p><strong>练习 2</strong>：找一段居中的大段文字（超过两行），改成左对齐，看看阅读体验是否有提升。</p>
   <p><strong>练习 3</strong>：在一个页面上，数一下使用了多少种不同的颜色。如果超过 6 种（不含中性灰），尝试减少到 3 种主色。</p>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<style>
+.demo-s1-1 { max-width:400px; }
+.demo-s1-2 { font-size:20px;font-weight:600;margin-bottom:8px; }
+.demo-s1-3 { font-size:14px;color:var(--text-secondary);margin-bottom:16px; }
+.demo-s1-4 { margin-bottom:12px; }
+.demo-s1-5 { font-weight:600; }
+.demo-s1-6 { font-size:24px;font-weight:700;color:var(--color-primary); }
+.demo-s1-7 { font-weight:600; }
+.demo-s1-8 { font-size:24px;font-weight:700;color:var(--color-primary); }
+.demo-s1-9 { border-color:var(--color-error); }
+.demo-s1-10 { color:var(--color-error); }
+.demo-s1-11 { max-width:400px; }
+.demo-s1-12 { font-size:18px;font-weight:400;text-align:center;margin-bottom:12px; }
+.demo-s1-13 { font-size:13px;color:#666;margin-bottom:8px;padding-left:5px; }
+.demo-s1-14 { border:1px solid #ccc;padding:10px;margin-bottom:8px; }
+.demo-s1-15 { font-weight:600;font-size:15px; }
+.demo-s1-16 { font-size:22px;color:blue; }
+.demo-s1-17 { border:1px solid #ccc;padding:10px; }
+.demo-s1-18 { font-weight:600;font-size:15px; }
+.demo-s1-19 { font-size:20px;color:green; }
+.demo-s1-20 { max-width:400px; }
+.demo-s1-21 { font-size:20px;font-weight:600;margin-bottom:8px; }
+.demo-s1-22 { font-size:14px;color:var(--text-secondary);margin-bottom:16px; }
+.demo-s1-23 { margin-bottom:12px; }
+.demo-s1-24 { font-weight:600; }
+.demo-s1-25 { font-size:24px;font-weight:700;color:var(--color-primary); }
+</style>
 {% endblock %}

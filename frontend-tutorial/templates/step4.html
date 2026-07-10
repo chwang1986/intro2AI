@@ -71,38 +71,38 @@
   <h3>8px 网格示意</h3>
   <div class="demo-card">
     <div class="demo-label">8PX GRID</div>
-    <div style="display:flex;gap:8px;margin-bottom:8px;">
-      <div style="width:32px;height:32px;background:var(--color-primary);border-radius:4px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;">32</div>
-      <div style="width:32px;height:32px;background:var(--color-primary);border-radius:4px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;">32</div>
-      <div style="width:32px;height:32px;background:var(--color-primary);border-radius:4px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;">32</div>
+    <div class="demo-s4-1">
+      <div class="demo-s4-2">32</div>
+      <div class="demo-s4-3">32</div>
+      <div class="demo-s4-4">32</div>
     </div>
-    <div style="display:flex;gap:8px;margin-bottom:8px;">
-      <div style="width:32px;height:32px;background:var(--color-primary);border-radius:4px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;">32</div>
-      <div style="width:32px;height:32px;background:var(--color-primary);border-radius:4px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;">32</div>
-      <div style="width:32px;height:32px;background:var(--color-primary);border-radius:4px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;">32</div>
+    <div class="demo-s4-5">
+      <div class="demo-s4-6">32</div>
+      <div class="demo-s4-7">32</div>
+      <div class="demo-s4-8">32</div>
     </div>
-    <p style="font-size:12px;color:var(--text-tertiary);margin:0;">每个方块 32×32，间距 8px，所有尺寸都是 8 的倍数</p>
+    <p class="demo-s4-9">每个方块 32×32，间距 8px，所有尺寸都是 8 的倍数</p>
   </div>
 
   <h3>容器对比</h3>
   <div class="demo-card">
     <div class="demo-label">CONTAINER WIDTH</div>
-    <div style="background:var(--bg-code);padding:16px;border-radius:8px;margin-bottom:12px;">
-      <div style="font-weight:600;margin-bottom:4px;">窄容器（860px）</div>
-      <div style="max-width:400px;background:#fff;padding:16px;border-radius:4px;font-size:14px;">适合文章、教程等阅读型内容。视线移动距离短，阅读舒适。</div>
+    <div class="demo-s4-10">
+      <div class="demo-s4-11">窄容器（860px）</div>
+      <div class="demo-s4-12">适合文章、教程等阅读型内容。视线移动距离短，阅读舒适。</div>
     </div>
-    <div style="background:var(--bg-code);padding:16px;border-radius:8px;">
-      <div style="font-weight:600;margin-bottom:4px;">宽容器（1200px）</div>
-      <div style="max-width:100%;background:#fff;padding:16px;border-radius:4px;font-size:14px;">适合仪表盘、后台管理等工具型页面。可以并排展示更多内容。</div>
+    <div class="demo-s4-13">
+      <div class="demo-s4-14">宽容器（1200px）</div>
+      <div class="demo-s4-15">适合仪表盘、后台管理等工具型页面。可以并排展示更多内容。</div>
     </div>
   </div>
 
   <h3>Flex 布局示例</h3>
   <div class="demo-card">
     <div class="demo-label">FLEX LAYOUT</div>
-    <div style="display:flex;gap:16px;flex-wrap:wrap;">
-      <div style="flex:1;min-width:200px;background:var(--color-primary-light);padding:20px;border-radius:8px;text-align:center;">左侧栏</div>
-      <div style="flex:2;min-width:300px;background:var(--color-success-bg);padding:20px;border-radius:8px;text-align:center;">主内容区（flex:2 占两份）</div>
+    <div class="demo-s4-16">
+      <div class="demo-s4-17">左侧栏</div>
+      <div class="demo-s4-18">主内容区（flex:2 占两份）</div>
     </div>
   </div>
 </div>
@@ -168,4 +168,27 @@
   <p><strong>练习 2</strong>：用 Flexbox 实现一个三列等宽的卡片布局，卡片间距 16px，在大屏上三列，平板两列，手机一列。</p>
   <p><strong>练习 3</strong>：用 <code class="code-inline">container-narrow</code>（max-width: 860px）包裹一篇长文章，对比 full-width 和 narrow 的阅读体验。</p>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<style>
+.demo-s4-1 { display:flex;gap:8px;margin-bottom:8px; }
+.demo-s4-2 { width:32px;height:32px;background:var(--color-primary);border-radius:4px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px; }
+.demo-s4-3 { width:32px;height:32px;background:var(--color-primary);border-radius:4px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px; }
+.demo-s4-4 { width:32px;height:32px;background:var(--color-primary);border-radius:4px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px; }
+.demo-s4-5 { display:flex;gap:8px;margin-bottom:8px; }
+.demo-s4-6 { width:32px;height:32px;background:var(--color-primary);border-radius:4px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px; }
+.demo-s4-7 { width:32px;height:32px;background:var(--color-primary);border-radius:4px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px; }
+.demo-s4-8 { width:32px;height:32px;background:var(--color-primary);border-radius:4px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px; }
+.demo-s4-9 { font-size:12px;color:var(--text-tertiary);margin:0; }
+.demo-s4-10 { background:var(--bg-code);padding:16px;border-radius:8px;margin-bottom:12px; }
+.demo-s4-11 { font-weight:600;margin-bottom:4px; }
+.demo-s4-12 { max-width:400px;background:#fff;padding:16px;border-radius:4px;font-size:14px; }
+.demo-s4-13 { background:var(--bg-code);padding:16px;border-radius:8px; }
+.demo-s4-14 { font-weight:600;margin-bottom:4px; }
+.demo-s4-15 { max-width:100%;background:#fff;padding:16px;border-radius:4px;font-size:14px; }
+.demo-s4-16 { display:flex;gap:16px;flex-wrap:wrap; }
+.demo-s4-17 { flex:1;min-width:200px;background:var(--color-primary-light);padding:20px;border-radius:8px;text-align:center; }
+.demo-s4-18 { flex:2;min-width:300px;background:var(--color-success-bg);padding:20px;border-radius:8px;text-align:center; }
+</style>
 {% endblock %}

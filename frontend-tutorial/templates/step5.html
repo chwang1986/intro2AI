@@ -92,7 +92,7 @@
   <h3>输入框</h3>
   <div class="demo-card">
     <div class="demo-label">INPUTS</div>
-    <div style="max-width:400px;">
+    <div class="demo-s5-1">
       <input class="input mb-3" placeholder="标准输入框（36px）">
       <input class="input input-lg mb-3" placeholder="大号输入框（44px）">
       <input class="input input-sm mb-3" placeholder="小号输入框（28px）">
@@ -117,13 +117,13 @@
   <div class="demo-card">
     <div class="demo-label">BADGES</div>
     <div class="flex gap-4 items-center">
-      <div style="position:relative;display:inline-block;">
+      <div class="demo-s5-2">
         <button class="btn btn-ghost">消息</button>
-        <span class="badge" style="position:absolute;top:-6px;right:-6px;">5</span>
+        <span class="badge demo-s5-3">5</span>
       </div>
-      <div style="position:relative;display:inline-block;">
+      <div class="demo-s5-4">
         <button class="btn btn-ghost">任务</button>
-        <span class="badge" style="position:absolute;top:-6px;right:-6px;">99+</span>
+        <span class="badge demo-s5-5">99+</span>
       </div>
     </div>
   </div>
@@ -158,4 +158,14 @@
   <p><strong>练习 2</strong>：为一个任务列表页面设计标签系统，包含"待处理""进行中""已完成""已取消"四种状态，每种状态用对应的颜色标签。</p>
   <p><strong>练习 3</strong>：给上面的表单加上禁用状态（提交按钮在输入为空时禁用），测试禁用样式的视觉效果是否明显。</p>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<style>
+.demo-s5-1 { max-width:400px; }
+.demo-s5-2 { position:relative;display:inline-block; }
+.demo-s5-3 { position:absolute;top:-6px;right:-6px; }
+.demo-s5-4 { position:relative;display:inline-block; }
+.demo-s5-5 { position:absolute;top:-6px;right:-6px; }
+</style>
 {% endblock %}
