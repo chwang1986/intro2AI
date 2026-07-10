@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+
+{% block title %}Step 1 什么是无线输电 — 无线电能输电教程{% endblock %}
+
+{% block content %}
+<div class="card" style="margin-bottom:24px;">
+  <div class="card-body">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+      <span class="badge badge-info">Step 1</span>
+      <h1 style="margin:0;font-size:24px;">什么是无线电能输电</h1>
+    </div>
+    <p style="color:var(--text-secondary);margin:0;">概念、历史、分类与基本原理</p>
+  </div>
+</div>
+
+<div class="lesson-block">
+  <div class="lesson-title">场景</div>
+  <div class="lesson-explain">
+    <p>手机放在充电板上就能充电，不需要插线；电动汽车停在车位上自动补能；心脏起搏器在人体内工作多年却无需更换电池……这些都是<strong>无线电能输电（Wireless Power Transfer, WPT）</strong>技术的应用。本教程的目标是从物理原理出发，理解这些技术是如何工作的。</p>
+  </div>
+</div>
+
+<div class="lesson-block">
+  <div class="lesson-title">概念</div>
+  <div class="lesson-explain">
+    <p>无线电能输电，指的是<strong>不通过物理导线连接，将电能从电源传输到用电设备</strong>的技术。它的核心思想是：电能在空间中以一种"场"的形式传播，只要接收端能够捕捉到这种场，就能将其重新转化为电能。</p>
+
+    <div class="concept-card">
+      <h4>三种主要方式</h4>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:16px;">
+        <div>
+          <div style="font-weight:600;margin-bottom:4px;">🔌 电磁感应式</div>
+          <p style="margin:0;font-size:13px;color:var(--text-secondary);">距离：几毫米到几厘米。原理：变压器。应用：手机无线充电、电动牙刷。</p>
+        </div>
+        <div>
+          <div style="font-weight:600;margin-bottom:4px;">📡 磁共振耦合式</div>
+          <p style="margin:0;font-size:13px;color:var(--text-secondary);">距离：几厘米到几米。原理：谐振线圈。应用：电动汽车无线充电、医疗设备。</p>
+        </div>
+        <div>
+          <div style="font-weight:600;margin-bottom:4px;">🛰️ 微波/激光式</div>
+          <p style="margin:0;font-size:13px;color:var(--text-secondary);">距离：米到公里级。原理：电磁波辐射。应用：空间太阳能电站、无人机供电。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="lesson-block">
+  <div class="lesson-title">原理</div>
+  <div class="lesson-explain">
+    <h4>能量守恒视角</h4>
+    <p>无线输电本质上是<strong>能量从一种形式转换为另一种形式，在空间传播后再转换回来</strong>的过程：</p>
+    <ul>
+      <li><strong>电能 → 磁场能</strong>：发射线圈中通入交流电，产生交变磁场。</li>
+      <li><strong>磁场能传播</strong>：交变磁场在空间中扩散，到达接收线圈。</li>
+      <li><strong>磁场能 → 电能</strong>：接收线圈中的磁通量变化，感应出电动势，驱动电流。</li>
+    </ul>
+
+    <div class="highlight-box">
+      <p><strong>关键问题</strong>：为什么普通导线传输效率接近 100%，而无线传输效率通常只有 30% ~ 90%？答案在于"磁场泄漏"——发射线圈产生的磁场大部分散失到空间中，只有一小部分被接收线圈捕获。</p>
+    </div>
+
+    <h4>历史脉络</h4>
+    <ul>
+      <li><strong>1831年</strong>：法拉第发现电磁感应现象，奠定了理论基础。</li>
+      <li><strong>1891年</strong>：特斯拉进行了最早的无线输电实验，尝试用大地作为导体传输电能。</li>
+      <li><strong>2007年</strong>：MIT 的 Marin Soljačić 团队实现了 2 米距离的 60W 磁共振无线输电，效率 40%。</li>
+      <li><strong>2017年至今</strong>：Qi 标准普及（手机无线充电），电动汽车无线充电进入商用。</li>
+    </ul>
+  </div>
+</div>
+
+<div class="lesson-block">
+  <div class="lesson-title">要点</div>
+  <div class="lesson-explain">
+    <ol>
+      <li><strong>距离决定技术路线</strong>：毫米级用电磁感应，米级用磁共振，公里级用微波/激光。</li>
+      <li><strong>效率与距离的矛盾</strong>：距离越远，磁场扩散越严重，耦合越弱，效率越低。</li>
+      <li><strong>频率是关键参数</strong>：电磁感应用 50Hz ~ 1MHz，磁共振用 100kHz ~ 10MHz，微波用 GHz 级。</li>
+      <li><strong>安全性不可忽视</strong>：强磁场可能干扰医疗设备（如心脏起搏器），需要 shielding 设计。</li>
+      <li><strong>标准正在统一</strong>：手机领域 Qi 标准已普及，电动汽车领域 SAE J2954 和 IEC 61980 正在推进。</li>
+    </ol>
+  </div>
+</div>
+
+<div class="lesson-block">
+  <div class="lesson-title">常见错误</div>
+  <div class="lesson-explain">
+    <div class="card" style="border-left:4px solid var(--color-error);margin-bottom:12px;">
+      <div class="card-body" style="padding:16px;">
+        <p style="margin:0;font-size:14px;"><strong style="color:var(--color-error);">❌ 混淆"无线充电"和"无线输电"</strong><br>无线充电通常指电磁感应式（短距离、低功率），而无线输电是更广义的概念，包含中远距离传输。</p>
+      </div>
+    </div>
+    <div class="card" style="border-left:4px solid var(--color-error);margin-bottom:12px;">
+      <div class="card-body" style="padding:16px;">
+        <p style="margin:0;font-size:14px;"><strong style="color:var(--color-error);">❌ 认为无线输电没有损耗</strong><br>无线输电的损耗远大于有线。即使是效率最高的磁共振耦合，也很难超过 95%。</p>
+      </div>
+    </div>
+    <div class="card" style="border-left:4px solid var(--color-error);">
+      <div class="card-body" style="padding:16px;">
+        <p style="margin:0;font-size:14px;"><strong style="color:var(--color-error);">❌ 忽略谐振频率匹配</strong><br>磁共振耦合的核心是发射端和接收端的谐振频率必须严格一致，否则效率会急剧下降。这不是简单的"两个线圈靠近"。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="lesson-block">
+  <div class="lesson-title">示例</div>
+  <div class="lesson-demo">
+    <div class="demo-label">三种技术的距离与功率对比</div>
+    <div class="table-wrap">
+      <table class="table">
+        <thead>
+          <tr><th>技术</th><th>典型距离</th><th>典型功率</th><th>效率</th><th>代表应用</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>电磁感应</td><td>1 ~ 10 mm</td><td>5 ~ 15 W</td><td>70% ~ 90%</td><td>手机 Qi 充电</td></tr>
+          <tr><td>磁共振耦合</td><td>10 cm ~ 1 m</td><td>3 ~ 11 kW</td><td>75% ~ 93%</td><td>电动汽车无线充电</td></tr>
+          <tr><td>微波输电</td><td>数米 ~ 数公里</td><td>可达 MW 级</td><td>50% ~ 60%</td><td>空间太阳能电站</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="lesson-block">
+  <div class="lesson-title">练习</div>
+  <div class="lesson-explain">
+    <div class="card" style="background:var(--color-primary-light);border:1px solid var(--color-primary-light);">
+      <div class="card-body">
+        <p style="margin:0 0 12px;"><strong>练习 1</strong>：列出你身边的 3 个无线供电设备，判断它们属于哪种技术（电磁感应 / 磁共振 / 微波）。</p>
+        <p style="margin:0 0 12px;"><strong>练习 2</strong>：为什么特斯拉的无线输电实验最终没有成功商用？搜索资料后写一段 100 字以内的总结。</p>
+        <p style="margin:0;"><strong>练习 3</strong>：假设一个无线输电系统的效率是 80%，如果传输 1000W 的功率，有多少功率以热的形式散失了？散失的功率会产生多少热量（假设全部转化为热）？</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

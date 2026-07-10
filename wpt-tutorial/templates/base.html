@@ -1,0 +1,74 @@
+{% extends "system_base.html" %}
+
+{% block sidebar_brand %}
+  <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" style="width:28px;height:28px;color:var(--color-primary);"><circle cx="24" cy="24" r="10"/><path d="M24 8v8M24 32v8M8 24h8M32 24h8"/></svg>
+  <span style="font-weight:600;font-size:16px;">无线输电教程</span>
+{% endblock %}
+
+{% block sidebar_menu %}
+  <li><a href="/" class="{% if not current_step %}active{% endif %}">📋 教程大纲</a></li>
+  {% for step in steps %}
+  <li>
+    <a href="/{{ step.id }}.html" class="{% if current_step == loop.index %}active{% endif %}">
+      <span class="step-badge">{{ loop.index }}</span>
+      {{ step.title }}
+    </a>
+  </li>
+  {% endfor %}
+{% endblock %}
+
+{% block head %}
+<!-- MathJax —— 渲染数学公式 -->
+<script>
+  window.MathJax = {
+    tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']] },
+    svg: { fontCache: 'global' }
+  };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+  .formula-box {
+    background: var(--bg-code);
+    border: 1px solid var(--border-color-split);
+    border-radius: var(--border-radius-md);
+    padding: var(--space-4);
+    margin: var(--space-3) 0;
+    overflow-x: auto;
+  }
+  .formula-box mjx-container {
+    font-size: 1.05em;
+  }
+  .concept-card {
+    background: var(--bg-card);
+    border-radius: var(--border-radius-lg);
+    padding: var(--space-5);
+    margin: var(--space-4) 0;
+    border: 1px solid var(--border-color-split);
+  }
+  .concept-card h4 {
+    margin: 0 0 var(--space-3);
+    color: var(--color-primary);
+    font-size: var(--font-size-lg);
+  }
+  .highlight-box {
+    background: var(--color-primary-light);
+    border-left: 4px solid var(--color-primary);
+    padding: var(--space-3) var(--space-4);
+    margin: var(--space-3) 0;
+    border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
+  }
+  .highlight-box p {
+    margin: 0;
+    color: var(--text-secondary);
+  }
+  .diagram-placeholder {
+    background: var(--gray-2);
+    border: 2px dashed var(--border-color);
+    border-radius: var(--border-radius-lg);
+    padding: var(--space-8);
+    text-align: center;
+    color: var(--text-tertiary);
+    margin: var(--space-4) 0;
+  }
+</style>
+{% endblock %}

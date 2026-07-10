@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+
+{% block title %}Step 2 电磁感应与互感 — 无线电能输电教程{% endblock %}
+
+{% block content %}
+<div class="card" style="margin-bottom:24px;">
+  <div class="card-body">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+      <span class="badge badge-info">Step 2</span>
+      <h1 style="margin:0;font-size:24px;">电磁感应与互感</h1>
+    </div>
+    <p style="color:var(--text-secondary);margin:0;">法拉第定律、变压器模型、互感系数</p>
+  </div>
+</div>
+
+<div class="lesson-block">
+  <div class="lesson-title">场景</div>
+  <div class="lesson-explain">
+    <p>手机无线充电板内部有两个线圈：一个在线圈在充电板里（发射端），一个在手机里（接收端）。当充电板通电时，手机就"感应"到了电能。这个现象就是<strong>电磁感应</strong>，它是所有无线输电技术的物理基础。</p>
+  </div>
+</div>
+
+<div class="lesson-block">
+  <div class="lesson-title">原理</div>
+  <div class="lesson-explain">
+    <h4>法拉第电磁感应定律</h4>
+    <p>当一个线圈中的磁通量 $\Phi$ 发生变化时，线圈中会产生感应电动势 $\mathcal{E}$：</p>
+
+    <div class="formula-box">
+      $$\mathcal{E} = -\frac{d\Phi}{dt}$$
+    </div>
+
+    <p>对于 $N$ 匝线圈，如果每匝的磁通量都是 $\Phi$，则总电动势为：</p>
+
+    <div class="formula-box">
+      $$\mathcal{E} = -N\frac{d\Phi}{dt}$$
+    </div>
+
+    <div class="highlight-box">
+      <p><strong>负号的含义</strong>：楞次定律。感应电动势的方向总是阻碍磁通量的变化。如果磁场增强，感应电流会产生反向磁场来"抵抗"这种增强。</p>
+    </div>
+
+    <h4>自感（Self-Inductance）</h4>
+    <p>一个线圈自己产生的磁场，穿过自己每一匝的磁通量 $\Phi$ 与线圈中的电流 $I$ 成正比：</p>
+
+    <div class="formula-box">
+      $$\Phi = L \cdot I \quad \Rightarrow \quad \mathcal{E} = -L\frac{dI}{dt}$$
+    </div>
+
+    <p>其中 $L$ 是<strong>自感系数</strong>（单位：亨利 H），取决于线圈的几何形状、匝数和是否有铁芯。</p>
+
+    <h4>互感（Mutual Inductance）</h4>
+    <p>当两个线圈靠近时，线圈 1 中的电流 $I_1$ 产生的磁场，会有一部分穿过线圈 2。线圈 2 中的磁通量 $\Phi_{21}$ 与 $I_1$ 成正比：</p>
+
+    <div class="formula-box">
+      $$\Phi_{21} = M \cdot I_1$$
+    </div>
+
+    <p>当 $I_1$ 变化时，线圈 2 中感应出的电动势为：</p>
+
+    <div class="formula-box">
+      $$\mathcal{E}_2 = -M\frac{dI_1}{dt}$$
+    </div>
+
+    <p>其中 $M$ 是<strong>互感系数</strong>（单位：亨利 H）。互感系数是对称的：$M_{12} = M_{21} = M$。</p>
+
+    <div class="concept-card">
+      <h4>互感系数的物理意义</h4>
+      <p>$M$ 的大小取决于：</p>
+      <ul>
+        <li>两个线圈的<strong>距离</strong>：越近，$M$ 越大。</li>
+        <li>线圈的<strong>相对取向</strong>：轴线平行时 $M$ 最大，垂直时 $M$ 接近 0。</li>
+        <li>线圈的<strong>几何尺寸</strong>：面积越大、匝数越多，$M$ 越大。</li>
+      </ul>
+    </div>
+
+    <h4>耦合系数（Coupling Coefficient）</h4>
+    <p>为了定量描述两个线圈的"耦合紧密程度"，定义耦合系数 $k$：</p>
+
+    <div class="formula-box">
+      $$k = \frac{M}{\sqrt{L_1 L_2}}, \quad 0 \leq k \leq 1$$
+    </div>
+
+    <ul>
+      <li>$k = 1$：理想变压器，所有磁通都穿过两个线圈（现实中不可能达到）。</li>
+      <li>$k = 0$：两个线圈完全无耦合（距离极远或垂直放置）。</li>
+      <li>手机无线充电：$k \approx 0.3 \sim 0.6$。</li>
+      <li>紧密耦合变压器：$k \approx 0.9 \sim 0.99$。</li>
+    </ul>
+  </div>
+</div>
+
+<div class="lesson-block">
+  <div class="lesson-title">要点</div>
+  <div class="lesson-explain">
+    <ol>
+      <li><strong>变化的电流产生变化的磁场</strong>：直流电（DC）无法用于无线输电，因为恒定的电流产生恒定的磁场，不会感应出电动势。</li>
+      <li><strong>频率越高，感应效果越强</strong>：由 $\mathcal{E} = -M \frac{dI}{dt}$ 可知，在相同电流幅值下，频率越高，$\frac{dI}{dt}$ 越大，感应电动势越大。</li>
+      <li><strong>耦合系数是无线输电的核心指标</strong>：所有效率公式最终都依赖于 $k$。提高 $k$ 的方法：减小距离、对齐轴线、增加线圈尺寸。</li>
+      <li><strong>自感和互感的关系</strong>：对于两个完全相同的线圈（$L_1 = L_2 = L$），如果它们完全重叠，$M \approx L$，则 $k \approx 1$。</li>
+    </ol>
+  </div>
+</div>
+
+<div class="lesson-block">
+  <div class="lesson-title">推导：简单互感模型的传输效率</div>
+  <div class="lesson-explain">
+    <p>考虑最简单的模型：发射线圈（电感 $L_1$，串联电阻 $R_1$）和接收线圈（电感 $L_2$，串联电阻 $R_2$），通过互感 $M$ 耦合。</p>
+
+    <p>发射端施加交流电压 $V_1$，角频率为 $\omega$。发射端和接收端的回路方程为：</p>
+
+    <div class="formula-box">
+      $$V_1 = I_1 R_1 + j\omega L_1 I_1 - j\omega M I_2$$
+      $$0 = I_2 R_2 + j\omega L_2 I_2 + R_L I_2 - j\omega M I_1$$
+    </div>
+
+    <p>其中 $R_L$ 是负载电阻，$j$ 是虚数单位。第二个方程中，接收端的感应电动势 $j\omega M I_1$ 是"电源"，驱动电流 $I_2$ 流过 $R_2$、$L_2$ 和 $R_L$。</p>
+
+    <p>从第二个方程解出 $I_2$：</p>
+
+    <div class="formula-box">
+      $$I_2 = \frac{j\omega M I_1}{R_2 + R_L + j\omega L_2}$$
+    </div>
+
+    <p>负载上的功率（有用功率）为：</p>
+
+    <div class="formula-box">
+      $$P_{out} = |I_2|^2 R_L = \frac{(\omega M)^2 |I_1|^2 R_L}{(R_2 + R_L)^2 + (\omega L_2)^2}$$
+    </div>
+
+    <p>发射端的输入功率为：</p>
+
+    <div class="formula-box">
+      $$P_{in} = |I_1|^2 R_1 + \text{（传递到接收端的功率）}$$
+    </div>
+
+    <p>当发射端和接收端都调谐到谐振时（$\omega L_1 = \frac{1}{\omega C_1}$，$\omega L_2 = \frac{1}{\omega C_2}$），电抗项被抵消，效率公式将大大简化。这是 Step 3 的内容。</p>
+  </div>
+</div>
+
+<div class="lesson-block">
+  <div class="lesson-title">示例</div>
+  <div class="lesson-demo">
+    <div class="demo-label">数值计算</div>
+    <div class="card" style="background:var(--bg-code);">
+      <div class="card-body">
+        <p style="margin:0 0 12px;"><strong>已知</strong>：两个线圈，$L_1 = L_2 = 10\,\mu\text{H}$，$M = 5\,\mu\text{H}$，工作频率 $f = 100\,\text{kHz}$。</p>
+        <p style="margin:0 0 12px;"><strong>求</strong>：耦合系数 $k$ 和角频率 $\omega$。</p>
+        <p style="margin:0;"><strong>解</strong>：</p>
+        <div class="formula-box" style="background:transparent;border:none;padding:8px 0;">
+          $$k = \frac{M}{\sqrt{L_1 L_2}} = \frac{5}{\sqrt{10 \times 10}} = 0.5$$
+          $$\omega = 2\pi f = 2\pi \times 10^5 \approx 6.28 \times 10^5 \,\text{rad/s}$$
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="lesson-block">
+  <div class="lesson-title">练习</div>
+  <div class="lesson-explain">
+    <div class="card" style="background:var(--color-primary-light);border:1px solid var(--color-primary-light);">
+      <div class="card-body">
+        <p style="margin:0 0 12px;"><strong>练习 1</strong>：一个线圈有 100 匝，在 0.1 秒内磁通量从 0.02 Wb 变为 0.05 Wb，求感应电动势的大小。</p>
+        <p style="margin:0 0 12px;"><strong>练习 2</strong>：两个线圈的自感分别为 $L_1 = 20\,\mu\text{H}$，$L_2 = 30\,\mu\text{H}$，互感 $M = 10\,\mu\text{H}$。计算耦合系数 $k$。</p>
+        <p style="margin:0;"><strong>练习 3</strong>：为什么直流电不能用于无线输电？用法拉第定律解释。</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

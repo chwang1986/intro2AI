@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}无线电能输电教程 — 大纲{% endblock %}
+
+{% block content %}
+<div style="text-align:center;margin-bottom:40px;padding:40px 0;background:linear-gradient(135deg, var(--color-primary-light) 0%, var(--bg-page) 100%);border-radius:var(--border-radius-lg);">
+  <h1 style="font-size:32px;font-weight:700;margin-bottom:12px;color:var(--text-primary);">⚡ 无线电能输电</h1>
+  <p style="font-size:16px;color:var(--text-secondary);max-width:600px;margin:0 auto;">从电磁感应到磁共振耦合，理解无线输电的物理原理与数学推导</p>
+</div>
+
+<div class="card" style="margin-bottom:24px;">
+  <div class="card-body">
+    <h3 style="margin-top:0;">为什么学这个</h3>
+    <p>手机无线充电、电动汽车充电桩、心脏起搏器的无线供电……这些技术背后的物理原理是什么？传输效率如何计算？本教程从最基本的电磁感应出发，一步步推导到现代磁共振耦合模型。</p>
+  </div>
+</div>
+
+<div class="card" style="margin-bottom:24px;">
+  <div class="card-body">
+    <h3 style="margin-top:0;">学习路线</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));gap:16px;margin-top:16px;">
+      {% for step in steps %}
+      <a href="/{{ step.id }}.html" style="text-decoration:none;">
+        <div style="background:var(--gray-2);border-radius:var(--border-radius-md);padding:16px;border:1px solid var(--border-color-split);transition:all 0.2s;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+            <span style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:var(--color-primary);color:#fff;font-size:12px;font-weight:600;">{{ loop.index }}</span>
+            <span style="font-weight:600;color:var(--text-primary);">{{ step.title }}</span>
+          </div>
+          <p style="margin:0;font-size:13px;color:var(--text-secondary);">{{ step.desc }}</p>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-body">
+    <h3 style="margin-top:0;">前置知识</h3>
+    <ul style="color:var(--text-secondary);line-height:1.8;">
+      <li>高中物理电磁学基础（电场、磁场、电磁感应）</li>
+      <li>基本的微积分（导数、积分、微分方程）</li>
+      <li>交流电路基础（电阻、电感、电容、阻抗）</li>
+    </ul>
+  </div>
+</div>
+{% endblock %}

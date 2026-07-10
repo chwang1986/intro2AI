@@ -1,0 +1,213 @@
+{% extends "base.html" %}
+
+{% block title %}Step 5 应用与挑战 — 无线电能输电教程{% endblock %}
+
+{% block content %}
+<div class="card" style="margin-bottom:24px;">
+  <div class="card-body">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+      <span class="badge badge-info">Step 5</span>
+      <h1 style="margin:0;font-size:24px;">应用与挑战</h1>
+    </div>
+    <p style="color:var(--text-secondary);margin:0;">手机充电、电动汽车、医疗植入、空间太阳能</p>
+  </div>
+</div>
+
+<div class="lesson-block">
+  <div class="lesson-title">场景</div>
+  <div class="lesson-explain">
+    <p>经过前面四步的理论学习，现在来看看无线输电技术在现实世界中是如何应用的，以及每个应用场景面临的核心挑战。</p>
+  </div>
+</div>
+
+<div class="lesson-block">
+  <div class="lesson-title">应用一：消费电子无线充电</div>
+  <div class="lesson-explain">
+    <div class="concept-card">
+      <h4>📱 Qi 标准（电磁感应式）</h4>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <div>
+          <p style="margin:0 0 8px;"><strong>参数</strong></p>
+          <ul style="margin:0;font-size:14px;color:var(--text-secondary);">
+            <li>距离：0 ~ 5 mm</li>
+            <li>功率：5W ~ 15W</li>
+            <li>频率：87 ~ 205 kHz</li>
+            <li>效率：70% ~ 80%</li>
+          </ul>
+        </div>
+        <div>
+          <p style="margin:0 0 8px;"><strong>挑战</strong></p>
+          <ul style="margin:0;font-size:14px;color:var(--text-secondary);">
+            <li>必须精确对准</li>
+            <li>充电时发热明显</li>
+            <li>无法边充边玩（拿起来就断）</li>
+            <li>金属异物检测（FOD）</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight-box">
+      <p><strong>技术细节</strong>：Qi 标准的发射端和接收端都有线圈，但 Qi 不依赖谐振（虽然线圈有电容调谐，但主要原理仍是电磁感应）。Qi 2.0 引入了磁吸对准（类似 MagSafe），解决了"对不准就效率低"的问题。</p>
+    </div>
+  </div>
+</div>
+
+<div class="lesson-block">
+  <div class="lesson-title">应用二：电动汽车无线充电</div>
+  <div class="lesson-explain">
+    <div class="concept-card">
+      <h4>🚗 SAE J2954 / IEC 61980（磁共振耦合式）</h4>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <div>
+          <p style="margin:0 0 8px;"><strong>参数</strong></p>
+          <ul style="margin:0;font-size:14px;color:var(--text-secondary);">
+            <li>距离：10 ~ 25 cm（地面到车底）</li>
+            <li>功率：3.7 kW ~ 11 kW</li>
+            <li>频率：81.38 ~ 90 kHz 或 140 kHz</li>
+            <li>效率：90% ~ 93%</li>
+          </ul>
+        </div>
+        <div>
+          <p style="margin:0 0 8px;"><strong>挑战</strong></p>
+          <ul style="margin:0;font-size:14px;color:var(--text-secondary);">
+            <li>线圈尺寸大（直径 25 ~ 75 cm）</li>
+            <li>停车对准精度要求高</li>
+            <li>地面线圈的防水防尘</li>
+            <li>生物电磁安全限值</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <p>磁共振耦合是电动汽车无线充电的主流技术路线。由于功率大（几千瓦到几十千瓦），线圈采用平板式螺旋结构，埋在地面下。车辆停到位后，车载线圈与地面线圈对齐，自动开始充电。</p>
+  </div>
+</div>
+
+<div class="lesson-block">
+  <div class="lesson-title">应用三：医疗植入设备</div>
+  <div class="lesson-explain">
+    <div class="concept-card">
+      <h4>❤️ 心脏起搏器 / 人工耳蜗（磁共振耦合式）</h4>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <div>
+          <p style="margin:0 0 8px;"><strong>参数</strong></p>
+          <ul style="margin:0;font-size:14px;color:var(--text-secondary);">
+            <li>距离：1 ~ 3 cm（穿过皮肤）</li>
+            <li>功率：10 mW ~ 100 mW</li>
+            <li>频率：100 kHz ~ 10 MHz</li>
+            <li>效率：不是首要指标</li>
+          </ul>
+        </div>
+        <div>
+          <p style="margin:0 0 8px;"><strong>挑战</strong></p>
+          <ul style="margin:0;font-size:14px;color:var(--text-secondary);">
+            <li>人体组织吸收能量（发热）</li>
+            <li>SAR（比吸收率）安全限值</li>
+            <li>植入线圈体积受限</li>
+            <li>生物兼容性材料</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <p>医疗植入设备对效率的要求相对宽松（因为外部充电功率可以任意大），但对<strong>安全性</strong>的要求极其严格。人体组织在交变磁场中会产生涡流，导致发热。国际标准（如 ICNIRP）对电磁暴露有严格的 SAR 限值。</p>
+  </div>
+</div>
+
+<div class="lesson-block">
+  <div class="lesson-title">应用四：空间太阳能电站</div>
+  <div class="lesson-explain">
+    <div class="concept-card">
+      <h4>🛰️ SSPS（微波输电 / 激光输电）</h4>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <div>
+          <p style="margin:0 0 8px;"><strong>参数</strong></p>
+          <ul style="margin:0;font-size:14px;color:var(--text-secondary);">
+            <li>距离：36,000 km（地球同步轨道）</li>
+            <li>功率：GW 级（吉瓦）</li>
+            <li>频率：2.45 GHz 或 5.8 GHz</li>
+            <li>效率：50% ~ 60%</li>
+          </ul>
+        </div>
+        <div>
+          <p style="margin:0 0 8px;"><strong>挑战</strong></p>
+          <ul style="margin:0;font-size:14px;color:var(--text-secondary);">
+            <li>发射天线直径数公里</li>
+            <li>接收天线（整流天线）占地数十平方公里</li>
+            <li>大气衰减和天气影响</li>
+            <li>成本极高（万亿级）</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <p>空间太阳能电站（Space Solar Power Station, SSPS）是最雄心勃勃的无线输电应用。在地球同步轨道上建造巨大的太阳能电池阵，将电能转化为微波发射到地面接收站。这个想法自 1968 年提出以来，至今仍处于概念验证阶段。中国在 2022 年完成了世界首个全链路验证实验。</p>
+  </div>
+</div>
+
+<div class="lesson-block">
+  <div class="lesson-title">核心挑战总结</div>
+  <div class="lesson-explain">
+    <div class="table-wrap">
+      <table class="table">
+        <thead>
+          <tr><th>挑战</th><th>说明</th><th>应对方向</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>效率</td>
+            <td>距离增加时效率急剧下降</td>
+            <td>提高 Q 值、优化阻抗匹配、中继线圈</td>
+          </tr>
+          <tr>
+            <td>对准</td>
+            <td>线圈偏移或倾斜会降低 k</td>
+            <td>磁吸定位、自动泊车、多角度接收</td>
+          </tr>
+          <tr>
+            <td>安全</td>
+            <td>强磁场对人体和设备的影响</td>
+            <td>屏蔽设计、SAR 监测、异物检测</td>
+          </tr>
+          <tr>
+            <td>标准</td>
+            <td>不同厂商标准不统一</td>
+            <td>Qi、SAE J2954、IEC 61980 等</td>
+          </tr>
+          <tr>
+            <td>成本</td>
+            <td>线圈、功率电子、控制电路成本高</td>
+            <td>材料优化（Litz 线、铁氧体）、规模化</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="lesson-block">
+  <div class="lesson-title">前沿方向</div>
+  <div class="lesson-explain">
+    <ul>
+      <li><strong>多设备同时充电</strong>：一个发射端同时给多个接收端供电，需要解决功率分配和干扰问题。</li>
+      <li><strong>动态无线充电</strong>：电动汽车在行驶中充电（类似电气化公路），需要沿途铺设发射线圈阵列。</li>
+      <li><strong>水下无线输电</strong>：用于水下机器人、海洋传感器网络，海水对电磁波的衰减是主要挑战。</li>
+      <li><strong>超导线圈</strong>：利用超导材料的零电阻特性实现极高的 Q 值（$Q > 10^5$），大幅提升效率。</li>
+    </ul>
+  </div>
+</div>
+
+<div class="lesson-block">
+  <div class="lesson-title">练习</div>
+  <div class="lesson-explain">
+    <div class="card" style="background:var(--color-primary-light);border:1px solid var(--color-primary-light);">
+      <div class="card-body">
+        <p style="margin:0 0 12px;"><strong>练习 1</strong>：比较 Qi 无线充电和电动汽车无线充电在频率、距离、功率上的差异，解释为什么会有这些差异。</p>
+        <p style="margin:0 0 12px;"><strong>练习 2</strong>：空间太阳能电站为什么要用微波而不是磁共振耦合？从传输距离和天线尺寸的角度分析。</p>
+        <p style="margin:0;"><strong>练习 3</strong>：假设你要设计一个心脏起搏器的无线充电系统，频率选 100 kHz 还是 10 MHz？从人体组织吸收和线圈体积两个角度讨论。</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

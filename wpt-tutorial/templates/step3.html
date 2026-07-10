@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+
+{% block title %}Step 3 磁共振耦合 — 无线电能输电教程{% endblock %}
+
+{% block content %}
+<div class="card" style="margin-bottom:24px;">
+  <div class="card-body">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+      <span class="badge badge-info">Step 3</span>
+      <h1 style="margin:0;font-size:24px;">磁共振耦合</h1>
+    </div>
+    <p style="color:var(--text-secondary);margin:0;">LC谐振、耦合系数、频率分裂现象</p>
+  </div>
+</div>
+
+<div class="lesson-block">
+  <div class="lesson-title">场景</div>
+  <div class="lesson-explain">
+    <p>电磁感应式无线充电要求发射端和接收端几乎紧贴（距离 &lt; 1cm），稍微远一点效率就急剧下降。2007 年 MIT 的团队发现：如果让两个线圈在<strong>相同的谐振频率</strong>上工作，即使相隔几米，也能实现较高的传输效率。这就是<strong>磁共振耦合（Magnetic Resonance Coupling）</strong>。</p>
+  </div>
+</div>
+
+<div class="lesson-block">
+  <div class="lesson-title">原理</div>
+  <div class="lesson-explain">
+    <h4>LC 谐振电路</h4>
+    <p>一个电感 $L$ 和一个电容 $C$ 组成的回路，具有一个固有谐振频率：</p>
+
+    <div class="formula-box">
+      $$\omega_0 = \frac{1}{\sqrt{LC}} \quad \text{或} \quad f_0 = \frac{1}{2\pi\sqrt{LC}}$$
+    </div>
+
+    <p>当外部驱动信号的频率等于 $\omega_0$ 时，电路发生<strong>谐振</strong>。此时：</p>
+    <ul>
+      <li>电感的感抗 $X_L = \omega_0 L$ 和电容的容抗 $X_C = \frac{1}{\omega_0 C}$ 大小相等、符号相反。</li>
+      <li>回路总阻抗最小（纯电阻性）。</li>
+      <li>回路中的电流最大。</li>
+      <li>电感和电容之间周期性地交换能量。</li>
+    </ul>
+
+    <div class="concept-card">
+      <h4>谐振的物理图像</h4>
+      <p>想象一个秋千：如果你推的频率恰好等于秋千的固有频率，秋千就会越荡越高（共振）。如果推的频率不对，能量就无法有效传递。</p>
+      <p>在 LC 回路中，电容储存电场能，电感储存磁场能。谐振时，能量在这两种形式之间来回转换，就像秋千上的动能和势能。</p>
+    </div>
+
+    <h4>磁共振耦合的核心思想</h4>
+    <p>让发射线圈和接收线圈都调谐到同一个谐振频率 $\omega_0$。此时：</p>
+    <ul>
+      <li>发射端的能量以<strong>交变磁场</strong>的形式发射出去。</li>
+      <li>由于接收端在相同的频率上谐振，它对这个频率的磁场<strong>特别敏感</strong>，能够高效地吸收能量。</li>
+      <li>其他频率的磁场几乎不被接收，实现了"频率选择性"。</li>
+    </ul>
+
+    <div class="highlight-box">
+      <p><strong>关键洞察</strong>：谐振使得能量在两个线圈之间形成了"强耦合通道"，即使距离较远，能量也能高效传输。非谐振状态下，大部分能量散失到空间中。</p>
+    </div>
+
+    <h4>频率分裂（Frequency Splitting）</h4>
+    <p>当两个谐振线圈靠近时，由于互感 $M$ 的作用，系统的谐振频率会发生分裂。原本单个线圈的谐振频率 $\omega_0$ 会变成两个新的频率：</p>
+
+    <div class="formula-box">
+      $$\omega_{\pm} = \frac{\omega_0}{\sqrt{1 \pm k}}$$
+    </div>
+
+    <p>其中 $k$ 是耦合系数。这意味着：</p>
+    <ul>
+      <li>当 $k$ 很小时（距离远），$\omega_+ \approx \omega_- \approx \omega_0$，分裂不明显。</li>
+      <li>当 $k$ 增大时（距离近），分裂加剧，出现两个明显的谐振峰。</li>
+      <li>在过耦合区域（$k > k_{critical}$），系统的最大效率点出现在分裂后的两个频率上，而不是原来的 $\omega_0$。</li>
+    </ul>
+  </div>
+</div>
+
+<div class="lesson-block">
+  <div class="lesson-title">要点</div>
+  <div class="lesson-explain">
+    <ol>
+      <li><strong>谐振是无线输电的"放大器"</strong>：没有谐振时，远距离传输效率极低；谐振后，效率可以提升数倍到数十倍。</li>
+      <li><strong>频率匹配必须精确</strong>：如果发射端和接收端的谐振频率相差 1%，效率可能下降 30% 以上。实际系统中需要自动频率调谐（AFC）。</li>
+      <li><strong>品质因数 Q 越高越好</strong>：$Q = \frac{\omega_0 L}{R} = \frac{1}{\omega_0 C R}$。Q 值越高，谐振峰越尖锐，频率选择性越好，传输距离越远。</li>
+      <li><strong>临界耦合</strong>：存在一个最优耦合系数 $k_{opt}$，使得在给定距离下效率最高。过耦合（太近）和欠耦合（太远）都会降低效率。</li>
+      <li><strong>频率分裂是过耦合的标志</strong>：如果在频谱上看到两个峰，说明两个线圈太近了，应该稍微拉开距离或调整频率。</li>
+    </ol>
+  </div>
+</div>
+
+<div class="lesson-block">
+  <div class="lesson-title">常见错误</div>
+  <div class="lesson-explain">
+    <div class="card" style="border-left:4px solid var(--color-error);margin-bottom:12px;">
+      <div class="card-body" style="padding:16px;">
+        <p style="margin:0;font-size:14px;"><strong style="color:var(--color-error);">❌ 认为谐振只是"频率相同"</strong><br>谐振不仅是频率相同，还要求回路的 Q 值足够高。低 Q 值的谐振回路，能量损耗太快，无法形成有效的能量交换。</p>
+      </div>
+    </div>
+    <div class="card" style="border-left:4px solid var(--color-error);margin-bottom:12px;">
+      <div class="card-body" style="padding:16px;">
+        <p style="margin:0;font-size:14px;"><strong style="color:var(--color-error);">❌ 忽略频率分裂的影响</strong><br>在近距离时，如果仍然用原始谐振频率 $\omega_0$ 驱动，实际效率可能远低于预期，因为系统的真实谐振峰已经偏移了。</p>
+      </div>
+    </div>
+    <div class="card" style="border-left:4px solid var(--color-error);">
+      <div class="card-body" style="padding:16px;">
+        <p style="margin:0;font-size:14px;"><strong style="color:var(--color-error);">❌ 用普通变压器思维理解磁共振</strong><br>变压器是强耦合（$k \approx 1$）、非谐振（50Hz/60Hz）；磁共振耦合是弱耦合（$k \ll 1$）、高频谐振（100kHz ~ 10MHz）。两者的设计逻辑完全不同。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="lesson-block">
+  <div class="lesson-title">示例</div>
+  <div class="lesson-demo">
+    <div class="demo-label">谐振频率计算</div>
+    <div class="card" style="background:var(--bg-code);">
+      <div class="card-body">
+        <p style="margin:0 0 12px;"><strong>已知</strong>：线圈电感 $L = 10\,\mu\text{H}$，谐振电容 $C = 253\,\text{pF}$。</p>
+        <p style="margin:0 0 12px;"><strong>求</strong>：谐振频率 $f_0$。</p>
+        <p style="margin:0;"><strong>解</strong>：</p>
+        <div class="formula-box" style="background:transparent;border:none;padding:8px 0;">
+          $$f_0 = \frac{1}{2\pi\sqrt{LC}} = \frac{1}{2\pi\sqrt{10 \times 10^{-6} \times 253 \times 10^{-12}}}$$
+          $$f_0 = \frac{1}{2\pi\sqrt{2.53 \times 10^{-15}}} = \frac{1}{2\pi \times 5.03 \times 10^{-8}} \approx 3.16\,\text{MHz}$$
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="lesson-block">
+  <div class="lesson-title">练习</div>
+  <div class="lesson-explain">
+    <div class="card" style="background:var(--color-primary-light);border:1px solid var(--color-primary-light);">
+      <div class="card-body">
+        <p style="margin:0 0 12px;"><strong>练习 1</strong>：设计一个谐振频率为 6.78 MHz（ISM 频段，Qi 标准也使用附近频段）的 LC 回路，已知电感 $L = 5\,\mu\text{H}$，求需要的电容 $C$。</p>
+        <p style="margin:0 0 12px;"><strong>练习 2</strong>：两个线圈的谐振频率都是 1 MHz，耦合系数 $k = 0.2$。计算频率分裂后的两个谐振频率 $\omega_+$ 和 $\omega_-$。</p>
+        <p style="margin:0;"><strong>练习 3</strong>：为什么磁共振耦合需要高频（100kHz 以上），而普通变压器只用 50Hz？从能量存储的角度解释。</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

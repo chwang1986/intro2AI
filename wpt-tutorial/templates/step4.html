@@ -1,0 +1,200 @@
+{% extends "base.html" %}
+
+{% block title %}Step 4 效率推导 — 无线电能输电教程{% endblock %}
+
+{% block content %}
+<div class="card" style="margin-bottom:24px;">
+  <div class="card-body">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+      <span class="badge badge-info">Step 4</span>
+      <h1 style="margin:0;font-size:24px;">效率推导</h1>
+    </div>
+    <p style="color:var(--text-secondary);margin:0;">等效电路、阻抗匹配、最大效率条件</p>
+  </div>
+</div>
+
+<div class="lesson-block">
+  <div class="lesson-title">场景</div>
+  <div class="lesson-explain">
+    <p>设计一个无线输电系统时，最核心的指标是<strong>传输效率</strong>：输入功率中有多少百分比真正到达了负载。效率取决于哪些参数？如何优化？这就需要建立等效电路模型，进行严格的数学推导。</p>
+  </div>
+</div>
+
+<div class="lesson-block">
+  <div class="lesson-title">原理</div>
+  <div class="lesson-explain">
+    <h4>等效电路模型</h4>
+    <p>将发射端和接收端分别建模为串联 RLC 回路：</p>
+    <ul>
+      <li><strong>发射端</strong>：电阻 $R_1$、电感 $L_1$、电容 $C_1$，由电源 $V_1$ 驱动。</li>
+      <li><strong>接收端</strong>：电阻 $R_2$、电感 $L_2$、电容 $C_2$，连接负载 $R_L$。</li>
+      <li><strong>耦合</strong>：通过互感 $M$ 连接，耦合系数 $k = M / \sqrt{L_1 L_2}$。</li>
+    </ul>
+
+    <div class="diagram-placeholder">
+      [等效电路图：两个 RLC 回路通过互感 M 耦合]
+      <br><span style="font-size:12px;">发射端：V1 — R1 — L1 — C1</span>
+      <br><span style="font-size:12px;">接收端：R2 — L2 — C2 — RL</span>
+    </div>
+
+    <h4>回路方程（谐振条件下）</h4>
+    <p>当两个回路都调谐到同一谐振频率 $\omega_0$ 时，$j\omega L + \frac{1}{j\omega C} = 0$，电抗项抵消。回路方程简化为：</p>
+
+    <div class="formula-box">
+      $$V_1 = I_1 R_1 - j\omega_0 M I_2$$
+      $$0 = I_2 (R_2 + R_L) - j\omega_0 M I_1$$
+    </div>
+
+    <p>注意：这里 $j\omega_0 M I_2$ 是接收端电流在发射端感应的电动势（反射阻抗），$j\omega_0 M I_1$ 是发射端在接收端感应的电动势。</p>
+
+    <h4>求解电流</h4>
+    <p>从第二个方程：</p>
+
+    <div class="formula-box">
+      $$I_2 = \frac{j\omega_0 M I_1}{R_2 + R_L}$$
+    </div>
+
+    <p>代入第一个方程：</p>
+
+    <div class="formula-box">
+      $$V_1 = I_1 R_1 - j\omega_0 M \cdot \frac{j\omega_0 M I_1}{R_2 + R_L} = I_1 \left( R_1 + \frac{(\omega_0 M)^2}{R_2 + R_L} \right)$$
+    </div>
+
+    <p>因此发射端电流为：</p>
+
+    <div class="formula-box">
+      $$I_1 = \frac{V_1}{R_1 + \frac{(\omega_0 M)^2}{R_2 + R_L}}$$
+    </div>
+
+    <div class="highlight-box">
+      <p><strong>反射阻抗</strong>：$Z_r = \frac{(\omega_0 M)^2}{R_2 + R_L}$。接收端的存在，相当于在发射端增加了一个等效电阻。$Z_r$ 越大，说明能量传递到接收端越多。</p>
+    </div>
+
+    <h4>效率公式推导</h4>
+    <p>负载上的有用功率：</p>
+
+    <div class="formula-box">
+      $$P_{out} = |I_2|^2 R_L = \frac{(\omega_0 M)^2 |I_1|^2 R_L}{(R_2 + R_L)^2}$$
+    </div>
+
+    <p>发射端电源提供的总功率：</p>
+
+    <div class="formula-box">
+      $$P_{in} = |I_1|^2 \left( R_1 + \frac{(\omega_0 M)^2}{R_2 + R_L} \right)$$
+    </div>
+
+    <p>传输效率 $\eta = P_{out} / P_{in}$：</p>
+
+    <div class="formula-box">
+      $$\eta = \frac{\frac{(\omega_0 M)^2 R_L}{(R_2 + R_L)^2}}{R_1 + \frac{(\omega_0 M)^2}{R_2 + R_L}} = \frac{(\omega_0 M)^2 R_L}{(R_2 + R_L)^2 R_1 + (\omega_0 M)^2 (R_2 + R_L)}$$
+    </div>
+
+    <p>分子分母同除以 $(R_2 + R_L)$：</p>
+
+    <div class="formula-box">
+      $$\eta = \frac{(\omega_0 M)^2 \frac{R_L}{R_2 + R_L}}{(R_2 + R_L) R_1 + (\omega_0 M)^2}$$
+    </div>
+
+    <h4>引入品质因数和耦合系数</h4>
+    <p>定义发射端和接收端的品质因数：</p>
+
+    <div class="formula-box">
+      $$Q_1 = \frac{\omega_0 L_1}{R_1}, \quad Q_2 = \frac{\omega_0 L_2}{R_2}$$
+    </div>
+
+    <p>利用 $M = k\sqrt{L_1 L_2}$，有 $(\omega_0 M)^2 = k^2 \omega_0^2 L_1 L_2 = k^2 Q_1 Q_2 R_1 R_2$。</p>
+
+    <p>假设 $L_1 = L_2 = L$，$R_1 = R_2 = R$（对称系统），$Q_1 = Q_2 = Q$，则：</p>
+
+    <div class="formula-box">
+      $$\eta = \frac{k^2 Q^2 \frac{R_L}{R + R_L}}{(R + R_L) R / R^2 + k^2 Q^2} \cdot \frac{R_L}{R + R_L}$$
+    </div>
+
+    <p>经过代数整理（过程略），当负载与接收端线圈电阻匹配时（$R_L = R_2$，即负载电阻等于线圈电阻），效率达到最优：</p>
+
+    <div class="formula-box">
+      $$\eta_{max} = \frac{k^2 Q^2}{(1 + \sqrt{1 + k^2 Q^2})^2}$$
+    </div>
+
+    <p>更常用的简化形式是：</p>
+
+    <div class="formula-box">
+      $$\eta = \frac{k^2 Q_1 Q_2}{(1 + \sqrt{1 + k^2 Q_1 Q_2})^2}$$
+    </div>
+
+    <div class="concept-card">
+      <h4>最大效率条件的直观理解</h4>
+      <ul>
+        <li><strong>$k$ 越大越好</strong>：耦合越紧密，能量传递越直接。</li>
+        <li><strong>$Q$ 越大越好</strong>：回路损耗越小，谐振峰越尖锐，能量在回路中"存储"的时间越长，有更多机会传递到另一端。</li>
+        <li><strong>$kQ$ 是综合指标</strong>：实际工程中常用 $kQ$ 作为系统设计的核心参数。$kQ > 1$ 时，系统才能实现高效率（>50%）。</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="lesson-block">
+  <div class="lesson-title">要点</div>
+  <div class="lesson-explain">
+    <ol>
+      <li><strong>谐振条件下效率最高</strong>：如果发射端或接收端没有调谐到谐振频率，电抗项不会抵消，额外的无功功率会降低效率。</li>
+      <li><strong>阻抗匹配很重要</strong>：负载电阻 $R_L$ 应该与接收端线圈的电阻 $R_2$ 相匹配。太大或太小都会降低效率。</li>
+      <li><strong>$kQ$ 乘积决定效率上限</strong>：当 $kQ \gg 1$ 时，$\eta_{max} \approx 1 - 2/(kQ)$，趋近于 100%。</li>
+      <li><strong>实际系统的限制</strong>：高 $Q$ 意味着低损耗电阻，需要粗导线或超导；高 $k$ 意味着近距离或大线圈。两者往往不能同时满足。</li>
+    </ol>
+  </div>
+</div>
+
+<div class="lesson-block">
+  <div class="lesson-title">常见错误</div>
+  <div class="lesson-explain">
+    <div class="card" style="border-left:4px solid var(--color-error);margin-bottom:12px;">
+      <div class="card-body" style="padding:16px;">
+        <p style="margin:0;font-size:14px;"><strong style="color:var(--color-error);">❌ 忽略线圈电阻的影响</strong><br>推导中 $R_1$ 和 $R_2$ 是线圈的串联电阻（铜损），不是负载电阻。很多人只考虑负载，忽略了线圈本身的损耗。</p>
+      </div>
+    </div>
+    <div class="card" style="border-left:4px solid var(--color-error);margin-bottom:12px;">
+      <div class="card-body" style="padding:16px;">
+        <p style="margin:0;font-size:14px;"><strong style="color:var(--color-error);">❌ 认为效率只与距离有关</strong><br>距离只影响 $k$。即使距离固定，通过提高 $Q$（更好的线圈）或优化阻抗匹配，效率也可以显著提升。</p>
+      </div>
+    </div>
+    <div class="card" style="border-left:4px solid var(--color-error);">
+      <div class="card-body" style="padding:16px;">
+        <p style="margin:0;font-size:14px;"><strong style="color:var(--color-error);">❌ 在非谐振条件下套用效率公式</strong><br>上述效率公式的前提是严格谐振。如果频率偏移，公式中的电抗项不能忽略，实际效率会比公式计算的更低。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="lesson-block">
+  <div class="lesson-title">示例</div>
+  <div class="lesson-demo">
+    <div class="demo-label">效率计算</div>
+    <div class="card" style="background:var(--bg-code);">
+      <div class="card-body">
+        <p style="margin:0 0 12px;"><strong>已知</strong>：$k = 0.3$，$Q_1 = Q_2 = 200$。</p>
+        <p style="margin:0 0 12px;"><strong>求</strong>：最大传输效率。</p>
+        <p style="margin:0;"><strong>解</strong>：</p>
+        <div class="formula-box" style="background:transparent;border:none;padding:8px 0;">
+          $$k^2 Q_1 Q_2 = 0.3^2 \times 200 \times 200 = 3600$$
+          $$\eta_{max} = \frac{3600}{(1 + \sqrt{1 + 3600})^2} = \frac{3600}{(1 + 60.01)^2} = \frac{3600}{3721} \approx 96.8\%$$
+        </div>
+        <p style="margin:8px 0 0;font-size:13px;color:var(--text-secondary);">这是一个非常理想的结果。实际中由于谐振频率偏移、阻抗失配、涡流损耗等，效率通常在 80% ~ 90%。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="lesson-block">
+  <div class="lesson-title">练习</div>
+  <div class="lesson-explain">
+    <div class="card" style="background:var(--color-primary-light);border:1px solid var(--color-primary-light);">
+      <div class="card-body">
+        <p style="margin:0 0 12px;"><strong>练习 1</strong>：已知 $k = 0.1$，$Q = 100$，计算最大传输效率。如果 $Q$ 提高到 300（使用更好的线圈），效率变为多少？</p>
+        <p style="margin:0 0 12px;"><strong>练习 2</strong>：一个无线输电系统的线圈电阻 $R = 0.5\,\Omega$，负载电阻 $R_L = 10\,\Omega$。判断是否满足阻抗匹配条件。如果不满足，效率会比最优值低多少？</p>
+        <p style="margin:0;"><strong>练习 3</strong>：证明当 $kQ \gg 1$ 时，$\eta_{max} \approx 1 - \frac{2}{kQ}$。（提示：使用泰勒展开 $\sqrt{1+x} \approx \sqrt{x} + \frac{1}{2\sqrt{x}}$）</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
