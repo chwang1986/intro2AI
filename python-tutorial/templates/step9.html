@@ -220,6 +220,35 @@ python3 02_few_shot.py</code></pre>
   </div>
 </section>
 
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">练习</span>动手试一试</h2>
+  <div class="lesson-explain">
+    <p><strong>练习 1：</strong>为「代码解释」任务设计一个结构化 Prompt。要求：设定 AI 为 Python 专家，任务是解释一段给定的代码，约束是用中文解释、不超过 100 字、重点说明代码逻辑而非语法。</p>
+    <p><strong>练习 2：</strong>为「Bug 修复」任务设计一个 Few-shot Prompt。给 2 个有 bug 的代码示例和对应的修复版本，然后让 AI 修复第 3 个有 bug 的代码。</p>
+    <p><strong>练习 3：</strong>对比两个 Prompt：A) "写个排序程序"；B) "你是一位 Python 算法工程师，请写一个快速排序函数，要求：输入一个整数列表，返回升序排列的列表，时间复杂度 O(n log n)，附带注释说明关键步骤。" 观察哪个 Prompt 生成的代码质量更高。</p>
+  </div>
+  <div class="lesson-code">
+    <div class="demo-label">练习 1 参考答案</div>
+    <pre><code>def build_code_explainer():
+    return """你是一位资深的 Python 技术专家。
+
+任务：解释以下 Python 代码的核心逻辑。
+
+约束：
+- 用中文解释
+- 不超过 100 字
+- 重点说明代码做了什么，而非逐行翻译语法
+- 如果代码有潜在问题，一并指出
+
+代码：
+{code}
+"""
+
+prompt = build_code_explainer().format(code="sorted([3,1,2])")
+print(prompt)</code></pre>
+  </div>
+</section>
+
 <nav class="nav-footer">
   <a href="/step8" class="btn btn-secondary">← 上一步</a>
   <a href="/step10" class="btn btn-primary">下一步 →</a>

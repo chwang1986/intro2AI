@@ -212,6 +212,41 @@ python3 02_inheritance.py</code></pre>
   </div>
 </section>
 
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">练习</span>动手试一试</h2>
+  <div class="lesson-explain">
+    <p><strong>练习 1：</strong>定义一个 <code>BankAccount</code> 类，属性有 <code>owner</code>（所有者）和 <code>balance</code>（余额）。方法有 <code>deposit(amount)</code> 存款、<code>withdraw(amount)</code> 取款（余额不足时提示）、<code>get_balance()</code> 查询余额。</p>
+    <p><strong>练习 2：</strong>继承 <code>BankAccount</code> 创建 <code>CreditAccount</code> 类，增加 <code>credit_limit</code> 信用额度属性。重写 <code>withdraw</code> 方法，允许透支到信用额度上限。</p>
+    <p><strong>练习 3：</strong>创建一个 <code>Book</code> 类，属性有 <code>title</code>、<code>author</code>、<code>price</code>。重写 <code>__str__</code> 方法，让 <code>print(book)</code> 输出格式为 <code>《书名》作者：xxx 价格：xxx元</code>。</p>
+  </div>
+  <div class="lesson-code">
+    <div class="demo-label">练习 1 参考答案</div>
+    <pre><code>class BankAccount:
+    def __init__(self, owner, balance=0):
+        self.owner = owner
+        self.balance = balance
+
+    def deposit(self, amount):
+        self.balance += amount
+        print(f"存入 {amount} 元，当前余额: {self.balance}")
+
+    def withdraw(self, amount):
+        if amount > self.balance:
+            print("余额不足")
+        else:
+            self.balance -= amount
+            print(f"取出 {amount} 元，当前余额: {self.balance}")
+
+    def get_balance(self):
+        return self.balance
+
+account = BankAccount("小明", 1000)
+account.deposit(500)
+account.withdraw(300)
+print(account.get_balance())</code></pre>
+  </div>
+</section>
+
 <nav class="nav-footer">
   <a href="/step6" class="btn btn-secondary">← 上一步</a>
   <a href="/step8" class="btn btn-primary">下一步 →</a>

@@ -169,6 +169,32 @@ python3 03_return_values.py</code></pre>
   </div>
 </section>
 
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">练习</span>动手试一试</h2>
+  <div class="lesson-explain">
+    <p><strong>练习 1：</strong>写一个函数 <code>calculate_bmi(weight, height)</code>，接收体重（kg）和身高（m），返回 BMI 值和对应的分类（偏瘦/正常/超重/肥胖）。BMI = 体重 / 身高²。</p>
+    <p><strong>练习 2：</strong>写一个函数 <code>average(*numbers)</code>，接收任意多个数字，返回它们的平均值。如果没有传入数字，返回 0。</p>
+    <p><strong>练习 3：</strong>写一个函数 <code>is_palindrome(s)</code>，判断一个字符串是否为回文（正读反读相同，如 "level"、"上海自来水来自海上"）。</p>
+  </div>
+  <div class="lesson-code">
+    <div class="demo-label">练习 1 参考答案</div>
+    <pre><code>def calculate_bmi(weight, height):
+    bmi = weight / (height ** 2)
+    if bmi < 18.5:
+        category = "偏瘦"
+    elif bmi < 24:
+        category = "正常"
+    elif bmi < 28:
+        category = "超重"
+    else:
+        category = "肥胖"
+    return bmi, category
+
+bmi, cat = calculate_bmi(70, 1.75)
+print(f"BMI: {bmi:.1f}, 分类: {cat}")</code></pre>
+  </div>
+</section>
+
 <nav class="nav-footer">
   <a href="/step3" class="btn btn-secondary">← 上一步</a>
   <a href="/step5" class="btn btn-primary">下一步 →</a>

@@ -161,6 +161,23 @@ python3 03_while_loop.py</code></pre>
   </div>
 </section>
 
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">练习</span>动手试一试</h2>
+  <div class="lesson-explain">
+    <p><strong>练习 1：</strong>写一个程序判断某一年是否为闰年。闰年规则：能被 4 整除但不能被 100 整除，或者能被 400 整除。</p>
+    <p><strong>练习 2：</strong>用 <code>for</code> 循环和 <code>range()</code> 打印 1 到 100 之间所有的奇数。</p>
+    <p><strong>练习 3：</strong>用 <code>while</code> 循环实现一个简单的猜数字游戏：预设一个答案（比如 7），让用户反复输入猜测，直到猜对为止，每次提示「太大了」或「太小了」。</p>
+  </div>
+  <div class="lesson-code">
+    <div class="demo-label">练习 1 参考答案</div>
+    <pre><code>year = 2024
+if (year % 4 == 0 and year % 100 != 0) or (year % 400 == 0):
+    print(f"{year} 是闰年")
+else:
+    print(f"{year} 不是闰年")</code></pre>
+  </div>
+</section>
+
 <nav class="nav-footer">
   <a href="/step2" class="btn btn-secondary">← 上一步</a>
   <a href="/step4" class="btn btn-primary">下一步 →</a>

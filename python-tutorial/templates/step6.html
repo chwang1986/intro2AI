@@ -206,6 +206,30 @@ python3 03_try_except.py</code></pre>
   </div>
 </section>
 
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">练习</span>动手试一试</h2>
+  <div class="lesson-explain">
+    <p><strong>练习 1：</strong>创建一个文本文件 <code>data.txt</code>，写入五行数据（如 1 到 5 的数字）。然后读取文件，计算所有数字的总和并打印。</p>
+    <p><strong>练习 2：</strong>写一个函数 <code>safe_divide(a, b)</code>，安全地进行除法运算。如果 b 为 0，返回 "除数不能为 0"；如果 a 或 b 不是数字，返回 "请输入数字"。</p>
+    <p><strong>练习 3：</strong>用 <code>try/except/finally</code> 结构写一个程序：尝试打开一个不存在的文件，捕获异常并打印友好提示，最后无论成功与否都打印 "程序执行完毕"。</p>
+  </div>
+  <div class="lesson-code">
+    <div class="demo-label">练习 2 参考答案</div>
+    <pre><code>def safe_divide(a, b):
+    try:
+        result = a / b
+        return result
+    except ZeroDivisionError:
+        return "除数不能为 0"
+    except TypeError:
+        return "请输入数字"
+
+print(safe_divide(10, 2))   # 5.0
+print(safe_divide(10, 0))   # 除数不能为 0
+print(safe_divide(10, "a")) # 请输入数字</code></pre>
+  </div>
+</section>
+
 <nav class="nav-footer">
   <a href="/step5" class="btn btn-secondary">← 上一步</a>
   <a href="/step7" class="btn btn-primary">下一步 →</a>

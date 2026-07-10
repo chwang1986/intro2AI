@@ -210,6 +210,20 @@ python3 03_set_tuple.py</code></pre>
   </div>
 </section>
 
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">练习</span>动手试一试</h2>
+  <div class="lesson-explain">
+    <p><strong>练习 1：</strong>创建一个学生成绩字典，键是学生姓名，值是分数列表（如 <code>{"小明": [85, 90, 78]}</code>）。写一个函数计算每个学生的平均分并打印。</p>
+    <p><strong>练习 2：</strong>用列表推导式生成 1 到 20 之间所有能被 3 整除的数的平方，如 <code>[9, 36, 81, ...]</code>。</p>
+    <p><strong>练习 3：</strong>有两个列表 <code>a = [1, 2, 3, 4]</code> 和 <code>b = [3, 4, 5, 6]</code>，用集合找出只出现在 a 中、只出现在 b 中、以及同时出现在两个列表中的元素。</p>
+  </div>
+  <div class="lesson-code">
+    <div class="demo-label">练习 2 参考答案</div>
+    <pre><code>squares = [x**2 for x in range(1, 21) if x % 3 == 0]
+print(squares)  # [9, 36, 81, 144, 225, 324]</code></pre>
+  </div>
+</section>
+
 <nav class="nav-footer">
   <a href="/step4" class="btn btn-secondary">← 上一步</a>
   <a href="/step6" class="btn btn-primary">下一步 →</a>
