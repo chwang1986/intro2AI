@@ -33,10 +33,11 @@ def index():
     return render_template("index.html", steps=STEPS)
 
 
-@app.route("/step<int:num>.html")
-def step(num):
-    if 1 <= num <= 5:
-        return render_template(f"step{num}.html", steps=STEPS, current_step=num)
+@app.route("/<step_id>")
+def step(step_id):
+    for i, s in enumerate(STEPS, 1):
+        if s["id"] == step_id:
+            return render_template(f"{step_id}.html", steps=STEPS, current_step=i)
     return "Not Found", 404
 
 

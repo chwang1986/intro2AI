@@ -10,7 +10,7 @@
   <li><a href="/" class="{% if not current_step %}active{% endif %}">📋 教程大纲</a></li>
   {% for step in steps %}
   <li>
-    <a href="/{{ step.id }}.html" class="{% if current_step == loop.index %}active{% endif %}">
+    <a href="/{{ step.id }}" class="{% if current_step == loop.index %}active{% endif %}">
       <span class="step-badge">{{ loop.index }}</span>
       {{ step.title }}
     </a>

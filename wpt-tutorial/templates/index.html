@@ -20,7 +20,7 @@
     <h3 style="margin-top:0;">学习路线</h3>
     <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));gap:16px;margin-top:16px;">
       {% for step in steps %}
-      <a href="/{{ step.id }}.html" style="text-decoration:none;">
+      <a href="/{{ step.id }}" style="text-decoration:none;">
         <div style="background:var(--gray-2);border-radius:var(--border-radius-md);padding:16px;border:1px solid var(--border-color-split);transition:all 0.2s;">
           <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
             <span style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:var(--color-primary);color:#fff;font-size:12px;font-weight:600;">{{ loop.index }}</span>

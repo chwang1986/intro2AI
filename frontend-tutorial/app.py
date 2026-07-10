@@ -7,10 +7,17 @@ Frontend Design System Tutorial
 
 from flask import Flask, render_template
 import os
+import jinja2
 
 app = Flask(__name__)
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# 模板搜索路径：子项目 templates + 根目录 design-system
+app.jinja_loader = jinja2.FileSystemLoader([
+    os.path.join(BASE_DIR, 'templates'),
+    os.path.join(BASE_DIR, '..', 'design-system'),
+])
 
 # 阶段列表
 STEPS = [
@@ -32,14 +39,14 @@ def index():
     return render_template("index.html", steps=STEPS)
 
 
-@app.route("/step<int:num>.html")
+@app.route("/step<int:num>")
 def step(num):
     if 1 <= num <= 10:
         return render_template(f"step{num}.html", steps=STEPS, current_step=num)
     return "Not Found", 404
 
 
-@app.route("/practice.html")
+@app.route("/practice")
 def practice():
     return render_template("practice.html", steps=STEPS)
 
