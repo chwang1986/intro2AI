@@ -6,6 +6,7 @@
 {% endblock %}
 
 {% block sidebar_menu %}
+<ul class="sider-menu">
   <li><a href="/" class="{% if not current_step %}active{% endif %}">📋 教程大纲</a></li>
   {% for step in steps %}
   <li>
@@ -15,6 +16,7 @@
     </a>
   </li>
   {% endfor %}
+</ul>
 {% endblock %}
 
 {% block head %}
