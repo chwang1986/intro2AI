@@ -51,12 +51,15 @@ system_base.html (design-system/system_base.html)
 
 ```html
 {% block sidebar_brand %}
-  <svg viewBox="0 0 48 48" fill="none">...</svg>
-  <span style="font-weight:600;font-size:18px;">你的教程标题</span>
+  <svg viewBox="0 0 48 48" fill="none" class="sidebar-icon">...</svg>
+  <span class="font-semibold text-lg">你的教程标题</span>
 {% endblock %}
 ```
 
-**注意：** 只替换 SVG 和文字，不要改 `.sider-brand` 的样式（padding、height、gap 等由 system_base.html 控制）。
+**注意：**
+- 只替换 SVG 和文字，不要改 `.sider-brand` 的样式（padding、height、gap 等由 system_base.html 控制）
+- SVG 必须使用 `class="sidebar-icon"`，禁止使用 `style="width:28px;height:28px;color:..."`
+- 标题文字必须使用 `class="font-semibold text-lg"`，禁止使用行内 `style`
 
 ### 2.2 sidebar_menu 块的内容规范
 
@@ -226,11 +229,91 @@ design-tokens.css 已内置以下组件，**优先使用这些 class，不要自
 - 代码字体：`JetBrains Mono`（通过 design-tokens.css）
 - 字号层级：正文 16px > 小字 14px > 辅助 12px
 
+**字号必须通过 CSS 变量使用，禁止硬编码：**
+
+| 级别 | 变量 | px | 用途 |
+|------|------|-----|------|
+| 超大标题 | `--font-size-4xl` | 38px | 首页 Hero |
+| 大标题 | `--font-size-3xl` | 30px | 页面主标题 |
+| 标题 | `--font-size-2xl` | 24px | page-header h1 |
+| 小标题 | `--font-size-xl` | 20px | section h2 |
+| 副标题 | `--font-size-lg` | 18px | 卡片标题、sidebar 品牌 |
+| 正文 | `--font-size-md` | 16px | 段落正文 |
+| 小字 | `--font-size-sm` | 14px | 描述、辅助文字 |
+| 辅助 | `--font-size-xs` | 12px | 标签、脚注 |
+
+**禁止：** `font-size: 15px`、`font-size: 13px`、`font-size: 11px` 等不在上表中的硬编码值。
+
 ---
 
-## 六、组件使用速查
+## 六、格式红线（必须遵守）
 
-### 6.1 按钮
+### 6.1 禁止行内 style 属性
+
+**HTML 模板中禁止使用 `style="..."` 属性。** 所有样式必须通过 CSS class 实现。
+
+**错误：**
+
+```html
+<!-- 错误：行内样式 -->
+<span style="font-weight:600;font-size:18px;">标题</span>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">...</div>
+<p style="margin:0;font-size:14px;color:var(--text-secondary);">...</p>
+```
+
+**正确：**
+
+```html
+<!-- 正确：使用 CSS 类 -->
+<span class="font-semibold text-lg">标题</span>
+<div class="grid-2">...</div>
+<p class="m-0 text-sm text-secondary">...</p>
+```
+
+**唯一例外：** SVG 动画相关的 `style="animation-delay:..."` 可以保留。
+
+### 6.2 禁止旧版 CSS 变量
+
+以下变量名已废弃，**禁止使用**：
+
+| 旧变量 | 新变量 | 说明 |
+|--------|--------|------|
+| `--spacer-6` | `--space-2` | 8px |
+| `--spacer-8` | `--space-2` | 8px |
+| `--spacer-12` | `--space-3` | 12px |
+| `--spacer-16` | `--space-4` | 16px |
+| `--spacer-20` | `--space-5` | 20px |
+| `--spacer-24` | `--space-6` | 24px |
+| `--radius-sm` | `--border-radius-md` | 8px |
+| `--radius-full` | `--border-radius-full` | 9999px |
+| `--brand` | `--color-primary` | 主色 |
+| `--brand-light` | `--color-primary-bg` | 主色浅背景 |
+| `--bg` | `--bg-card` 或 `--gray-2` | 背景 |
+| `--surface` | `--gray-2` | 表面色 |
+| `--border` | `--border-color` | 边框色 |
+| `--text` | `--text-primary` | 主文字色 |
+
+### 6.3 禁止硬编码颜色
+
+**禁止使用十六进制颜色值**，一律使用 CSS 变量：
+
+```html
+<!-- 错误 -->
+<p style="color:#666;">...</p>
+<div style="background:#eaeaea;">...</div>
+
+<!-- 正确 -->
+<p class="text-secondary">...</p>
+<div style="background:var(--gray-3);">...</div>
+```
+
+**SVG 中的颜色例外：** SVG fill/stroke 可以使用设计令牌中的颜色值（如 `#1677FF`），但应保持一致。
+
+---
+
+## 七、组件使用速查
+
+### 7.1 按钮
 
 ```html
 <button class="btn btn-primary">主按钮</button>
@@ -265,31 +348,39 @@ design-tokens.css 已内置以下组件，**优先使用这些 class，不要自
 
 ---
 
-## 七、新建项目 Checklist
+## 八、新建项目 Checklist
 
 新建一个教程子项目时，逐条检查：
 
-### 7.1 基础设施
+### 8.1 基础设施
 
 - [ ] `app.py` 配置了 `jinja2.FileSystemLoader`，包含 `design-system` 目录
 - [ ] `app.py` 定义了全局 `STEPS` 列表，每个项有 `id`、`title`、`desc`
 - [ ] `app.py` 的路由使用 `/step1` 格式（**不带 .html**）
 - [ ] `templates/base.html` 继承 `system_base.html`
-- [ ] `base.html` 覆盖了 `sidebar_brand`，显示教程专属标题
+- [ ] `base.html` 覆盖了 `sidebar_brand`，SVG 使用 `class="sidebar-icon"`，标题使用 `class="font-semibold text-lg"`
 - [ ] `base.html` 的 `sidebar_menu` 包含 `<ul class="sider-menu">` 包裹
 - [ ] `base.html` 的菜单链接使用 `/step1` 格式，用 `step-badge` 显示序号
 
-### 7.2 内容规范
+### 8.2 内容规范
 
 - [ ] 首页使用 `index.html`，包含学习路线卡片
 - [ ] step 页面使用 `page-header` 结构，不添加 `back-link`
 - [ ] 教学内容放在 `lesson-section` 中
 - [ ] 原理讲解用 `concept-card`，错误提示用 `mistake-card` 或 `highlight-box`
 - [ ] 练习区用 `exercise-box`
-- [ ] 没有使用硬编码颜色，全部使用 CSS 变量
 - [ ] 没有手写样式覆盖系统组件（如按钮、卡片）
 
-### 7.3 资源
+### 8.3 格式红线（逐文件检查）
+
+- [ ] **没有行内 `style` 属性**（搜索 `style="` 应返回 0 结果，SVG 动画除外）
+- [ ] **没有硬编码字号**（搜索 `font-size: \d+px` 应返回 0 结果）
+- [ ] **没有旧版 CSS 变量**（搜索 `--spacer-` / `--brand` / `--radius-sm` 等应返回 0 结果）
+- [ ] **没有硬编码颜色值**（搜索 `#\d{3,6}` 在 HTML 中应仅出现在 SVG 内）
+- [ ] 字号全部使用 `--font-size-*` 变量或 `.text-xs` / `.text-sm` / `.text-md` 等工具类
+- [ ] 间距全部使用 `--space-*` 变量或 `.m-*` / `.p-*` / `.gap-*` 等工具类
+
+### 8.4 资源
 
 - [ ] 按钮使用 `.btn` 系列 class
 - [ ] 卡片使用 `.card` 系列 class
