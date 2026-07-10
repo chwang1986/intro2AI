@@ -7,10 +7,17 @@ Wireless Power Transfer Tutorial
 
 from flask import Flask, render_template
 import os
+import jinja2
 
 app = Flask(__name__)
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# 模板搜索路径：子项目 templates + 根目录 design-system
+app.jinja_loader = jinja2.FileSystemLoader([
+    os.path.join(BASE_DIR, 'templates'),
+    os.path.join(BASE_DIR, '..', 'design-system'),
+])
 
 STEPS = [
     {"id": "step1", "title": "什么是无线输电", "desc": "概念、历史、分类与基本原理"},
