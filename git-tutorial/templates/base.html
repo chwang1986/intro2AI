@@ -7,14 +7,14 @@
 
 {% block sidebar_menu %}
 <ul class="sider-menu">
-  <li><a href="/" {% if request.path == '/' %}class="active"{% endif %}>教程首页</a></li>
-  <li><a href="/step1" {% if request.path == '/step1' %}class="active"{% endif %}>01 Git 是什么</a></li>
-  <li><a href="/step2" {% if request.path == '/step2' %}class="active"{% endif %}>02 初始化仓库</a></li>
-  <li><a href="/step3" {% if request.path == '/step3' %}class="active"{% endif %}>03 添加与提交</a></li>
-  <li><a href="/step4" {% if request.path == '/step4' %}class="active"{% endif %}>04 查看历史与回退</a></li>
-  <li><a href="/step5" {% if request.path == '/step5' %}class="active"{% endif %}>05 分支管理</a></li>
-  <li><a href="/step6" {% if request.path == '/step6' %}class="active"{% endif %}>06 远程仓库</a></li>
-  <li><a href="/collab" {% if request.path == '/collab' %}class="active"{% endif %}>07 多人协作</a></li>
-  <li><a href="/practice" {% if request.path == '/practice' %}class="active"{% endif %}>08 综合实战</a></li>
+  <li><a href="/" {% if request.path == '/' %}class="active"{% endif %}><span class="step-badge">●</span>教程首页</a></li>
+  <li><a href="/step1" {% if request.path == '/step1' %}class="active"{% endif %}><span class="step-badge">1</span>Git 是什么</a></li>
+  <li><a href="/step2" {% if request.path == '/step2' %}class="active"{% endif %}><span class="step-badge">2</span>初始化仓库</a></li>
+  <li><a href="/step3" {% if request.path == '/step3' %}class="active"{% endif %}><span class="step-badge">3</span>添加与提交</a></li>
+  <li><a href="/step4" {% if request.path == '/step4' %}class="active"{% endif %}><span class="step-badge">4</span>查看历史与回退</a></li>
+  <li><a href="/step5" {% if request.path == '/step5' %}class="active"{% endif %}><span class="step-badge">5</span>分支管理</a></li>
+  <li><a href="/step6" {% if request.path == '/step6' %}class="active"{% endif %}><span class="step-badge">6</span>远程仓库</a></li>
+  <li><a href="/collab" {% if request.path == '/collab' %}class="active"{% endif %}><span class="step-badge">7</span>多人协作</a></li>
+  <li><a href="/practice" {% if request.path == '/practice' %}class="active"{% endif %}><span class="step-badge">8</span>综合实战</a></li>
 </ul>
 {% endblock %}
