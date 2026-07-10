@@ -16,6 +16,48 @@
 </section>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">起源</span>从远程过程调用到 AI 即服务</h2>
+  <div class="lesson-explain">
+    <p><strong>API（Application Programming Interface）</strong>的概念可以追溯到 1960 年代。当时大型机厂商们发现，不同程序之间需要一种标准化的"对话方式"。到了 1990 年代，随着互联网兴起，<strong>远程过程调用（RPC）</strong>技术让一台计算机可以像调用本地函数一样调用另一台计算机上的功能。</p>
+    <p>2000 年，<strong>Roy Fielding</strong> 在他的博士论文中提出了 <strong>REST（Representational State Transfer）</strong>架构风格，定义了现代 Web API 的设计原则：无状态、资源导向、统一接口。同年，<strong>Douglas Crockford</strong> 推广了 <strong>JSON</strong> 格式，让它成为数据交换的事实标准——比 XML 轻量得多。</p>
+    <p>AI API 的故事则要近得多。2012 年深度学习在 ImageNet 竞赛中取得突破后，AI 模型越来越大、越来越耗算力。2020 年，<strong>OpenAI</strong> 发布了 GPT-3 并提供 API 访问，开创了"AI 即服务（AIaaS）"的新模式——你不需要购买昂贵的 GPU，只需要一个 API Key 和几行代码，就能调用世界上最强大的语言模型。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">思考</span>为什么不让 AI 住在我家电脑里？</h2>
+  <div class="lesson-explain">
+    <p>刚接触 AI 编程时，很多同学会问："我能不能把模型下载到本地运行？为什么要通过网络'打电话'给一个遥远的服务器？"这确实是个值得思考的问题。</p>
+    <p>假设你想在本地运行一个 GPT-4 级别的模型，你需要：</p>
+    <p><strong>1. 硬件成本：</strong>一张高端 GPU（如 NVIDIA A100）售价数万元，而运行大模型通常需要多张。作为学生或初创开发者，这笔投入几乎不可承受。</p>
+    <p><strong>2. 维护成本：</strong>模型文件几十到几百 GB，安装配置环境（CUDA、驱动、依赖库）可能要折腾几天。而 API 提供商会帮你搞定这一切。</p>
+    <p><strong>3. 更新迭代：</strong>OpenAI 每隔几个月就发布新版本模型。如果本地部署，你要重新下载、测试、上线。而 API 用户什么都不用做，模型升级是透明的。</p>
+    <p><strong>4. 弹性伸缩：</strong>你的应用突然上了热门，访问量暴增 100 倍。本地服务器会直接崩溃，而云 API 可以自动扩展（当然账单也会自动扩展，这是另一回事）。</p>
+    <p>当然，本地部署也有优势：数据隐私更好、延迟更低、没有网络依赖、没有按量计费。所以很多企业会在本地部署开源模型（如 Llama、Qwen），而把云端 API 作为备选。作为初学者，从 API 入手是最务实的选择。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">论证</span>为什么是 REST + JSON，而不是其他方案？</h2>
+  <div class="lesson-explain">
+    <p>在调用 AI API 时，你可能没意识到背后是一场"技术路线的胜利"。历史上曾有过多种 competing 的方案，REST + JSON 能在今天成为主流，有其必然性。</p>
+    <p><strong>1. REST vs SOAP vs GraphQL</strong></p>
+    <p>2000 年代初期，企业级 Web 服务主要用 <strong>SOAP</strong>（Simple Object Access Protocol）。SOAP 基于 XML，每条消息都包裹在复杂的信封里，像一个层层包装的俄罗斯套娃。它很严谨，但也很臃肿——一个简单的请求可能要几百行 XML。</p>
+    <p>REST 则像一张明信片：简单、直接、无状态。你用 HTTP 的 GET/POST/PUT/DELETE 对应增删改查，用 URL 定位资源，用 HTTP 状态码表示结果。对于 AI API 这种"发一个问题，收一个回答"的场景，REST 的简洁恰到好处。</p>
+    <p>GraphQL（2015 年由 Facebook 开源）允许客户端精确指定需要哪些字段，避免了过度获取数据。但 AI API 的响应结构通常是固定的，GraphQL 的优势不明显，而增加的复杂度却不小。</p>
+    <p><strong>2. JSON vs XML</strong></p>
+    <p>XML 是人类可读的，但标签冗余严重。一个简单对象 <code>{"name": "Tom", "age": 20}</code> 用 XML 要写：</p>
+    <div class="lesson-code"><pre><code>&lt;person&gt;
+  &lt;name&gt;Tom&lt;/name&gt;
+  &lt;age&gt;20&lt;/age&gt;
+&lt;/person&gt;</code></pre></div>
+    <p>JSON 的体积通常只有 XML 的 30%~40%，解析速度更快，而且和 JavaScript/Python 的数据结构天然对应。对于按 token 计费的 AI API 来说，省下的每一字节都是钱。</p>
+    <p><strong>3. HTTP 为什么能胜任？</strong></p>
+    <p>HTTP 是互联网上最成熟、最普及的协议。防火墙普遍放行 80/443 端口，CDN 和缓存基础设施完善，调试工具（curl、Postman、浏览器开发者工具）一应俱全。用 HTTP 作为 AI API 的传输层，就像是把商店开在繁华的商业街——客流（开发者）自然多。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">原理</span>一次 API 调用的旅程</h2>
   <div class="lesson-explain">
     <p>当你调用 AI API 时，数据经历了怎样的旅程？就像寄一封特快专递：</p>
@@ -186,11 +228,79 @@ python3 02_api_with_key.py</code></pre>
 </section>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">实验</span>亲手拆解一次 HTTP 请求</h2>
+  <div class="lesson-explain">
+    <p>下面三个实验不需要你有真实的 AI API Key，我们用公开的服务或模拟数据来理解 HTTP 请求的本质。</p>
+    <p><strong>实验 1：用 curl 发送一个 HTTP 请求（观察原始数据）</strong></p>
+    <div class="lesson-code"><pre><code># 打开终端，输入以下命令（不需要 API Key）
+curl -s "https://httpbin.org/get" | python3 -m json.tool
+
+# 观察输出：
+# - "url" 字段显示了你请求的地址
+# - "headers" 显示了你发送的请求头（如 User-Agent）
+# - "origin" 显示了你的公网 IP
+
+# 试试 POST 请求：
+curl -s -X POST "https://httpbin.org/post" \
+  -H "Content-Type: application/json" \
+  -d '{"message": "hello"}' | python3 -m json.tool
+
+# 观察：服务器把请求体原封不动地返回给你了（echo 服务）</code></pre></div>
+    <p><strong>实验结论：</strong>HTTP 请求本质上是"发送一段文本，接收一段文本"。headers 是信封上的信息，body 是信的内容。</p>
+    <p><strong>实验 2：用 Python 构造请求并观察响应结构</strong></p>
+    <div class="lesson-code"><pre><code>import requests
+
+# 模拟一个 AI API 的响应结构
+mock_response = {
+    "id": "chatcmpl-123",
+    "object": "chat.completion",
+    "created": 1677652288,
+    "choices": [
+        {
+            "index": 0,
+            "message": {
+                "role": "assistant",
+                "content": "这是 AI 的回复内容"
+            },
+            "finish_reason": "stop"
+        }
+    ],
+    "usage": {
+        "prompt_tokens": 10,
+        "completion_tokens": 8,
+        "total_tokens": 18
+    }
+}
+
+# 练习从中提取信息
+print(mock_response["choices"][0]["message"]["content"])
+print(f"消耗 token 数: {mock_response['usage']['total_tokens']}")
+
+# 如果 choices 为空列表，上面代码会报错吗？试试看：</code></pre></div>
+    <p><strong>实验结论：</strong>API 响应是嵌套的字典结构。在实际项目中，每一步字典访问都可能因为格式异常而失败，所以需要 try/except 保护。</p>
+    <p><strong>实验 3：观察不同 temperature 的效果（如果已有 API Key）</strong></p>
+    <div class="lesson-code"><pre><code># 如果你已经有 API Key，尝试同一个 prompt 发送 3 次
+# 第一次 temperature=0（最确定）
+# 第二次 temperature=0.7（默认，有创意）
+# 第三次 temperature=1.2（很有创意，可能胡说）
+
+# 对比三次回复的差异：
+# - temperature=0 时，每次回复几乎一样
+# - temperature 越高，回复越"脑洞大开"
+
+# 如果没有 API Key，可以思考：为什么温度参数会影响随机性？
+# 提示：temperature 控制的是模型输出下一个词时的概率分布"平滑度"。</code></pre></div>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">练习</span>动手试一试</h2>
   <div class="lesson-explain">
-    <p><strong>练习 1：</strong>修改 <code>examples/step8/01_mock_api.py</code>，增加一个 <code>temperature</code> 参数（控制 AI 输出的随机性），让函数可以接收并传递这个参数。</p>
-    <p><strong>练习 2：</strong>实现一个 <code>ask_ai_with_retry()</code> 函数，自动重试失败的 API 调用（最多重试 3 次），每次重试间隔 1 秒。使用 <code>time.sleep()</code> 实现延迟。</p>
-    <p><strong>练习 3：</strong>写一个函数 <code>batch_translate(texts, target_lang)</code>，接收一个文本列表和目标语言，依次调用 AI API 翻译每个文本，返回翻译结果列表。注意处理单个文本翻译失败的情况。</p>
+    <p><strong>练习 1（验证）：</strong>修改 <code>examples/step8/01_mock_api.py</code>，增加一个 <code>temperature</code> 参数（控制 AI 输出的随机性），让函数可以接收并传递这个参数。</p>
+    <p><strong>练习 2（验证）：</strong>实现一个 <code>ask_ai_with_retry()</code> 函数，自动重试失败的 API 调用（最多重试 3 次），每次重试间隔 1 秒。使用 <code>time.sleep()</code> 实现延迟。</p>
+    <p><strong>练习 3（验证）：</strong>写一个函数 <code>batch_translate(texts, target_lang)</code>，接收一个文本列表和目标语言，依次调用 AI API 翻译每个文本，返回翻译结果列表。注意处理单个文本翻译失败的情况。</p>
+    <p><strong>练习 4（设计）：</strong>写一个 <code>MockAIClient</code> 类，模拟 AI API 客户端。它不需要联网，而是在本地根据输入返回预设的响应。要求：支持 <code>chat(prompt)</code> 方法；支持模拟网络延迟（<code>time.sleep</code>）；支持模拟随机失败（10% 概率抛异常）；支持记录调用次数和 token 消耗。这个类可以帮助你在没有 API Key 的情况下测试其他代码。</p>
+    <p><strong>练习 5（设计）：</strong>实现一个 <code>APIHealthChecker</code> 类，定期检测 AI API 的可用性。方法包括：<code>check()</code> 发送一个简单的 GET/HEAD 请求到 API 端点，测量响应时间；<code>get_status()</code> 返回最近 10 次检测的平均响应时间和成功率。这类似于真实的运维监控工具。</p>
   </div>
   <div class="lesson-code">
     <div class="demo-label">练习 2 参考答案</div>
@@ -208,6 +318,78 @@ def ask_ai_with_retry(question, max_retries=3):
 
 result = ask_ai_with_retry("你好")
 print(result)</code></pre>
+  </div>
+  <div class="exercise-box">
+    <div class="demo-label">练习 4 思路提示</div>
+    <pre><code>import time
+import random
+
+class MockAIClient:
+    def __init__(self):
+        self.call_count = 0
+        self.total_tokens = 0
+        self.responses = {
+            "你好": "你好！有什么可以帮你的？",
+            "天气": "今天天气不错，适合出门。",
+        }
+    
+    def chat(self, prompt):
+        self.call_count += 1
+        time.sleep(0.1)  # 模拟网络延迟
+        
+        if random.random() < 0.1:
+            raise Exception("模拟网络故障")
+        
+        response = self.responses.get(prompt, f"这是对'{prompt}'的模拟回复")
+        tokens = len(prompt) + len(response)
+        self.total_tokens += tokens
+        return response
+    
+    def get_stats(self):
+        return {
+            "calls": self.call_count,
+            "tokens": self.total_tokens
+        }</code></pre>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">测验</span>快速检验一下</h2>
+  <div class="demo-card">
+    <p><strong>1. 单选题：</strong>为什么把 API Key 放在环境变量中，而不是直接写在代码里？</p>
+    <p>A. 环境变量里的 Key 会自动加密</p>
+    <p>B. 避免密钥随代码一起提交到版本控制系统，防止泄露</p>
+    <p>C. 环境变量比代码执行得更快</p>
+    <p>D. 因为 API 文档要求必须这样做</p>
+    <details><summary>点击查看答案</summary><p><strong>正确答案：B</strong>。代码仓库可能被公开或共享，硬编码密钥极易泄露。环境变量将配置与代码分离，是安全最佳实践。</p></details>
+  </div>
+  <div class="demo-card">
+    <p><strong>2. 判断题：</strong>HTTP 状态码 429 表示请求成功，只是响应比较慢。</p>
+    <p>A. 正确</p>
+    <p>B. 错误，429 表示请求过于频繁，触发了限流</p>
+    <details><summary>点击查看答案</summary><p><strong>正确答案：B</strong>。429 Too Many Requests 是标准的限流状态码，意味着你需要降低请求频率或实现退避重试。</p></details>
+  </div>
+  <div class="demo-card">
+    <p><strong>3. 单选题：</strong>REST API 的设计核心思想是什么？</p>
+    <p>A. 使用复杂的 XML 信封包装所有请求</p>
+    <p>B. 资源导向，用 HTTP 方法和 URL 操作资源，无状态通信</p>
+    <p>C. 每个请求必须包含完整的用户会话状态</p>
+    <p>D. 只支持 POST 方法</p>
+    <details><summary>点击查看答案</summary><p><strong>正确答案：B</strong>。REST 的核心是资源导向和无状态。HTTP 方法（GET/POST/PUT/DELETE）对应资源的增删改查操作。</p></details>
+  </div>
+  <div class="demo-card">
+    <p><strong>4. 单选题：</strong>在 AI API 调用中，temperature 参数的作用最接近什么？</p>
+    <p>A. 控制服务器的 CPU 温度</p>
+    <p>B. 控制模型输出的随机性和创造性程度</p>
+    <p>C. 控制请求的超时时间</p>
+    <p>D. 控制返回结果的最大长度</p>
+    <details><summary>点击查看答案</summary><p><strong>正确答案：B</strong>。temperature 越高，模型采样时越倾向于选择概率较低的词，输出越有创意但也越不稳定。</p></details>
+  </div>
+  <div class="demo-card">
+    <p><strong>5. 判断题：</strong>API 返回的 JSON 数据可以直接使用，不需要做任何错误检查。</p>
+    <p>A. 正确，API 的响应格式是固定的，永远可靠</p>
+    <p>B. 错误，网络问题、服务端变更都可能导致响应格式异常或字段缺失</p>
+    <details><summary>点击查看答案</summary><p><strong>正确答案：B</strong>。生产代码必须对 API 响应做校验，使用 try/except 捕获解析异常，检查关键字段是否存在。</p></details>
   </div>
 </section>
 

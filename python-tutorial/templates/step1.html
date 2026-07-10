@@ -9,6 +9,25 @@
 </div>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">起源</span>Python 的诞生故事</h2>
+  <div class="lesson-explain">
+    <p>1989 年的圣诞节，荷兰计算机研究员 <strong>Guido van Rossum</strong>（吉多·范罗苏姆）正在家里打发假期。他在荷兰国家数学和计算机科学研究所工作，之前参与过一门叫 <strong>ABC</strong> 的教学语言开发。ABC 的设计目标很美好——让非程序员也能轻松学习编程——但它过于理想化，连引号规则都很古怪，最终没能流行起来。</p>
+    <p>Guido 想：「能不能设计一门像 ABC 一样简洁优雅，又像 C 语言一样强大的语言？」于是他开始在圣诞假期里动手写代码。1991 年，第一个 Python 版本（0.9.0）发布到互联网上。这个名字来自他最喜欢的喜剧团体 <strong>Monty Python</strong>（蒙提·派森），和「蟒蛇」其实没有直接关系——虽然后来大家都用蛇作为标志。</p>
+    <p>Python 的初心是<strong>让人把时间花在解决问题上，而不是和机器斗智斗勇</strong>。Guido 有一句名言：「代码被阅读的次数远多于被编写的次数。」所以 Python 从诞生起就把「可读性」放在了第一位。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">思考</span>为什么需要解释型语言</h2>
+  <div class="lesson-explain">
+    <p>在 Guido 写 Python 之前，编程对新手来说门槛极高。C 语言需要理解内存地址、指针、编译链接；Perl 被戏称为「只写语言」，三个月后连自己写的代码都看不懂。当时的程序员面临一个两难选择：</p>
+    <p><strong>选择一：编译型语言（如 C/C++）</strong>——性能极高，但开发周期长。你写好代码后，要经过编译、链接才能运行。改一行代码，等编译就要几分钟。更麻烦的是，一个分号写错，满屏都是报错。</p>
+    <p><strong>选择二：脚本语言（如 Bash、Perl）</strong>——写起来快，但语法晦涩难懂，不利于团队协作。</p>
+    <p>Guido 的思考是：<strong>能不能有一种语言，写起来像脚本一样快，读起来像伪代码一样清晰，同时还足够强大去做系统级的事情？</strong> 这就是 Python 的核心定位。它选择了一条中间路线——解释执行，牺牲一部分运行速度，换取开发效率和代码可读性。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">场景</span>为什么要学 Python</h2>
   <div class="lesson-explain">
     <p>想象你想让电脑帮你做一件事——比如分析一份销售数据、自动下载图片、或者和 AI 对话。你需要用一种语言告诉电脑你的意图，而 Python 就是这种语言中最平易近人的一种。</p>
@@ -89,6 +108,55 @@ print("你好，Python！")</code></pre>
 </section>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">论证</span>为什么解释执行是正确选择</h2>
+  <div class="lesson-explain">
+    <p>你可能想问：既然编译型语言跑得更快，为什么 Python 还要选择解释执行？这其实是一个<strong>权衡问题</strong>——不同场景需要不同的最优解。</p>
+    <p><strong>从开发效率看：</strong>写一个 Python 程序，从构思到运行可能只需要几分钟。而同样的功能用 C 写，光是处理内存分配和类型声明就要花很长时间。对于数据分析、人工智能原型开发、Web 后端这些场景，程序运行一次只需要几秒，但开发调试可能要几周——这时候开发效率比运行速度重要得多。</p>
+    <p><strong>从可移植性看：</strong>编译型语言编译出来的可执行文件只能运行在特定操作系统上（Windows 的 .exe 不能在 Mac 上跑）。而 Python 源码可以在任何装了 Python 解释器的机器上运行——Windows、Mac、Linux，甚至树莓派。</p>
+    <p><strong>从学习曲线看：</strong>解释型语言是「即时反馈」的。你写一行 <code>print(1 + 2)</code>，马上就能看到结果 <code>3</code>。这种即时感让初学者能快速建立信心，理解「程序在做什么」。</p>
+    <p>当然，如果你的目标是写一个每秒要处理百万请求的高频交易系统，Python 确实不是最佳选择——但即便如此，你也可以先用 Python 快速验证算法，再用 C++ 重写核心部分。很多 AI 框架（如 PyTorch）就是这样做的：Python 负责调用接口，底层 C++ 负责高速计算。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">实验</span>亲手验证解释器的工作流程</h2>
+  <div class="lesson-explain">
+    <p>光听原理不够，我们来亲手做几个实验，看看 Python 解释器到底是怎么工作的。</p>
+    <p><strong>实验 1：观察交互式解释器</strong></p>
+    <p>打开终端，输入 <code>python3</code>（Windows 上可能是 <code>python</code>），你会看到类似下面的提示符：</p>
+  </div>
+  <div class="lesson-code">
+    <pre><code>$ python3
+Python 3.11.4 (main, Jun  9 2023, 07:23:44)
+>>> print("我在交互式解释器里！")
+我在交互式解释器里！
+>>> 1 + 2
+3
+>>> exit()</code></pre>
+  </div>
+  <div class="lesson-explain">
+    <p>注意：你每按一次回车，解释器就立刻编译并执行这一行——这就是「边解释边执行」。试着输入 <code>1 / 0</code>，观察报错信息，理解解释器是在运行时才发现错误的。</p>
+    <p><strong>实验 2：查看字节码</strong></p>
+    <p>Python 把源码编译成字节码后执行。我们可以用内置的 <code>dis</code> 模块来查看这段字节码长什么样：</p>
+  </div>
+  <div class="lesson-code">
+    <pre><code>import dis
+
+def hello():
+    print("Hello, World!")
+
+dis.dis(hello)
+
+# 输出中会看到类似 LOAD_GLOBAL、CALL_FUNCTION 这样的指令
+# 这些就是 Python 虚拟机（PVM）真正执行的命令</code></pre>
+  </div>
+  <div class="lesson-explain">
+    <p><strong>实验 3：对比编译型与解释型的差异</strong></p>
+    <p>创建一个 <code>hello.py</code> 文件，内容只有 <code>print("Hello")</code>。运行 <code>python hello.py</code>，你会发现在项目目录中生成了 <code>__pycache__</code> 文件夹，里面有 <code>.pyc</code> 文件——这就是编译后的字节码缓存。下次再运行同一个文件时，Python 会跳过编译步骤，直接加载缓存的字节码，加快启动速度。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">错误</span>初学者常犯的错误</h2>
   <div class="lesson-explain">
     <p><strong>Python 2 和 3 混用：</strong>网上有些旧教程使用 Python 2 语法，比如 <code>print "hello"</code>（不带括号）。在 Python 3 中这会直接报错。记住：Python 3 的 <code>print</code> 必须带括号。</p>
@@ -115,9 +183,11 @@ python3 02_calculator.py</code></pre>
 <section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">练习</span>动手试一试</h2>
   <div class="lesson-explain">
-    <p><strong>练习 1：</strong>修改 <code>hello.py</code>，让它打印三行内容：你的名字、你的年龄、你正在学习 Python。运行程序确认输出正确。</p>
-    <p><strong>练习 2：</strong>用 <code>print()</code> 的 <code>sep</code> 参数，把 <code>print("2024", "年", "7", "月")</code> 的输出变成 <code>2024年7月</code>（不带空格）。</p>
-    <p><strong>练习 3：</strong>尝试运行 <code>python hello.py</code> 时故意把文件名打错（比如 <code>helo.py</code>），观察错误信息，理解 Python 告诉你什么。</p>
+    <p><strong>练习 1（验证题）：</strong>修改 <code>hello.py</code>，让它打印三行内容：你的名字、你的年龄、你正在学习 Python。运行程序确认输出正确。</p>
+    <p><strong>练习 2（验证题）：</strong>用 <code>print()</code> 的 <code>sep</code> 参数，把 <code>print("2024", "年", "7", "月")</code> 的输出变成 <code>2024年7月</code>（不带空格）。</p>
+    <p><strong>练习 3（验证题）：</strong>尝试运行 <code>python hello.py</code> 时故意把文件名打错（比如 <code>helo.py</code>），观察错误信息，理解 Python 告诉你什么。</p>
+    <p><strong>练习 4（设计题）：</strong>假设你要向一位完全不懂编程的朋友解释「编译型语言」和「解释型语言」的区别。请用一个生活中的类比（比如点外卖、翻译小说、看演出等）写一段 100 字左右的说明，让朋友一听就懂。</p>
+    <p><strong>练习 5（设计题）：</strong>Python 的设计哲学强调「简洁」和「可读性」。如果你现在要设计一门面向中学生的编程语言，你会在语法上做哪些取舍？列举 2-3 个你认为应该简化或保留的特性，并说明理由。</p>
   </div>
   <div class="lesson-code">
     <div class="demo-label">练习 1 参考答案</div>
@@ -126,6 +196,55 @@ age = 25
 print(name)
 print(age)
 print("我正在学习 Python")</code></pre>
+  </div>
+  <div class="lesson-code">
+    <div class="demo-label">练习 2 参考答案</div>
+    <pre><code>print("2024", "年", "7", "月", sep="")  # 输出: 2024年7月</code></pre>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">测验</span>快速检验一下</h2>
+  <div class="demo-card">
+    <p><strong>1. Python 的创始人是？</strong></p>
+    <div class="lesson-explain">
+      <p>A. Dennis Ritchie（C 语言之父）</p>
+      <p>B. James Gosling（Java 之父）</p>
+      <p>C. Guido van Rossum</p>
+      <p>D. Bjarne Stroustrup（C++ 之父）</p>
+    </div>
+  </div>
+  <div class="demo-card">
+    <p><strong>2. Python 属于哪种类型的语言？</strong></p>
+    <div class="lesson-explain">
+      <p>A. 纯编译型语言（如 C）</p>
+      <p>B. 解释型语言</p>
+      <p>C. 机器语言</p>
+      <p>D. 汇编语言</p>
+    </div>
+  </div>
+  <div class="demo-card">
+    <p><strong>3. Python 解释器执行代码的正确流程是？</strong></p>
+    <div class="lesson-explain">
+      <p>A. 源码 → 直接执行 → 输出结果</p>
+      <p>B. 源码 → 编译成字节码 → PVM 执行字节码 → 输出结果</p>
+      <p>C. 源码 → 编译成机器码 → 操作系统执行 → 输出结果</p>
+      <p>D. 源码 → 翻译成 C 代码 → 编译执行</p>
+    </div>
+  </div>
+  <div class="demo-card">
+    <p><strong>4. 判断：Python 2 和 Python 3 的 print 语法完全一样，可以直接混用。</strong></p>
+    <div class="lesson-explain">
+      <p>A. 正确</p>
+      <p>B. 错误</p>
+    </div>
+  </div>
+  <div class="demo-card">
+    <p><strong>5. 判断：Python 的运行速度通常比 C 语言慢，但开发效率更高。</strong></p>
+    <div class="lesson-explain">
+      <p>A. 正确</p>
+      <p>B. 错误</p>
+    </div>
   </div>
 </section>
 

@@ -7,6 +7,32 @@
 </div>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">起源</span>从数学函数到代码子程序</h2>
+  <div class="lesson-explain">
+    <p>函数（Function）的概念最早来自数学。17 世纪，数学家莱布尼茨和牛顿在研究运动时，用 <code>f(x)</code> 表示「输入一个数 x，经过某种规则运算，输出一个结果」。比如 <code>f(x) = x²</code> 就是一个函数：输入 3，输出 9；输入 5，输出 25。这种「输入 → 处理 → 输出」的抽象方式，让数学家可以把复杂问题拆解成一个个可复用的模块。</p>
+    <p>1940 年代，第一台电子计算机诞生后，程序员很快发现：同样的计算逻辑在程序中反复出现。1950 年代初，一些汇编语言开始支持「子程序跳转」——你可以把一段常用代码放在某个位置，需要时跳过去执行，执行完再跳回来。1957 年的 Fortran 首次引入了正式的 <strong>SUBROUTINE</strong>（子程序）和 <strong>FUNCTION</strong> 概念，代码复用进入了高级语言时代。</p>
+    <p>到了 1960 年代，计算机科学家进一步提出了「模块化编程」和「过程式编程」的思想：程序应该由许多小而精的函数组成，每个函数只做一件事，并通过明确的接口（参数和返回值）相互协作。Python 的函数设计深受这一传统影响，同时又加入了现代特性——比如默认参数、关键字参数、多返回值解包等。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">思考</span>复制粘贴有什么问题</h2>
+  <div class="lesson-explain">
+    <p>初学者最常犯的错误之一，就是遇到重复代码时选择「复制粘贴」。比如计算三个圆的面积，新手可能会写：</p>
+  </div>
+  <div class="lesson-code">
+    <pre><code>area1 = 3.14 * r1 * r1
+area2 = 3.14 * r2 * r2
+area3 = 3.14 * r3 * r3</code></pre>
+  </div>
+  <div class="lesson-explain">
+    <p>这看起来简单直接，但如果后来发现 3.14 不够精确，需要用 3.14159，你就得把三行代码全部改一遍——漏改一行，程序就出了隐蔽的 bug。如果不止三处，而是三十处呢？</p>
+    <p>更严重的是，复制粘贴让代码的「意图」变得模糊。读到这三行时，你需要在脑子里解析一遍：「哦，这是在算圆面积」。而如果封装成 <code>circle_area(r)</code>，只要看一眼函数名，就知道它在做什么。<strong>函数不仅复用了代码，更复用了「理解」。</strong></p>
+    <p>函数的另一个价值是<strong>抽象屏障</strong>。调用者不需要知道函数内部是怎么实现的，只需要知道「给它什么参数，它会返回什么结果」。就像你用手机拍照时，不需要理解 CMOS 传感器的工作原理——只要按下快门，就能得到照片。这种「黑盒」思维是管理复杂系统的核心能力。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">场景</span>为什么需要函数？</h2>
   <div class="lesson-explain">
     <p>想象你是一名厨师，每天要做 100 杯珍珠奶茶。如果没有标准化流程，你每次都要想"先放多少茶、多少奶、煮多久珍珠"——既累又容易出错。于是你写了一张<strong>配方卡</strong>：只要给出杯数和甜度，就能自动产出一致的奶茶。</p>
@@ -120,6 +146,85 @@ print(count)   # 1</code></pre>
 </section>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">论证</span>为什么函数是组织代码的最佳粒度</h2>
+  <div class="lesson-explain">
+    <p>既然函数这么好，那是不是把代码分得越细越好？或者反过来，把整个程序写成一个巨大的函数？这两种极端都有问题。<strong>函数的大小和数量，本质上是在「简洁性」和「可读性」之间找平衡。</strong></p>
+    <p><strong>太大的函数有什么问题？</strong>如果一个函数超过 50 行，它很可能在做不止一件事。阅读这样的代码时，你需要在脑子里记住很多临时变量和中间状态，认知负担很重。更麻烦的是，当你想复用其中的某一小部分逻辑时，发现它被紧耦合在大函数内部，抽不出来。</p>
+    <p><strong>太碎的函数有什么问题？</strong>如果每两三行就封装成一个函数，代码会被淹没在大量的函数跳转中。读者需要不断切换上下文，去理解每个函数在做什么——最后反而比直接读 inline 代码更累。</p>
+    <p>业界有一个经验法则：<strong>一个函数应该只做「一件事」</strong>。判断标准是：你能不能用一个简单的动词短语给函数命名？比如 <code>calculate_bmi()</code>、<code>validate_email()</code>、<code>sort_by_date()</code>。如果命名变成了 <code>process_data_and_save_and_notify()</code>，说明这个函数做的事情太多了，应该拆分。</p>
+    <p>对比另一种代码组织方式——面向对象（类）——函数的优势在于简单和直接。你不需要理解「继承」「多态」「封装」这些概念，只需要知道「输入什么、输出什么」。对于初学者和中小规模项目来说，函数是最好上手的组织方式。Python 本身也是一门多范式语言，你可以先用函数写程序，等需要更复杂的结构时，再引入类。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">实验</span>亲手探索函数的边界行为</h2>
+  <div class="lesson-explain">
+    <p><strong>实验 1：验证局部变量的生命周期</strong></p>
+    <p>运行下面的代码，观察报错信息，理解局部变量和全局变量的区别：</p>
+  </div>
+  <div class="lesson-code">
+    <pre><code>count = 100   # 全局变量
+
+def demo():
+    count = 5   # 这是局部变量，和外面的 count 不是同一个！
+    print("函数内部:", count)
+
+demo()
+print("函数外部:", count)   # 仍然是 100
+
+# 如果你想在函数里修改全局变量，需要用 global
+def demo2():
+    global count
+    count = 99
+    print("函数内部:", count)
+
+demo2()
+print("函数外部:", count)   # 变成了 99</code></pre>
+  </div>
+  <div class="lesson-explain">
+    <p><strong>实验 2：观察默认参数的「陷阱」</strong></p>
+    <p>这个实验会让你大吃一惊——运行下面两段代码，对比输出：</p>
+  </div>
+  <div class="lesson-code">
+    <pre><code># 实验 A：默认参数是数字（不可变）
+def add_one(n=0):
+    n += 1
+    return n
+
+print(add_one())   # 1
+print(add_one())   # 1  —— 每次都是 1，符合预期
+
+# 实验 B：默认参数是列表（可变）
+def add_item(item, items=[]):
+    items.append(item)
+    return items
+
+print(add_item(1))   # [1]
+print(add_item(2))   # [1, 2]  —— 糟糕！列表记住了上次的内容！</code></pre>
+  </div>
+  <div class="lesson-explain">
+    <p>为什么会这样？因为默认参数在函数<strong>定义时</strong>就被创建了一次，之后每次调用都复用同一个对象。数字、字符串等不可变对象被修改时会创建新对象，所以看起来「正常」；但列表是可变的，<code>append()</code> 直接修改了原来的列表。正确的做法是用 <code>None</code> 作为默认值。</p>
+    <p><strong>实验 3：体验递归函数</strong></p>
+    <p>函数可以调用自己，这叫做递归。试着运行下面的阶乘函数，并在关键位置加入 print，观察调用栈的形成和消退：</p>
+  </div>
+  <div class="lesson-code">
+    <pre><code>def factorial(n):
+    print(f"计算 factorial({n})")
+    if n <= 1:
+        print(f"factorial({n}) 的基础情况，返回 1")
+        return 1
+    result = n * factorial(n - 1)
+    print(f"factorial({n}) = {n} * {result // n} = {result}")
+    return result
+
+factorial(4)</code></pre>
+  </div>
+  <div class="lesson-explain">
+    <p>观察输出，你会发现计算是从 <code>factorial(4)</code> 开始，逐层深入到 <code>factorial(1)</code>，然后再逐层返回结果。这个过程就像剥洋葱：先一层层剥进去，到达中心后再一层层剥出来。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">错误</span>常见陷阱</h2>
   <div class="lesson-explain">
     <p><strong>1. 忘记 return</strong>：函数没有 return 时默认返回 None，新手常误以为会得到计算结果。</p>
@@ -172,9 +277,24 @@ python3 03_return_values.py</code></pre>
 <section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">练习</span>动手试一试</h2>
   <div class="lesson-explain">
-    <p><strong>练习 1：</strong>写一个函数 <code>calculate_bmi(weight, height)</code>，接收体重（kg）和身高（m），返回 BMI 值和对应的分类（偏瘦/正常/超重/肥胖）。BMI = 体重 / 身高²。</p>
-    <p><strong>练习 2：</strong>写一个函数 <code>average(*numbers)</code>，接收任意多个数字，返回它们的平均值。如果没有传入数字，返回 0。</p>
-    <p><strong>练习 3：</strong>写一个函数 <code>is_palindrome(s)</code>，判断一个字符串是否为回文（正读反读相同，如 "level"、"上海自来水来自海上"）。</p>
+    <p><strong>练习 1（验证题）：</strong>写一个函数 <code>calculate_bmi(weight, height)</code>，接收体重（kg）和身高（m），返回 BMI 值和对应的分类（偏瘦/正常/超重/肥胖）。BMI = 体重 / 身高²。</p>
+    <p><strong>练习 2（验证题）：</strong>写一个函数 <code>average(*numbers)</code>，接收任意多个数字，返回它们的平均值。如果没有传入数字，返回 0。</p>
+    <p><strong>练习 3（验证题）：</strong>写一个函数 <code>is_palindrome(s)</code>，判断一个字符串是否为回文（正读反读相同，如 "level"、"上海自来水来自海上"）。</p>
+    <p><strong>练习 4（验证题）：</strong>运行下面代码，观察输出并解释原因：</p>
+  </div>
+  <div class="lesson-code">
+    <pre><code>def mystery(a, b=[]):
+    b.append(a)
+    return b
+
+print(mystery(1))
+print(mystery(2))
+print(mystery(3, []))
+print(mystery(4))</code></pre>
+  </div>
+  <div class="lesson-explain">
+    <p><strong>练习 5（设计题）：</strong>假设你在写一个「购物车结算」程序。思考一下：应该把「计算折扣」和「计算运费」写成两个独立的函数，还是合并成一个 <code>calculate_total()</code> 函数？从「代码复用」「可测试性」「未来扩展（比如新增会员积分抵扣）」三个角度分析你的选择。</p>
+    <p><strong>练习 6（设计题）：</strong>有些编程语言（如 C 语言）要求函数必须先声明再调用，而 Python 允许你在文件末尾定义函数、在开头就调用它（只要调用时函数已经加载到内存）。思考：Python 这种设计对初学者更友好还是更危险？写一段 100 字左右的分析。</p>
   </div>
   <div class="lesson-code">
     <div class="demo-label">练习 1 参考答案</div>
@@ -192,6 +312,59 @@ python3 03_return_values.py</code></pre>
 
 bmi, cat = calculate_bmi(70, 1.75)
 print(f"BMI: {bmi:.1f}, 分类: {cat}")</code></pre>
+  </div>
+  <div class="lesson-code">
+    <div class="demo-label">练习 4 参考答案</div>
+    <pre><code># [1]
+# [1, 2]   —— 默认列表被复用了！
+# [3]      —— 传入了新的空列表，不受影响
+# [1, 2, 4] —— 再次复用默认列表</code></pre>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">测验</span>快速检验一下</h2>
+  <div class="demo-card">
+    <p><strong>1. 在 Python 中，函数没有显式 return 时，默认返回什么？</strong></p>
+    <div class="lesson-explain">
+      <p>A. 0</p>
+      <p>B. 空字符串 ""</p>
+      <p>C. None</p>
+      <p>D. 报错</p>
+    </div>
+  </div>
+  <div class="demo-card">
+    <p><strong>2. 以下代码的输出是什么？</strong></p>
+    <div class="lesson-explain">
+      <p><code>def f(a, b=2): return a + b<br>print(f(1))</code></p>
+      <p>A. 1</p>
+      <p>B. 2</p>
+      <p>C. 3</p>
+      <p>D. 报错</p>
+    </div>
+  </div>
+  <div class="demo-card">
+    <p><strong>3. 判断：Python 函数可以返回多个值。</strong></p>
+    <div class="lesson-explain">
+      <p>A. 正确</p>
+      <p>B. 错误</p>
+    </div>
+  </div>
+  <div class="demo-card">
+    <p><strong>4. 以下哪种做法可以避免默认参数的列表累积陷阱？</strong></p>
+    <div class="lesson-explain">
+      <p>A. <code>def f(items=[])</code></p>
+      <p>B. <code>def f(items=None)</code></p>
+      <p>C. <code>def f(items=[None])</code></p>
+      <p>D. 无法避免</p>
+    </div>
+  </div>
+  <div class="demo-card">
+    <p><strong>5. 判断：函数内部可以直接读取全局变量的值，不需要加 global 声明。</strong></p>
+    <div class="lesson-explain">
+      <p>A. 正确</p>
+      <p>B. 错误</p>
+    </div>
   </div>
 </section>
 

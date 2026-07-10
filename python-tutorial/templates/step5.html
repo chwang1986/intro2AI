@@ -7,6 +7,26 @@
 </div>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">起源</span>从数组到哈希表的进化之路</h2>
+  <div class="lesson-explain">
+    <p>计算机刚诞生时，程序只能操作单个数字。1950 年代，Fortran 语言引入了<strong>数组</strong>（Array）——把一批同类型的数据连续存放在内存中，用索引访问。数组简单高效，但有两个硬伤：大小固定（不能随意增删），查找元素需要逐个扫描。</p>
+    <p>1960 年代，计算机科学家发明了<strong>链表</strong>（Linked List）：每个数据节点除了存储值，还保存一个指向下一个节点的「指针」。这解决了数组插入删除困难的问题，但牺牲了随机访问能力——要找第 100 个元素，必须从第 1 个开始逐个跳过去。</p>
+    <p>1970 年代，一项革命性的发明出现了——<strong>哈希表</strong>（Hash Table）。它的核心思想是：通过一个「哈希函数」把键（key）直接映射到内存地址，实现近乎瞬时的查找。无论表里有 10 个还是 10 万个元素，查找时间都差不多。Python 的字典（dict）就是基于哈希表实现的。1980 年代以后，几乎所有现代编程语言都把哈希表作为内置类型，因为它实在太实用了。</p>
+    <p>至于<strong>集合</strong>（Set），它源于数学中的集合论。19 世纪的数学家康托尔奠定了集合论基础，而计算机科学家后来发现：如果用哈希表只存储「键」而不存储「值」，就得到了一个自动去重、查找极快的集合结构。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">思考</span>算法 + 数据结构 = 程序</h2>
+  <div class="lesson-explain">
+    <p>计算机科学家 Niklaus Wirth（Pascal 语言之父）写过一本经典教材，书名就叫《Algorithms + Data Structures = Programs》（算法 + 数据结构 = 程序）。这个等式揭示了一个核心道理：<strong>选择什么样的容器，决定了你能用什么样的算法，进而决定了程序的效率。</strong></p>
+    <p>举个例子：假设你有一百万个用户的手机号，需要频繁判断「某个手机号是否在列表中」。如果你用列表存储，每次查找平均要扫描五十万个元素。如果你用集合存储，借助哈希表，每次查找只需要计算一次哈希值，瞬间就能知道结果——速度提升了上万倍。</p>
+    <p>再举个例子：你要存储学生的成绩，并且需要按学号快速查到某个学生的分数。如果用列表，你需要遍历整个列表找匹配项；如果用字典，直接把学号作为键、成绩作为值，一次查找就能定位。这就是为什么字典被称为 Python 中最强大的数据结构之一。</p>
+    <p>Python 的设计者 Guido 在创造这门语言时，刻意把这四种最常用的数据结构直接内置到语言核心中。你不需要像 C 语言那样自己实现链表或哈希表，开箱即用。这大大降低了编程门槛，也让 Python 成为处理数据的利器。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">场景</span>如何管理一堆数据？</h2>
   <div class="lesson-explain">
     <p>想象你要整理家里的物品：<strong>列表</strong>像一排书架，书按顺序摆放，你可以随时抽出一本换掉；<strong>字典</strong>像带标签的收纳盒，写上"袜子"就能直接找到袜子，不用翻遍整个柜子；<strong>元组</strong>像被封死的展示柜，里面的珍品只能看不能碰；<strong>集合</strong>像抽奖箱，东西在里面乱滚，但绝不会出现两个一模一样的球。</p>
@@ -163,6 +183,79 @@ print(2 in a)                  # 成员检测: True（极快）</code></pre>
 </section>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">论证</span>为什么 Python 内建这四种容器</h2>
+  <div class="lesson-explain">
+    <p>你可能会问：为什么 Python 不提供「链表」「栈」「队列」这些经典数据结构，而是选择了列表、字典、元组、集合这四种？这其实是一个经过深思熟虑的设计决策——<strong>用少数几个强大的通用结构，覆盖绝大多数编程场景。</strong></p>
+    <p><strong>列表 = 动态数组：</strong>Python 的列表底层不是纯链表，而是「动态数组」。它兼顾了数组的随机访问速度（通过索引瞬间定位）和链表的动态扩容能力。对于大多数日常任务——存储序列、遍历、追加——列表已经足够高效。只有当你需要在列表头部频繁插入删除时，才需要考虑 collections.deque（双端队列）。</p>
+    <p><strong>字典 = 哈希表：</strong>字典是 Python 最核心、最高频的数据结构。它用空间换时间，实现了 O(1) 的查找速度。从 Python 3.7 开始，字典还保证了插入顺序——这是哈希表实现上的一项重大优化，让字典同时兼具了映射查找和有序存储的能力。</p>
+    <p><strong>元组 = 轻量不可变记录：</strong>元组存在的意义不是「不能改的列表」，而是「轻量级的结构化记录」。比如坐标 <code>(x, y)</code>、RGB 颜色 <code>(255, 128, 0)</code>，这些数据天然应该作为一个整体被传递，且不应该被意外修改。元组的不可变性还让它可以作为字典的键——这是列表做不到的。</p>
+    <p><strong>集合 = 去重与关系运算：</strong>如果你只需要判断「某个元素是否存在」，集合比字典更省空间（不需要存储值）；如果你需要做交集、并集、差集运算，集合提供了直观运算符 <code>& | -</code>。在数据清洗中，集合的去重功能几乎是标配。</p>
+    <p>对比 C++ 的 STL（标准模板库）或 Java 的 Collections 框架——它们提供了几十种容器，每一种都有特定的适用场景，但学习曲线非常陡峭。Python 的哲学是「一种明显的方式去做一件事」，四种内置容器覆盖了 90% 的使用场景，剩下的 10% 可以通过标准库的 collections 模块补充。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">实验</span>亲手感受不同容器的特性</h2>
+  <div class="lesson-explain">
+    <p><strong>实验 1：验证列表和字典的查找速度差异</strong></p>
+    <p>创建一个包含 10000 个元素的列表和字典，分别在其中查找目标元素，用 <code>time</code> 模块测量耗时：</p>
+  </div>
+  <div class="lesson-code">
+    <pre><code>import time
+
+# 准备数据
+n = 100000
+my_list = list(range(n))
+my_dict = {i: i for i in range(n)}
+target = n - 1
+
+# 列表查找
+start = time.time()
+found = target in my_list
+print("列表查找耗时:", time.time() - start)
+
+# 字典查找
+start = time.time()
+found = target in my_dict
+print("字典查找耗时:", time.time() - start)
+
+# 你会看到字典查找快得多，即使数据量达到百万级也几乎瞬间完成</code></pre>
+  </div>
+  <div class="lesson-explain">
+    <p><strong>实验 2：观察元组的不可变性和「内部可变」现象</strong></p>
+    <p>运行下面的代码，理解「元组本身不可变」和「元组内部的可变对象可变」之间的区别：</p>
+  </div>
+  <div class="lesson-code">
+    <pre><code>t = (1, 2, [3, 4])
+print("原始元组:", t)
+
+# t[0] = 10       # 报错！元组元素不能被重新赋值
+t[2].append(5)   # 成功！因为列表本身是可变的
+print("修改后:", t)
+
+t[2] = [6, 7]    # 报错！虽然列表内容可变，但不能把整个列表换成另一个</code></pre>
+  </div>
+  <div class="lesson-explain">
+    <p><strong>实验 3：体验集合的去重和运算</strong></p>
+    <p>假设你有两个班级的学生名单，想找出「同时参加两个班」和「只参加一个班」的学生。用集合运算可以非常优雅地解决：</p>
+  </div>
+  <div class="lesson-code">
+    <pre><code>class_a = {"小明", "小红", "小刚", "小丽"}
+class_b = {"小红", "小丽", "小华", "小杰"}
+
+print("两个班都参加的:", class_a & class_b)       # 交集
+print("至少参加一个班的:", class_a | class_b)      # 并集
+print("只参加 A 班的:", class_a - class_b)         # 差集
+print("只参加一个班的:", class_a ^ class_b)        # 对称差集
+
+# 用列表做同样的运算会复杂很多——你需要写循环逐个比较</code></pre>
+  </div>
+  <div class="lesson-explain">
+    <p>试着把上面的集合改成列表，用手写循环实现同样的功能。体会一下：用对数据结构，代码量可以少多少。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">错误</span>常见陷阱</h2>
   <div class="lesson-explain">
     <p><strong>1. 用可变对象做 dict 的 key</strong>：字典的键必须是不可变类型（可哈希），列表和字典不能当键。</p>
@@ -213,14 +306,82 @@ python3 03_set_tuple.py</code></pre>
 <section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">练习</span>动手试一试</h2>
   <div class="lesson-explain">
-    <p><strong>练习 1：</strong>创建一个学生成绩字典，键是学生姓名，值是分数列表（如 <code>{"小明": [85, 90, 78]}</code>）。写一个函数计算每个学生的平均分并打印。</p>
-    <p><strong>练习 2：</strong>用列表推导式生成 1 到 20 之间所有能被 3 整除的数的平方，如 <code>[9, 36, 81, ...]</code>。</p>
-    <p><strong>练习 3：</strong>有两个列表 <code>a = [1, 2, 3, 4]</code> 和 <code>b = [3, 4, 5, 6]</code>，用集合找出只出现在 a 中、只出现在 b 中、以及同时出现在两个列表中的元素。</p>
+    <p><strong>练习 1（验证题）：</strong>创建一个学生成绩字典，键是学生姓名，值是分数列表（如 <code>{"小明": [85, 90, 78]}</code>）。写一个函数计算每个学生的平均分并打印。</p>
+    <p><strong>练习 2（验证题）：</strong>用列表推导式生成 1 到 20 之间所有能被 3 整除的数的平方，如 <code>[9, 36, 81, ...]</code>。</p>
+    <p><strong>练习 3（验证题）：</strong>有两个列表 <code>a = [1, 2, 3, 4]</code> 和 <code>b = [3, 4, 5, 6]</code>，用集合找出只出现在 a 中、只出现在 b 中、以及同时出现在两个列表中的元素。</p>
+    <p><strong>练习 4（验证题）：</strong>运行下面代码，先预测输出，再运行验证：</p>
+  </div>
+  <div class="lesson-code">
+    <pre><code>d = {"a": 1, "b": 2}
+print(list(d.keys()))
+print(list(d.values()))
+print(list(d.items()))
+
+# 如果执行 d["c"] 会怎样？
+# 如果执行 d.get("c", 0) 又会怎样？</code></pre>
+  </div>
+  <div class="lesson-explain">
+    <p><strong>练习 5（设计题）：</strong>假设你要设计一个「单词频率统计器」，输入一篇文章，输出每个单词出现的次数。思考一下：用哪种数据结构存储「单词 → 次数」的映射最合适？如果用列表来存储，会遇到什么困难？写出你的设计方案（伪代码即可）。</p>
+    <p><strong>练习 6（设计题）：</strong>元组和列表非常相似，但元组是不可变的。在实际编程中，什么时候应该选择元组而不是列表？请列举至少 3 个场景，并解释原因。（提示：可以从「作为字典键」「函数多返回值」「数据完整性保护」等角度思考。）</p>
   </div>
   <div class="lesson-code">
     <div class="demo-label">练习 2 参考答案</div>
     <pre><code>squares = [x**2 for x in range(1, 21) if x % 3 == 0]
 print(squares)  # [9, 36, 81, 144, 225, 324]</code></pre>
+  </div>
+  <div class="lesson-code">
+    <div class="demo-label">练习 4 参考答案</div>
+    <pre><code># ['a', 'b']
+# [1, 2]
+# [('a', 1), ('b', 2)]
+# d["c"] 会抛出 KeyError
+# d.get("c", 0) 会返回 0（不会报错）</code></pre>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">测验</span>快速检验一下</h2>
+  <div class="demo-card">
+    <p><strong>1. Python 的字典（dict）底层基于哪种数据结构实现？</strong></p>
+    <div class="lesson-explain">
+      <p>A. 链表（Linked List）</p>
+      <p>B. 二叉树（Binary Tree）</p>
+      <p>C. 哈希表（Hash Table）</p>
+      <p>D. 数组（Array）</p>
+    </div>
+  </div>
+  <div class="demo-card">
+    <p><strong>2. 以下哪种类型不能作为字典的键？</strong></p>
+    <div class="lesson-explain">
+      <p>A. 整数 <code>42</code></p>
+      <p>B. 字符串 <code>"hello"</code></p>
+      <p>C. 元组 <code>(1, 2)</code></p>
+      <p>D. 列表 <code>[1, 2]</code></p>
+    </div>
+  </div>
+  <div class="demo-card">
+    <p><strong>3. 判断：集合（set）中的元素是有序的，可以通过索引访问。</strong></p>
+    <div class="lesson-explain">
+      <p>A. 正确</p>
+      <p>B. 错误</p>
+    </div>
+  </div>
+  <div class="demo-card">
+    <p><strong>4. 以下代码的输出是什么？</strong></p>
+    <div class="lesson-explain">
+      <p><code>a = {1, 2, 3, 3, 3}<br>print(len(a))</code></p>
+      <p>A. 5</p>
+      <p>B. 3</p>
+      <p>C. 6</p>
+      <p>D. 报错</p>
+    </div>
+  </div>
+  <div class="demo-card">
+    <p><strong>5. 判断：从 Python 3.7 开始，字典保持了插入顺序。</strong></p>
+    <div class="lesson-explain">
+      <p>A. 正确</p>
+      <p>B. 错误</p>
+    </div>
   </div>
 </section>
 

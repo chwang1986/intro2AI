@@ -16,6 +16,59 @@
 </section>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">起源</span>从命令行到分层架构</h2>
+  <div class="lesson-explain">
+    <p><strong>命令行界面（CLI）</strong>的历史几乎和计算机本身一样长。1960 年代，程序员通过电传打字机（Teletype）与计算机交互；1970 年代，Unix 操作系统普及了 Shell 和管道（pipe）的概念，让小型工具可以像搭积木一样组合。<strong>"Do one thing and do it well"</strong>（做好一件事）的 Unix 哲学，至今仍影响着 CLI 工具的设计。</p>
+    <p><strong>分层架构</strong>的思想则来自企业级软件开发。1980 年代，随着数据库应用兴起，开发者们发现把"数据访问"、"业务规则"和"用户界面"混在一起会导致灾难。于是出现了<strong>三层架构</strong>：表现层（Presentation）、业务逻辑层（Business Logic）、数据访问层（Data Access）。这种分层让每一层只和相邻层交互，修改一层不会影响其他层。</p>
+    <p>我们的 Todo CLI 虽然很小，但也借鉴了这种分层思想：<code>Task</code> 是数据模型（表现数据层），<code>TaskStorage</code> 负责持久化（数据访问层），<code>TaskManager</code> 处理业务规则（业务逻辑层），<code>main()</code> 和 <code>argparse</code> 是用户界面（表现层）。这种设计让它容易扩展——比如你可以把 JSON 存储换成 SQLite，而业务逻辑层完全不用改。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">思考</span>为什么一个小项目也需要"架构"？</h2>
+  <div class="lesson-explain">
+    <p>很多同学可能会想："Todo 程序不就几十行代码吗？有必要搞什么分层架构吗？"这种疑问非常合理。的确，对于"Hello World"级别的程序，分层是过度设计。但 Todo CLI 的目标是让你<strong>练习架构思维</strong>——就像数学课上的应用题，不一定每个场景都完全真实，但训练的思维是通用的。</p>
+    <p>假设你一开始把所有代码写在一个文件里，不分层：</p>
+    <div class="lesson-code"><pre><code># 混乱的单文件风格（反面教材）
+def main():
+    # 直接解析参数
+    import sys
+    cmd = sys.argv[1]
+    
+    # 直接操作文件
+    import json
+    if cmd == "add":
+        with open("tasks.json") as f:
+            tasks = json.load(f)
+        tasks.append({"id": len(tasks)+1, "title": sys.argv[2]})
+        with open("tasks.json", "w") as f:
+            json.dump(tasks, f)
+        print("添加了")
+    # ... 更多混乱的代码</code></pre></div>
+    <p>这种写法的问题在于：</p>
+    <p><strong>1. 无法测试：</strong>业务逻辑和文件操作、用户输入完全混在一起，你很难单独测试"添加任务"这个逻辑。</p>
+    <p><strong>2. 无法复用：</strong>如果你想给这个程序加一个 Web 界面，发现所有逻辑都和命令行参数绑死了，只能重写。</p>
+    <p><strong>3. 无法协作：</strong>如果两个人同时开发，一个人改界面，一个人改存储格式，他们会不断修改同一文件，冲突频发。</p>
+    <p>分层架构就是用"现在的一点麻烦"换取"将来的很多不麻烦"。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">论证</span>为什么选 JSON、argparse 和分层？</h2>
+  <div class="lesson-explain">
+    <p>在 Todo CLI 的设计中，我们做了几个关键选择。这些选择不是随意的，而是经过权衡的结果。让我们逐一论证。</p>
+    <p><strong>1. JSON vs CSV vs SQLite</strong></p>
+    <p><strong>CSV</strong> 适合表格数据，但不适合嵌套结构。一个任务可能有多个标签、子任务，CSV 表达起来很别扭。<strong>SQLite</strong> 是正经的数据库，支持查询、索引、事务，但对于一个命令行小工具来说，引入 SQL 依赖和表结构迁移太重了。<strong>JSON</strong> 是" sweet spot "（最佳平衡点）：人类可读、Python 原生支持、能表达嵌套结构、不需要额外安装。代价是大数据量时查询慢，但对于 Todo 应用完全够用。</p>
+    <p><strong>2. argparse 而不是 input() 或第三方库</strong></p>
+    <p>用 <code>input()</code> 做交互式菜单最简单，但不适合脚本化调用（比如你想在自动化脚本里定时添加任务）。<strong>Click</strong> 和 <strong>Typer</strong> 等第三方库功能更强大，但需要额外安装。Python 标准库的 <strong>argparse</strong> 无需安装、文档完善、功能足够，是"零依赖"方案的最佳选择。</p>
+    <p><strong>3. 为什么用 dataclass？</strong></p>
+    <p>不用 dataclass，你也可以用字典表示任务：<code>{"id": 1, "title": "买牛奶"}</code>。但字典的问题是：没有类型检查、没有代码补全、容易打错键名。dataclass 让数据结构像普通类一样有属性访问，同时自动生成了 <code>__init__</code> 等方法，既简洁又安全。</p>
+    <p><strong>4. 反面论证：过度设计的边界</strong></p>
+    <p>如果 Todo 程序要支持多用户协作、实时同步、Web 访问，那 JSON 文件肯定不够用，你需要数据库、网络层、权限系统。但<strong>不要为不存在的需求做设计</strong>——这就是软件工程中的 YAGNI 原则（You Aren't Gonna Need It，你不会需要它）。我们的分层架构已经预留了扩展空间，但不需要现在就实现。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">实战</span>五步完成 Todo CLI 开发</h2>
   <div class="lesson-explain">
     
@@ -426,14 +479,79 @@ python3 todo_cli.py --help</code></pre>
 </section>
 
 <section class="lesson-block">
-  <h2 class="lesson-title"><span class="lesson-num">扩展</span>进阶挑战</h2>
+  <h2 class="lesson-title"><span class="lesson-num">实验</span>亲手探索 Todo CLI 的边界</h2>
   <div class="lesson-explain">
-    <p><strong>挑战 1：</strong>给 Todo CLI 增加优先级排序功能。任务增加 <code>priority</code> 字段（高/中/低），<code>list</code> 命令默认按优先级排序显示，高优先级用红色标注。</p>
-    <p><strong>挑战 2：</strong>增加任务截止日期功能。<code>add</code> 命令支持 <code>--due</code> 参数指定截止日期，<code>list</code> 命令可以筛选「今天到期」的任务。</p>
-    <p><strong>挑战 3：</strong>给 Todo CLI 增加 AI 助手功能。写一个 <code>ai-suggest</code> 命令，调用 AI API 分析当前未完成任务，给出时间管理和优先级建议。</p>
+    <p>下面三个实验要求你已经把参考代码保存为 <code>todo.py</code> 并成功运行。我们将通过故意"搞破坏"来理解程序的鲁棒性。</p>
+    <p><strong>实验 1：观察数据文件的结构</strong></p>
+    <div class="lesson-code"><pre><code># 运行以下命令添加几个任务
+python todo.py add "买牛奶" --priority medium
+python todo.py add "写作业" --priority high
+python todo.py add "跑步" --priority low
+python todo.py list
+
+# 然后用文本编辑器打开 tasks.json，观察：
+# 1. JSON 文件的整体结构是什么？（列表？字典？）
+# 2. 每个任务有哪些字段？
+# 3. created_at 字段的格式是什么？
+
+# 手动编辑 tasks.json，把其中一个任务的 "completed" 改成 true
+# 再运行 python todo.py list，观察状态列的变化</code></pre></div>
+    <p><strong>实验结论：</strong>JSON 文件是人类可读的，你可以手动编辑它来理解数据模型，也可以用它来调试。</p>
+    <p><strong>实验 2：制造异常，观察程序的容错能力</strong></p>
+    <div class="lesson-code"><pre><code># 测试 1：添加空标题
+python todo.py add ""
+# 观察：程序是崩溃还是给出友好提示？
+
+# 测试 2：完成一个不存在的任务
+python todo.py complete 999
+# 观察：程序如何处理？
+
+# 测试 3：破坏 JSON 文件
+# 用文本编辑器打开 tasks.json，删掉最后一个 }
+# 保存后运行 python todo.py list
+# 观察：程序是崩溃还是优雅恢复？
+
+# 测试 4：尝试添加超长标题（500 个字符）
+python todo.py add "aaaaaaaa...(500个a)..."
+# 观察：程序能正常处理吗？显示是否正常？</code></pre></div>
+    <p><strong>实验结论：</strong>好的程序应该在异常输入和异常环境下保持优雅，而不是直接崩溃。你可以根据实验结果，给程序增加更多的防护措施。</p>
+    <p><strong>实验 3：分层替换实验</strong></p>
+    <div class="lesson-code"><pre><code># 当前 TaskStorage 使用 JSON 文件存储。
+# 试着创建一个新的 MemoryStorage 类：
+
+class MemoryStorage:
+    def __init__(self):
+        self._data = []
+    
+    def load(self):
+        return self._data
+    
+    def save(self, tasks):
+        self._data = tasks
+
+# 然后修改 main() 函数：
+# storage = TaskStorage()   # 原来
+storage = MemoryStorage()   # 改成内存存储
+
+# 运行程序，观察：
+# 1. 程序还能正常工作吗？
+# 2. 退出程序后，任务数据还在吗？
+# 3. 这个实验证明了分层架构的什么优势？</code></pre></div>
+    <p><strong>实验结论：</strong>由于业务逻辑层（TaskManager）只依赖 Storage 的接口（load/save），而不关心具体实现，所以你可以轻松替换存储方式而不影响其他代码。这就是<strong>依赖注入</strong>和<strong>接口隔离</strong>的力量。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">练习</span>进阶挑战</h2>
+  <div class="lesson-explain">
+    <p><strong>练习 1（验证）：</strong>给 Todo CLI 增加优先级排序功能。任务增加 <code>priority</code> 字段（高/中/低），<code>list</code> 命令默认按优先级排序显示，高优先级用红色标注。</p>
+    <p><strong>练习 2（验证）：</strong>增加任务截止日期功能。<code>add</code> 命令支持 <code>--due</code> 参数指定截止日期，<code>list</code> 命令可以筛选「今天到期」的任务。</p>
+    <p><strong>练习 3（验证）：</strong>给 Todo CLI 增加 AI 助手功能。写一个 <code>ai-suggest</code> 命令，调用 AI API 分析当前未完成任务，给出时间管理和优先级建议。</p>
+    <p><strong>练习 4（设计）：</strong>把 JSON 存储替换为 SQLite 存储。创建 <code>SQLiteStorage</code> 类，实现同样的 <code>load()</code> 和 <code>save()</code> 接口（但内部使用 sqlite3 模块）。思考：替换后，TaskManager 需要修改吗？为什么？</p>
+    <p><strong>练习 5（设计）：</strong>给 Todo CLI 增加数据导入/导出功能。<code>export</code> 命令把任务导出为 CSV 文件；<code>import</code> 命令从 CSV 文件导入任务。要求：处理 CSV 格式错误、重复 ID 冲突（导入时自动重新分配 ID）。</p>
   </div>
   <div class="lesson-code">
-    <div class="demo-label">挑战 1 思路提示</div>
+    <div class="demo-label">练习 1 思路提示</div>
     <pre><code># 在 Task 类中增加 priority 字段
 @dataclass
 class Task:
@@ -451,6 +569,84 @@ RED = "\033[91m"
 RESET = "\033[0m"
 if task.priority == "高":
     print(f"{RED}[高]{RESET} {task.title}")</code></pre>
+  </div>
+  <div class="exercise-box">
+    <div class="demo-label">练习 4 思路提示</div>
+    <pre><code>import sqlite3
+from dataclasses import asdict
+
+class SQLiteStorage:
+    def __init__(self, db_path="tasks.db"):
+        self.db_path = db_path
+        self._init_table()
+    
+    def _init_table(self):
+        with sqlite3.connect(self.db_path) as conn:
+            conn.execute("""
+                CREATE TABLE IF NOT EXISTS tasks (
+                    id INTEGER PRIMARY KEY,
+                    title TEXT,
+                    priority TEXT,
+                    completed INTEGER,
+                    created_at TEXT
+                )
+            """)
+    
+    def load(self):
+        with sqlite3.connect(self.db_path) as conn:
+            rows = conn.execute("SELECT * FROM tasks").fetchall()
+            return [Task(*row) for row in rows]  # 注意调整字段顺序
+    
+    def save(self, tasks):
+        with sqlite3.connect(self.db_path) as conn:
+            conn.execute("DELETE FROM tasks")
+            for t in tasks:
+                conn.execute(
+                    "INSERT INTO tasks VALUES (?, ?, ?, ?, ?)",
+                    (t.id, t.title, t.priority, int(t.completed), t.created_at)
+                )
+
+# TaskManager 完全不需要修改！这就是分层的好处。</code></pre>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">测验</span>快速检验一下</h2>
+  <div class="demo-card">
+    <p><strong>1. 单选题：</strong>Todo CLI 中，TaskManager 类属于哪一层？</p>
+    <p>A. 表现层（用户界面）</p>
+    <p>B. 业务逻辑层</p>
+    <p>C. 数据访问层</p>
+    <p>D. 网络层</p>
+    <details><summary>点击查看答案</summary><p><strong>正确答案：B</strong>。TaskManager 处理任务的增删改查规则（如 ID 自增、标题非空校验、排序逻辑），属于业务逻辑层。</p></details>
+  </div>
+  <div class="demo-card">
+    <p><strong>2. 判断题：</strong>如果把 JSON 存储换成 SQLite 存储，TaskManager 类一定需要大量修改。</p>
+    <p>A. 正确，不同的存储方式接口完全不同</p>
+    <p>B. 错误，只要新存储类实现了相同的 load/save 接口，TaskManager 无需修改</p>
+    <details><summary>点击查看答案</summary><p><strong>正确答案：B</strong>。这是分层架构和依赖注入的核心优势——业务逻辑层只依赖抽象的接口，而不依赖具体的实现。</p></details>
+  </div>
+  <div class="demo-card">
+    <p><strong>3. 单选题：</strong>为什么选择 argparse 而不是 input() 来实现 CLI？</p>
+    <p>A. argparse 的代码更短</p>
+    <p>B. argparse 支持脚本化调用和自动帮助信息生成，更专业</p>
+    <p>C. input() 在 Python 3 中已经被移除了</p>
+    <p>D. 没有特别的原因，随便选的</p>
+    <details><summary>点击查看答案</summary><p><strong>正确答案：B</strong>。argparse 支持命令行参数、子命令、自动帮助信息，适合脚本化和自动化场景，而 input() 只适合简单的交互式程序。</p></details>
+  </div>
+  <div class="demo-card">
+    <p><strong>4. 单选题：</strong>软件工程中的 YAGNI 原则指的是？</p>
+    <p>A. 你永远不需要它——不要为不存在的需求过度设计</p>
+    <p>B. 你总是需要它——要尽可能预见未来的需求</p>
+    <p>C. 你最好现在实现——赶早不赶晚</p>
+    <p>D. 你最好问用户——所有功能都要用户确认</p>
+    <details><summary>点击查看答案</summary><p><strong>正确答案：A</strong>。YAGNI（You Aren't Gonna Need It）是极限编程的原则之一，提醒开发者不要为了"将来可能用得上"而增加不必要的复杂度。</p></details>
+  </div>
+  <div class="demo-card">
+    <p><strong>5. 判断题：</strong>dataclass 比字典更适合表示结构化数据，因为它提供了属性访问、类型提示和自动生成的方法。</p>
+    <p>A. 正确</p>
+    <p>B. 错误，字典在 Python 中总是更好的选择</p>
+    <details><summary>点击查看答案</summary><p><strong>正确答案：A</strong>。dataclass 提供了类型安全、IDE 自动补全、自动生成 __init__ 和 __repr__ 等方法，比裸字典更适合表示有固定结构的数据。</p></details>
   </div>
 </section>
 

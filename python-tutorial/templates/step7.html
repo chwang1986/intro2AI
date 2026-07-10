@@ -15,6 +15,52 @@
 </section>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">起源</span>从仿真语言到编程范式</h2>
+  <div class="lesson-explain">
+    <p><strong>面向对象编程（OOP）</strong>的雏形诞生于 1962 年的挪威。计算机科学家 <strong>Ole-Johan Dahl</strong> 和 <strong>Kristen Nygaard</strong> 在开发仿真语言 <strong>Simula</strong> 时，为了让程序更好地模拟现实世界（如港口船只调度），首次提出了"类"（Class）和"对象"（Object）的概念。他们把船的属性（吨位、速度）和行为（进港、出港）打包在一起，这就是类的原型。</p>
+    <p>1970 年代，Xerox PARC 研究中心的 <strong>Alan Kay</strong> 在设计 <strong>Smalltalk</strong> 语言时，将面向对象理念发扬光大，并创造了"面向对象编程"这个术语。Smalltalk 还催生了图形用户界面（GUI）的雏形——你看到的窗口、图标、鼠标，都和 OOP 思想同源。</p>
+    <p>1980 年代，<strong>Bjarne Stroustrup</strong> 在 C 语言基础上增加了类机制，创造了 <strong>C++</strong>，让系统级编程也能享受 OOP 的好处。1995 年，Sun 公司发布 <strong>Java</strong>，喊出"一次编写，到处运行"的口号，把 OOP 推向了企业级开发的主流。而 <strong>Python</strong>（1991 年）则走了一条更灵活的路——它支持 OOP，但不强制你使用，你可以根据场景自由选择过程式、函数式或面向对象风格。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">思考</span>当代码膨胀到失控，我们该怎么办？</h2>
+  <div class="lesson-explain">
+    <p>1960 年代的软件危机让很多程序员夜不能寐。当时一个典型场景是：你写了一个程序管理学生信息，数据存在全局变量里，一堆函数操作这些变量。起初只有几百行，还能看懂。但随着功能增加——要加教师信息、课程信息、成绩管理——代码膨胀到几万行，变量名开始冲突，修改一个函数可能莫名其妙地破坏了另一个功能。</p>
+    <p>这个过程式编程的困境可以总结为三个痛点：</p>
+    <p><strong>1. 数据和函数分离：</strong>学生的姓名、年龄散落在各处，任何函数都能修改它们。你根本不知道哪个函数在什么时候改了什么数据。</p>
+    <p><strong>2. 全局变量灾难：</strong>大型程序里，变量名越来越长（<code>student_name_temp_final</code>），冲突越来越频繁。</p>
+    <p><strong>3. 复用困难：</strong>你想把"学生管理"代码搬到另一个项目里，发现它和"课程管理"深度耦合，根本无法拆分，只能复制粘贴，然后维护两份代码。</p>
+    <p>面向对象的出现，正是为了把混乱的代码世界<strong>模块化、封装化</strong>。每个类像一个独立的小王国，管理自己的数据，提供对外的接口。你想用？创建一个实例就行。你想复用？继承或组合就行。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">论证</span>为什么 OOP 能解决代码组织问题？</h2>
+  <div class="lesson-explain">
+    <p>有人可能会说："我用函数也能写出好代码啊，为什么非要学 OOP？"没错，对于小程序，过程式完全够用。但当项目超过一定规模，OOP 的组织优势就会显现。让我们从几个角度论证：</p>
+    <p><strong>1. 封装 vs 裸数据</strong></p>
+    <p>过程式编程中，数据是裸露的，任何函数都能修改。OOP 通过封装把数据保护起来，只允许通过规定的方法访问。就像银行的金库——你不直接进去数钱，而是通过柜台办理业务。这样可以在方法里加入校验逻辑（比如余额不能为负数），保证数据始终有效。</p>
+    <p><strong>2. 继承 vs 复制粘贴</strong></p>
+    <p>假设 Dog 和 Cat 都有 name、age 和 eat() 方法。过程式编程里，你要写两套几乎一样的代码。OOP 的继承让你把共性放到 Animal 父类里，子类只写差异部分。不仅减少了重复代码，而且当共性需要修改时（比如给 eat() 增加"进食日志"），只需改父类一处。</p>
+    <p><strong>3. 多态 vs 条件分支</strong></p>
+    <p>过程式编程处理"不同类型不同行为"时，通常要写一长串 if/else：</p>
+    <div class="lesson-code"><pre><code># 过程式风格（痛苦）
+def make_sound(animal_type, name):
+    if animal_type == "dog":
+        print(f"{name} 汪汪")
+    elif animal_type == "cat":
+        print(f"{name} 喵喵")
+    elif animal_type == "duck":
+        print(f"{name} 嘎嘎")
+    # 每增加一种动物，就要修改这个函数！</code></pre></div>
+    <p>OOP 的多态让每种动物自己决定怎么叫，调用者无需关心具体类型。增加新动物时，旧代码完全不需要修改——这就是著名的<strong>开闭原则</strong>（对扩展开放，对修改关闭）。</p>
+    <p><strong>4. 但 OOP 不是银弹</strong></p>
+    <p>Python 不像 Java 那样强制所有代码都包在类里。如果你只是写个简单的脚本，几行函数就够了。过度使用 OOP（比如给每个小功能都创建一个类）反而会让代码臃肿。<strong>好的设计是选择合适的工具，而不是把工具当成信仰。</strong></p>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">原理</span>类、对象与继承</h2>
   <div class="lesson-explain">
     <p><strong>类（Class）</strong>是对象的蓝图，定义了这类事物有什么属性、能做什么。<strong>对象（Object）</strong>是类的实例，是内存中真实存在的数据。<strong>继承（Inheritance）</strong>则让子类复用父类的代码，同时扩展自己的特性，避免重复造轮子。</p>
@@ -213,11 +259,75 @@ python3 02_inheritance.py</code></pre>
 </section>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">实验</span>亲手揭开 self 和继承的面纱</h2>
+  <div class="lesson-explain">
+    <p>打开 Python 交互式环境，跟着下面的实验一步步操作，观察输出结果，理解背后的原理。</p>
+    <p><strong>实验 1：self 到底是什么？</strong></p>
+    <div class="lesson-code"><pre><code>class Demo:
+    def show_self(self):
+        print(f"self 的值是：{self}")
+        print(f"self 的 id 是：{id(self)}")
+
+d1 = Demo()
+d2 = Demo()
+
+print(f"d1 的 id 是：{id(d1)}")
+print(f"d2 的 id 是：{id(d2)}")
+
+d1.show_self()  # 观察：self 就是 d1！
+d2.show_self()  # 观察：self 就是 d2！
+
+# 甚至可以直接这样调用：
+Demo.show_self(d1)  # 等价于 d1.show_self()</code></pre></div>
+    <p><strong>实验结论：</strong>self 就是实例对象本身。当你调用 <code>d1.show_self()</code> 时，Python 自动把 d1 作为第一个参数传给方法。</p>
+    <p><strong>实验 2：继承时方法怎么找？</strong></p>
+    <div class="lesson-code"><pre><code>class Animal:
+    def speak(self):
+        return "动物发出声音"
+
+class Dog(Animal):
+    def speak(self):
+        return "汪汪"
+
+class Cat(Animal):
+    pass  # 不重写 speak
+
+d = Dog()
+c = Cat()
+
+print(d.speak())  # 汪汪 —— 调用 Dog 自己的方法
+print(c.speak())  # 动物发出声音 —— 去父类找！
+
+# 查看方法解析顺序（MRO）
+print(Dog.__mro__)  # 输出查找顺序</code></pre></div>
+    <p><strong>实验结论：</strong>当调用 <code>c.speak()</code> 时，Python 先在 Cat 类里找，找不到就去父类 Animal 找。这个查找顺序可以通过 <code>__mro__</code> 查看。</p>
+    <p><strong>实验 3：super() 是怎么工作的？</strong></p>
+    <div class="lesson-code"><pre><code>class Parent:
+    def __init__(self):
+        print("Parent.__init__ 被调用")
+        self.parent_attr = "父类属性"
+
+class Child(Parent):
+    def __init__(self):
+        print("Child.__init__ 被调用")
+        super().__init__()  # 显式调用父类构造方法
+        self.child_attr = "子类属性"
+
+c = Child()
+print(c.parent_attr)  # 能访问到吗？
+print(c.child_attr)   # 能访问到吗？</code></pre></div>
+    <p><strong>实验结论：</strong>如果不写 <code>super().__init__()</code>，子类实例就不会拥有父类在 <code>__init__</code> 中定义的属性。super() 像一个"父类代理"，帮你调用父类的方法。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">练习</span>动手试一试</h2>
   <div class="lesson-explain">
-    <p><strong>练习 1：</strong>定义一个 <code>BankAccount</code> 类，属性有 <code>owner</code>（所有者）和 <code>balance</code>（余额）。方法有 <code>deposit(amount)</code> 存款、<code>withdraw(amount)</code> 取款（余额不足时提示）、<code>get_balance()</code> 查询余额。</p>
-    <p><strong>练习 2：</strong>继承 <code>BankAccount</code> 创建 <code>CreditAccount</code> 类，增加 <code>credit_limit</code> 信用额度属性。重写 <code>withdraw</code> 方法，允许透支到信用额度上限。</p>
-    <p><strong>练习 3：</strong>创建一个 <code>Book</code> 类，属性有 <code>title</code>、<code>author</code>、<code>price</code>。重写 <code>__str__</code> 方法，让 <code>print(book)</code> 输出格式为 <code>《书名》作者：xxx 价格：xxx元</code>。</p>
+    <p><strong>练习 1（验证）：</strong>定义一个 <code>BankAccount</code> 类，属性有 <code>owner</code>（所有者）和 <code>balance</code>（余额）。方法有 <code>deposit(amount)</code> 存款、<code>withdraw(amount)</code> 取款（余额不足时提示）、<code>get_balance()</code> 查询余额。</p>
+    <p><strong>练习 2（验证）：</strong>继承 <code>BankAccount</code> 创建 <code>CreditAccount</code> 类，增加 <code>credit_limit</code> 信用额度属性。重写 <code>withdraw</code> 方法，允许透支到信用额度上限。</p>
+    <p><strong>练习 3（验证）：</strong>创建一个 <code>Book</code> 类，属性有 <code>title</code>、<code>author</code>、<code>price</code>。重写 <code>__str__</code> 方法，让 <code>print(book)</code> 输出格式为 <code>《书名》作者：xxx 价格：xxx元</code>。</p>
+    <p><strong>练习 4（设计）：</strong>设计一个 <code>Shape</code> 图形基类，包含 <code>area()</code> 和 <code>perimeter()</code> 方法（可以返回 0 或抛 NotImplementedError）。然后创建 <code>Rectangle</code> 和 <code>Circle</code> 子类，分别正确实现这两个方法。最后写一个函数 <code>print_shape_info(shape)</code>，接收任意 Shape 子类实例，打印面积和周长——体会多态的好处。</p>
+    <p><strong>练习 5（设计）：</strong>创建一个 <code>Student</code> 类和一个 <code>Course</code> 类。使用<strong>组合</strong>（而非继承）建立关系：Course 类包含一个学生列表，提供 <code>add_student(student)</code>、<code>remove_student(student_id)</code> 和 <code>get_student_count()</code> 方法。思考：为什么这里用组合比继承更合适？</p>
   </div>
   <div class="lesson-code">
     <div class="demo-label">练习 1 参考答案</div>
@@ -244,6 +354,85 @@ account = BankAccount("小明", 1000)
 account.deposit(500)
 account.withdraw(300)
 print(account.get_balance())</code></pre>
+  </div>
+  <div class="exercise-box">
+    <div class="demo-label">练习 4 思路提示</div>
+    <pre><code>import math
+
+class Shape:
+    def area(self):
+        raise NotImplementedError("子类必须实现 area 方法")
+    
+    def perimeter(self):
+        raise NotImplementedError("子类必须实现 perimeter 方法")
+
+class Rectangle(Shape):
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+    
+    def area(self):
+        return self.width * self.height
+    
+    def perimeter(self):
+        return 2 * (self.width + self.height)
+
+class Circle(Shape):
+    def __init__(self, radius):
+        self.radius = radius
+    
+    def area(self):
+        return math.pi * self.radius ** 2
+    
+    def perimeter(self):
+        return 2 * math.pi * self.radius
+
+def print_shape_info(shape):
+    print(f"面积: {shape.area():.2f}, 周长: {shape.perimeter():.2f}")
+
+# 多态：同一个函数，处理不同类型的对象
+print_shape_info(Rectangle(3, 4))
+print_shape_info(Circle(5))</code></pre>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">测验</span>快速检验一下</h2>
+  <div class="demo-card">
+    <p><strong>1. 单选题：</strong>Python 中类的方法第一个参数为什么通常叫 self？</p>
+    <p>A. 这是 Python 关键字，必须用 self</p>
+    <p>B. 这只是约定，可以用任意名字，但 self 是社区惯例</p>
+    <p>C. self 是 Python 内部保留的特殊对象</p>
+    <p>D. 不写 self 程序也能正常运行</p>
+    <details><summary>点击查看答案</summary><p><strong>正确答案：B</strong>。self 不是关键字，只是一个命名约定。你可以用 this、me 或其他名字，但会让其他程序员困惑。</p></details>
+  </div>
+  <div class="demo-card">
+    <p><strong>2. 判断题：</strong>子类不定义 __init__ 方法时，会自动调用父类的 __init__。</p>
+    <p>A. 正确</p>
+    <p>B. 错误，子类如果不写 __init__，实例就没有任何属性</p>
+    <details><summary>点击查看答案</summary><p><strong>正确答案：A</strong>。如果子类没有定义 __init__，Python 会沿着继承链找到父类的 __init__ 并调用它。</p></details>
+  </div>
+  <div class="demo-card">
+    <p><strong>3. 单选题：</strong>以下哪种关系适合用继承（is-a）而不是组合（has-a）？</p>
+    <p>A. 汽车 和 引擎</p>
+    <p>B. 学生 和 课程</p>
+    <p>C. 猫 和 动物</p>
+    <p>D. 电脑 和 显示器</p>
+    <details><summary>点击查看答案</summary><p><strong>正确答案：C</strong>。"猫是一种动物"是继承关系。其他选项都是"有一个"的关系，应该用组合。</p></details>
+  </div>
+  <div class="demo-card">
+    <p><strong>4. 单选题：</strong>super().__init__() 的作用是？</p>
+    <p>A. 创建一个新的父类实例</p>
+    <p>B. 调用父类的 __init__ 方法，让子类也能拥有父类定义的属性</p>
+    <p>C. 返回父类的引用</p>
+    <p>D. 终止子类的初始化</p>
+    <details><summary>点击查看答案</summary><p><strong>正确答案：B</strong>。super() 返回一个代理对象，让你可以调用父类的方法。在 __init__ 中调用它是为了复用父类的初始化逻辑。</p></details>
+  </div>
+  <div class="demo-card">
+    <p><strong>5. 判断题：</strong>Python 强制所有代码必须使用面向对象风格。</p>
+    <p>A. 正确，Python 是纯面向对象语言</p>
+    <p>B. 错误，Python 支持多种编程范式，你可以只用函数写完整程序</p>
+    <details><summary>点击查看答案</summary><p><strong>正确答案：B</strong>。Python 是多范式语言，支持过程式、函数式和面向对象编程。不像 Java，Python 不强制你使用类。</p></details>
   </div>
 </section>
 

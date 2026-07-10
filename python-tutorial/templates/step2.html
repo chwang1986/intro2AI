@@ -9,6 +9,24 @@
 </div>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">起源</span>从「命名盒子」到变量概念</h2>
+  <div class="lesson-explain">
+    <p>变量（Variable）的概念可以追溯到 19 世纪数学家对代数的研究。在方程 <code>x + 3 = 5</code> 中，<code>x</code> 是一个「占位符」，代表一个我们暂时不知道但可以通过计算求出的值。这种思想被计算机科学家们直接借用到了编程中。</p>
+    <p>1945 年，<strong>冯·诺依曼</strong>提出了现代计算机体系结构：程序和数据都存放在同一个存储器中。这意味着程序运行时需要在内存中「标记」某些位置，方便后续读取和修改。这些标记就是<strong>变量名</strong>。</p>
+    <p>早期的编程语言（如汇编）直接用内存地址操作数据，比如「把 100 号地址的值加 1」。1957 年诞生的 Fortran 是第一个引入「变量名」的高级语言，程序员终于可以用 <code>age</code> 而不是 <code>0x1A2B</code> 来指代数据了。这看似小小的改进，实际上让编程从「机器思维」迈入了「人类思维」。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">思考</span>为什么数据需要分类（类型）</h2>
+  <div class="lesson-explain">
+    <p>假设你拿到一盒积木，里面有不同形状的木块。如果不加区分，你可能会把圆形块硬塞进方形孔里——结果当然是卡住。计算机处理数据时也面临同样的问题。</p>
+    <p>在计算机底层，所有数据都是一串 0 和 1。同样 32 个二进制位，可以被解读为整数（比如 65）、浮点数（比如 1.8e-44）、或者一个字符（字母 'A' 的 ASCII 码就是 65）。如果不告诉计算机「这串二进制应该按什么规则解读」，它就会做出错误的理解。</p>
+    <p>类型系统（Type System）就是解决这个问题的方案。它给每种数据贴上「标签」：这是整数、那是文字、这是真假值。不同的标签决定了数据能参与哪些运算——你可以对整数做加减，对字符串做拼接，但对字符串做除法就毫无意义。类型系统的本质是一套<strong>规则和保护机制</strong>，确保数据被正确使用。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">场景</span>程序需要记住数据</h2>
   <div class="lesson-explain">
     <p>想象你在整理房间。你有一些东西要存放——书、衣服、工具。你不会把它们随便扔在地上，而是会放进贴好标签的盒子里：「书籍」「冬衣」「螺丝刀」。当你需要某样东西时，只要看标签就能找到对应的盒子。</p>
@@ -74,6 +92,62 @@
 </section>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">论证</span>为什么 Python 选择动态类型</h2>
+  <div class="lesson-explain">
+    <p>编程语言在类型系统上有两个主要阵营：<strong>静态类型</strong>（如 C、Java、Go）和<strong>动态类型</strong>（如 Python、JavaScript）。Python 选择了动态类型，这不是偶然，而是有其深刻的设计考量。</p>
+    <p><strong>静态类型的逻辑是「防患于未然」：</strong>你在写代码时就要声明 <code>int age = 25</code>，编译器会在运行前检查所有类型是否匹配。优点是能在编译阶段发现很多错误，运行速度通常也更快。缺点是代码更冗长，灵活性差——如果你想让同一个变量先存整数再存字符串，就必须重新声明或转换类型。</p>
+    <p><strong>动态类型的逻辑是「灵活至上」：</strong>变量本身没有类型，类型属于数据对象。你可以先写 <code>x = 10</code>，再写 <code>x = "hello"</code>，解释器在运行时自动判断。这让代码更简洁，特别适合快速原型开发、数据分析和脚本编写——这些场景里，数据的形态往往在运行时才确定。</p>
+    <p>对于初学者来说，动态类型降低了入门门槛。你不需要一开始就理解「类型声明」「编译期检查」这些概念，可以专注于「程序在做什么」。当然，灵活也是一把双刃剑：当项目变大时，类型错误可能在运行时才发现。这也是为什么 Python 3.5 引入了「类型提示」（Type Hints），让有经验的开发者可以在保持动态类型灵活性的同时，增加代码的可维护性。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">实验</span>亲手验证变量与类型的秘密</h2>
+  <div class="lesson-explain">
+    <p><strong>实验 1：用 id() 查看变量的内存地址</strong></p>
+    <p>Python 中每个对象都有唯一的内存地址。用 <code>id()</code> 函数可以看到变量指向的地址，验证「变量是标签而不是盒子」：</p>
+  </div>
+  <div class="lesson-code">
+    <pre><code>a = 10
+b = 10
+print(id(a))   # 比如: 140735893619024
+print(id(b))   # 和上面一模一样！
+print(a is b)  # True —— 它们指向同一个对象
+
+a = 20
+print(id(a))   # 地址变了！说明 a 现在指向了另一个对象
+print(b)       # b 还是 10，不受影响</code></pre>
+  </div>
+  <div class="lesson-explain">
+    <p>对于小整数（-5 到 256），Python 会缓存复用，所以 a 和 b 指向同一个对象。这个实验证明了变量只是「指向对象的标签」。</p>
+    <p><strong>实验 2：观察浮点数的精度陷阱</strong></p>
+    <p>在交互式解释器中输入下面这行代码，看看结果是否出乎你意料：</p>
+  </div>
+  <div class="lesson-code">
+    <pre><code>>>> 0.1 + 0.2
+0.30000000000000004
+
+>>> 0.1 + 0.2 == 0.3
+False</code></pre>
+  </div>
+  <div class="lesson-explain">
+    <p>这不是 Python 的 bug，而是计算机用二进制存储浮点数的固有局限。就像十进制无法精确表示 1/3（0.3333...），二进制也无法精确表示 0.1。这就是为什么金融计算通常用整数（比如把金额存为「分」而不是「元」）或专门的 <code>decimal</code> 模块。</p>
+    <p><strong>实验 3：类型转换的边界测试</strong></p>
+    <p>试着运行下面这些转换，观察哪些成功、哪些报错，理解报错信息在告诉你什么：</p>
+  </div>
+  <div class="lesson-code">
+    <pre><code>int("100")       # 成功 → 100
+int("100.5")     # 报错！不能直接把带小数点的字符串转整数
+int(float("100.5"))  # 先转 float 再转 int → 100
+float("abc")     # 报错！无法解析
+str(123)         # 成功 → "123"
+bool(0)          # 成功 → False
+bool("")         # 成功 → False
+bool("False")    # 成功 → True！非空字符串就是 True</code></pre>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">要点</span>基本类型与类型检查</h2>
   <div class="lesson-explain">
     <p>Python 有四种最常用的基础类型：<strong>int</strong>（整数）、<strong>float</strong>（浮点数）、<strong>str</strong>（字符串）、<strong>bool</strong>（布尔值）。你可以用 <code>type()</code> 函数随时查看一个变量的类型。</p>
@@ -130,9 +204,21 @@ python3 03_string_ops.py</code></pre>
 <section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">练习</span>动手试一试</h2>
   <div class="lesson-explain">
-    <p><strong>练习 1：</strong>创建四个变量分别存储你的姓名（字符串）、年龄（整数）、身高（浮点数）、是否学生（布尔值），用 <code>type()</code> 检查每个变量的类型并打印。</p>
-    <p><strong>练习 2：</strong>把字符串 <code>"100"</code> 转成整数，加 1 后再转回字符串，最后拼接成 <code>"结果是：101"</code>。</p>
-    <p><strong>练习 3：</strong>用 f-string 格式化输出你的个人信息，格式如下：<code>"我叫小明，今年25岁，身高1.75米"</code>。</p>
+    <p><strong>练习 1（验证题）：</strong>创建四个变量分别存储你的姓名（字符串）、年龄（整数）、身高（浮点数）、是否学生（布尔值），用 <code>type()</code> 检查每个变量的类型并打印。</p>
+    <p><strong>练习 2（验证题）：</strong>把字符串 <code>"100"</code> 转成整数，加 1 后再转回字符串，最后拼接成 <code>"结果是：101"</code>。</p>
+    <p><strong>练习 3（验证题）：</strong>用 f-string 格式化输出你的个人信息，格式如下：<code>"我叫小明，今年25岁，身高1.75米"</code>。</p>
+    <p><strong>练习 4（验证题）：</strong>运行下面这段代码，观察输出并解释为什么结果和你预期的不一致：</p>
+  </div>
+  <div class="lesson-code">
+    <pre><code>a = [1, 2, 3]
+b = a
+b.append(4)
+print(a)   # ?
+print(id(a) == id(b))  # ?</code></pre>
+  </div>
+  <div class="lesson-explain">
+    <p><strong>练习 5（设计题）：</strong>假设你要设计一个学生信息登记表程序。请思考：为什么在这个场景下，把「年龄」存为整数比存为字符串更合理？如果用户输入的是 <code>"18岁"</code> 而不是 <code>"18"</code>，你的程序应该如何处理？写出你的处理思路（不需要写完整代码）。</p>
+    <p><strong>练习 6（设计题）：</strong>有些语言（如 JavaScript）里 <code>"5" + 3</code> 会得到 <code>"53"</code>（字符串拼接），而 <code>"5" - 3</code> 会得到 <code>2</code>（数字减法）。Python 则会在两种情况下都报错。你认为哪种设计更合理？从「减少隐性 bug」和「编程直觉」两个角度分别分析优缺点。</p>
   </div>
   <div class="lesson-code">
     <div class="demo-label">练习 3 参考答案</div>
@@ -141,6 +227,58 @@ age = 25
 height = 1.75
 result = f"我叫{name}，今年{age}岁，身高{height}米"
 print(result)</code></pre>
+  </div>
+  <div class="lesson-code">
+    <div class="demo-label">练习 4 参考答案</div>
+    <pre><code># a 和 b 指向同一个列表对象
+# 所以通过 b 修改列表，a 也会「看到」变化
+# id(a) == id(b) 的结果是 True</code></pre>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">测验</span>快速检验一下</h2>
+  <div class="demo-card">
+    <p><strong>1. 在 Python 中，变量本质上是什么？</strong></p>
+    <div class="lesson-explain">
+      <p>A. 存储数据的盒子</p>
+      <p>B. 指向内存对象的标签（引用）</p>
+      <p>C. 一段固定的内存空间</p>
+      <p>D. 编译器分配的寄存器</p>
+    </div>
+  </div>
+  <div class="demo-card">
+    <p><strong>2. 以下代码的输出是什么？</strong></p>
+    <div class="lesson-explain">
+      <p><code>print(type(3.14))</code></p>
+      <p>A. &lt;class 'int'&gt;</p>
+      <p>B. &lt;class 'float'&gt;</p>
+      <p>C. &lt;class 'str'&gt;</p>
+      <p>D. &lt;class 'double'&gt;</p>
+    </div>
+  </div>
+  <div class="demo-card">
+    <p><strong>3. 判断：Python 中变量一旦赋值后，其类型就固定不变了。</strong></p>
+    <div class="lesson-explain">
+      <p>A. 正确</p>
+      <p>B. 错误</p>
+    </div>
+  </div>
+  <div class="demo-card">
+    <p><strong>4. 以下哪个表达式在 Python 中会报错？</strong></p>
+    <div class="lesson-explain">
+      <p>A. <code>int("100")</code></p>
+      <p>B. <code>str(100)</code></p>
+      <p>C. <code>int("100.5")</code></p>
+      <p>D. <code>float("3.14")</code></p>
+    </div>
+  </div>
+  <div class="demo-card">
+    <p><strong>5. 判断：在 Python 中，<code>bool("False")</code> 的结果是 <code>False</code>。</strong></p>
+    <div class="lesson-explain">
+      <p>A. 正确</p>
+      <p>B. 错误</p>
+    </div>
   </div>
 </section>
 

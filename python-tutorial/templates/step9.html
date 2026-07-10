@@ -16,6 +16,40 @@
 </section>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">起源</span>从填词游戏到 Prompt 工程</h2>
+  <div class="lesson-explain">
+    <p>要理解 Prompt 工程，我们先得理解 AI 模型是怎么"思考"的。现代大语言模型的核心技术是 <strong>Transformer</strong>，由 Google 研究团队在 2017 年的论文《Attention Is All You Need》中提出。它本质上是一个超级强大的<strong>"填词游戏玩家"</strong>——你给它一段文字，它预测下一个最可能出现的词，然后把这个词接上去，再预测下一个，如此循环。</p>
+    <p><strong>OpenAI 的 GPT 系列</strong>就是基于 Transformer 的杰出代表：2018 年的 GPT-1 有 1.17 亿参数，2019 年的 GPT-2 有 15 亿参数，2020 年的 GPT-3 突然飙升到 1750 亿参数。参数越多，模型从训练数据中学到的模式就越丰富，"填词"能力就越强。</p>
+    <p>但模型本身只是一个"自动补全机器"，它并不真正"理解"你的意图。<strong>Prompt 工程</strong>这个概念大约在 2020~2021 年随着 GPT-3 的商用而兴起。人们发现：同样一个模型，用不同的方式提问，得到的答案质量天差地别。2022 年，Google Research 提出了 <strong>Chain-of-Thought（思维链）</strong>提示技术，让模型"一步一步想"，大幅提升了推理能力。Prompt 工程从此从"玄学"变成了一门"科学"。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">思考</span>为什么 AI "听不懂人话"？</h2>
+  <div class="lesson-explain">
+    <p>很多人第一次用 AI 时都会有这种挫败感："我已经说得很清楚了啊，为什么它还是给不出我要的答案？"要回答这个问题，我们需要换个角度——不是从"人怎么理解语言"的角度，而是从"模型怎么生成文本"的角度。</p>
+    <p>想象你正在玩一个填词游戏。主持人说："请写一个____。"你的答案会是什么？可能是"故事"、"程序"、"报告"——你根本不知道对方想要什么。但如果主持人说："你是一位资深 Python 工程师，请写一个____，功能是接收列表返回排序结果。"这时你填"函数"的概率就大大增加了。</p>
+    <p>AI 模型面临的困境就是这样：它接收到的每一个 Prompt 都是在激活训练数据中的某些"模式"。<strong>Prompt 太模糊 = 激活太多无关模式 = 输出混乱。</strong></p>
+    <p>早期的 NLP 研究者试图通过"微调模型"（Fine-tuning）来解决这个问题——用特定领域的数据重新训练模型。但微调成本高、技术门槛高。Prompt 工程则提供了一种更廉价的替代方案：<strong>不改变模型，只改变输入。</strong>就像你不需要重新训练一个翻译官，只需要把话说得更清楚。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">论证</span>为什么结构化 Prompt 比随意提问有效？</h2>
+  <div class="lesson-explain">
+    <p>有些同学可能会质疑："我随便写个问题，AI 也能回答啊，为什么要费心思设计 Prompt？"让我们从认知科学和概率模型的角度，论证结构化 Prompt 的价值。</p>
+    <p><strong>1. 角色设定的原理：激活特定知识区域</strong></p>
+    <p>大语言模型在训练时读了互联网上的海量文本，包括技术文档、小说、论坛帖子、论文等等。当你说"你是一位 Python 专家"时，你实际上是在提高模型激活"技术文档风格"和"Python 相关知识"的概率，同时抑制"网络段子"和"口语文体"的概率。这类似于给搜索引擎加了精准的关键词过滤。</p>
+    <p><strong>2. Few-shot vs Zero-shot：示例的力量</strong></p>
+    <p>认知心理学中有一个概念叫"格式塔原理"——人类擅长从例子中归纳模式。AI 模型也是如此。<strong>Zero-shot</strong>（零示例）是"直接问"，模型只能依赖训练时的泛化能力。<strong>Few-shot</strong>（给几个示例）则是"做给你看"，模型可以从示例中捕捉到输出格式、风格、深度等细粒度信息。研究表明，在某些分类任务上，Few-shot Prompt 的准确率可以比 Zero-shot 高出 20% 以上。</p>
+    <p><strong>3. 约束条件：缩小概率空间</strong></p>
+    <p>模型生成每一个词时，都在一个巨大的词表上做概率选择。Prompt 中的约束条件（如"用 JSON 格式""不超过 100 字"）相当于在概率空间中画了一个圈，让模型只在圈内采样。约束越明确，"跑偏"的概率越低。</p>
+    <p><strong>4. 反面论证：为什么过度复杂的 Prompt 也不好？</strong></p>
+    <p>Prompt 不是越长越好。模型的上下文窗口有限（虽然现在已经很大了），且过长的 Prompt 会稀释关键信息。研究发现，模型对 Prompt 开头和结尾的信息最敏感，中间部分容易被"遗忘"。所以好的 Prompt 应该像好文章：结构清晰、重点突出、没有废话。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">原理</span>好 Prompt = 角色 + 任务 + 约束 + 格式</h2>
   <div class="lesson-explain">
     <p>AI 模型的「大脑」是一个巨大的概率机器，它根据你提供的上下文来预测下一个最可能出现的词。Prompt 就是你给这台机器设定的<strong>上下文窗口</strong>——窗口里的信息越完整、结构越清晰，AI 的「猜测」就越准确。</p>
@@ -221,11 +255,70 @@ python3 02_few_shot.py</code></pre>
 </section>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">实验</span>亲手对比不同 Prompt 的效果</h2>
+  <div class="lesson-explain">
+    <p>下面三个实验可以用任何大模型工具完成（如 ChatGPT、Claude、文心一言等）。重点是<strong>观察同一个模型在不同 Prompt 下的表现差异</strong>。</p>
+    <p><strong>实验 1：角色设定的威力</strong></p>
+    <div class="lesson-code"><pre><code># 第一轮：不加角色
+"请解释什么是递归。"
+
+# 第二轮：加角色
+"你是一位有 20 年教龄的计算机科学教授，擅长用生活中的类比解释复杂概念。
+请向大一新生解释什么是递归，要求：
+1. 用一个生活中的类比
+2. 说明递归的两个必要条件（基准情况和递归步骤）
+3. 举一个 Python 代码例子"
+
+# 观察对比：
+# - 第一轮的回答是否更干巴巴、更像维基百科？
+# - 第二轮的回答是否有更生动的例子、更清晰的结构？</code></pre></div>
+    <p><strong>实验结论：</strong>角色设定不仅改变语言风格，还会改变内容深度和组织方式。</p>
+    <p><strong>实验 2：Few-shot 的魔力</strong></p>
+    <div class="lesson-code"><pre><code># 第一轮：Zero-shot（直接问）
+"请将以下文本按情感分类为正面或负面：
+这家餐厅的服务太糟糕了。"
+
+# 第二轮：Few-shot（给示例）
+"请将以下文本按情感分类为正面或负面。
+
+示例 1：
+文本：这部电影真的太精彩了！
+情感：正面
+
+示例 2：
+文本：完全浪费时间，剧情毫无逻辑。
+情感：负面
+
+现在请分类：
+文本：这家餐厅的服务太糟糕了。
+情感："
+
+# 观察：Few-shot 是否让输出格式更统一？是否减少了"废话"？</code></pre></div>
+    <p><strong>实验结论：</strong>示例就像"模板"，让模型知道你想要什么格式、什么风格、什么深度。</p>
+    <p><strong>实验 3：Chain-of-Thought（思维链）</strong></p>
+    <div class="lesson-code"><pre><code># 第一轮：直接问
+"15 * 24 等于多少？"
+
+# 第二轮：让模型一步步想
+"15 * 24 等于多少？请一步一步计算，展示中间过程。"
+
+# 尝试更难的题目：
+"一个篮子里有 5 个苹果和 3 个橙子。小明拿走了 2 个水果，其中至少一个是苹果。
+问：篮子里还剩下几个橙子？"
+
+# 对比"直接回答"和"请一步一步推理"两种 Prompt 的准确率。</code></pre></div>
+    <p><strong>实验结论：</strong>对于数学和逻辑推理题，要求模型"一步步想"能显著提升准确率。这被称为 Chain-of-Thought Prompting。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">练习</span>动手试一试</h2>
   <div class="lesson-explain">
-    <p><strong>练习 1：</strong>为「代码解释」任务设计一个结构化 Prompt。要求：设定 AI 为 Python 专家，任务是解释一段给定的代码，约束是用中文解释、不超过 100 字、重点说明代码逻辑而非语法。</p>
-    <p><strong>练习 2：</strong>为「Bug 修复」任务设计一个 Few-shot Prompt。给 2 个有 bug 的代码示例和对应的修复版本，然后让 AI 修复第 3 个有 bug 的代码。</p>
-    <p><strong>练习 3：</strong>对比两个 Prompt：A) "写个排序程序"；B) "你是一位 Python 算法工程师，请写一个快速排序函数，要求：输入一个整数列表，返回升序排列的列表，时间复杂度 O(n log n)，附带注释说明关键步骤。" 观察哪个 Prompt 生成的代码质量更高。</p>
+    <p><strong>练习 1（验证）：</strong>为「代码解释」任务设计一个结构化 Prompt。要求：设定 AI 为 Python 专家，任务是解释一段给定的代码，约束是用中文解释、不超过 100 字、重点说明代码逻辑而非语法。</p>
+    <p><strong>练习 2（验证）：</strong>为「Bug 修复」任务设计一个 Few-shot Prompt。给 2 个有 bug 的代码示例和对应的修复版本，然后让 AI 修复第 3 个有 bug 的代码。</p>
+    <p><strong>练习 3（验证）：</strong>对比两个 Prompt：A) "写个排序程序"；B) "你是一位 Python 算法工程师，请写一个快速排序函数，要求：输入一个整数列表，返回升序排列的列表，时间复杂度 O(n log n)，附带注释说明关键步骤。" 观察哪个 Prompt 生成的代码质量更高。</p>
+    <p><strong>练习 4（设计）：</strong>设计一个「代码评审 Prompt 模板」。要求包含：角色（资深代码审查员）、任务（审查代码的 5 个维度：可读性、性能、安全性、可维护性、边界情况）、输出格式（Markdown 表格，每行一个维度，列包括：评分 1-5、问题描述、修改建议）。把这个模板写成一个 Python 函数 <code>build_code_review_prompt(code)</code>。</p>
+    <p><strong>练习 5（设计）：</strong>设计一个「迭代优化 Prompt 链」。步骤如下：先用一个 Prompt 让 AI 生成一个 Python 函数；然后把生成的函数和一条具体反馈（如"请用类型注解"）作为第二轮 Prompt；最后把修改后的函数和另一条反馈（如"请添加异常处理"）作为第三轮 Prompt。用 Python 字符串拼接模拟这个三轮回话过程，体会"迭代"的力量。</p>
   </div>
   <div class="lesson-code">
     <div class="demo-label">练习 1 参考答案</div>
@@ -246,6 +339,67 @@ python3 02_few_shot.py</code></pre>
 
 prompt = build_code_explainer().format(code="sorted([3,1,2])")
 print(prompt)</code></pre>
+  </div>
+  <div class="exercise-box">
+    <div class="demo-label">练习 4 思路提示</div>
+    <pre><code>def build_code_review_prompt(code):
+    return f"""你是一位拥有 15 年经验的资深代码审查员。
+
+任务：请对以下 Python 代码进行全面审查，重点关注 5 个维度。
+
+审查维度：
+1. 可读性（命名、注释、结构）
+2. 性能（时间/空间复杂度、是否有优化空间）
+3. 安全性（输入验证、注入风险、敏感信息）
+4. 可维护性（耦合度、重复代码、扩展性）
+5. 边界情况（空输入、超大输入、异常值）
+
+输出格式：请用 Markdown 表格输出，每行一个维度，列包括：维度、评分（1-5）、问题描述、修改建议。
+
+代码：
+```python
+{code}
+```"""</code></pre>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">测验</span>快速检验一下</h2>
+  <div class="demo-card">
+    <p><strong>1. 单选题：</strong>Prompt 工程中"Few-shot"指的是什么？</p>
+    <p>A. 用很少的 token 调用 API</p>
+    <p>B. 在 Prompt 中提供几个示例，让模型模仿输出格式和风格</p>
+    <p>C. 只让模型回答一次，不允许迭代</p>
+    <p>D. 用很短的 Prompt 提问</p>
+    <details><summary>点击查看答案</summary><p><strong>正确答案：B</strong>。Few-shot 是在 Prompt 中嵌入少量输入-输出示例，引导模型理解任务格式和期望风格。</p></details>
+  </div>
+  <div class="demo-card">
+    <p><strong>2. 判断题：</strong>Prompt 越长，AI 的输出质量一定越高。</p>
+    <p>A. 正确，信息越多越好</p>
+    <p>B. 错误，过长的 Prompt 会稀释关键信息，且模型对中间部分容易"遗忘"</p>
+    <details><summary>点击查看答案</summary><p><strong>正确答案：B</strong>。Prompt 的质量取决于信息密度和结构清晰度，而非长度。冗长的 Prompt 可能让模型抓不住重点。</p></details>
+  </div>
+  <div class="demo-card">
+    <p><strong>3. 单选题：</strong>Chain-of-Thought（思维链）技术的核心思想是？</p>
+    <p>A. 让模型同时思考多个问题</p>
+    <p>B. 让模型逐步展示推理过程，而不是直接给最终答案</p>
+    <p>C. 把 Prompt 链式连接起来发送</p>
+    <p>D. 用思维导图的形式组织 Prompt</p>
+    <details><summary>点击查看答案</summary><p><strong>正确答案：B</strong>。Chain-of-Thought 通过在 Prompt 中要求"一步一步想"或在示例中展示推理过程，让模型生成中间推理步骤，从而提高复杂任务的准确率。</p></details>
+  </div>
+  <div class="demo-card">
+    <p><strong>4. 单选题：</strong>为什么给 AI 设定角色（如"你是一位 Python 专家"）通常能提升回答质量？</p>
+    <p>A. 模型内部真的有一个"Python 专家"模块被激活</p>
+    <p>B. 角色描述会改变模型生成下一个词时的概率分布，激活相关知识领域</p>
+    <p>C. API 会根据角色分配不同的服务器</p>
+    <p>D. 这只是一种心理安慰，没有实际效果</p>
+    <details><summary>点击查看答案</summary><p><strong>正确答案：B</strong>。角色设定通过上下文影响模型的条件概率分布，提高技术术语、专业表达和相关知识的激活概率。</p></details>
+  </div>
+  <div class="demo-card">
+    <p><strong>5. 判断题：</strong>AI 模型真正"理解"了 Prompt 的含义，就像人类一样。</p>
+    <p>A. 正确，大模型已经具备了真正的理解能力</p>
+    <p>B. 错误，模型本质上是基于统计模式预测下一个词，并不具备人类的理解和意识</p>
+    <details><summary>点击查看答案</summary><p><strong>正确答案：B</strong>。尽管大模型的输出看起来很有理解力，但从底层机制看，它只是一个复杂的概率模型，通过模式匹配生成文本，没有意识、意图或真正的理解。</p></details>
   </div>
 </section>
 

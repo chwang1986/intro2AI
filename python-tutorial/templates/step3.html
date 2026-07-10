@@ -9,6 +9,26 @@
 </div>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">起源</span>从「面条代码」到结构化程序</h2>
+  <div class="lesson-explain">
+    <p>在计算机发展的早期，程序的控制流全靠一条叫 <strong>GOTO</strong> 的指令实现。它可以让程序跳转到任意位置，就像在一本书里随意翻页。1968 年，计算机科学家 <strong>Edsger Dijkstra</strong>（艾兹格·迪科斯彻）发表了一封著名的信《Go To Statement Considered Harmful》（GOTO 语句有害论），指出滥用 GOTO 会让程序变成一团纠缠不清的「面条代码」（Spaghetti Code），没人能看懂，更没人敢修改。</p>
+    <p>Dijkstra 的呼声引发了长达数年的争论。1966 年，意大利数学家 <strong>Corrado Böhm</strong> 和 <strong>Giuseppe Jacopini</strong> 其实已经用数学证明了：<strong>任何程序都可以用三种基本结构组合而成——顺序、分支（选择）和循环。</strong>这个结论被称为「结构化程序定理」。既然三种结构就够了，为什么还要用危险的 GOTO 呢？</p>
+    <p>到了 1970 年代，Pascal、C 等新一代语言纷纷抛弃了 GOTO，拥抱结构化编程。Python 作为一门现代语言，从设计之初就完全遵循了这一思想：没有 GOTO，只有 <code>if</code>（分支）和 <code>for/while</code>（循环）。这让 Python 代码天然具有清晰的逻辑层次，读起来像一篇结构良好的文章。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">思考</span>为什么程序不能只有「从上到下」</h2>
+  <div class="lesson-explain">
+    <p>假设你正在写一个简单的「用户登录验证」程序。如果没有控制流，代码只能从上到下直线执行：询问用户名 → 询问密码 → 显示登录成功。问题是——如果密码错了怎么办？如果没有控制流，你没有任何办法说「如果密码错误，提示重新输入」。程序就像一个只会按固定路线行驶的火车，遇到障碍也不会转弯。</p>
+    <p>现实世界充满了选择和重复：如果你考了 60 分以上就及格，否则要补考；每天都要背单词，直到背完一整本；对表格的每一行数据做同样的计算……这些场景分别对应了三种基本结构：</p>
+    <p><strong>分支（if）：</strong>处理「二选一」或「多选一」的场景。就像路口的交通灯，红灯停、绿灯行，条件不同，路线不同。</p>
+    <p><strong>循环（for/while）：</strong>处理「重复做某事」的场景。for 更像「遍历已知的清单」（如「对班里每个同学点名」），while 更像「直到满足某个条件为止」（如「一直练钢琴，直到弹对为止」）。</p>
+    <p>Python 的设计者 Guido 在选择循环语法时，刻意避开了 C 语言那种复杂的 <code>for (i=0; i&lt;n; i++)</code> 写法，而是选择了更直观的 <code>for item in items</code>——「对于列表中的每个元素，做某事」。这种设计让代码读起来像英语句子，大大降低了理解门槛。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">场景</span>程序需要做出选择和重复</h2>
   <div class="lesson-explain">
     <p>想象你每天早上出门前的决策过程：如果下雨，就带伞；如果温度低于 10 度，就穿羽绒服；否则穿普通外套。这不是直线式的「做 A，然后做 B」，而是根据条件选择不同的路径。</p>
@@ -119,6 +139,87 @@ for num in range(10):
 </section>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">论证</span>三种结构为什么足够表达任何逻辑</h2>
+  <div class="lesson-explain">
+    <p>Böhm 和 Jacopini 在 1966 年的证明听起来很抽象，我们来用一个具体例子理解它。假设你要写一个「自动售货机」程序，流程如下：先显示商品列表（顺序），然后根据用户选择出货（分支），如果用户投入金额不足就提示并等待再次投币（循环）。这个程序里有没有 GOTO？没有。但有没有我们表达不了的逻辑？也没有。</p>
+    <p><strong>关键洞察是：任何复杂的逻辑都可以拆解为「先做 A，然后根据 B 决定做 C 还是 D，重复 E 直到 F」这样的组合。</strong>就像乐高积木只有几种基本形状，但你可以搭出城堡、飞船、摩天大楼。程序的结构化思维也是如此——掌握三种基本结构，然后通过嵌套和组合，就能表达任意复杂的算法。</p>
+    <p>对比 GOTO 的「自由跳转」，结构化编程的代价是什么？有时候代码会稍微长一点——比如从深层嵌套中提前退出，用 GOTO 只需要一行，用结构化语法可能需要设置额外的标志变量或者用 <code>break</code>。但换来的好处是巨大的：代码的逻辑路径是「可预测的」，你不需要在脑子里维护一张「跳转地图」，只需要顺着缩进层级往下读，就能理解程序的行为。对于团队协作和代码维护来说，这种可读性的提升远超过了那点额外的代码量。</p>
+    <p>Python 甚至走得更远：它强制要求统一的缩进，从语法层面保证了代码的结构清晰。在 C 语言里，缩进只是「风格建议」；在 Python 里，缩进就是语法本身。这让 Python 代码在视觉上天然具有结构感，不会出现「缩进和大括号不匹配」的混乱情况。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">实验</span>亲手观察控制流的执行轨迹</h2>
+  <div class="lesson-explain">
+    <p><strong>实验 1：用 print() 追踪程序的执行路径</strong></p>
+    <p>在代码的关键位置插入 <code>print()</code>，观察程序实际走了哪条路径、循环执行了几次。这是理解控制流最直观的方法：</p>
+  </div>
+  <div class="lesson-code">
+    <pre><code>score = 75
+print("开始判断...")
+
+if score >= 90:
+    print("进入 >=90 分支")
+elif score >= 60:
+    print("进入 >=60 分支")   # 你会看到这一行被打印
+else:
+    print("进入 else 分支")
+
+print("判断结束。")
+
+# 循环追踪
+for i in range(3):
+    print(f"第 {i} 次循环开始")
+    if i == 1:
+        print("  遇到 i==1，跳过本次剩余部分")
+        continue
+    print(f"  处理 i={i}")
+    print(f"第 {i} 次循环结束")</code></pre>
+  </div>
+  <div class="lesson-explain">
+    <p>运行上面的代码，观察输出顺序。特别注意 <code>continue</code> 的作用：当 <code>i == 1</code> 时，「处理 i=1」和「第 1 次循环结束」这两行没有被打印，因为 <code>continue</code> 直接跳到了下一次循环的开头。</p>
+    <p><strong>实验 2：故意制造一个死循环并观察</strong></p>
+    <p>在交互式解释器中输入下面的代码（注意：准备好按 Ctrl+C 终止！）：</p>
+  </div>
+  <div class="lesson-code">
+    <pre><code>>>> n = 3
+>>> while n > 0:
+...     print(n)
+...
+3
+3
+3
+3
+...（无限输出）...
+# 按 Ctrl+C 终止
+KeyboardInterrupt</code></pre>
+  </div>
+  <div class="lesson-explain">
+    <p>为什么死循环了？因为 <code>n</code> 永远是 3，条件 <code>n > 0</code> 永远为真。修复方法是在循环体内加入 <code>n -= 1</code>。这个实验让你切身体会到：写 while 循环时，必须确保循环变量会向终止条件靠近。</p>
+    <p><strong>实验 3：对比 for 和 while 的适用场景</strong></p>
+    <p>试着用两种循环实现同一个功能：计算 1 到 10 的和。观察哪种写法更自然、更不容易出错：</p>
+  </div>
+  <div class="lesson-code">
+    <pre><code># 用 for 实现
+ total = 0
+ for i in range(1, 11):
+     total += i
+ print(total)   # 55
+
+ # 用 while 实现
+ total = 0
+ i = 1
+ while i <= 10:
+     total += i
+     i += 1     # 如果忘了这行，就是死循环！
+ print(total)   # 55</code></pre>
+  </div>
+  <div class="lesson-explain">
+    <p>体会一下：for 循环自动帮你管理计数器，不容易出错；while 循环更灵活，但需要手动维护循环变量。在「遍历已知范围」时，优先使用 for；在「条件驱动」时，才使用 while。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">错误</span>初学者常犯的错误</h2>
   <div class="lesson-explain">
     <p><strong>忘记缩进：</strong>Python 用缩进来表示代码块，而不是大括号。if 体、循环体、函数体都必须有统一的缩进。一旦混用空格和 Tab，或者某一行少缩进了一格，就会抛出 <code>IndentationError</code>。</p>
@@ -163,9 +264,22 @@ python3 03_while_loop.py</code></pre>
 <section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">练习</span>动手试一试</h2>
   <div class="lesson-explain">
-    <p><strong>练习 1：</strong>写一个程序判断某一年是否为闰年。闰年规则：能被 4 整除但不能被 100 整除，或者能被 400 整除。</p>
-    <p><strong>练习 2：</strong>用 <code>for</code> 循环和 <code>range()</code> 打印 1 到 100 之间所有的奇数。</p>
-    <p><strong>练习 3：</strong>用 <code>while</code> 循环实现一个简单的猜数字游戏：预设一个答案（比如 7），让用户反复输入猜测，直到猜对为止，每次提示「太大了」或「太小了」。</p>
+    <p><strong>练习 1（验证题）：</strong>写一个程序判断某一年是否为闰年。闰年规则：能被 4 整除但不能被 100 整除，或者能被 400 整除。</p>
+    <p><strong>练习 2（验证题）：</strong>用 <code>for</code> 循环和 <code>range()</code> 打印 1 到 100 之间所有的奇数。</p>
+    <p><strong>练习 3（验证题）：</strong>用 <code>while</code> 循环实现一个简单的猜数字游戏：预设一个答案（比如 7），让用户反复输入猜测，直到猜对为止，每次提示「太大了」或「太小了」。</p>
+    <p><strong>练习 4（验证题）：</strong>下面这段代码的输出是什么？先在心里推演，再运行验证：</p>
+  </div>
+  <div class="lesson-code">
+    <pre><code>for i in range(5):
+    if i == 2:
+        continue
+    if i == 4:
+        break
+    print(i)</code></pre>
+  </div>
+  <div class="lesson-explain">
+    <p><strong>练习 5（设计题）：</strong>假设你要设计一个「智能浇水系统」的简化程序：土壤湿度传感器每分钟返回一个数值（0-100）。如果湿度低于 30，开启浇水 5 分钟；如果湿度在 30-60 之间，开启浇水 2 分钟；如果湿度高于 60，不浇水。用伪代码（或 Python 代码）描述这个逻辑，并思考：这里为什么用 if 而不是 while？</p>
+    <p><strong>练习 6（设计题）：</strong>有些语言支持 <code>do...while</code> 结构（先执行一次循环体，再检查条件）。Python 没有这种结构。请思考：如果要在 Python 中模拟 <code>do...while</code> 的行为，你会怎么写？写出你的方案，并分析相比真正的 <code>do...while</code>，这种模拟有什么缺点？</p>
   </div>
   <div class="lesson-code">
     <div class="demo-label">练习 1 参考答案</div>
@@ -174,6 +288,58 @@ if (year % 4 == 0 and year % 100 != 0) or (year % 400 == 0):
     print(f"{year} 是闰年")
 else:
     print(f"{year} 不是闰年")</code></pre>
+  </div>
+  <div class="lesson-code">
+    <div class="demo-label">练习 4 参考答案</div>
+    <pre><code># 输出: 0, 1, 3
+# i==2 时 continue 跳过 print
+# i==4 时 break 直接结束循环</code></pre>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">测验</span>快速检验一下</h2>
+  <div class="demo-card">
+    <p><strong>1. 结构化程序定理证明：任何程序都可以用哪三种基本结构组合而成？</strong></p>
+    <div class="lesson-explain">
+      <p>A. 顺序、函数、类</p>
+      <p>B. 顺序、分支、循环</p>
+      <p>C. 变量、运算符、控制流</p>
+      <p>D. 输入、处理、输出</p>
+    </div>
+  </div>
+  <div class="demo-card">
+    <p><strong>2. 在 Python 中，以下哪个循环更适合「遍历一个已知长度的列表」？</strong></p>
+    <div class="lesson-explain">
+      <p>A. while 循环</p>
+      <p>B. for 循环</p>
+      <p>C. do...while 循环</p>
+      <p>D. goto 循环</p>
+    </div>
+  </div>
+  <div class="demo-card">
+    <p><strong>3. 判断：<code>break</code> 语句会跳过当前循环的剩余代码并进入下一次循环。</strong></p>
+    <div class="lesson-explain">
+      <p>A. 正确</p>
+      <p>B. 错误（这是 continue 的作用，break 是直接终止整个循环）</p>
+    </div>
+  </div>
+  <div class="demo-card">
+    <p><strong>4. 以下代码的输出是什么？</strong></p>
+    <div class="lesson-explain">
+      <p><code>print(list(range(1, 5)))</code></p>
+      <p>A. [1, 2, 3, 4, 5]</p>
+      <p>B. [0, 1, 2, 3, 4]</p>
+      <p>C. [1, 2, 3, 4]</p>
+      <p>D. [1, 5]</p>
+    </div>
+  </div>
+  <div class="demo-card">
+    <p><strong>5. 判断：Python 保留了 GOTO 语句作为高级特性，只是不建议使用。</strong></p>
+    <div class="lesson-explain">
+      <p>A. 正确</p>
+      <p>B. 错误</p>
+    </div>
   </div>
 </section>
 

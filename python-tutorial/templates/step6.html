@@ -15,6 +15,58 @@
 </section>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">起源</span>从错误码到异常处理</h2>
+  <div class="lesson-explain">
+    <p><strong>文件操作</strong>的历史可以追溯到 1960 年代。当时计算机科学家们在设计操作系统时，需要一个统一的方式来管理磁盘上的数据。1969 年，Unix 操作系统诞生，提出了著名的<strong>"一切皆文件"</strong>哲学——无论是键盘输入、屏幕输出还是磁盘数据，都用统一的接口读写。这种设计极大简化了程序与外部世界的交互。</p>
+    <p><strong>异常处理</strong>的概念最早出现在 1960 年代的 PL/I 语言中。1980 年代，C++ 引入了 try/catch 机制，让异常处理成为主流。1995 年 Java 发布时进一步完善了受检异常（Checked Exception）体系。Python 在 1991 年诞生时就内置了异常机制，并且奉行<strong>EAFP</strong>（Easier to Ask for Forgiveness than Permission，先执行再请求原谅）的哲学——与其每次操作前都做繁琐的检查，不如直接尝试，出错再处理。</p>
+    <p>Python 的 <code>with</code> 语句则是在 2006 年（Python 2.5）引入的，它源自 C++ 的 RAII（资源获取即初始化）思想，目的是解决程序员<strong>总是忘记关闭文件</strong>这个老大难问题。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">思考</span>没有异常处理的时代，程序员怎么活？</h2>
+  <div class="lesson-explain">
+    <p>想象一下，你正在用 C 语言写一个读取配置文件的程序。每次调用文件操作函数，你都要检查返回值：</p>
+    <div class="lesson-code"><pre><code>// C 语言风格的错误处理（想象一下这种痛苦）
+FILE *f = fopen("config.txt", "r");
+if (f == NULL) {
+    printf("打开文件失败\n");
+    return -1;
+}
+char buffer[256];
+if (fgets(buffer, sizeof(buffer), f) == NULL) {
+    printf("读取失败\n");
+    fclose(f);  // 别忘了关闭！
+    return -1;
+}
+if (fclose(f) != 0) {
+    printf("关闭文件失败\n");
+    return -1;
+}</code></pre></div>
+    <p>这种<strong>错误码</strong>方式的痛点在于：</p>
+    <p><strong>1. 容易遗漏：</strong>程序员经常忘记检查返回值，错误被静默忽略，程序带着错误数据继续运行。</p>
+    <p><strong>2. 代码臃肿：</strong>业务逻辑和错误处理代码交织在一起，读代码像在读一本被脚注淹没的书。</p>
+    <p><strong>3. 资源泄漏：</strong>一旦某一步出错，后续的资源释放代码（如 fclose）可能被跳过，导致内存泄漏或文件锁死。</p>
+    <p>异常机制就是为解决这些问题而生的：它让错误<strong>无法被忽略</strong>（不捕获就崩溃），让错误处理代码<strong>与业务逻辑分离</strong>（try 里写正常逻辑，except 里处理错误），并且通过 finally 保证<strong>清理代码一定执行</strong>。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">论证</span>为什么 try/except 比错误码更靠谱？</h2>
+  <div class="lesson-explain">
+    <p>你可能会问：C 语言用了几十年的错误码不也活得好好的吗？为什么 Python 非要搞异常？让我们从几个维度对比：</p>
+    <p><strong>1. 错误是否会被静默忽略</strong></p>
+    <p>错误码方式下，如果你忘了检查返回值，程序会继续运行，可能产生级联错误。而异常如果不被捕获，程序会立刻终止并打印堆栈信息——<strong>失败要趁早、要响亮</strong>，这是 Python 的设计哲学。</p>
+    <p><strong>2. 代码可读性</strong></p>
+    <p>错误码让每一行正常代码都被 <code>if (error)</code> 包围，而 try/except 把"正常路径"和"异常路径"分开，代码结构像小说一样有主线和支线。</p>
+    <p><strong>3. 跨层传播</strong></p>
+    <p>假设 A 函数调用 B，B 调用 C，C 出错了。用错误码的话，C 要返回错误，B 要检查并返回，A 也要检查——错误码要层层传递。而异常会自动沿着调用栈向上<strong>冒泡</strong>，直到被捕获，中间各层无需做任何额外工作。</p>
+    <p><strong>4. with 语句 vs 手动关闭</strong></p>
+    <p>手动管理资源就像租了房子后自己记着要交还钥匙；with 语句则像自动门——你走进去，它自动打开；你走出来，它自动关上。无论中间发生什么（甚至发生火灾/异常），门一定会关上。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">原理</span>文件指针与异常传播链</h2>
   <div class="lesson-explain">
     <p>打开文件时，操作系统会返回一个<strong>文件指针</strong>，像书签一样标记当前读写到哪个位置。read() 从头读到尾，write() 从当前位置写入。用完文件必须<strong>关闭</strong>，否则数据可能丢失，内存也会泄漏。</p>
@@ -207,11 +259,61 @@ python3 03_try_except.py</code></pre>
 </section>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">实验</span>亲手验证异常与 with 语句</h2>
+  <div class="lesson-explain">
+    <p>下面三个小实验，你只需要打开 Python 交互式环境（命令行输入 <code>python3</code>），一步一步跟着做，观察现象。</p>
+    <p><strong>实验 1：观察异常传播</strong></p>
+    <div class="lesson-code"><pre><code># 在交互式环境中输入：
+1 / 0
+
+# 观察：Python 打印了 ZeroDivisionError，并且告诉你出错的文件和行号
+# 注意：异常没有被捕获，程序（交互式会话）并没有崩溃，只是这一行执行失败</code></pre></div>
+    <p><strong>实验 2：对比手动关闭和 with 语句</strong></p>
+    <div class="lesson-code"><pre><code># 先创建一个测试文件
+def manual_open():
+    f = open("test.txt", "w")
+    f.write("hello")
+    # 故意不调用 f.close()
+    # 在 Windows 上，这个文件会被 Python 进程锁定，其他程序打不开
+
+manual_open()
+# 现在检查：文件内容是否已经写入？（不一定！操作系统有缓冲）
+
+# 再试试 with 语句：
+with open("test2.txt", "w") as f:
+    f.write("world")
+# 退出 with 块后，文件一定已经正确关闭，内容一定已经落盘</code></pre></div>
+    <p><strong>实验 3：制造并捕获多种异常</strong></p>
+    <div class="lesson-code"><pre><code># 实验 3a：文件不存在
+open("不存在的文件.txt", "r")
+# 观察：FileNotFoundError
+
+# 实验 3b：类型错误
+int("abc")
+# 观察：ValueError
+
+# 实验 3c：捕获异常后继续执行
+try:
+    result = int("abc")
+except ValueError as e:
+    print(f"捕获到异常：{e}")
+    result = 0
+print(f"result = {result}")  # 程序没有崩溃，继续运行！</code></pre></div>
+    <p><strong>实验记录表（建议手写或记在笔记里）：</strong></p>
+    <p>1. 当你不关闭文件时，尝试在文件管理器中删除它——能删除吗？</p>
+    <p>2. 在 try 块中故意写多个可能出错的语句，观察到底是哪个语句触发了异常。</p>
+    <p>3. 尝试用一个 except 捕获多个异常类型：<code>except (ValueError, TypeError):</code></p>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">练习</span>动手试一试</h2>
   <div class="lesson-explain">
-    <p><strong>练习 1：</strong>创建一个文本文件 <code>data.txt</code>，写入五行数据（如 1 到 5 的数字）。然后读取文件，计算所有数字的总和并打印。</p>
-    <p><strong>练习 2：</strong>写一个函数 <code>safe_divide(a, b)</code>，安全地进行除法运算。如果 b 为 0，返回 "除数不能为 0"；如果 a 或 b 不是数字，返回 "请输入数字"。</p>
-    <p><strong>练习 3：</strong>用 <code>try/except/finally</code> 结构写一个程序：尝试打开一个不存在的文件，捕获异常并打印友好提示，最后无论成功与否都打印 "程序执行完毕"。</p>
+    <p><strong>练习 1（验证）：</strong>创建一个文本文件 <code>data.txt</code>，写入五行数据（如 1 到 5 的数字）。然后读取文件，计算所有数字的总和并打印。</p>
+    <p><strong>练习 2（验证）：</strong>写一个函数 <code>safe_divide(a, b)</code>，安全地进行除法运算。如果 b 为 0，返回 "除数不能为 0"；如果 a 或 b 不是数字，返回 "请输入数字"。</p>
+    <p><strong>练习 3（验证）：</strong>用 <code>try/except/finally</code> 结构写一个程序：尝试打开一个不存在的文件，捕获异常并打印友好提示，最后无论成功与否都打印 "程序执行完毕"。</p>
+    <p><strong>练习 4（设计）：</strong>写一个函数 <code>copy_file(src, dst)</code>，将源文件内容复制到目标文件。要求：如果源文件不存在，返回 "源文件不存在"；如果目标文件已存在，询问是否覆盖（在命令行打印提示，模拟即可）；无论成功与否，都打印 "复制操作结束"。</p>
+    <p><strong>练习 5（设计）：</strong>写一个日志记录器函数 <code>log_message(filename, message)</code>，向指定日志文件追加一行带时间戳的消息。要求：如果写入失败（如权限不足），将错误信息输出到屏幕，但不抛出异常导致程序崩溃。</p>
   </div>
   <div class="lesson-code">
     <div class="demo-label">练习 2 参考答案</div>
@@ -227,6 +329,69 @@ python3 03_try_except.py</code></pre>
 print(safe_divide(10, 2))   # 5.0
 print(safe_divide(10, 0))   # 除数不能为 0
 print(safe_divide(10, "a")) # 请输入数字</code></pre>
+  </div>
+  <div class="exercise-box">
+    <div class="demo-label">练习 4 思路提示</div>
+    <pre><code>import os
+
+def copy_file(src, dst):
+    try:
+        with open(src, "r", encoding="utf-8") as f:
+            content = f.read()
+    except FileNotFoundError:
+        return "源文件不存在"
+    
+    if os.path.exists(dst):
+        print(f"警告：{dst} 已存在，将覆盖")
+    
+    try:
+        with open(dst, "w", encoding="utf-8") as f:
+            f.write(content)
+        return "复制成功"
+    except PermissionError:
+        return "权限不足，无法写入"
+    finally:
+        print("复制操作结束")</code></pre>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">测验</span>快速检验一下</h2>
+  <div class="demo-card">
+    <p><strong>1. 单选题：</strong><code>with open("a.txt", "r") as f:</code> 的主要作用是？</p>
+    <p>A. 让代码看起来更高大上</p>
+    <p>B. 自动关闭文件，即使发生异常也会关闭</p>
+    <p>C. 让文件读取速度更快</p>
+    <p>D. 自动创建不存在的文件</p>
+    <details><summary>点击查看答案</summary><p><strong>正确答案：B</strong>。with 语句通过上下文管理器确保文件在离开代码块时被正确关闭。</p></details>
+  </div>
+  <div class="demo-card">
+    <p><strong>2. 判断题：</strong>以下代码能捕获所有类型的异常：<code>except:</code>（不带任何异常类型）。</p>
+    <p>A. 正确，这是捕获所有异常的最佳实践</p>
+    <p>B. 错误，这样做会吞掉系统退出信号，非常危险</p>
+    <details><summary>点击查看答案</summary><p><strong>正确答案：B</strong>。裸 except 会捕获包括 KeyboardInterrupt 在内的所有异常，导致程序无法被 Ctrl+C 中断，应避免使用。</p></details>
+  </div>
+  <div class="demo-card">
+    <p><strong>3. 单选题：</strong>在 try/except/else/finally 结构中，else 块什么时候执行？</p>
+    <p>A. 无论是否发生异常都会执行</p>
+    <p>B. 仅当 try 块中没有发生异常时执行</p>
+    <p>C. 仅当捕获到异常时执行</p>
+    <p>D. 永远不会执行</p>
+    <details><summary>点击查看答案</summary><p><strong>正确答案：B</strong>。else 块在 try 块成功完成且没有异常时执行，通常用于放置"成功后"的代码。</p></details>
+  </div>
+  <div class="demo-card">
+    <p><strong>4. 单选题：</strong>Python 的异常处理机制属于哪种哲学？</p>
+    <p>A. LBYL（Look Before You Leap，三思而后行）</p>
+    <p>B. EAFP（Easier to Ask for Forgiveness than Permission，先斩后奏）</p>
+    <p>C. DRY（Don't Repeat Yourself，不要重复自己）</p>
+    <p>D. KISS（Keep It Simple, Stupid，保持简单）</p>
+    <details><summary>点击查看答案</summary><p><strong>正确答案：B</strong>。Python 鼓励先尝试操作，如果失败再捕获异常处理，而不是在操作前做大量条件检查。</p></details>
+  </div>
+  <div class="demo-card">
+    <p><strong>5. 判断题：</strong>以下代码可以正确读取文件并按行打印：<code>for line in open("data.txt"): print(line)</code>。</p>
+    <p>A. 正确，这是最简洁的写法</p>
+    <p>B. 错误，虽然能运行，但没有关闭文件，可能造成资源泄漏</p>
+    <details><summary>点击查看答案</summary><p><strong>正确答案：B</strong>。虽然语法上能运行，但文件对象没有被关闭。应该使用 with 语句：<code>with open("data.txt") as f: for line in f: print(line)</code>。</p></details>
   </div>
 </section>
 
