@@ -22,14 +22,14 @@
   <div class="row">
     {% for step in steps %}
     <div class="col-6 mb-4">
-      <a href="/step{{ loop.index }}" style="text-decoration:none;">
-        <div class="card card-flat" style="height:100%;">
+      <a href="/step{{ loop.index }}">
+        <div class="card card-flat h-full">
           <div class="card-body">
             <div class="flex items-center gap-2 mb-3">
               <span class="tag tag-brand">Step {{ loop.index }}</span>
             </div>
-            <h3 style="margin:0 0 8px;font-size:18px;">{{ step.title }}</h3>
-            <p style="margin:0;color:var(--text-secondary);font-size:14px;">{{ step.desc }}</p>
+            <h3 class="mb-2 text-lg">{{ step.title }}</h3>
+            <p class="m-0 text-secondary text-sm">{{ step.desc }}</p>
           </div>
         </div>
       </a>

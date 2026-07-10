@@ -28,8 +28,8 @@
 
     <div class="diagram-placeholder">
       [等效电路图：两个 RLC 回路通过互感 M 耦合]
-      <br><span style="font-size:12px;">发射端：V1 — R1 — L1 — C1</span>
-      <br><span style="font-size:12px;">接收端：R2 — L2 — C2 — RL</span>
+      <br><span class="text-xs">发射端：V1 — R1 — L1 — C1</span>
+      <br><span class="text-xs">接收端：R2 — L2 — C2 — RL</span>
     </div>
 
     <h4>回路方程（谐振条件下）</h4>
@@ -143,19 +143,14 @@
 <div class="lesson-block">
   <div class="lesson-title">常见错误</div>
   <div class="lesson-explain">
-    <div class="card" style="border-left:4px solid var(--color-error);margin-bottom:12px;">
-      <div class="card-body" style="padding:16px;">
-        <p style="margin:0;font-size:14px;"><strong style="color:var(--color-error);">❌ 忽略线圈电阻的影响</strong><br>推导中 $R_1$ 和 $R_2$ 是线圈的串联电阻（铜损），不是负载电阻。很多人只考虑负载，忽略了线圈本身的损耗。</p>
-      </div>
+    <div class="mistake-card">
+        <p><strong>❌ 忽略线圈电阻的影响</strong><br>推导中 $R_1$ 和 $R_2$ 是线圈的串联电阻（铜损），不是负载电阻。很多人只考虑负载，忽略了线圈本身的损耗。</p>
     </div>
-    <div class="card" style="border-left:4px solid var(--color-error);margin-bottom:12px;">
-      <div class="card-body" style="padding:16px;">
-        <p style="margin:0;font-size:14px;"><strong style="color:var(--color-error);">❌ 认为效率只与距离有关</strong><br>距离只影响 $k$。即使距离固定，通过提高 $Q$（更好的线圈）或优化阻抗匹配，效率也可以显著提升。</p>
-      </div>
+    <div class="mistake-card">
+        <p><strong>❌ 认为效率只与距离有关</strong><br>距离只影响 $k$。即使距离固定，通过提高 $Q$（更好的线圈）或优化阻抗匹配，效率也可以显著提升。</p>
     </div>
-    <div class="card" style="border-left:4px solid var(--color-error);">
-      <div class="card-body" style="padding:16px;">
-        <p style="margin:0;font-size:14px;"><strong style="color:var(--color-error);">❌ 在非谐振条件下套用效率公式</strong><br>上述效率公式的前提是严格谐振。如果频率偏移，公式中的电抗项不能忽略，实际效率会比公式计算的更低。</p>
+    <div class="mistake-card">
+        <p><strong>❌ 在非谐振条件下套用效率公式</strong><br>上述效率公式的前提是严格谐振。如果频率偏移，公式中的电抗项不能忽略，实际效率会比公式计算的更低。</p>
       </div>
     </div>
   </div>
@@ -165,17 +160,15 @@
   <div class="lesson-title">示例</div>
   <div class="lesson-demo">
     <div class="demo-label">效率计算</div>
-    <div class="card" style="background:var(--bg-code);">
-      <div class="card-body">
-        <p style="margin:0 0 12px;"><strong>已知</strong>：$k = 0.3$，$Q_1 = Q_2 = 200$。</p>
-        <p style="margin:0 0 12px;"><strong>求</strong>：最大传输效率。</p>
-        <p style="margin:0;"><strong>解</strong>：</p>
-        <div class="formula-box" style="background:transparent;border:none;padding:8px 0;">
+    <div class="demo-card">
+        <p ><strong>已知</strong>：$k = 0.3$，$Q_1 = Q_2 = 200$。</p>
+        <p ><strong>求</strong>：最大传输效率。</p>
+        <p ><strong>解</strong>：</p>
+        <div class="formula-box plain">
           $$k^2 Q_1 Q_2 = 0.3^2 \times 200 \times 200 = 3600$$
           $$\eta_{max} = \frac{3600}{(1 + \sqrt{1 + 3600})^2} = \frac{3600}{(1 + 60.01)^2} = \frac{3600}{3721} \approx 96.8\%$$
         </div>
-        <p style="margin:8px 0 0;font-size:13px;color:var(--text-secondary);">这是一个非常理想的结果。实际中由于谐振频率偏移、阻抗失配、涡流损耗等，效率通常在 80% ~ 90%。</p>
-      </div>
+        <p class="text-sm text-secondary mt-2">这是一个非常理想的结果。实际中由于谐振频率偏移、阻抗失配、涡流损耗等，效率通常在 80% ~ 90%。</p>
     </div>
   </div>
 </div>
@@ -183,12 +176,10 @@
 <div class="lesson-block">
   <div class="lesson-title">练习</div>
   <div class="lesson-explain">
-    <div class="card" style="background:var(--color-primary-light);border:1px solid var(--color-primary-light);">
-      <div class="card-body">
-        <p style="margin:0 0 12px;"><strong>练习 1</strong>：已知 $k = 0.1$，$Q = 100$，计算最大传输效率。如果 $Q$ 提高到 300（使用更好的线圈），效率变为多少？</p>
-        <p style="margin:0 0 12px;"><strong>练习 2</strong>：一个无线输电系统的线圈电阻 $R = 0.5\,\Omega$，负载电阻 $R_L = 10\,\Omega$。判断是否满足阻抗匹配条件。如果不满足，效率会比最优值低多少？</p>
-        <p style="margin:0;"><strong>练习 3</strong>：证明当 $kQ \gg 1$ 时，$\eta_{max} \approx 1 - \frac{2}{kQ}$。（提示：使用泰勒展开 $\sqrt{1+x} \approx \sqrt{x} + \frac{1}{2\sqrt{x}}$）</p>
-      </div>
+    <div class="exercise-box">
+        <p ><strong>练习 1</strong>：已知 $k = 0.1$，$Q = 100$，计算最大传输效率。如果 $Q$ 提高到 300（使用更好的线圈），效率变为多少？</p>
+        <p ><strong>练习 2</strong>：一个无线输电系统的线圈电阻 $R = 0.5\,\Omega$，负载电阻 $R_L = 10\,\Omega$。判断是否满足阻抗匹配条件。如果不满足，效率会比最优值低多少？</p>
+        <p ><strong>练习 3</strong>：证明当 $kQ \gg 1$ 时，$\eta_{max} \approx 1 - \frac{2}{kQ}$。（提示：使用泰勒展开 $\sqrt{1+x} \approx \sqrt{x} + \frac{1}{2\sqrt{x}}$）</p>
     </div>
   </div>
 </div>

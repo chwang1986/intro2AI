@@ -20,10 +20,10 @@
   <div class="lesson-explain">
     <div class="concept-card">
       <h4>📱 Qi 标准（电磁感应式）</h4>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+      <div class="grid-2">
         <div>
-          <p style="margin:0 0 8px;"><strong>参数</strong></p>
-          <ul style="margin:0;font-size:14px;color:var(--text-secondary);">
+          <p class="mb-2"><strong>参数</strong></p>
+          <ul class="text-sm text-secondary m-0">
             <li>距离：0 ~ 5 mm</li>
             <li>功率：5W ~ 15W</li>
             <li>频率：87 ~ 205 kHz</li>
@@ -31,8 +31,8 @@
           </ul>
         </div>
         <div>
-          <p style="margin:0 0 8px;"><strong>挑战</strong></p>
-          <ul style="margin:0;font-size:14px;color:var(--text-secondary);">
+          <p class="mb-2"><strong>挑战</strong></p>
+          <ul class="text-sm text-secondary m-0">
             <li>必须精确对准</li>
             <li>充电时发热明显</li>
             <li>无法边充边玩（拿起来就断）</li>
@@ -53,10 +53,10 @@
   <div class="lesson-explain">
     <div class="concept-card">
       <h4>🚗 SAE J2954 / IEC 61980（磁共振耦合式）</h4>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+      <div class="grid-2">
         <div>
-          <p style="margin:0 0 8px;"><strong>参数</strong></p>
-          <ul style="margin:0;font-size:14px;color:var(--text-secondary);">
+          <p class="mb-2"><strong>参数</strong></p>
+          <ul class="text-sm text-secondary m-0">
             <li>距离：10 ~ 25 cm（地面到车底）</li>
             <li>功率：3.7 kW ~ 11 kW</li>
             <li>频率：81.38 ~ 90 kHz 或 140 kHz</li>
@@ -64,8 +64,8 @@
           </ul>
         </div>
         <div>
-          <p style="margin:0 0 8px;"><strong>挑战</strong></p>
-          <ul style="margin:0;font-size:14px;color:var(--text-secondary);">
+          <p class="mb-2"><strong>挑战</strong></p>
+          <ul class="text-sm text-secondary m-0">
             <li>线圈尺寸大（直径 25 ~ 75 cm）</li>
             <li>停车对准精度要求高</li>
             <li>地面线圈的防水防尘</li>
@@ -84,10 +84,10 @@
   <div class="lesson-explain">
     <div class="concept-card">
       <h4>❤️ 心脏起搏器 / 人工耳蜗（磁共振耦合式）</h4>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+      <div class="grid-2">
         <div>
-          <p style="margin:0 0 8px;"><strong>参数</strong></p>
-          <ul style="margin:0;font-size:14px;color:var(--text-secondary);">
+          <p class="mb-2"><strong>参数</strong></p>
+          <ul class="text-sm text-secondary m-0">
             <li>距离：1 ~ 3 cm（穿过皮肤）</li>
             <li>功率：10 mW ~ 100 mW</li>
             <li>频率：100 kHz ~ 10 MHz</li>
@@ -95,8 +95,8 @@
           </ul>
         </div>
         <div>
-          <p style="margin:0 0 8px;"><strong>挑战</strong></p>
-          <ul style="margin:0;font-size:14px;color:var(--text-secondary);">
+          <p class="mb-2"><strong>挑战</strong></p>
+          <ul class="text-sm text-secondary m-0">
             <li>人体组织吸收能量（发热）</li>
             <li>SAR（比吸收率）安全限值</li>
             <li>植入线圈体积受限</li>
@@ -115,10 +115,10 @@
   <div class="lesson-explain">
     <div class="concept-card">
       <h4>🛰️ SSPS（微波输电 / 激光输电）</h4>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+      <div class="grid-2">
         <div>
-          <p style="margin:0 0 8px;"><strong>参数</strong></p>
-          <ul style="margin:0;font-size:14px;color:var(--text-secondary);">
+          <p class="mb-2"><strong>参数</strong></p>
+          <ul class="text-sm text-secondary m-0">
             <li>距离：36,000 km（地球同步轨道）</li>
             <li>功率：GW 级（吉瓦）</li>
             <li>频率：2.45 GHz 或 5.8 GHz</li>
@@ -126,8 +126,8 @@
           </ul>
         </div>
         <div>
-          <p style="margin:0 0 8px;"><strong>挑战</strong></p>
-          <ul style="margin:0;font-size:14px;color:var(--text-secondary);">
+          <p class="mb-2"><strong>挑战</strong></p>
+          <ul class="text-sm text-secondary m-0">
             <li>发射天线直径数公里</li>
             <li>接收天线（整流天线）占地数十平方公里</li>
             <li>大气衰减和天气影响</li>
@@ -196,12 +196,10 @@
 <div class="lesson-block">
   <div class="lesson-title">练习</div>
   <div class="lesson-explain">
-    <div class="card" style="background:var(--color-primary-light);border:1px solid var(--color-primary-light);">
-      <div class="card-body">
-        <p style="margin:0 0 12px;"><strong>练习 1</strong>：比较 Qi 无线充电和电动汽车无线充电在频率、距离、功率上的差异，解释为什么会有这些差异。</p>
-        <p style="margin:0 0 12px;"><strong>练习 2</strong>：空间太阳能电站为什么要用微波而不是磁共振耦合？从传输距离和天线尺寸的角度分析。</p>
-        <p style="margin:0;"><strong>练习 3</strong>：假设你要设计一个心脏起搏器的无线充电系统，频率选 100 kHz 还是 10 MHz？从人体组织吸收和线圈体积两个角度讨论。</p>
-      </div>
+    <div class="exercise-box">
+        <p ><strong>练习 1</strong>：比较 Qi 无线充电和电动汽车无线充电在频率、距离、功率上的差异，解释为什么会有这些差异。</p>
+        <p ><strong>练习 2</strong>：空间太阳能电站为什么要用微波而不是磁共振耦合？从传输距离和天线尺寸的角度分析。</p>
+        <p ><strong>练习 3</strong>：假设你要设计一个心脏起搏器的无线充电系统，频率选 100 kHz 还是 10 MHz？从人体组织吸收和线圈体积两个角度讨论。</p>
     </div>
   </div>
 </div>

@@ -19,7 +19,7 @@
   <div class="concept-card">
     <h4>方式一：直接用 requests</h4>
     <p>Ollama 的 API 就是普通的 HTTP REST 接口，任何能发 HTTP 请求的库都能调用。这是最底层、最灵活的方式。</p>
-    <pre style="background:var(--bg-code);padding:16px;border-radius:8px;overflow-x:auto;"><code>import requests
+    <pre><code>import requests
 
 url = "http://localhost:11434/api/generate"
 
@@ -44,7 +44,7 @@ print(result["response"])
   <div class="concept-card">
     <h4>方式二：用 ollama 官方库</h4>
     <p>Ollama 提供了一个 Python 库，封装了 HTTP 调用的细节，代码更简洁。</p>
-    <pre style="background:var(--bg-code);padding:16px;border-radius:8px;overflow-x:auto;"><code># 安装
+    <pre><code># 安装
 pip install ollama
 
 # 调用
@@ -69,30 +69,30 @@ print(response["response"])
     <h4>generate vs chat：两个核心接口</h4>
     <p>Ollama 提供两个主要的生成接口，用途不同：</p>
 
-    <table style="width:100%;border-collapse:collapse;margin:16px 0;">
+    <table>
       <thead>
-        <tr style="border-bottom:2px solid var(--border-color);text-align:left;">
-          <th style="padding:8px;">接口</th>
-          <th style="padding:8px;">适用场景</th>
-          <th style="padding:8px;">特点</th>
+        <tr>
+          <th>接口</th>
+          <th>适用场景</th>
+          <th>特点</th>
         </tr>
       </thead>
       <tbody>
-        <tr style="border-bottom:1px solid var(--border-color-split);">
-          <td style="padding:8px;"><code>/api/generate</code></td>
-          <td style="padding:8px;">单轮文本补全、续写、翻译</td>
-          <td style="padding:8px;">只传一个 prompt，模型补全后面的内容</td>
+        <tr>
+          <td><code>/api/generate</code></td>
+          <td>单轮文本补全、续写、翻译</td>
+          <td>只传一个 prompt，模型补全后面的内容</td>
         </tr>
-        <tr style="border-bottom:1px solid var(--border-color-split);">
-          <td style="padding:8px;"><code>/api/chat</code></td>
-          <td style="padding:8px;">多轮对话、聊天机器人</td>
-          <td style="padding:8px;">传消息列表，模型理解对话历史</td>
+        <tr>
+          <td><code>/api/chat</code></td>
+          <td>多轮对话、聊天机器人</td>
+          <td>传消息列表，模型理解对话历史</td>
         </tr>
       </tbody>
     </table>
 
     <p><code>/api/chat</code> 的消息格式（OpenAI 兼容）：</p>
-    <pre style="background:var(--bg-code);padding:16px;border-radius:8px;overflow-x:auto;"><code>messages = [
+    <pre><code>messages = [
     {"role": "system", "content": "你是一个乐于助人的助手"},
     {"role": "user", "content": "你好"},
     {"role": "assistant", "content": "你好！很高兴见到你。"},
@@ -143,7 +143,7 @@ print(response["message"]["content"])
 <div class="lesson-section">
   <h2>示例：封装一个调用函数</h2>
   <p>实际项目中，你不会每次都写一遍完整的请求代码。封装一个函数是更好的做法：</p>
-  <pre style="background:var(--bg-code);padding:16px;border-radius:8px;overflow-x:auto;"><code>import ollama
+  <pre><code>import ollama
 
 def ask_model(prompt, model="qwen2.5:7b"):
     """向本地 Ollama 模型提问，返回生成的文本"""

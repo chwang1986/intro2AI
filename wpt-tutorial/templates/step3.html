@@ -83,19 +83,14 @@
 <div class="lesson-block">
   <div class="lesson-title">常见错误</div>
   <div class="lesson-explain">
-    <div class="card" style="border-left:4px solid var(--color-error);margin-bottom:12px;">
-      <div class="card-body" style="padding:16px;">
-        <p style="margin:0;font-size:14px;"><strong style="color:var(--color-error);">❌ 认为谐振只是"频率相同"</strong><br>谐振不仅是频率相同，还要求回路的 Q 值足够高。低 Q 值的谐振回路，能量损耗太快，无法形成有效的能量交换。</p>
-      </div>
+    <div class="mistake-card">
+        <p><strong>❌ 认为谐振只是"频率相同"</strong><br>谐振不仅是频率相同，还要求回路的 Q 值足够高。低 Q 值的谐振回路，能量损耗太快，无法形成有效的能量交换。</p>
     </div>
-    <div class="card" style="border-left:4px solid var(--color-error);margin-bottom:12px;">
-      <div class="card-body" style="padding:16px;">
-        <p style="margin:0;font-size:14px;"><strong style="color:var(--color-error);">❌ 忽略频率分裂的影响</strong><br>在近距离时，如果仍然用原始谐振频率 $\omega_0$ 驱动，实际效率可能远低于预期，因为系统的真实谐振峰已经偏移了。</p>
-      </div>
+    <div class="mistake-card">
+        <p><strong>❌ 忽略频率分裂的影响</strong><br>在近距离时，如果仍然用原始谐振频率 $\omega_0$ 驱动，实际效率可能远低于预期，因为系统的真实谐振峰已经偏移了。</p>
     </div>
-    <div class="card" style="border-left:4px solid var(--color-error);">
-      <div class="card-body" style="padding:16px;">
-        <p style="margin:0;font-size:14px;"><strong style="color:var(--color-error);">❌ 用普通变压器思维理解磁共振</strong><br>变压器是强耦合（$k \approx 1$）、非谐振（50Hz/60Hz）；磁共振耦合是弱耦合（$k \ll 1$）、高频谐振（100kHz ~ 10MHz）。两者的设计逻辑完全不同。</p>
+    <div class="mistake-card">
+        <p><strong>❌ 用普通变压器思维理解磁共振</strong><br>变压器是强耦合（$k \approx 1$）、非谐振（50Hz/60Hz）；磁共振耦合是弱耦合（$k \ll 1$）、高频谐振（100kHz ~ 10MHz）。两者的设计逻辑完全不同。</p>
       </div>
     </div>
   </div>
@@ -105,16 +100,14 @@
   <div class="lesson-title">示例</div>
   <div class="lesson-demo">
     <div class="demo-label">谐振频率计算</div>
-    <div class="card" style="background:var(--bg-code);">
-      <div class="card-body">
-        <p style="margin:0 0 12px;"><strong>已知</strong>：线圈电感 $L = 10\,\mu\text{H}$，谐振电容 $C = 253\,\text{pF}$。</p>
-        <p style="margin:0 0 12px;"><strong>求</strong>：谐振频率 $f_0$。</p>
-        <p style="margin:0;"><strong>解</strong>：</p>
-        <div class="formula-box" style="background:transparent;border:none;padding:8px 0;">
+    <div class="demo-card">
+        <p ><strong>已知</strong>：线圈电感 $L = 10\,\mu\text{H}$，谐振电容 $C = 253\,\text{pF}$。</p>
+        <p ><strong>求</strong>：谐振频率 $f_0$。</p>
+        <p ><strong>解</strong>：</p>
+        <div class="formula-box plain">
           $$f_0 = \frac{1}{2\pi\sqrt{LC}} = \frac{1}{2\pi\sqrt{10 \times 10^{-6} \times 253 \times 10^{-12}}}$$
           $$f_0 = \frac{1}{2\pi\sqrt{2.53 \times 10^{-15}}} = \frac{1}{2\pi \times 5.03 \times 10^{-8}} \approx 3.16\,\text{MHz}$$
         </div>
-      </div>
     </div>
   </div>
 </div>
@@ -122,12 +115,10 @@
 <div class="lesson-block">
   <div class="lesson-title">练习</div>
   <div class="lesson-explain">
-    <div class="card" style="background:var(--color-primary-light);border:1px solid var(--color-primary-light);">
-      <div class="card-body">
-        <p style="margin:0 0 12px;"><strong>练习 1</strong>：设计一个谐振频率为 6.78 MHz（ISM 频段，Qi 标准也使用附近频段）的 LC 回路，已知电感 $L = 5\,\mu\text{H}$，求需要的电容 $C$。</p>
-        <p style="margin:0 0 12px;"><strong>练习 2</strong>：两个线圈的谐振频率都是 1 MHz，耦合系数 $k = 0.2$。计算频率分裂后的两个谐振频率 $\omega_+$ 和 $\omega_-$。</p>
-        <p style="margin:0;"><strong>练习 3</strong>：为什么磁共振耦合需要高频（100kHz 以上），而普通变压器只用 50Hz？从能量存储的角度解释。</p>
-      </div>
+    <div class="exercise-box">
+        <p ><strong>练习 1</strong>：设计一个谐振频率为 6.78 MHz（ISM 频段，Qi 标准也使用附近频段）的 LC 回路，已知电感 $L = 5\,\mu\text{H}$，求需要的电容 $C$。</p>
+        <p ><strong>练习 2</strong>：两个线圈的谐振频率都是 1 MHz，耦合系数 $k = 0.2$。计算频率分裂后的两个谐振频率 $\omega_+$ 和 $\omega_-$。</p>
+        <p ><strong>练习 3</strong>：为什么磁共振耦合需要高频（100kHz 以上），而普通变压器只用 50Hz？从能量存储的角度解释。</p>
     </div>
   </div>
 </div>

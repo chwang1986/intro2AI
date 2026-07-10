@@ -22,18 +22,18 @@
 
     <div class="concept-card">
       <h4>三种主要方式</h4>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:16px;">
+      <div class="grid-auto">
         <div>
-          <div style="font-weight:600;margin-bottom:4px;">🔌 电磁感应式</div>
-          <p style="margin:0;font-size:13px;color:var(--text-secondary);">距离：几毫米到几厘米。原理：变压器。应用：手机无线充电、电动牙刷。</p>
+          <div class="font-semibold mb-1">🔌 电磁感应式</div>
+          <p class="text-sm text-secondary m-0">距离：几毫米到几厘米。原理：变压器。应用：手机无线充电、电动牙刷。</p>
         </div>
         <div>
-          <div style="font-weight:600;margin-bottom:4px;">📡 磁共振耦合式</div>
-          <p style="margin:0;font-size:13px;color:var(--text-secondary);">距离：几厘米到几米。原理：谐振线圈。应用：电动汽车无线充电、医疗设备。</p>
+          <div class="font-semibold mb-1">📡 磁共振耦合式</div>
+          <p class="text-sm text-secondary m-0">距离：几厘米到几米。原理：谐振线圈。应用：电动汽车无线充电、医疗设备。</p>
         </div>
         <div>
-          <div style="font-weight:600;margin-bottom:4px;">🛰️ 微波/激光式</div>
-          <p style="margin:0;font-size:13px;color:var(--text-secondary);">距离：米到公里级。原理：电磁波辐射。应用：空间太阳能电站、无人机供电。</p>
+          <div class="font-semibold mb-1">🛰️ 微波/激光式</div>
+          <p class="text-sm text-secondary m-0">距离：米到公里级。原理：电磁波辐射。应用：空间太阳能电站、无人机供电。</p>
         </div>
       </div>
     </div>
@@ -81,20 +81,14 @@
 <div class="lesson-block">
   <div class="lesson-title">常见错误</div>
   <div class="lesson-explain">
-    <div class="card" style="border-left:4px solid var(--color-error);margin-bottom:12px;">
-      <div class="card-body" style="padding:16px;">
-        <p style="margin:0;font-size:14px;"><strong style="color:var(--color-error);">❌ 混淆"无线充电"和"无线输电"</strong><br>无线充电通常指电磁感应式（短距离、低功率），而无线输电是更广义的概念，包含中远距离传输。</p>
-      </div>
+    <div class="mistake-card">
+        <p><strong>❌ 混淆"无线充电"和"无线输电"</strong><br>无线充电通常指电磁感应式（短距离、低功率），而无线输电是更广义的概念，包含中远距离传输。</p>
     </div>
-    <div class="card" style="border-left:4px solid var(--color-error);margin-bottom:12px;">
-      <div class="card-body" style="padding:16px;">
-        <p style="margin:0;font-size:14px;"><strong style="color:var(--color-error);">❌ 认为无线输电没有损耗</strong><br>无线输电的损耗远大于有线。即使是效率最高的磁共振耦合，也很难超过 95%。</p>
-      </div>
+    <div class="mistake-card">
+        <p><strong>❌ 认为无线输电没有损耗</strong><br>无线输电的损耗远大于有线。即使是效率最高的磁共振耦合，也很难超过 95%。</p>
     </div>
-    <div class="card" style="border-left:4px solid var(--color-error);">
-      <div class="card-body" style="padding:16px;">
-        <p style="margin:0;font-size:14px;"><strong style="color:var(--color-error);">❌ 忽略谐振频率匹配</strong><br>磁共振耦合的核心是发射端和接收端的谐振频率必须严格一致，否则效率会急剧下降。这不是简单的"两个线圈靠近"。</p>
-      </div>
+    <div class="mistake-card">
+        <p><strong>❌ 忽略谐振频率匹配</strong><br>磁共振耦合的核心是发射端和接收端的谐振频率必须严格一致，否则效率会急剧下降。这不是简单的"两个线圈靠近"。</p>
     </div>
   </div>
 </div>
@@ -121,11 +115,10 @@
 <div class="lesson-block">
   <div class="lesson-title">练习</div>
   <div class="lesson-explain">
-    <div class="card" style="background:var(--color-primary-light);border:1px solid var(--color-primary-light);">
-      <div class="card-body">
-        <p style="margin:0 0 12px;"><strong>练习 1</strong>：列出你身边的 3 个无线供电设备，判断它们属于哪种技术（电磁感应 / 磁共振 / 微波）。</p>
-        <p style="margin:0 0 12px;"><strong>练习 2</strong>：为什么特斯拉的无线输电实验最终没有成功商用？搜索资料后写一段 100 字以内的总结。</p>
-        <p style="margin:0;"><strong>练习 3</strong>：假设一个无线输电系统的效率是 80%，如果传输 1000W 的功率，有多少功率以热的形式散失了？散失的功率会产生多少热量（假设全部转化为热）？</p>
+    <div class="exercise-box">
+        <p><strong>练习 1</strong>：列出你身边的 3 个无线供电设备，判断它们属于哪种技术（电磁感应 / 磁共振 / 微波）。</p>
+        <p><strong>练习 2</strong>：为什么特斯拉的无线输电实验最终没有成功商用？搜索资料后写一段 100 字以内的总结。</p>
+        <p><strong>练习 3</strong>：假设一个无线输电系统的效率是 80%，如果传输 1000W 的功率，有多少功率以热的形式散失了？散失的功率会产生多少热量（假设全部转化为热）？</p>
       </div>
     </div>
   </div>

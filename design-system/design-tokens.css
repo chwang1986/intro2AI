@@ -216,7 +216,16 @@ code, pre {
 .gap-3 { gap: var(--space-3); }
 .gap-4 { gap: var(--space-4); }
 
-/* ---------- 4. 排版系统 ---------- */
+.h-full { height: 100%; }
+
+/* 侧边栏图标 */
+.sidebar-icon {
+  width: 28px;
+  height: 28px;
+  color: var(--color-primary);
+}
+
+/* ---------- 6. 按钮 ---------- */
 .text-xs { font-size: var(--font-size-xs); }
 .text-sm { font-size: var(--font-size-sm); }
 .text-md { font-size: var(--font-size-md); }
@@ -959,19 +968,19 @@ code, pre {
   --warning: #ff9500;
   --danger: #ff3b30;
 
-  /* 字号 */
+  /* 字号 —— 与新体系统一 */
   --text-title: 20px;
-  --text-body: 15px;
+  --text-body: 16px;
   --text-caption: 13px;
   --text-code: 13px;
 
-  /* 行高 */
-  --leading-title: 28px;
-  --leading-body: 22px;
-  --leading-caption: 18px;
-  --leading-code: 20px;
+  /* 行高 —— 与新体系统一 */
+  --leading-title: 1.4;
+  --leading-body: 1.75;
+  --leading-caption: 1.5;
+  --leading-code: 1.6;
 
-  /* 间距 */
+  /* 间距 —— 与新体系统一 */
   --spacer-4: 4px;
   --spacer-8: 8px;
   --spacer-12: 12px;
@@ -2037,6 +2046,46 @@ pre code {
   font-size: 18px;
 }
 
+/* 公式框 —— 透明变体（嵌套在 demo-card 内时使用） */
+.formula-box.plain {
+  background: transparent;
+  border: none;
+  padding: 8px 0;
+  margin: 0;
+}
+
+/* 网格布局工具类 */
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.grid-auto {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+/* 兼容 .lesson-block 中的代码块 */
+.lesson-block pre {
+  background: var(--bg-code);
+  border-radius: var(--border-radius-md);
+  padding: 16px 20px;
+  overflow-x: auto;
+  margin: 12px 0;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.lesson-block pre code {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text-primary);
+  background: transparent;
+  padding: 0;
+}
+
 /* 错误提示卡片 */
 .mistake-card {
   background: var(--color-error-bg);
@@ -2054,6 +2103,10 @@ pre code {
 
 .mistake-card p + p {
   margin-top: 8px;
+}
+
+.mistake-card strong {
+  color: var(--color-error);
 }
 
 /* 练习区 */
@@ -2074,6 +2127,16 @@ pre code {
   margin-bottom: 10px;
 }
 
+.exercise-box p {
+  margin-bottom: 12px;
+  line-height: 1.75;
+  color: var(--text-primary);
+}
+
+.exercise-box p:last-child {
+  margin-bottom: 0;
+}
+
 /* 演示卡片 */
 .demo-card {
   background: #fafafa;
@@ -2081,6 +2144,16 @@ pre code {
   border-radius: var(--border-radius-md);
   padding: 20px 24px;
   margin: 16px 0;
+}
+
+.demo-card p {
+  margin-bottom: 12px;
+  line-height: 1.75;
+  color: var(--text-primary);
+}
+
+.demo-card p:last-child {
+  margin-bottom: 0;
 }
 
 /* 代码块统一样式 */
@@ -2188,4 +2261,47 @@ pre code {
 .lesson-section td,
 .concept-card td {
   color: var(--text-secondary);
+}
+
+/* ---------- 首页 Hero 横幅 ---------- */
+.hero-banner {
+  text-align: center;
+  margin-bottom: 40px;
+  padding: 40px 0;
+  background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--bg-page) 100%);
+  border-radius: var(--border-radius-lg);
+}
+
+.hero-banner p {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* ---------- 步骤链接卡片 ---------- */
+.step-link-card {
+  background: var(--gray-2);
+  border-radius: var(--border-radius-md);
+  padding: 16px;
+  border: 1px solid var(--border-color-split);
+  transition: all 0.2s;
+}
+
+.step-link-card:hover {
+  background: var(--gray-3);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-2);
+}
+
+/* ---------- 步骤编号徽章 ---------- */
+.step-badge-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
 }
