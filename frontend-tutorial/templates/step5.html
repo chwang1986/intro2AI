@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+
+{% block title %}Step 5 基础组件 — 前端设计系统教程{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1>Step 5 基础组件</h1>
+  <p>按钮、输入框、标签、徽章的规范与变体</p>
+  <div class="tag tag-brand">组件层</div>
+</div>
+
+<div class="lesson-section">
+  <h2>场景</h2>
+  <p>页面上最常见的交互元素就是按钮和输入框。如果没有统一规范，每个开发者写出来的按钮大小、颜色、圆角都不一样，用户会觉得这个产品在"拼凑"。基础组件的目标是把最常用的元素标准化，让所有人复制同一套 class 就能用。</p>
+</div>
+
+<div class="lesson-section">
+  <h2>原理</h2>
+  <h3>Ant Design 的组件设计思路</h3>
+  <p>Ant Design 把按钮分成五种类型（主按钮、次按钮、虚线按钮、文字按钮、链接按钮），每种类型对应不同的使用场景：</p>
+  <ul>
+    <li><strong>主按钮（Primary）</strong>：一个页面上只有一到两个，用于最重要的操作（提交、保存）。</li>
+    <li><strong>次按钮（Default）</strong>：最常用的按钮，用于普通操作（取消、返回）。</li>
+    <li><strong>虚线按钮（Dashed）</strong>：用于添加、导入等次要操作，视觉上比次按钮更弱。</li>
+    <li><strong>文字按钮（Text）</strong>：用于不重要的操作，或者空间有限的场景。</li>
+    <li><strong>链接按钮（Link）</strong>：用于跳转外部页面或打开新窗口。</li>
+  </ul>
+
+  <h3>输入框的设计原则</h3>
+  <ul>
+    <li><strong>高度统一</strong>：标准 36px，大 44px，小 28px。和按钮高度对齐，方便并排。</li>
+    <li><strong>聚焦状态要明显</strong>：边框变色 + 外发光，让用户知道当前在哪个输入框。</li>
+    <li><strong>placeholder 只是辅助</strong>：不能把 placeholder 当成 label 用，因为用户输入后它就消失了。</li>
+  </ul>
+</div>
+
+<div class="lesson-section">
+  <h2>要点</h2>
+  <ol>
+    <li><strong>按钮类型按重要性递减</strong>：Primary → Ghost → Dashed → Text → Link。一个页面上 Primary 按钮不超过两个。</li>
+    <li><strong>危险操作用红色</strong>：删除、清空、退出登录等不可逆操作，用 <code class="code-inline">btn-danger</code> 给用户心理预警。</li>
+    <li><strong>标签（Tag）用颜色表达语义</strong>：蓝色=进行中，绿色=成功，黄色=警告，红色=失败。不要让用户去猜。</li>
+    <li><strong>徽章（Badge）只用于数字提示</strong>：消息未读数、待处理任务数。不要用它来装饰。</li>
+    <li><strong>禁用状态要一眼看出</strong>：降低透明度到 50%，去掉 hover 效果，鼠标变成 not-allowed。</li>
+  </ol>
+</div>
+
+<div class="lesson-section">
+  <h2>常见错误</h2>
+
+  <div class="mistake-card">
+    <div class="mistake-title">❌ 按钮主次不分</div>
+    <p>页面上有三个主按钮（蓝色），用户不知道哪个是主要操作。应当只有一个 Primary，其余用 Default 或 Text。</p>
+  </div>
+
+  <div class="mistake-card">
+    <div class="mistake-title">❌ 输入框没有聚焦样式</div>
+    <p>用户点了输入框，但没有任何视觉反馈，不知道自己有没有选中。必须加边框变色和外发光。</p>
+  </div>
+
+  <div class="mistake-card">
+    <div class="mistake-title">❌ 标签颜色与语义不符</div>
+    <p>用红色标签表示"进行中"，绿色标签表示"已删除"。颜色有强烈的心理暗示，不能乱用。</p>
+  </div>
+</div>
+
+<div class="lesson-section">
+  <h2>效果展示</h2>
+  <h3>按钮类型</h3>
+  <div class="demo-card">
+    <div class="demo-label">BUTTON VARIANTS</div>
+    <div class="flex gap-3 items-center flex-wrap">
+      <button class="btn btn-primary">主按钮</button>
+      <button class="btn btn-ghost">次按钮</button>
+      <button class="btn btn-dashed">虚线按钮</button>
+      <button class="btn btn-text">文字按钮</button>
+      <button class="btn btn-link">链接按钮</button>
+      <button class="btn btn-danger">危险按钮</button>
+    </div>
+  </div>
+
+  <h3>按钮尺寸</h3>
+  <div class="demo-card">
+    <div class="demo-label">BUTTON SIZES</div>
+    <div class="flex gap-3 items-center">
+      <button class="btn btn-primary btn-lg">大按钮 44px</button>
+      <button class="btn btn-primary">默认 36px</button>
+      <button class="btn btn-primary btn-sm">小按钮 28px</button>
+    </div>
+  </div>
+
+  <h3>输入框</h3>
+  <div class="demo-card">
+    <div class="demo-label">INPUTS</div>
+    <div style="max-width:400px;">
+      <input class="input mb-3" placeholder="标准输入框（36px）">
+      <input class="input input-lg mb-3" placeholder="大号输入框（44px）">
+      <input class="input input-sm mb-3" placeholder="小号输入框（28px）">
+      <textarea class="textarea" placeholder="文本域..."></textarea>
+    </div>
+  </div>
+
+  <h3>标签</h3>
+  <div class="demo-card">
+    <div class="demo-label">TAGS</div>
+    <div class="flex gap-2 flex-wrap">
+      <span class="tag tag-default">默认</span>
+      <span class="tag tag-brand">进行中</span>
+      <span class="tag tag-success">成功</span>
+      <span class="tag tag-warning">警告</span>
+      <span class="tag tag-error">失败</span>
+      <span class="tag tag-cyan">辅助</span>
+    </div>
+  </div>
+
+  <h3>徽章</h3>
+  <div class="demo-card">
+    <div class="demo-label">BADGES</div>
+    <div class="flex gap-4 items-center">
+      <div style="position:relative;display:inline-block;">
+        <button class="btn btn-ghost">消息</button>
+        <span class="badge" style="position:absolute;top:-6px;right:-6px;">5</span>
+      </div>
+      <div style="position:relative;display:inline-block;">
+        <button class="btn btn-ghost">任务</button>
+        <span class="badge" style="position:absolute;top:-6px;right:-6px;">99+</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="lesson-section">
+  <h2>完整代码</h2>
+  <pre class="code-block">&lt;!-- 按钮 --&gt;
+&lt;button class="btn btn-primary"&gt;主按钮&lt;/button&gt;
+&lt;button class="btn btn-ghost"&gt;次按钮&lt;/button&gt;
+&lt;button class="btn btn-dashed"&gt;虚线按钮&lt;/button&gt;
+&lt;button class="btn btn-text"&gt;文字按钮&lt;/button&gt;
+&lt;button class="btn btn-link"&gt;链接按钮&lt;/button&gt;
+&lt;button class="btn btn-danger"&gt;危险按钮&lt;/button&gt;
+
+&lt;!-- 输入框 --&gt;
+&lt;input class="input" placeholder="标准输入框"&gt;
+&lt;input class="input input-lg" placeholder="大号输入框"&gt;
+&lt;input class="input input-sm" placeholder="小号输入框"&gt;
+&lt;textarea class="textarea" placeholder="文本域"&gt;&lt;/textarea&gt;
+
+&lt;!-- 标签 --&gt;
+&lt;span class="tag tag-brand"&gt;进行中&lt;/span&gt;
+&lt;span class="tag tag-success"&gt;成功&lt;/span&gt;
+&lt;span class="tag tag-warning"&gt;警告&lt;/span&gt;
+&lt;span class="tag tag-error"&gt;失败&lt;/span&gt;</pre>
+</div>
+
+<div class="exercise-box">
+  <h3>练习</h3>
+  <p><strong>练习 1</strong>：创建一个表单页面，包含用户名（输入框）、密码（输入框）、提交（主按钮）、重置（次按钮）。确保按钮和输入框高度对齐。</p>
+  <p><strong>练习 2</strong>：为一个任务列表页面设计标签系统，包含"待处理""进行中""已完成""已取消"四种状态，每种状态用对应的颜色标签。</p>
+  <p><strong>练习 3</strong>：给上面的表单加上禁用状态（提交按钮在输入为空时禁用），测试禁用样式的视觉效果是否明显。</p>
+</div>
+{% endblock %}

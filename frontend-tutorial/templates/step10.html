@@ -1,0 +1,216 @@
+{% extends "base.html" %}
+
+{% block title %}Step 10 页面模板 — 前端设计系统教程{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1>Step 10 页面模板</h1>
+  <p>可直接套用的页面结构与实战组合</p>
+  <div class="tag tag-brand">实战</div>
+</div>
+
+<div class="lesson-section">
+  <h2>场景</h2>
+  <p>学完前面的设计令牌、组件和布局，现在需要把它们组合成完整的页面。页面模板就是"现成的配方"，告诉你在什么场景下用什么组件、怎么排列。以后做新页面时，直接选一个最接近的模板，复制粘贴再微调。</p>
+</div>
+
+<div class="lesson-section">
+  <h2>原理</h2>
+  <h3>原子设计方法论（Atomic Design）</h3>
+  <p>Brad Frost 提出的原子设计，把界面分成五个层级：</p>
+  <ul>
+    <li><strong>原子（Atoms）</strong>：最小的元素，如按钮、输入框、标签。对应我们的 Step 5 基础组件。</li>
+    <li><strong>分子（Molecules）</strong>：原子组合成的小组件，如搜索框（输入框 + 按钮）。</li>
+    <li><strong>有机体（Organisms）</strong>：分子组合成的区块，如导航栏、卡片列表。对应我们的 Step 6 容器组件和 Step 7 数据展示。</li>
+    <li><strong>模板（Templates）</strong>：有机体组合成的页面骨架，没有真实内容。对应本章。</li>
+    <li><strong>页面（Pages）</strong>：模板填充真实内容后的最终页面。</li>
+  </ul>
+  <p>这套方法论的核心是<strong>自下而上地构建</strong>：先定义原子，再组合成分子、有机体，最后搭成页面。这样任何一个层级的改动都能自动同步到所有使用它的地方。</p>
+</div>
+
+<div class="lesson-section">
+  <h2>要点</h2>
+  <ol>
+    <li><strong>每个页面有明确的"一页一事"</strong>：一个页面只做一件事（展示数据、填写表单、阅读文档）。不要把所有功能塞进一个页面。</li>
+    <li><strong>页面结构保持一致</strong>：Header + Main + Footer 的大框架不变，具体内容在变。用户打开新页面时，不需要重新学习布局。</li>
+    <li><strong>优先展示核心内容</strong>：页面加载后，用户第一眼应当看到最重要的信息，而不是被广告、提示、弹窗干扰。</li>
+    <li><strong>面包屑用于深层级</strong>：如果页面嵌套超过两层（如 首页 / 教程 / 前端设计 / 色彩系统），用面包屑告诉用户当前位置。</li>
+    <li><strong>预留扩展空间</strong>：模板不要写得太死，给未来可能增加的内容留位置。</li>
+  </ol>
+</div>
+
+<div class="lesson-section">
+  <h2>常见错误</h2>
+
+  <div class="mistake-card">
+    <div class="mistake-title">❌ 每页结构都不一样</div>
+    <p>这个页面有侧边栏，那个没有，另一个侧边栏在右边。用户需要不断适应新布局，增加认知负担。</p>
+  </div>
+
+  <div class="mistake-card">
+    <div class="mistake-title">❌ 模板写得太死</div>
+    <p>模板里所有尺寸、颜色都写死 px，复用时只能全盘复制，无法微调。应当用 CSS 变量和 class，方便覆盖。</p>
+  </div>
+
+  <div class="mistake-card">
+    <div class="mistake-title">❌ 忽略无数据状态</div>
+    <p>模板里放满了示例数据，但没有考虑真实场景中数据为空、加载失败、权限不足的情况。</p>
+  </div>
+</div>
+
+<div class="lesson-section">
+  <h2>效果展示</h2>
+  <h3>模板一：仪表盘（Dashboard）</h3>
+  <div class="demo-card">
+    <div class="demo-label">DASHBOARD TEMPLATE</div>
+    <div style="border:1px solid var(--border-color-split);border-radius:8px;overflow:hidden;">
+      <div style="padding:12px 16px;background:var(--gray-2);border-bottom:1px solid var(--border-color-split);font-weight:600;">📊 项目仪表盘</div>
+      <div style="padding:16px;">
+        <div class="row" style="margin-bottom:16px;">
+          <div class="col-3">
+            <div class="card" style="text-align:center;padding:16px;">
+              <div style="font-size:12px;color:var(--text-secondary);">总项目</div>
+              <div style="font-size:24px;font-weight:700;color:var(--color-primary);">12</div>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="card" style="text-align:center;padding:16px;">
+              <div style="font-size:12px;color:var(--text-secondary);">进行中</div>
+              <div style="font-size:24px;font-weight:700;color:var(--color-warning);">5</div>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="card" style="text-align:center;padding:16px;">
+              <div style="font-size:12px;color:var(--text-secondary);">已完成</div>
+              <div style="font-size:24px;font-weight:700;color:var(--color-success);">7</div>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="card" style="text-align:center;padding:16px;">
+              <div style="font-size:12px;color:var(--text-secondary);">待处理</div>
+              <div style="font-size:24px;font-weight:700;color:var(--color-error);">2</div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">最近活动</div>
+          <div class="card-body">
+            <p style="margin:0;color:var(--text-secondary);font-size:14px;">表格区域...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h3>模板二：详情页（Detail）</h3>
+  <div class="demo-card">
+    <div class="demo-label">DETAIL TEMPLATE</div>
+    <div style="border:1px solid var(--border-color-split);border-radius:8px;overflow:hidden;">
+      <div style="padding:24px;background:var(--bg-card);border-bottom:1px solid var(--border-color-split);">
+        <div style="font-size:20px;font-weight:600;margin-bottom:8px;">前端设计系统教程</div>
+        <div class="flex gap-2">
+          <span class="tag tag-brand">进行中</span>
+          <span class="tag tag-default">优先级：高</span>
+        </div>
+      </div>
+      <div style="padding:24px;">
+        <div style="margin-bottom:24px;">
+          <div style="font-weight:600;margin-bottom:8px;">项目描述</div>
+          <p style="margin:0;color:var(--text-secondary);">一套可复用的前端设计规范，面向未来所有教程与应用。</p>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <div style="font-weight:600;margin-bottom:8px;">基本信息</div>
+            <div style="font-size:14px;color:var(--text-secondary);">负责人：张三<br>创建时间：2024-01-15<br>截止日期：2024-06-30</div>
+          </div>
+          <div class="col-6">
+            <div style="font-weight:600;margin-bottom:8px;">进度</div>
+            <div class="progress">
+              <div class="progress-bar" style="width:75%;"></div>
+            </div>
+            <div style="font-size:14px;color:var(--text-secondary);margin-top:4px;">75% 已完成</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h3>模板三：表单页（Form）</h3>
+  <div class="demo-card">
+    <div class="demo-label">FORM TEMPLATE</div>
+    <div style="border:1px solid var(--border-color-split);border-radius:8px;overflow:hidden;">
+      <div style="padding:20px 24px;border-bottom:1px solid var(--border-color-split);font-weight:600;">新建项目</div>
+      <div style="padding:24px;max-width:600px;">
+        <div style="margin-bottom:16px;">
+          <label style="display:block;font-size:14px;font-weight:500;margin-bottom:6px;">项目名称 <span style="color:var(--color-error);">*</span></label>
+          <input class="input" placeholder="请输入项目名称">
+        </div>
+        <div style="margin-bottom:16px;">
+          <label style="display:block;font-size:14px;font-weight:500;margin-bottom:6px;">项目描述</label>
+          <textarea class="textarea" placeholder="请输入项目描述"></textarea>
+        </div>
+        <div style="margin-bottom:16px;">
+          <label style="display:block;font-size:14px;font-weight:500;margin-bottom:6px;">优先级</label>
+          <select class="select">
+            <option>高</option>
+            <option>中</option>
+            <option>低</option>
+          </select>
+        </div>
+        <div class="flex gap-3">
+          <button class="btn btn-primary">提交</button>
+          <button class="btn btn-ghost">取消</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="lesson-section">
+  <h2>完整代码</h2>
+  <pre class="code-block">&lt;!-- 仪表盘模板 --&gt;
+&lt;div class="container"&gt;
+  &lt;!-- 统计卡片行 --&gt;
+  &lt;div class="row"&gt;
+    &lt;div class="col-3"&gt;
+      &lt;div class="card"&gt;
+        &lt;div class="card-body" style="text-align:center;"&gt;
+          &lt;div class="text-sm text-secondary"&gt;总项目&lt;/div&gt;
+          &lt;div class="text-2xl font-bold text-brand"&gt;12&lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;!-- 更多卡片... --&gt;
+  &lt;/div&gt;
+
+  &lt;!-- 数据表格 --&gt;
+  &lt;div class="card mt-4"&gt;
+    &lt;div class="card-header"&gt;最近活动&lt;/div&gt;
+    &lt;div class="card-body"&gt;
+      &lt;table class="table"&gt;...&lt;/table&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- 表单模板 --&gt;
+&lt;div class="container-narrow"&gt;
+  &lt;div class="card"&gt;
+    &lt;div class="card-header"&gt;新建项目&lt;/div&gt;
+    &lt;div class="card-body"&gt;
+      &lt;div style="margin-bottom:16px;"&gt;
+        &lt;label&gt;项目名称&lt;/label&gt;
+        &lt;input class="input"&gt;
+      &lt;/div&gt;
+      &lt;button class="btn btn-primary"&gt;提交&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</pre>
+</div>
+
+<div class="exercise-box">
+  <h3>练习</h3>
+  <p><strong>练习 1</strong>：用本教程的组件类，搭建一个"个人博客文章页"模板，包含文章标题、作者信息、正文、评论区。</p>
+  <p><strong>练习 2</strong>：为 Git 教程或 Python 教程设计一个新的首页模板，使用本教程的卡片、按钮、导航组件。</p>
+  <p><strong>练习 3</strong>：把本教程的所有页面模板整理成一个 HTML 文件，作为"快速启动模板"，以后新项目直接复制。</p>
+</div>
+{% endblock %}

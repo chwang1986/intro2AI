@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+
+{% block title %}Step 4 间距与布局 — 前端设计系统教程{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1>Step 4 间距与布局</h1>
+  <p>8px 网格、留白法则、容器、响应式断点</p>
+  <div class="tag tag-brand">核心基础</div>
+</div>
+
+<div class="lesson-section">
+  <h2>场景</h2>
+  <p>页面上的元素之间需要空隙，太挤会压抑，太散会松散。间距系统就是给这些空隙定规矩，让页面看起来整齐又不死板。</p>
+</div>
+
+<div class="lesson-section">
+  <h2>原理</h2>
+  <h3>8px 网格系统</h3>
+  <p>Ant Design 和 TDesign 都使用 8px 作为基础单位。原因很实际：</p>
+  <ul>
+    <li>8 是偶数，一半（4px）、两倍（16px）、三倍（24px）都是整数，计算方便。</li>
+    <li>主流屏幕分辨率都能被 8 整除，不会出现半个像素的情况。</li>
+    <li>人眼对 8px 的增量有自然的节奏感，不会觉得跳。</li>
+  </ul>
+
+  <h3>留白的心理学</h3>
+  <p>留白不是"空着没东西"，而是<strong>主动的组织行为</strong>。相关内容之间的间距小（亲密性），不同模块之间的间距大（分隔）。TDesign 建议模块间距至少 24px，否则用户会误以为这些内容属于同一组。</p>
+
+  <h3>容器宽度的选择</h3>
+  <p>太宽的容器（比如 100%）会让长文本难以阅读，因为视线移动距离太长。Ant Design 的推荐：</p>
+  <ul>
+    <li>阅读型页面（文章、文档）：最大宽度 680px ~ 860px。</li>
+    <li>工具型页面（后台、仪表盘）：最大宽度 1200px ~ 1440px。</li>
+    <li>全屏展示（数据大屏）：100%，但内容区域用网格分块。</li>
+  </ul>
+</div>
+
+<div class="lesson-section">
+  <h2>要点</h2>
+  <ol>
+    <li><strong>所有间距都是 4px 的倍数</strong>：最小单位 4px（--space-1），然后 8px、12px、16px、20px、24px、32px、40px、48px、64px。</li>
+    <li><strong>模块间距 ≥ 24px</strong>：两个卡片之间、两个表单区块之间，至少留 24px，否则视觉上会粘在一起。</li>
+    <li><strong>容器水平居中</strong>：设置 max-width 和 margin: 0 auto，保证在大屏上不会拉得太宽。</li>
+    <li><strong>移动端减少内边距</strong>：PC 上容器左右内边距 24px，移动端减少到 16px，不浪费宝贵的屏幕空间。</li>
+    <li><strong>网格用 Flexbox，不用 Float</strong>：Flex 的 gap 属性可以精确控制子元素间距，而且天然支持响应式。</li>
+  </ol>
+</div>
+
+<div class="lesson-section">
+  <h2>常见错误</h2>
+
+  <div class="mistake-card">
+    <div class="mistake-title">❌ 间距随意，没有规律</div>
+    <p>这个元素 margin 15px，那个 margin 18px，另一个 margin 22px。统一改成 16px、20px、24px，立刻整齐。</p>
+  </div>
+
+  <div class="mistake-card">
+    <div class="mistake-title">❌ 容器没有最大宽度</div>
+    <p>在 27 寸显示器上，段落文字从屏幕最左边延伸到最右边，阅读时需要大幅度摆头。设置 max-width: 860px 或 1200px。</p>
+  </div>
+
+  <div class="mistake-card">
+    <div class="mistake-title">❌ 移动端和 PC 用一样的内边距</div>
+    <p>手机上左右各留 24px，中间内容区域只剩很少空间。移动端应当减少到 16px 甚至 12px。</p>
+  </div>
+</div>
+
+<div class="lesson-section">
+  <h2>效果展示</h2>
+  <h3>8px 网格示意</h3>
+  <div class="demo-card">
+    <div class="demo-label">8PX GRID</div>
+    <div style="display:flex;gap:8px;margin-bottom:8px;">
+      <div style="width:32px;height:32px;background:var(--color-primary);border-radius:4px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;">32</div>
+      <div style="width:32px;height:32px;background:var(--color-primary);border-radius:4px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;">32</div>
+      <div style="width:32px;height:32px;background:var(--color-primary);border-radius:4px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;">32</div>
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:8px;">
+      <div style="width:32px;height:32px;background:var(--color-primary);border-radius:4px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;">32</div>
+      <div style="width:32px;height:32px;background:var(--color-primary);border-radius:4px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;">32</div>
+      <div style="width:32px;height:32px;background:var(--color-primary);border-radius:4px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;">32</div>
+    </div>
+    <p style="font-size:12px;color:var(--text-tertiary);margin:0;">每个方块 32×32，间距 8px，所有尺寸都是 8 的倍数</p>
+  </div>
+
+  <h3>容器对比</h3>
+  <div class="demo-card">
+    <div class="demo-label">CONTAINER WIDTH</div>
+    <div style="background:var(--bg-code);padding:16px;border-radius:8px;margin-bottom:12px;">
+      <div style="font-weight:600;margin-bottom:4px;">窄容器（860px）</div>
+      <div style="max-width:400px;background:#fff;padding:16px;border-radius:4px;font-size:14px;">适合文章、教程等阅读型内容。视线移动距离短，阅读舒适。</div>
+    </div>
+    <div style="background:var(--bg-code);padding:16px;border-radius:8px;">
+      <div style="font-weight:600;margin-bottom:4px;">宽容器（1200px）</div>
+      <div style="max-width:100%;background:#fff;padding:16px;border-radius:4px;font-size:14px;">适合仪表盘、后台管理等工具型页面。可以并排展示更多内容。</div>
+    </div>
+  </div>
+
+  <h3>Flex 布局示例</h3>
+  <div class="demo-card">
+    <div class="demo-label">FLEX LAYOUT</div>
+    <div style="display:flex;gap:16px;flex-wrap:wrap;">
+      <div style="flex:1;min-width:200px;background:var(--color-primary-light);padding:20px;border-radius:8px;text-align:center;">左侧栏</div>
+      <div style="flex:2;min-width:300px;background:var(--color-success-bg);padding:20px;border-radius:8px;text-align:center;">主内容区（flex:2 占两份）</div>
+    </div>
+  </div>
+</div>
+
+<div class="lesson-section">
+  <h2>完整代码</h2>
+  <pre class="code-block">/* 间距令牌 */
+:root {
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+}
+
+/* 容器 */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--space-6);
+  padding-right: var(--space-6);
+}
+
+.container-narrow {
+  max-width: 860px;
+}
+
+/* 响应式：移动端减少内边距 */
+@media (max-width: 768px) {
+  .container {
+    padding-left: var(--space-4);
+    padding-right: var(--space-4);
+  }
+}
+
+/* Flex 网格 */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
+
+.col {
+  flex: 1 0 0%;
+}
+
+.col-6 {
+  flex: 0 0 50%;
+  max-width: 50%;
+}</pre>
+</div>
+
+<div class="exercise-box">
+  <h3>练习</h3>
+  <p><strong>练习 1</strong>：打开一个你做的页面，用浏览器的开发者工具检查所有 margin 和 padding 值，统计有多少个不是 4 的倍数。把它们改成最近的 4 的倍数。</p>
+  <p><strong>练习 2</strong>：用 Flexbox 实现一个三列等宽的卡片布局，卡片间距 16px，在大屏上三列，平板两列，手机一列。</p>
+  <p><strong>练习 3</strong>：用 <code class="code-inline">container-narrow</code>（max-width: 860px）包裹一篇长文章，对比 full-width 和 narrow 的阅读体验。</p>
+</div>
+{% endblock %}

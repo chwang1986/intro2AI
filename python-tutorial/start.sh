@@ -3,6 +3,11 @@
 
 cd "$(dirname "$0")"
 
+# 激活虚拟环境（使用 intro2AI 项目共享的虚拟环境）
+if [ -d "../venv/" ]; then
+    source ../venv/bin/activate
+fi
+
 PORT=${1:-5003}
 HOST=${2:-127.0.0.1}
 

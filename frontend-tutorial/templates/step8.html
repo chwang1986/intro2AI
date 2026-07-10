@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+
+{% block title %}Step 8 响应式设计 — 前端设计系统教程{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1>Step 8 响应式设计</h1>
+  <p>移动端适配、弹性布局、断点策略</p>
+  <div class="tag tag-brand">进阶</div>
+</div>
+
+<div class="lesson-section">
+  <h2>场景</h2>
+  <p>同一个页面，在 27 寸显示器、13 寸笔记本、iPad、手机上都要能正常显示。响应式设计不是"把 PC 页面缩小到手机上"，而是根据不同屏幕尺寸重新排列内容，保证每个设备上的体验都最佳。</p>
+</div>
+
+<div class="lesson-section">
+  <h2>原理</h2>
+  <h3>移动优先（Mobile First）</h3>
+  <p>先设计手机端的布局，然后再往大屏扩展。原因：</p>
+  <ul>
+    <li>手机空间最紧张，迫使你去思考"什么是最重要的"。</li>
+    <li>从小往大加内容，比从大往小删内容更自然。</li>
+    <li>CSS 的 min-width 媒体查询比 max-width 更符合逻辑（ progressively enhance 渐进增强）。</li>
+  </ul>
+
+  <h3>断点选择</h3>
+  <p>Ant Design 的断点：</p>
+  <ul>
+    <li><strong>xs</strong>：&lt; 576px（手机）</li>
+    <li><strong>sm</strong>：576px ~ 768px（大屏手机 / 小平板）</li>
+    <li><strong>md</strong>：768px ~ 992px（平板）</li>
+    <li><strong>lg</strong>：992px ~ 1200px（小笔记本）</li>
+    <li><strong>xl</strong>：&gt; 1200px（桌面）</li>
+  </ul>
+  <p>实际项目中，通常只需要 2-3 个断点：手机（&lt;768px）、平板（768px-1200px）、桌面（&gt;1200px）。</p>
+
+  <h3>弹性布局 vs 固定布局</h3>
+  <ul>
+    <li><strong>弹性布局（Fluid）</strong>：宽度用百分比或 flex，适应不同屏幕。</li>
+    <li><strong>固定布局（Fixed）</strong>：宽度写死 px，只适配特定尺寸。</li>
+    <li><strong>混合布局</strong>：容器固定最大宽度，内部用弹性布局。这是目前最主流的做法。</li>
+  </ul>
+</div>
+
+<div class="lesson-section">
+  <h2>要点</h2>
+  <ol>
+    <li><strong>用 Flexbox 和 Grid 做布局</strong>：它们天生支持响应式，配合 flex-wrap 和 gap 可以轻松实现多列变单列。</li>
+    <li><strong>图片要自适应</strong>：<code class="code-inline">max-width: 100%; height: auto;</code>，防止图片撑破容器。</li>
+    <li><strong>触摸目标不小于 44×44px</strong>：按钮、链接在手机上要足够大，方便手指点击。Ant Design 的按钮最小高度就是 28px，但在移动端建议至少 36px。</li>
+    <li><strong>隐藏非核心内容</strong>：手机端可以把侧边栏收起、把次要信息折叠，优先展示核心内容。</li>
+    <li><strong>测试真实设备</strong>：Chrome 的开发者工具只能模拟尺寸，不能模拟真实的触摸、滚动性能。必须在真机上测试。</li>
+  </ol>
+</div>
+
+<div class="lesson-section">
+  <h2>常见错误</h2>
+
+  <div class="mistake-card">
+    <div class="mistake-title">❌ 用 px 定义所有宽度</div>
+    <p>一个 400px 宽的卡片在手机上会撑出屏幕。应当用 max-width 或百分比。</p>
+  </div>
+
+  <div class="mistake-card">
+    <div class="mistake-title">❌ 断点太多太细</div>
+    <p>定义了 7 个断点，每个都要单独写样式，维护困难。2-3 个断点足够覆盖 95% 的场景。</p>
+  </div>
+
+  <div class="mistake-card">
+    <div class="mistake-title">❌ 忽略横屏模式</div>
+    <p>手机横过来后，高度变小，原本竖屏适配的布局可能会出问题。要测试横屏。</p>
+  </div>
+</div>
+
+<div class="lesson-section">
+  <h2>效果展示</h2>
+  <h3>响应式卡片布局</h3>
+  <div class="demo-card">
+    <div class="demo-label">RESPONSIVE CARDS</div>
+    <p style="font-size:12px;color:var(--text-tertiary);margin-bottom:12px;">缩小浏览器窗口，观察下方卡片如何变化</p>
+    <div style="display:flex;gap:16px;flex-wrap:wrap;">
+      <div style="flex:1;min-width:280px;background:var(--color-primary-light);padding:20px;border-radius:8px;text-align:center;">
+        <div style="font-weight:600;">卡片 1</div>
+        <div style="font-size:14px;color:var(--text-secondary);margin-top:4px;">flex:1, min-width:280px</div>
+      </div>
+      <div style="flex:1;min-width:280px;background:var(--color-success-bg);padding:20px;border-radius:8px;text-align:center;">
+        <div style="font-weight:600;">卡片 2</div>
+        <div style="font-size:14px;color:var(--text-secondary);margin-top:4px;">flex:1, min-width:280px</div>
+      </div>
+      <div style="flex:1;min-width:280px;background:var(--color-warning-bg);padding:20px;border-radius:8px;text-align:center;">
+        <div style="font-weight:600;">卡片 3</div>
+        <div style="font-size:14px;color:var(--text-secondary);margin-top:4px;">flex:1, min-width:280px</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>断点示意</h3>
+  <div class="demo-card">
+    <div class="demo-label">BREAKPOINTS</div>
+    <div class="row">
+      <div class="col-4">
+        <div style="background:var(--color-primary-light);padding:16px;border-radius:8px;text-align:center;">
+          <div style="font-weight:600;color:var(--color-primary);">&lt; 768px</div>
+          <div style="font-size:12px;color:var(--text-secondary);margin-top:4px;">手机：单列，内边距 16px</div>
+        </div>
+      </div>
+      <div class="col-4">
+        <div style="background:var(--color-success-bg);padding:16px;border-radius:8px;text-align:center;">
+          <div style="font-weight:600;color:var(--color-success);">768px - 1200px</div>
+          <div style="font-size:12px;color:var(--text-secondary);margin-top:4px;">平板：两列，内边距 24px</div>
+        </div>
+      </div>
+      <div class="col-4">
+        <div style="background:var(--color-warning-bg);padding:16px;border-radius:8px;text-align:center;">
+          <div style="font-weight:600;color:var(--color-warning);">&gt; 1200px</div>
+          <div style="font-size:12px;color:var(--text-secondary);margin-top:4px;">桌面：多列，最大宽度 1200px</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="lesson-section">
+  <h2>完整代码</h2>
+  <pre class="code-block">/* 基础样式（移动端优先） */
+.container {
+  width: 100%;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.card-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* 平板 */
+@media (min-width: 768px) {
+  .container {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+  .card-grid {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .card-grid > * {
+    flex: 1 1 calc(50% - 8px);
+  }
+}
+
+/* 桌面 */
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .card-grid > * {
+    flex: 1 1 calc(33.333% - 11px);
+  }
+}</pre>
+</div>
+
+<div class="exercise-box">
+  <h3>练习</h3>
+  <p><strong>练习 1</strong>：用 Flexbox 实现一个三列卡片布局，要求在手机上一列、平板两列、桌面三列。不借助任何 CSS 框架。</p>
+  <p><strong>练习 2</strong>：打开你的项目，在 Chrome DevTools 的手机模拟模式下测试每个页面，记录布局崩坏的地方。</p>
+  <p><strong>练习 3</strong>：为前端设计系统教程的侧边栏添加响应式逻辑：PC 显示侧边栏，手机隐藏侧边栏并添加一个汉堡菜单按钮。</p>
+</div>
+{% endblock %}

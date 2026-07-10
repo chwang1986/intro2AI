@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+
+{% block title %}Step 6 容器组件 — 前端设计系统教程{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1>Step 6 容器组件</h1>
+  <p>卡片、面板、模态框、导航栏的设计模式</p>
+  <div class="tag tag-brand">组件层</div>
+</div>
+
+<div class="lesson-section">
+  <h2>场景</h2>
+  <p>当页面上有很多信息时，需要把相关内容分组。容器组件（卡片、面板、模态框）就是用来"打包"信息的。好的容器能让用户一眼看出哪些内容是一组的，哪些内容是独立的。</p>
+</div>
+
+<div class="lesson-section">
+  <h2>原理</h2>
+  <h3>卡片 vs 面板 vs 模态框</h3>
+  <ul>
+    <li><strong>卡片（Card）</strong>：最常用的容器，用于展示一组相关信息。可以带标题、内容、操作区。阴影表示它是一个独立的"物体"。</li>
+    <li><strong>面板（Panel）</strong>：比卡片更轻量，通常没有阴影，用边框分隔。用于表单分组、设置项归类。</li>
+    <li><strong>模态框（Modal）</strong>：覆盖在页面上方的弹窗，用于需要用户专注处理的任务（确认删除、填写表单）。模态框出现时，背后的页面应当变暗（mask），防止用户分心。</li>
+  </ul>
+
+  <h3>导航栏的设计</h3>
+  <p>导航是用户在不同页面之间跳转的工具。Ant Design 的导航原则：</p>
+  <ul>
+    <li><strong>顶部导航</strong>：适合页面数量少（3-7 个），一目了然。</li>
+    <li><strong>侧边导航</strong>：适合页面数量多（8 个以上），可以展开/收起。</li>
+    <li><strong>当前页面要高亮</strong>：用户需要知道自己在哪里。高亮样式要足够明显。</li>
+  </ul>
+</div>
+
+<div class="lesson-section">
+  <h2>要点</h2>
+  <ol>
+    <li><strong>卡片用阴影表示层级</strong>：轻微阴影（0 1px 2px）表示普通卡片，hover 时加深（0 4px 12px），给用户可点击的心理暗示。</li>
+    <li><strong>卡片内边距统一</strong>：header 和 body 用同样的左右内边距（20px 或 24px），上下根据内容调整。</li>
+    <li><strong>模态框出现时禁止滚动背景</strong>：否则用户滚动鼠标时，背后的页面在动，模态框不动，体验很怪。</li>
+    <li><strong>导航链接要有 hover 状态</strong>：鼠标移上去变色或变背景，让用户知道这是可点击的。</li>
+    <li><strong>面包屑（Breadcrumb）用于深层级页面</strong>：告诉用户当前页面在结构中的位置，方便返回。</li>
+  </ol>
+</div>
+
+<div class="lesson-section">
+  <h2>常见错误</h2>
+
+  <div class="mistake-card">
+    <div class="mistake-title">❌ 卡片阴影过重</div>
+    <p>阴影太大会让卡片看起来像"浮在空中"，显得不真实。卡片阴影应当轻微，只是用来和背景区分。</p>
+  </div>
+
+  <div class="mistake-card">
+    <div class="mistake-title">❌ 模态框里放太多内容</div>
+    <p>模态框不是第二个页面。如果内容超过一屏，应该单独做一个页面，而不是塞进模态框。</p>
+  </div>
+
+  <div class="mistake-card">
+    <div class="mistake-title">❌ 导航高亮不明显</div>
+    <p>当前页面和别的页面看起来完全一样，用户不知道自己在哪里。高亮应当用品牌色背景或边框。</p>
+  </div>
+</div>
+
+<div class="lesson-section">
+  <h2>效果展示</h2>
+  <h3>标准卡片</h3>
+  <div class="demo-card">
+    <div class="demo-label">CARD</div>
+    <div class="card" style="max-width:400px;">
+      <div class="card-header">卡片标题</div>
+      <div class="card-body">
+        <p style="margin:0;color:var(--text-secondary);">这是卡片的主体内容区域。可以放置文字、图表、列表等各种信息。</p>
+      </div>
+      <div class="card-footer">
+        <button class="btn btn-primary btn-sm">确认</button>
+        <button class="btn btn-text btn-sm">取消</button>
+      </div>
+    </div>
+  </div>
+
+  <h3>扁平卡片（无边框）</h3>
+  <div class="demo-card">
+    <div class="demo-label">FLAT CARD</div>
+    <div class="card card-flat" style="max-width:400px;">
+      <div class="card-body">
+        <div style="font-weight:600;margin-bottom:8px;">设置项名称</div>
+        <p style="margin:0;color:var(--text-secondary);font-size:14px;">这是一段设置的描述文字，帮助用户理解这个选项的作用。</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>导航栏</h3>
+  <div class="demo-card">
+    <div class="demo-label">NAVIGATION</div>
+    <ul class="nav" style="margin-bottom:16px;">
+      <li><a class="nav-link active" href="#">首页</a></li>
+      <li><a class="nav-link" href="#">教程</a></li>
+      <li><a class="nav-link" href="#">组件</a></li>
+      <li><a class="nav-link" href="#">关于</a></li>
+    </ul>
+    <ul class="nav nav-tabs">
+      <li><a class="nav-link active" href="#">基本信息</a></li>
+      <li><a class="nav-link" href="#">安全设置</a></li>
+      <li><a class="nav-link" href="#">通知偏好</a></li>
+    </ul>
+  </div>
+
+  <h3>模态框示意</h3>
+  <div class="demo-card">
+    <div class="demo-label">MODAL</div>
+    <div style="max-width:400px;background:var(--bg-card);border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,0.12);overflow:hidden;">
+      <div style="padding:20px 24px;border-bottom:1px solid var(--border-color-split);font-weight:600;font-size:16px;">确认删除</div>
+      <div style="padding:24px;">
+        <p style="margin:0;color:var(--text-secondary);">删除后数据无法恢复，是否继续？</p>
+      </div>
+      <div style="padding:12px 24px;border-top:1px solid var(--border-color-split);display:flex;justify-content:flex-end;gap:8px;">
+        <button class="btn btn-text">取消</button>
+        <button class="btn btn-danger">确认删除</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="lesson-section">
+  <h2>完整代码</h2>
+  <pre class="code-block">&lt;!-- 标准卡片 --&gt;
+&lt;div class="card"&gt;
+  &lt;div class="card-header"&gt;卡片标题&lt;/div&gt;
+  &lt;div class="card-body"&gt;
+    卡片内容...
+  &lt;/div&gt;
+  &lt;div class="card-footer"&gt;
+    &lt;button class="btn btn-primary btn-sm"&gt;确认&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- 导航栏 --&gt;
+&lt;ul class="nav"&gt;
+  &lt;li&gt;&lt;a class="nav-link active" href="#"&gt;首页&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a class="nav-link" href="#"&gt;教程&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!-- Tab 导航 --&gt;
+&lt;ul class="nav nav-tabs"&gt;
+  &lt;li&gt;&lt;a class="nav-link active" href="#"&gt;基本信息&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a class="nav-link" href="#"&gt;安全设置&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</pre>
+</div>
+
+<div class="exercise-box">
+  <h3>练习</h3>
+  <p><strong>练习 1</strong>：用卡片组件做一个个人资料卡片，包含头像区域、用户名、简介、关注按钮。</p>
+  <p><strong>练习 2</strong>：设计一个设置页面，用 Tab 导航分为"基本设置""安全设置""通知设置"三个标签页。</p>
+  <p><strong>练习 3</strong>：实现一个删除确认模态框，包含标题、警告文字、取消按钮和红色确认按钮。点击遮罩层可以关闭。</p>
+</div>
+{% endblock %}

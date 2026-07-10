@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+
+{% block title %}Step 1 设计原则 — 前端设计系统教程{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1>Step 1 设计原则</h1>
+  <p>对齐、对比、重复、亲密性；大厂设计价值观</p>
+  <div class="tag tag-brand">核心基础</div>
+</div>
+
+<div class="lesson-section">
+  <h2>场景</h2>
+  <p>打开一个网页，有的让人感觉很舒服，有的却显得杂乱。差别往往不在于用了多贵的素材，而在于有没有遵循基本的设计原则。在写第一行 CSS 之前，先把原则定下来，后面所有的颜色、字体、组件都会围绕这些原则展开。</p>
+  <p>这套规范面向的是<strong>工具类、教程类、数据展示类</strong>的 Web 应用，风格偏简洁科技，不需要花哨的装饰。</p>
+</div>
+
+<div class="lesson-section">
+  <h2>原理</h2>
+  <h3>四大基础原则（来自《写给大家看的设计书》）</h3>
+  <ul>
+    <li><strong>对齐</strong>：页面上的每个元素都应当与某个其他元素有视觉联系。居中对齐适合标题，左对齐适合正文。</li>
+    <li><strong>对比</strong>：通过大小、颜色、粗细的差异来建立信息层级。没有对比，用户就分不清主次。</li>
+    <li><strong>重复</strong>：相同的视觉元素（颜色、字体、间距）反复出现，形成统一的品牌感。</li>
+    <li><strong>亲密性</strong>：相关的元素靠得近，不相关的离得远。留白不是浪费，是组织信息的工具。</li>
+  </ul>
+
+  <h3>Ant Design 设计价值观（阿里）</h3>
+  <ul>
+    <li><strong>确定性</strong>：同样的操作产生同样的结果，组件样式保持一致。</li>
+    <li><strong>意义感</strong>：每个设计决策都有目的，不为了好看而好看。</li>
+    <li><strong>生长性</strong>：规范要留有余地，方便未来扩展。</li>
+    <li><strong>自然</strong>：符合人的直觉，不需要学习就能上手。</li>
+  </ul>
+</div>
+
+<div class="lesson-section">
+  <h2>要点</h2>
+  <ol>
+    <li><strong>先定骨架，再填血肉</strong>：先确定页面的大区块（Header / Sidebar / Main / Footer），再细化每个区块内部。</li>
+    <li><strong>一切对齐到网格</strong>：所有元素的边距、宽度尽量是 8 的倍数（8px、16px、24px...）。</li>
+    <li><strong>颜色不超过三种主色</strong>：一个主色（品牌色）、一个辅助色、一组中性灰。功能色（成功/警告/错误）按场景使用。</li>
+    <li><strong>字体层级不超过五级</strong>：页面标题、区块标题、小标题、正文、辅助文字，再多就乱了。</li>
+    <li><strong>卡片化思维</strong>：相关内容封装在卡片里，卡片之间用间距分隔，比画边框更现代。</li>
+  </ol>
+</div>
+
+<div class="lesson-section">
+  <h2>常见错误</h2>
+
+  <div class="mistake-card">
+    <div class="mistake-title">❌ 居中对齐一切</div>
+    <p>正文也大段居中，导致阅读时视线左右跳动，很累。正文应当左对齐。</p>
+  </div>
+
+  <div class="mistake-card">
+    <div class="mistake-title">❌ 颜色太多太杂</div>
+    <p>每个按钮都用不同的颜色，页面像调色盘。应当限制主色数量，用饱和度/明度变化来区分状态。</p>
+  </div>
+
+  <div class="mistake-card">
+    <div class="mistake-title">❌ 间距随意</div>
+    <p>有的地方 10px，有的地方 15px，有的地方 18px。统一用 8px 的倍数，视觉上立刻整齐。</p>
+  </div>
+</div>
+
+<div class="lesson-section">
+  <h2>效果展示</h2>
+  <h3>✅ 正确的对齐与层级</h3>
+  <div class="demo-card">
+    <div class="demo-label">DEMO</div>
+    <div style="max-width:400px;">
+      <div style="font-size:20px;font-weight:600;margin-bottom:8px;">项目总览</div>
+      <div style="font-size:14px;color:var(--text-secondary);margin-bottom:16px;">查看所有项目的运行状态和统计数据</div>
+      <div class="card" style="margin-bottom:12px;">
+        <div class="card-body">
+          <div style="font-weight:600;">在线用户数</div>
+          <div style="font-size:24px;font-weight:700;color:var(--color-primary);">1,284</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <div style="font-weight:600;">今日请求量</div>
+          <div style="font-size:24px;font-weight:700;color:var(--color-primary);">45.2K</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h3>❌ 错误的对齐与层级</h3>
+  <div class="demo-card" style="border-color:var(--color-error);">
+    <div class="demo-label" style="color:var(--color-error);">BAD DEMO</div>
+    <div style="max-width:400px;">
+      <div style="font-size:18px;font-weight:400;text-align:center;margin-bottom:12px;">项目总览</div>
+      <div style="font-size:13px;color:#666;margin-bottom:8px;padding-left:5px;">查看所有项目的运行状态和统计数据</div>
+      <div style="border:1px solid #ccc;padding:10px;margin-bottom:8px;">
+        <div style="font-weight:600;font-size:15px;">在线用户数</div>
+        <div style="font-size:22px;color:blue;">1,284</div>
+      </div>
+      <div style="border:1px solid #ccc;padding:10px;">
+        <div style="font-weight:600;font-size:15px;">今日请求量</div>
+        <div style="font-size:20px;color:green;">45.2K</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="lesson-section">
+  <h2>完整代码</h2>
+  <p>上面"正确"示例的核心 HTML 结构：</p>
+  <pre class="code-block">&lt;div style="max-width:400px;"&gt;
+  &lt;!-- 标题左对齐，字号、字重形成层级 --&gt;
+  &lt;div style="font-size:20px;font-weight:600;margin-bottom:8px;"&gt;
+    项目总览
+  &lt;/div&gt;
+  &lt;div style="font-size:14px;color:var(--text-secondary);margin-bottom:16px;"&gt;
+    查看所有项目的运行状态和统计数据
+  &lt;/div&gt;
+
+  &lt;!-- 卡片容器：圆角、阴影、统一内边距 --&gt;
+  &lt;div class="card" style="margin-bottom:12px;"&gt;
+    &lt;div class="card-body"&gt;
+      &lt;div style="font-weight:600;"&gt;在线用户数&lt;/div&gt;
+      &lt;div style="font-size:24px;font-weight:700;color:var(--color-primary);"&gt;
+        1,284
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</pre>
+</div>
+
+<div class="exercise-box">
+  <h3>练习</h3>
+  <p><strong>练习 1</strong>：打开你正在做的某个页面，检查所有元素的间距是否是 8 的倍数。如果不是，调整成 8、16、24、32 或 40。</p>
+  <p><strong>练习 2</strong>：找一段居中的大段文字（超过两行），改成左对齐，看看阅读体验是否有提升。</p>
+  <p><strong>练习 3</strong>：在一个页面上，数一下使用了多少种不同的颜色。如果超过 6 种（不含中性灰），尝试减少到 3 种主色。</p>
+</div>
+{% endblock %}

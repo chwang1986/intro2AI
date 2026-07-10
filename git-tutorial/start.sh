@@ -4,8 +4,8 @@
 cd "$(dirname "$0")"
 
 # 激活虚拟环境（使用 intro2AI 项目共享的虚拟环境）
-if [ -d "../本地ollama模型调用/venv/" ]; then
-    source ../本地ollama模型调用/venv/bin/activate
+if [ -d "../venv/" ]; then
+    source ../venv/bin/activate
 elif [ -d "../../本地ollama模型调用/venv/" ]; then
     source ../../本地ollama模型调用/venv/bin/activate
 fi

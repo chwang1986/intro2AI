@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+
+{% block title %}Step 2 色彩系统 — 前端设计系统教程{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1>Step 2 色彩系统</h1>
+  <p>设计令牌、主色、辅色、功能色、中性色阶</p>
+  <div class="tag tag-brand">核心基础</div>
+</div>
+
+<div class="lesson-section">
+  <h2>场景</h2>
+  <p>页面上的按钮、文字、背景、边框都需要颜色。如果没有统一规划，很容易出现"这个蓝和那个蓝不一样"的情况。色彩系统就是把所有颜色提前定义好，每个颜色都有名字和用途，开发时直接引用。</p>
+</div>
+
+<div class="lesson-section">
+  <h2>原理</h2>
+  <h3>Ant Design 的色板生成逻辑</h3>
+  <p>Ant Design 不是凭感觉选颜色，而是基于 HSB 色彩模型（色相 Hue、饱和度 Saturation、亮度 Brightness），从一个主色出发，通过算法生成 10 个梯度的色板。这样做的好处是：</p>
+  <ul>
+    <li>颜色之间有过渡，不会跳跃感太强。</li>
+    <li>可以保证不同亮度下的对比度都足够。</li>
+    <li>hover、active、disabled 状态有自然的深浅变化。</li>
+  </ul>
+
+  <h3>色彩心理学（实用版）</h3>
+  <ul>
+    <li><strong>蓝色</strong>：科技、信任、冷静。适合做品牌主色。</li>
+    <li><strong>绿色</strong>：成功、通过、正常。用于正面反馈。</li>
+    <li><strong>黄色/橙色</strong>：警告、注意。用于需要用户留意的信息。</li>
+    <li><strong>红色</strong>：错误、危险、删除。用于负面反馈。</li>
+    <li><strong>灰色</strong>：中性、辅助、禁用。用于文字、边框、背景。</li>
+  </ul>
+</div>
+
+<div class="lesson-section">
+  <h2>要点</h2>
+  <ol>
+    <li><strong>用 CSS 变量定义颜色</strong>：不要写死十六进制，用 <code class="code-inline">var(--color-primary)</code>，方便全局换肤。</li>
+    <li><strong>每个颜色至少定义三个状态</strong>：默认、hover、active。比如主色要有 <code class="code-inline">--color-primary</code>、<code class="code-inline">--color-primary-hover</code>、<code class="code-inline">--color-primary-active</code>。</li>
+    <li><strong>功能色必须成对出现</strong>：前景色 + 背景色。比如成功提示，文字用 <code class="code-inline">--color-success</code>，背景用 <code class="code-inline">--color-success-bg</code>。</li>
+    <li><strong>中性色用透明度表示层级</strong>：主要文字 <code class="code-inline">rgba(0,0,0,0.88)</code>，次要 <code class="code-inline">0.65</code>，辅助 <code class="code-inline">0.45</code>，禁用 <code class="code-inline">0.25</code>。</li>
+    <li><strong>背景分层</strong>：页面背景 <code class="code-inline">#F5F7FA</code>，卡片背景 <code class="code-inline">#FFFFFF</code>，代码背景 <code class="code-inline">#F6F8FA</code>，形成自然的层级。</li>
+  </ol>
+</div>
+
+<div class="lesson-section">
+  <h2>常见错误</h2>
+
+  <div class="mistake-card">
+    <div class="mistake-title">❌ 颜色对比度不足</div>
+    <p>浅灰文字放在白底上，或者蓝色按钮配白色文字但蓝色太浅。建议用工具检查对比度，正文对比度至少 4.5:1。</p>
+  </div>
+
+  <div class="mistake-card">
+    <div class="mistake-title">❌ 功能色乱用</div>
+    <p>用红色表示"查看详情"，绿色表示"删除"。红色和绿色在界面中有强烈的语义，不能随意互换。</p>
+  </div>
+
+  <div class="mistake-card">
+    <div class="mistake-title">❌ 忽略暗色文字在有色背景上的表现</div>
+    <p>在蓝色背景上直接放黑色文字，看起来脏。有色背景上应当用白色文字。</p>
+  </div>
+</div>
+
+<div class="lesson-section">
+  <h2>效果展示</h2>
+  <h3>主色色板</h3>
+  <div class="demo-card">
+    <div class="demo-label">COLOR PALETTE</div>
+    <div class="color-swatch"><div class="color-box" style="background:#E6F4FF;"></div><div class="color-info"><div class="color-name">--color-primary-light</div><div class="color-value">#E6F4FF</div></div></div>
+    <div class="color-swatch"><div class="color-box" style="background:#1677FF;"></div><div class="color-info"><div class="color-name">--color-primary</div><div class="color-value">#1677FF</div></div></div>
+    <div class="color-swatch"><div class="color-box" style="background:#4096FF;"></div><div class="color-info"><div class="color-name">--color-primary-hover</div><div class="color-value">#4096FF</div></div></div>
+    <div class="color-swatch"><div class="color-box" style="background:#0958D9;"></div><div class="color-info"><div class="color-name">--color-primary-active</div><div class="color-value">#0958D9</div></div></div>
+  </div>
+
+  <h3>功能色</h3>
+  <div class="demo-card">
+    <div class="demo-label">FUNCTIONAL COLORS</div>
+    <div class="row">
+      <div class="col-3"><div class="color-swatch"><div class="color-box" style="background:#52C41A;"></div><div class="color-info"><div class="color-name">成功</div><div class="color-value">#52C41A</div></div></div></div>
+      <div class="col-3"><div class="color-swatch"><div class="color-box" style="background:#FAAD14;"></div><div class="color-info"><div class="color-name">警告</div><div class="color-value">#FAAD14</div></div></div></div>
+      <div class="col-3"><div class="color-swatch"><div class="color-box" style="background:#F5222D;"></div><div class="color-info"><div class="color-name">错误</div><div class="color-value">#F5222D</div></div></div></div>
+      <div class="col-3"><div class="color-swatch"><div class="color-box" style="background:#06B6D4;"></div><div class="color-info"><div class="color-name">辅助</div><div class="color-value">#06B6D4</div></div></div></div>
+    </div>
+  </div>
+
+  <h3>中性灰阶</h3>
+  <div class="demo-card">
+    <div class="demo-label">GRAY SCALE</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <div style="width:60px;height:60px;background:#FFFFFF;border:1px solid var(--border-color);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10px;color:#999;">#FFF</div>
+      <div style="width:60px;height:60px;background:#FAFAFA;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10px;color:#999;">#FAFA</div>
+      <div style="width:60px;height:60px;background:#F5F5F5;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10px;color:#999;">#F5F5</div>
+      <div style="width:60px;height:60px;background:#F0F0F0;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10px;color:#999;">#F0F0</div>
+      <div style="width:60px;height:60px;background:#D9D9D9;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff;">#D9D9</div>
+      <div style="width:60px;height:60px;background:#BFBFBF;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff;">#BFBF</div>
+      <div style="width:60px;height:60px;background:#8C8C8C;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff;">#8C8C</div>
+      <div style="width:60px;height:60px;background:#595959;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff;">#5959</div>
+      <div style="width:60px;height:60px;background:#262626;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff;">#2626</div>
+      <div style="width:60px;height:60px;background:#000000;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff;">#000</div>
+    </div>
+  </div>
+
+  <h3>按钮状态展示</h3>
+  <div class="demo-card">
+    <div class="demo-label">BUTTON STATES</div>
+    <div class="flex gap-3 items-center">
+      <button class="btn btn-primary">默认</button>
+      <button class="btn btn-primary" style="opacity:0.85;">Hover</button>
+      <button class="btn btn-primary" style="transform:translateY(1px);opacity:1;background:#0958D9;">Active</button>
+      <button class="btn btn-primary" disabled>禁用</button>
+    </div>
+  </div>
+</div>
+
+<div class="lesson-section">
+  <h2>完整代码</h2>
+  <p>核心 CSS 变量定义：</p>
+  <pre class="code-block">:root {
+  /* 主色 */
+  --color-primary: #1677FF;
+  --color-primary-hover: #4096FF;
+  --color-primary-active: #0958D9;
+  --color-primary-light: #E6F4FF;
+
+  /* 功能色 */
+  --color-success: #52C41A;
+  --color-success-bg: #F6FFED;
+  --color-warning: #FAAD14;
+  --color-warning-bg: #FFFBE6;
+  --color-error: #F5222D;
+  --color-error-bg: #FFF1F0;
+
+  /* 中性色 */
+  --gray-1: #FFFFFF;
+  --gray-2: #FAFAFA;
+  --gray-3: #F5F5F5;
+  --gray-4: #F0F0F0;
+  --gray-5: #D9D9D9;
+  --gray-6: #BFBFBF;
+  --gray-7: #8C8C8C;
+  --gray-8: #595959;
+  --gray-9: #434343;
+  --gray-10: #262626;
+
+  /* 背景 */
+  --bg-page: #F5F7FA;
+  --bg-card: #FFFFFF;
+  --bg-code: #F6F8FA;
+
+  /* 文字 */
+  --text-primary: rgba(0, 0, 0, 0.88);
+  --text-secondary: rgba(0, 0, 0, 0.65);
+  --text-tertiary: rgba(0, 0, 0, 0.45);
+  --text-disabled: rgba(0, 0, 0, 0.25);
+}</pre>
+</div>
+
+<div class="exercise-box">
+  <h3>练习</h3>
+  <p><strong>练习 1</strong>：打开 Ant Design 的色板生成工具（antd color palette），输入一个你喜欢的颜色，观察生成的 10 个梯度。把结果截图保存。</p>
+  <p><strong>练习 2</strong>：在现有项目里搜索所有 <code class="code-inline">#</code> 开头的颜色值，统计有多少种不同的颜色。尝试用 CSS 变量替换重复的颜色。</p>
+  <p><strong>练习 3</strong>：用这套色板设计一个"提交表单"页面，包含主按钮、取消按钮、输入框边框、错误提示，只用变量不用写死颜色。</p>
+</div>
+{% endblock %}

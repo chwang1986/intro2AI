@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+
+{% block title %}Step 9 动画与交互 — 前端设计系统教程{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1>Step 9 动画与交互</h1>
+  <p>过渡曲线、状态反馈、微交互原则</p>
+  <div class="tag tag-brand">进阶</div>
+</div>
+
+<div class="lesson-section">
+  <h2>场景</h2>
+  <p>页面不是静止的图片，用户会和它互动：点击按钮、填写表单、加载数据。动画和交互的作用是让这些变化更自然，给用户即时的反馈，让用户知道"系统收到了我的操作"。</p>
+</div>
+
+<div class="lesson-section">
+  <h2>原理</h2>
+  <h3>为什么需要动画反馈</h3>
+  <ul>
+    <li><strong>降低焦虑</strong>：点击提交后如果没有任何反应，用户会怀疑自己到底点没点上。一个加载动画就能缓解这种焦虑。</li>
+    <li><strong>引导注意力</strong>：新内容出现时带一个淡入动画，用户的视线会自然地被吸引过去。</li>
+    <li><strong>强化因果关系</strong>：按钮按下去时有一个下沉效果，用户会感觉到"是我按下去的"。</li>
+  </ul>
+
+  <h3>Ant Design 的动效规范</h3>
+  <ul>
+    <li><strong>出场动画</strong>：淡入 + 轻微上移，持续 0.2s。用于弹窗、提示、新内容。</li>
+    <li><strong>离场动画</strong>：淡出 + 轻微上移，持续 0.15s。比出场快，因为用户不想再看到它。</li>
+    <li><strong>状态过渡</strong>：颜色、边框、阴影的变化持续 0.15s ~ 0.25s。太快会闪眼，太慢会拖沓。</li>
+  </ul>
+
+  <h3>缓动曲线（Easing）</h3>
+  <p>缓动曲线决定了动画的速度变化：</p>
+  <ul>
+    <li><strong>ease</strong>：默认，先加速后减速。适合大多数过渡效果。</li>
+    <li><strong>ease-out</strong>：开始快，后面慢。适合出场动画（元素进入视野）。</li>
+    <li><strong>ease-in</strong>：开始慢，后面快。适合离场动画（元素离开视野）。</li>
+    <li><strong>linear</strong>：匀速。适合循环动画（加载旋转、进度条）。</li>
+  </ul>
+</div>
+
+<div class="lesson-section">
+  <h2>要点</h2>
+  <ol>
+    <li><strong>动画时间控制在 0.15s ~ 0.4s</strong>：低于 0.1s 人眼察觉不到，高于 0.5s 会感觉拖沓。</li>
+    <li><strong>优先使用 transform 和 opacity</strong>：这两个属性不会触发浏览器的重排（reflow），性能最好。避免直接改变 width、height、top、left。</li>
+    <li><strong>减少运动偏好（prefers-reduced-motion）</strong>：有些用户不喜欢动画（或因为晕动症）。用 <code class="code-inline">@media (prefers-reduced-motion: reduce)</code> 关闭非必要动画。</li>
+    <li><strong>hover 状态要即时反馈</strong>：鼠标移上去 0.15s 内变色，让用户知道这是可点击的。</li>
+    <li><strong>加载动画要循环</strong>：旋转、跳动、骨架屏的流动，必须循环播放，直到加载完成。</li>
+  </ol>
+</div>
+
+<div class="lesson-section">
+  <h2>常见错误</h2>
+
+  <div class="mistake-card">
+    <div class="mistake-title">❌ 动画太长</div>
+    <p>一个弹窗用了 1 秒钟才完全显示，用户已经等不及了。入场动画 0.2s，离场 0.15s 是最佳实践。</p>
+  </div>
+
+  <div class="mistake-card">
+    <div class="mistake-title">❌ 滥用动画</div>
+    <p>每个元素都有动画，页面像个万花筒。动画应当是"调味品"，只在需要引起注意的地方使用。</p>
+  </div>
+
+  <div class="mistake-card">
+    <div class="mistake-title">❌ 没有考虑性能</div>
+    <p>用 JavaScript 定时器改变元素的 left/top 来实现动画，会导致每帧都重排，卡顿明显。应当用 CSS transition/animation + transform。</p>
+  </div>
+</div>
+
+<div class="lesson-section">
+  <h2>效果展示</h2>
+  <h3>按钮交互</h3>
+  <div class="demo-card">
+    <div class="demo-label">BUTTON INTERACTIONS</div>
+    <div class="flex gap-3 items-center flex-wrap">
+      <button class="btn btn-primary" style="transition:all 0.15s ease;">Hover 我（变色）</button>
+      <button class="btn btn-primary" style="transition:all 0.15s ease;" onclick="this.style.transform='translateY(1px)'" onmouseup="this.style.transform='translateY(0)'">点击我（下沉）</button>
+    </div>
+  </div>
+
+  <h3>加载动画</h3>
+  <div class="demo-card">
+    <div class="demo-label">LOADING ANIMATIONS</div>
+    <div class="flex gap-4 items-center">
+      <div style="text-align:center;">
+        <div style="width:24px;height:24px;border:2px solid var(--border-color);border-top-color:var(--color-primary);border-radius:50%;animation:spin 0.8s linear infinite;"></div>
+        <div style="font-size:12px;color:var(--text-tertiary);margin-top:8px;">旋转加载</div>
+      </div>
+      <div style="text-align:center;">
+        <div style="display:flex;gap:4px;">
+          <div style="width:8px;height:8px;background:var(--color-primary);border-radius:50%;animation:pulse 1s ease-in-out infinite;"></div>
+          <div style="width:8px;height:8px;background:var(--color-primary);border-radius:50%;animation:pulse 1s ease-in-out 0.2s infinite;"></div>
+          <div style="width:8px;height:8px;background:var(--color-primary);border-radius:50%;animation:pulse 1s ease-in-out 0.4s infinite;"></div>
+        </div>
+        <div style="font-size:12px;color:var(--text-tertiary);margin-top:8px;">脉冲加载</div>
+      </div>
+      <div style="text-align:center;">
+        <div style="width:100px;height:8px;background:var(--gray-4);border-radius:4px;overflow:hidden;">
+          <div style="height:100%;width:60%;background:var(--color-primary);border-radius:4px;animation:progress 2s ease-in-out infinite;"></div>
+        </div>
+        <div style="font-size:12px;color:var(--text-tertiary);margin-top:8px;">进度条</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>淡入效果</h3>
+  <div class="demo-card">
+    <div class="demo-label">FADE IN</div>
+    <div style="animation:fadeInUp 0.3s ease-out;">
+      <div class="card" style="max-width:300px;">
+        <div class="card-body">
+          <div style="font-weight:600;">新消息</div>
+          <p style="margin:4px 0 0;color:var(--text-secondary);font-size:14px;">这条内容刚刚出现，带有淡入动画。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="lesson-section">
+  <h2>完整代码</h2>
+  <pre class="code-block">/* 旋转加载 */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--border-color);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+/* 淡入上移动画 */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.fade-in-up {
+  animation: fadeInUp 0.2s ease-out;
+}
+
+/* 按钮交互 */
+.btn {
+  transition: all 0.15s ease;
+}
+.btn:hover {
+  opacity: 0.85;
+}
+.btn:active {
+  transform: translateY(1px);
+}
+
+/* 减少运动偏好 */
+@media (prefers-reduced-motion: reduce) {
+  .spinner,
+  .fade-in-up {
+    animation: none;
+  }
+  .btn {
+    transition: none;
+  }
+}</pre>
+</div>
+
+<div class="exercise-box">
+  <h3>练习</h3>
+  <p><strong>练习 1</strong>：给项目中的所有按钮添加 hover 和 active 过渡效果，使用 transform 而不是改变 width/height。</p>
+  <p><strong>练习 2</strong>：实现一个 toast 提示组件，出现时从上方滑入并淡入，3 秒后向上滑出并淡出。</p>
+  <p><strong>练习 3</strong>：测试你的动画在"减少动态效果"的系统设置下是否仍然可用（macOS：系统偏好设置 → 辅助功能 → 显示 → 减少动态效果）。</p>
+</div>
+
+<style>
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+@keyframes progress { 0% { width: 0%; } 50% { width: 60%; } 100% { width: 60%; } }
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+{% endblock %}

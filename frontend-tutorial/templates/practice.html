@@ -1,0 +1,217 @@
+{% extends "base.html" %}
+
+{% block title %}综合实战 — 前端设计系统教程{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1>综合实战</h1>
+  <p>用本教程的所有规范，搭建一个可复用的页面模板</p>
+  <div class="tag tag-success">实战</div>
+</div>
+
+<div class="lesson-section">
+  <h2>实战目标</h2>
+  <p>用本教程的 10 个步骤所学，搭建一个<strong>项目管理中心</strong>页面。这个页面包含：</p>
+  <ul>
+    <li>顶部统计卡片（色彩系统 + 容器组件）</li>
+    <li>项目列表表格（数据展示 + 响应式）</li>
+    <li>新建项目表单（基础组件 + 页面模板）</li>
+    <li>空状态与加载状态（动画与交互）</li>
+  </ul>
+  <p>完成后，这个页面可以直接作为模板套用到其他项目中。</p>
+</div>
+
+<div class="lesson-section">
+  <h2>实战一：统计卡片</h2>
+  <p>用 <code class="code-inline">.card</code> + <code class="code-inline">.text-*</code> 工具类搭建 4 个统计卡片。</p>
+  <div class="demo-card">
+    <div class="demo-label">DEMO</div>
+    <div class="row">
+      <div class="col-3">
+        <div class="card" style="text-align:center;">
+          <div class="card-body">
+            <div class="text-sm text-secondary">总项目</div>
+            <div class="text-2xl font-bold text-brand mt-2">12</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-3">
+        <div class="card" style="text-align:center;">
+          <div class="card-body">
+            <div class="text-sm text-secondary">进行中</div>
+            <div class="text-2xl font-bold text-warning mt-2">5</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-3">
+        <div class="card" style="text-align:center;">
+          <div class="card-body">
+            <div class="text-sm text-secondary">已完成</div>
+            <div class="text-2xl font-bold text-success mt-2">7</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-3">
+        <div class="card" style="text-align:center;">
+          <div class="card-body">
+            <div class="text-sm text-secondary">待处理</div>
+            <div class="text-2xl font-bold text-error mt-2">2</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="lesson-section">
+  <h2>实战二：项目表格</h2>
+  <p>用 <code class="code-inline">.table</code> + <code class="code-inline">.tag</code> 展示项目数据。</p>
+  <div class="demo-card">
+    <div class="demo-label">DEMO</div>
+    <div class="table-wrap">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>项目名称</th>
+            <th>状态</th>
+            <th>负责人</th>
+            <th>进度</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>前端设计系统</td>
+            <td><span class="tag tag-brand">进行中</span></td>
+            <td>张三</td>
+            <td>
+              <div class="progress" style="width:120px;">
+                <div class="progress-bar" style="width:75%;"></div>
+              </div>
+            </td>
+            <td><a href="#">编辑</a></td>
+          </tr>
+          <tr>
+            <td>Git 教程</td>
+            <td><span class="tag tag-success">已完成</span></td>
+            <td>李四</td>
+            <td>
+              <div class="progress" style="width:120px;">
+                <div class="progress-bar" style="width:100%;"></div>
+              </div>
+            </td>
+            <td><a href="#">查看</a></td>
+          </tr>
+          <tr>
+            <td>Python 教程</td>
+            <td><span class="tag tag-warning">待审核</span></td>
+            <td>王五</td>
+            <td>
+              <div class="progress" style="width:120px;">
+                <div class="progress-bar" style="width:90%;"></div>
+              </div>
+            </td>
+            <td><a href="#">编辑</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="lesson-section">
+  <h2>实战三：新建表单</h2>
+  <p>用 <code class="code-inline">.input</code> + <code class="code-inline">.textarea</code> + <code class="code-inline">.select</code> + <code class="code-inline">.btn</code> 搭建表单。</p>
+  <div class="demo-card">
+    <div class="demo-label">DEMO</div>
+    <div style="max-width:500px;">
+      <div style="margin-bottom:16px;">
+        <label style="display:block;font-size:14px;font-weight:500;margin-bottom:6px;">项目名称 <span style="color:var(--color-error);">*</span></label>
+        <input class="input" placeholder="请输入项目名称">
+      </div>
+      <div style="margin-bottom:16px;">
+        <label style="display:block;font-size:14px;font-weight:500;margin-bottom:6px;">项目描述</label>
+        <textarea class="textarea" rows="3" placeholder="请输入项目描述"></textarea>
+      </div>
+      <div style="margin-bottom:16px;">
+        <label style="display:block;font-size:14px;font-weight:500;margin-bottom:6px;">负责人</label>
+        <select class="select">
+          <option>张三</option>
+          <option>李四</option>
+          <option>王五</option>
+        </select>
+      </div>
+      <div class="flex gap-3">
+        <button class="btn btn-primary">提交</button>
+        <button class="btn btn-ghost">取消</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="lesson-section">
+  <h2>实战四：空状态</h2>
+  <p>当项目列表为空时的友好提示。</p>
+  <div class="demo-card">
+    <div class="demo-label">DEMO</div>
+    <div class="empty">
+      <svg class="empty-icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="12" y="12" width="40" height="40" rx="4"/>
+        <path d="M20 28h24M20 36h16"/>
+      </svg>
+      <div class="empty-title">暂无项目</div>
+      <p style="margin:0 0 16px;">您还没有创建任何项目</p>
+      <button class="btn btn-primary">创建第一个项目</button>
+    </div>
+  </div>
+</div>
+
+<div class="lesson-section">
+  <h2>完整页面代码</h2>
+  <p>以下是一个可以直接复制使用的完整页面模板：</p>
+  <pre class="code-block">&lt;!DOCTYPE html&gt;
+&lt;html lang="zh-CN"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;title&gt;项目管理中心&lt;/title&gt;
+  &lt;link rel="stylesheet" href="./design-tokens.css"&gt;
+&lt;/head&gt;
+&lt;body style="background:var(--bg-page);"&gt;
+  &lt;div class="container" style="padding:40px 24px;"&gt;
+    &lt;h1 style="font-size:24px;font-weight:600;margin-bottom:24px;"&gt;项目管理中心&lt;/h1&gt;
+
+    &lt;!-- 统计卡片 --&gt;
+    &lt;div class="row"&gt;
+      &lt;div class="col-3 col-sm-6 col-xs-12"&gt;
+        &lt;div class="card" style="text-align:center;"&gt;
+          &lt;div class="card-body"&gt;
+            &lt;div class="text-sm text-secondary"&gt;总项目&lt;/div&gt;
+            &lt;div class="text-2xl font-bold text-brand mt-2"&gt;12&lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;!-- 更多卡片... --&gt;
+    &lt;/div&gt;
+
+    &lt;!-- 项目表格 --&gt;
+    &lt;div class="card mt-4"&gt;
+      &lt;div class="card-header"&gt;项目列表&lt;/div&gt;
+      &lt;div class="card-body"&gt;
+        &lt;div class="table-wrap"&gt;
+          &lt;table class="table"&gt;...&lt;/table&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+</div>
+
+<div class="exercise-box">
+  <h3>最终练习</h3>
+  <p><strong>练习 1</strong>：用上面的完整模板代码，创建一个独立的 HTML 文件并打开，验证所有样式是否正常。</p>
+  <p><strong>练习 2</strong>：把这个项目管理中心页面改造成 Git 教程的"课程进度"页面，替换数据为课程列表和完成进度。</p>
+  <p><strong>练习 3</strong>：为手机端优化这个页面：统计卡片变成两列，表格支持横向滚动，表头固定。</p>
+</div>
+{% endblock %}
