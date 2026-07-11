@@ -9,6 +9,15 @@
 </div>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">场景</span>程序需要记住数据</h2>
+  <div class="lesson-explain">
+    <p>想象你在整理房间。你有一些东西要存放——书、衣服、工具。你不会把它们随便扔在地上，而是会放进贴好标签的盒子里：「书籍」「冬衣」「螺丝刀」。当你需要某样东西时，只要看标签就能找到对应的盒子。</p>
+    <p>程序处理数据也是一样的道理。用户输入的名字、计算得到的分数、从网络下载的图片——这些都需要先存起来才能使用。<strong>变量</strong>就是程序里的「贴标签的盒子」，而<strong>类型</strong>则规定了盒子里能放什么东西。</p>
+    <p>比如 <code>name = "小明"</code> 就是创建了一个标签为 <code>name</code> 的盒子，里面放了一段文字。以后程序看到 <code>name</code> 这个标签，就知道去哪里取这段文字。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">起源</span>从「命名盒子」到变量概念</h2>
   <div class="lesson-explain">
     <p>变量（Variable）的概念可以追溯到 19 世纪数学家对代数的研究。在方程 <code>x + 3 = 5</code> 中，<code>x</code> 是一个「占位符」，代表一个我们暂时不知道但可以通过计算求出的值。这种思想被计算机科学家们直接借用到了编程中。</p>
@@ -23,15 +32,6 @@
     <p>假设你拿到一盒积木，里面有不同形状的木块。如果不加区分，你可能会把圆形块硬塞进方形孔里——结果当然是卡住。计算机处理数据时也面临同样的问题。</p>
     <p>在计算机底层，所有数据都是一串 0 和 1。同样 32 个二进制位，可以被解读为整数（比如 65）、浮点数（比如 1.8e-44）、或者一个字符（字母 'A' 的 ASCII 码就是 65）。如果不告诉计算机「这串二进制应该按什么规则解读」，它就会做出错误的理解。</p>
     <p>类型系统（Type System）就是解决这个问题的方案。它给每种数据贴上「标签」：这是整数、那是文字、这是真假值。不同的标签决定了数据能参与哪些运算——你可以对整数做加减，对字符串做拼接，但对字符串做除法就毫无意义。类型系统的本质是一套<strong>规则和保护机制</strong>，确保数据被正确使用。</p>
-  </div>
-</section>
-
-<section class="lesson-block">
-  <h2 class="lesson-title"><span class="lesson-num">场景</span>程序需要记住数据</h2>
-  <div class="lesson-explain">
-    <p>想象你在整理房间。你有一些东西要存放——书、衣服、工具。你不会把它们随便扔在地上，而是会放进贴好标签的盒子里：「书籍」「冬衣」「螺丝刀」。当你需要某样东西时，只要看标签就能找到对应的盒子。</p>
-    <p>程序处理数据也是一样的道理。用户输入的名字、计算得到的分数、从网络下载的图片——这些都需要先存起来才能使用。<strong>变量</strong>就是程序里的「贴标签的盒子」，而<strong>类型</strong>则规定了盒子里能放什么东西。</p>
-    <p>比如 <code>name = "小明"</code> 就是创建了一个标签为 <code>name</code> 的盒子，里面放了一段文字。以后程序看到 <code>name</code> 这个标签，就知道去哪里取这段文字。</p>
   </div>
 </section>
 
@@ -102,6 +102,34 @@
 </section>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">要点</span>基本类型与类型检查</h2>
+  <div class="lesson-explain">
+    <p>Python 有四种最常用的基础类型：<strong>int</strong>（整数）、<strong>float</strong>（浮点数）、<strong>str</strong>（字符串）、<strong>bool</strong>（布尔值）。你可以用 <code>type()</code> 函数随时查看一个变量的类型。</p>
+    <p>类型转换也很常用：用 <code>int()</code> 把字符串转成整数，<code>str()</code> 把数字转成字符串，<code>float()</code> 把整数转成小数。但转换时要注意——<code>int("abc")</code> 会报错，因为 "abc" 根本不是一个数字。</p>
+  </div>
+  <div class="lesson-code">
+    <div class="demo-label">代码示例</div>
+    <pre><code># 四种基础类型
+age = 25              # int 整数
+height = 1.75         # float 浮点数
+name = "Alice"        # str 字符串
+is_student = True     # bool 布尔值 (True / False)
+
+# 查看类型
+print(type(age))      # &lt;class 'int'&gt;
+print(type(name))     # &lt;class 'str'&gt;
+
+# 类型转换
+s = "100"
+num = int(s)          # 字符串转整数
+print(num + 1)        # 101
+
+pi_str = str(3.14)    # 数字转字符串
+print("pi = " + pi_str)  # pi = 3.14</code></pre>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">实验</span>亲手验证变量与类型的秘密</h2>
   <div class="lesson-explain">
     <p><strong>实验 1：用 id() 查看变量的内存地址</strong></p>
@@ -144,34 +172,6 @@ str(123)         # 成功 → "123"
 bool(0)          # 成功 → False
 bool("")         # 成功 → False
 bool("False")    # 成功 → True！非空字符串就是 True</code></pre>
-  </div>
-</section>
-
-<section class="lesson-block">
-  <h2 class="lesson-title"><span class="lesson-num">要点</span>基本类型与类型检查</h2>
-  <div class="lesson-explain">
-    <p>Python 有四种最常用的基础类型：<strong>int</strong>（整数）、<strong>float</strong>（浮点数）、<strong>str</strong>（字符串）、<strong>bool</strong>（布尔值）。你可以用 <code>type()</code> 函数随时查看一个变量的类型。</p>
-    <p>类型转换也很常用：用 <code>int()</code> 把字符串转成整数，<code>str()</code> 把数字转成字符串，<code>float()</code> 把整数转成小数。但转换时要注意——<code>int("abc")</code> 会报错，因为 "abc" 根本不是一个数字。</p>
-  </div>
-  <div class="lesson-code">
-    <div class="demo-label">代码示例</div>
-    <pre><code># 四种基础类型
-age = 25              # int 整数
-height = 1.75         # float 浮点数
-name = "Alice"        # str 字符串
-is_student = True     # bool 布尔值 (True / False)
-
-# 查看类型
-print(type(age))      # &lt;class 'int'&gt;
-print(type(name))     # &lt;class 'str'&gt;
-
-# 类型转换
-s = "100"
-num = int(s)          # 字符串转整数
-print(num + 1)        # 101
-
-pi_str = str(3.14)    # 数字转字符串
-print("pi = " + pi_str)  # pi = 3.14</code></pre>
   </div>
 </section>
 

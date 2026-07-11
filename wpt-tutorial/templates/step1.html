@@ -3,39 +3,38 @@
 {% block title %}Step 1 什么是无线输电 — 无线电能输电教程{% endblock %}
 
 {% block content %}
-<div class="page-header">
-  <h1>Step 1 — 什么是无线电能输电</h1>
-  <p>概念、历史、分类与基本原理</p>
-</div>
-
-<div class="lesson-block">
-  <div class="lesson-title">场景</div>
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">场景</span>场景引入</h2>
   <div class="lesson-explain">
     <p>手机放在充电板上就能充电，不需要插线；电动汽车停在车位上自动补能；心脏起搏器在人体内工作多年却无需更换电池……这些都是<strong>无线电能输电（Wireless Power Transfer, WPT）</strong>技术的应用。本教程的目标是从物理原理出发，理解这些技术是如何工作的。</p>
   </div>
-</div>
+</section>
 
-<h2 class="lesson-title"><span class="lesson-num">起源</span>从特斯拉到 MIT：无线输电的梦想</h2>
-<div class="lesson-explain">
-  <p>无线输电的故事，要从一个"疯狂"的科学家说起。</p>
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">起源</span>从特斯拉到 MIT：无线输电的梦想</h2>
+  <div class="lesson-explain">
+    <p>无线输电的故事，要从一个"疯狂"的科学家说起。</p>
   <p><strong>1831 年</strong>，英国科学家<strong>迈克尔·法拉第</strong>（Michael Faraday）在实验室里发现：当一块磁铁穿过线圈时，线圈中竟然产生了电流。这就是<strong>电磁感应</strong>现象——无线输电的物理基础。但当时法拉第并没有想到，这个现象有朝一日能让手机不用插线就能充电。</p>
   <p><strong>1891 年</strong>，<strong>尼古拉·特斯拉</strong>（Nikola Tesla）在美国哥伦比亚大学的演讲中，当众点亮了一盏没有连接任何导线的灯泡。他用两个巨大的线圈，通过磁场把电能从发射端"隔空"送到了接收端。特斯拉的野心远不止几米的距离——他后来在沃登克里弗塔（Wardenclyffe Tower）尝试用大地和电离层作为导体，向全球输送电能。虽然这个项目因资金断裂而失败，但特斯拉是第一个把"无线输电"从理论变成可见现象的人。</p>
   <p><strong>2007 年</strong>，麻省理工（MIT）的物理学家<strong>Marin Soljačić</strong>带领团队取得了突破性进展。他们利用<strong>磁共振耦合</strong>技术，在 2 米的距离上点亮了一个 60W 的灯泡，效率达到 40%。这一次，无线输电不再是实验室里的猎奇表演，而是朝着实用化迈出了一大步。</p>
   <p><strong>2017 年至今</strong>，Qi 标准让手机无线充电走进千家万户，电动汽车无线充电也从实验室走向商用停车场。特斯拉的梦想，正在以另一种方式实现。</p>
-</div>
+  </div>
+</section>
 
-<h2 class="lesson-title"><span class="lesson-num">思考</span>为什么要甩掉那根线？</h2>
-<div class="lesson-explain">
-  <p>假设你生活在 19 世纪末，电力刚刚普及。你发现每盏灯、每台机器都需要拖着一根电线，就像藤蔓一样爬满整个房间。你开始思考：能不能把这些线统统去掉？</p>
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">思考</span>为什么要甩掉那根线？</h2>
+  <div class="lesson-explain">
+    <p>假设你生活在 19 世纪末，电力刚刚普及。你发现每盏灯、每台机器都需要拖着一根电线，就像藤蔓一样爬满整个房间。你开始思考：能不能把这些线统统去掉？</p>
   <p>这是特斯拉当时面临的问题：<strong>导线的束缚</strong>。电线不仅不美观，还存在磨损、老化、接触不良、触电风险等问题。在工业环境中，移动设备（如电动牙刷、植入式医疗设备）根本不可能拖着一根电线工作。</p>
   <p>但问题是——电能不能像光一样，直接从空气中"传"过去？</p>
   <p>直流电肯定不行，因为恒定的电场和磁场不会在接收端感应出电流。特斯拉想到了<strong>交流电</strong>：变化的电流产生变化的磁场，变化的磁场又能在远处感应出电流。这就像是水波——如果你在水中上下拍动木板，远处的水面也会泛起涟漪。</p>
   <p>不过，特斯拉的方案有个致命问题：能量向四面八方扩散，只有极少一部分能被接收端捕获。这就是为什么他的长距离无线输电始终无法达到实用效率——能量像洪水一样淹没整个空间，而真正被利用的只有一滴。</p>
   <p>直到 2007 年，MIT 团队想出了一个巧妙的办法：让发射端和接收端在<strong>同一个频率上"跳舞"</strong>。就像两个人荡秋千，如果你推的频率恰好等于对方的固有频率，对方就能荡得很高；如果频率不对，能量就传递不过去。这就是磁共振耦合的核心思想，它让无线输电从"撒网捕鱼"变成了"精准投递"。</p>
-</div>
+  </div>
+</section>
 
-<div class="lesson-block">
-  <div class="lesson-title">概念</div>
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">原理</span>无线输电的基本原理</h2>
   <div class="lesson-explain">
     <p>无线电能输电，指的是<strong>不通过物理导线连接，将电能从电源传输到用电设备</strong>的技术。它的核心思想是：电能在空间中以一种"场"的形式传播，只要接收端能够捕捉到这种场，就能将其重新转化为电能。</p>
 
@@ -56,13 +55,8 @@
         </div>
       </div>
     </div>
-  </div>
-</div>
 
-<div class="lesson-block">
-  <div class="lesson-title">原理</div>
-  <div class="lesson-explain">
-    <h4>能量守恒视角</h4>
+<h4>能量守恒视角</h4>
     <p>无线输电本质上是<strong>能量从一种形式转换为另一种形式，在空间传播后再转换回来</strong>的过程：</p>
     <ul>
       <li><strong>电能 → 磁场能</strong>：发射线圈中通入交流电，产生交变磁场。</li>
@@ -82,11 +76,12 @@
       <li><strong>2017年至今</strong>：Qi 标准普及（手机无线充电），电动汽车无线充电进入商用。</li>
     </ul>
   </div>
-</div>
+</section>
 
-<h2 class="lesson-title"><span class="lesson-num">论证</span>为什么无线输电是可行的？</h2>
-<div class="lesson-explain">
-  <p>你可能会问：能量不通过导线，直接穿过空气传输，这不是违反常识吗？其实，这种"隔空传能"在自然界中比比皆是。</p>
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">论证</span>为什么无线输电是可行的？</h2>
+  <div class="lesson-explain">
+    <p>你可能会问：能量不通过导线，直接穿过空气传输，这不是违反常识吗？其实，这种"隔空传能"在自然界中比比皆是。</p>
   <p><strong>类比论证</strong>：太阳把能量送到地球，中间隔着 1.5 亿公里的真空，这就是最原始的"无线输电"——只是传送的是光能而非电能。无线电广播把音频信号传到千家万户，手机信号在空气中传输数据，这些都是电磁能量在空间中的传播。无线输电不过是把电磁波换成了低频磁场，把信息换成了能量。</p>
   <p><strong>为什么用磁场而不是电场？</strong>人体和大多数生物组织对低频磁场几乎"透明"，磁场不会像电场那样被人体强烈吸收。因此，磁耦合无线输电的生物安全性远高于微波辐射。</p>
   <p><strong>三种方案的对比</strong>：</p>
@@ -108,10 +103,11 @@
   <div class="highlight-box">
     <p><strong>关键结论</strong>：无线输电不是"替代"有线，而是在"有线无法到达"的场景中发挥作用——植入体内的医疗设备、需要频繁移动的消费电子、行驶中的电动汽车。它是一种补充，而不是取代。</p>
   </div>
-</div>
+  </div>
+</section>
 
-<div class="lesson-block">
-  <div class="lesson-title">要点</div>
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">要点</span>核心要点</h2>
   <div class="lesson-explain">
     <ol>
       <li><strong>距离决定技术路线</strong>：毫米级用电磁感应，米级用磁共振，公里级用微波/激光。</li>
@@ -121,45 +117,12 @@
       <li><strong>标准正在统一</strong>：手机领域 Qi 标准已普及，电动汽车领域 SAE J2954 和 IEC 61980 正在推进。</li>
     </ol>
   </div>
-</div>
+</section>
 
-<div class="lesson-block">
-  <div class="lesson-title">常见错误</div>
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">实验</span>动手感受无线输电</h2>
   <div class="lesson-explain">
-    <div class="mistake-card">
-        <p><strong>❌ 混淆"无线充电"和"无线输电"</strong><br>无线充电通常指电磁感应式（短距离、低功率），而无线输电是更广义的概念，包含中远距离传输。</p>
-    </div>
-    <div class="mistake-card">
-        <p><strong>❌ 认为无线输电没有损耗</strong><br>无线输电的损耗远大于有线。即使是效率最高的磁共振耦合，也很难超过 95%。</p>
-    </div>
-    <div class="mistake-card">
-        <p><strong>❌ 忽略谐振频率匹配</strong><br>磁共振耦合的核心是发射端和接收端的谐振频率必须严格一致，否则效率会急剧下降。这不是简单的"两个线圈靠近"。</p>
-    </div>
-  </div>
-</div>
-
-<div class="lesson-block">
-  <div class="lesson-title">示例</div>
-  <div class="lesson-demo">
-    <div class="demo-label">三种技术的距离与功率对比</div>
-    <div class="table-wrap">
-      <table class="table">
-        <thead>
-          <tr><th>技术</th><th>典型距离</th><th>典型功率</th><th>效率</th><th>代表应用</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>电磁感应</td><td>1 ~ 10 mm</td><td>5 ~ 15 W</td><td>70% ~ 90%</td><td>手机 Qi 充电</td></tr>
-          <tr><td>磁共振耦合</td><td>10 cm ~ 1 m</td><td>3 ~ 11 kW</td><td>75% ~ 93%</td><td>电动汽车无线充电</td></tr>
-          <tr><td>微波输电</td><td>数米 ~ 数公里</td><td>可达 MW 级</td><td>50% ~ 60%</td><td>空间太阳能电站</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
-
-<h2 class="lesson-title"><span class="lesson-num">实验</span>动手感受无线输电</h2>
-<div class="lesson-explain">
-  <p>你不需要昂贵的仪器，只需要一部支持无线充电的手机和一个无线充电器，就能亲身体验无线输电的关键特性。</p>
+    <p>你不需要昂贵的仪器，只需要一部支持无线充电的手机和一个无线充电器，就能亲身体验无线输电的关键特性。</p>
   <p><strong>实验 1：距离对充电的影响</strong></p>
   <ol>
     <li>把手机放在充电板正中央，观察充电指示灯是否亮起，记录手机屏幕上显示的充电功率（部分手机支持）。</li>
@@ -178,10 +141,47 @@
   <div class="highlight-box">
     <p><strong>思考题</strong>：为什么插入金属物体（如硬币、钥匙）后，充电板可能会发热甚至停止工作？（提示：涡流损耗与异物检测 FOD）</p>
   </div>
-</div>
+  </div>
+</section>
 
-<div class="lesson-block">
-  <div class="lesson-title">练习</div>
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">错误</span>常见错误</h2>
+  <div class="lesson-explain">
+    <div class="mistake-card">
+        <p><strong>❌ 混淆"无线充电"和"无线输电"</strong><br>无线充电通常指电磁感应式（短距离、低功率），而无线输电是更广义的概念，包含中远距离传输。</p>
+    </div>
+    <div class="mistake-card">
+        <p><strong>❌ 认为无线输电没有损耗</strong><br>无线输电的损耗远大于有线。即使是效率最高的磁共振耦合，也很难超过 95%。</p>
+    </div>
+    <div class="mistake-card">
+        <p><strong>❌ 忽略谐振频率匹配</strong><br>磁共振耦合的核心是发射端和接收端的谐振频率必须严格一致，否则效率会急剧下降。这不是简单的"两个线圈靠近"。</p>
+    </div>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">示例</span>典型应用与数据</h2>
+  <div class="lesson-explain">
+    <div class="lesson-demo">
+    <div class="demo-label">三种技术的距离与功率对比</div>
+    <div class="table-wrap">
+      <table class="table">
+        <thead>
+          <tr><th>技术</th><th>典型距离</th><th>典型功率</th><th>效率</th><th>代表应用</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>电磁感应</td><td>1 ~ 10 mm</td><td>5 ~ 15 W</td><td>70% ~ 90%</td><td>手机 Qi 充电</td></tr>
+          <tr><td>磁共振耦合</td><td>10 cm ~ 1 m</td><td>3 ~ 11 kW</td><td>75% ~ 93%</td><td>电动汽车无线充电</td></tr>
+          <tr><td>微波输电</td><td>数米 ~ 数公里</td><td>可达 MW 级</td><td>50% ~ 60%</td><td>空间太阳能电站</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">练习</span>课后练习</h2>
   <div class="lesson-explain">
     <div class="exercise-box">
         <p><strong>练习 1</strong>：列出你身边的 3 个无线供电设备，判断它们属于哪种技术（电磁感应 / 磁共振 / 微波）。</p>
@@ -191,11 +191,12 @@
         <p><strong>练习 5（验证题）</strong>：查阅 Qi2 标准和苹果 MagSafe 的资料，比较两者在磁吸对准机制上的异同。为什么 Qi2 要引入磁吸对准？</p>
     </div>
   </div>
-</div>
+</section>
 
-<h2 class="lesson-title"><span class="lesson-num">测验</span>你掌握了吗？</h2>
-<div class="lesson-explain">
-  <div class="demo-card">
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">测验</span>你掌握了吗？</h2>
+  <div class="lesson-explain">
+    <div class="demo-card">
     <p><strong>题目 1（判断）</strong>：无线输电的效率通常高于有线输电。</p>
     <p>A. 正确  B. 错误</p>
   </div>
@@ -215,5 +216,6 @@
     <p><strong>题目 5（选择）</strong>：手机无线充电时，在手机和充电板之间插入塑料书本，充电可能继续；但插入金属硬币，充电板可能发热甚至停止。原因是：</p>
     <p>A. 塑料是导体，金属是绝缘体<br>B. 金属中产生涡流导致发热和能量损耗，触发异物检测<br>C. 金属阻挡了所有磁场<br>D. 塑料能增强磁场</p>
   </div>
-</div>
+  </div>
+</section>
 {% endblock %}

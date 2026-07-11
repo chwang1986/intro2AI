@@ -54,6 +54,16 @@ def main():
 </section>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">原理</span>Todo CLI 的工作流程</h2>
+  <div class="lesson-explain">
+    <p>一个命令行程序就像一家快餐店的自助点餐机。你站在屏幕前（终端），按下按钮输入命令（参数），机器内部根据你的选择准备食物（处理逻辑），最后把餐品送到你手中（输出结果）。</p>
+    <p>Todo CLI 的工作流程可以分为四层：<strong>输入层</strong>负责听懂你的命令，<strong>业务层</strong>负责决定该做什么，<strong>数据层</strong>负责记住任务列表，<strong>输出层</strong>负责把结果展示给你。</p>
+    <p>当你输入 <code>python todo.py add "买牛奶"</code> 时，程序内部发生了这样的故事：argparse 先解析出「你要执行 add 命令，标题是买牛奶」；TaskManager 创建一个新的 Task 对象并分配 ID；TaskStorage 把整个任务列表转换成 JSON 格式写入硬盘；最后终端打印「已添加任务 #1」。</p>
+    <p>这种分层设计的好处就像乐高积木——你可以把「JSON 存储」这块积木替换成「SQLite 存储」，而上面的业务逻辑完全不用改动。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">论证</span>为什么选 JSON、argparse 和分层？</h2>
   <div class="lesson-explain">
     <p>在 Todo CLI 的设计中，我们做了几个关键选择。这些选择不是随意的，而是经过权衡的结果。让我们逐一论证。</p>
@@ -69,12 +79,22 @@ def main():
 </section>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">要点</span>核心技术速查</h2>
+  <div class="lesson-explain">
+    <p><strong>argparse：</strong>Python 标准库中的命令行解析工具。它能把 <code>python todo.py add "标题" --priority high</code> 这样的用户输入，自动解析成程序可以理解的变量和参数。</p>
+    <p><strong>dataclass：</strong>用 <code>@dataclass</code> 装饰器可以让 Python 自动帮你生成 <code>__init__</code>、<code>__repr__</code> 等方法。它让数据模型既简洁又有类型提示，比字典更安全。</p>
+    <p><strong>JSON 持久化：</strong><code>json.dump()</code> 把 Python 对象变成字符串存入文件，<code>json.load()</code> 再从文件中读回来。用 <code>ensure_ascii=False</code> 可以确保中文正常存储。</p>
+    <p><strong>异常处理：</strong>在数据层用 try-except 捕获文件读写错误，在业务层用 ValueError 拒绝非法输入，在界面层统一打印友好的错误提示。这让程序遇到意外时不会崩溃。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">实战</span>五步完成 Todo CLI 开发</h2>
   <div class="lesson-explain">
     
     <p><strong>步骤 1：用 AI 设计程序架构</strong></p>
     <p>先让 AI 做「系统架构师」。给它一个清晰的需求描述，让它设计整体结构和模块划分。</p>
-    <div class="lesson-code" class="mb-5">
+    <div class="lesson-code mb-5">
       <pre><code># 给 AI 的 Prompt 示例：
 """
 你是一位 Python CLI 应用架构师。我需要设计一个命令行待办事项管理器，
@@ -94,7 +114,7 @@ def main():
     
     <p><strong>步骤 2：用 AI 生成数据存储模块</strong></p>
     <p>数据层是应用的「地基」，先确保它能可靠地存取数据。</p>
-    <div class="lesson-code" class="mb-5">
+    <div class="lesson-code mb-5">
       <pre><code># 给 AI 的 Prompt 示例：
 """
 基于以下 Task 模型，请实现 storage.py 模块：
@@ -117,7 +137,7 @@ class Task:
     
     <p><strong>步骤 3：用 AI 生成命令行界面模块</strong></p>
     <p>CLI 界面是用户和程序交互的「门面」，要让命令直观易用。</p>
-    <div class="lesson-code" class="mb-5">
+    <div class="lesson-code mb-5">
       <pre><code># 给 AI 的 Prompt 示例：
 """
 请实现 todo.py 主模块，使用 argparse 提供以下命令：
@@ -152,6 +172,82 @@ class Task:
       <li>同时运行两个实例 → 观察是否有数据竞争（文件锁问题）</li>
     </ul>
     <p>发现问题后，回到 AI 对话，给它具体的错误信息和期望行为，让它修复。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">实验</span>亲手探索 Todo CLI 的边界</h2>
+  <div class="lesson-explain">
+    <p>下面三个实验要求你已经把参考代码保存为 <code>todo.py</code> 并成功运行。我们将通过故意"搞破坏"来理解程序的鲁棒性。</p>
+    <p><strong>实验 1：观察数据文件的结构</strong></p>
+    <div class="lesson-code"><pre><code># 运行以下命令添加几个任务
+python todo.py add "买牛奶" --priority medium
+python todo.py add "写作业" --priority high
+python todo.py add "跑步" --priority low
+python todo.py list
+
+# 然后用文本编辑器打开 tasks.json，观察：
+# 1. JSON 文件的整体结构是什么？（列表？字典？）
+# 2. 每个任务有哪些字段？
+# 3. created_at 字段的格式是什么？
+
+# 手动编辑 tasks.json，把其中一个任务的 "completed" 改成 true
+# 再运行 python todo.py list，观察状态列的变化</code></pre></div>
+    <p><strong>实验结论：</strong>JSON 文件是人类可读的，你可以手动编辑它来理解数据模型，也可以用它来调试。</p>
+    <p><strong>实验 2：制造异常，观察程序的容错能力</strong></p>
+    <div class="lesson-code"><pre><code># 测试 1：添加空标题
+python todo.py add ""
+# 观察：程序是崩溃还是给出友好提示？
+
+# 测试 2：完成一个不存在的任务
+python todo.py complete 999
+# 观察：程序如何处理？
+
+# 测试 3：破坏 JSON 文件
+# 用文本编辑器打开 tasks.json，删掉最后一个 }
+# 保存后运行 python todo.py list
+# 观察：程序是崩溃还是优雅恢复？
+
+# 测试 4：尝试添加超长标题（500 个字符）
+python todo.py add "aaaaaaaa...(500个a)..."
+# 观察：程序能正常处理吗？显示是否正常？</code></pre></div>
+    <p><strong>实验结论：</strong>好的程序应该在异常输入和异常环境下保持优雅，而不是直接崩溃。你可以根据实验结果，给程序增加更多的防护措施。</p>
+    <p><strong>实验 3：分层替换实验</strong></p>
+    <div class="lesson-code"><pre><code># 当前 TaskStorage 使用 JSON 文件存储。
+# 试着创建一个新的 MemoryStorage 类：
+
+class MemoryStorage:
+    def __init__(self):
+        self._data = []
+    
+    def load(self):
+        return self._data
+    
+    def save(self, tasks):
+        self._data = tasks
+
+# 然后修改 main() 函数：
+# storage = TaskStorage()   # 原来
+storage = MemoryStorage()   # 改成内存存储
+
+# 运行程序，观察：
+# 1. 程序还能正常工作吗？
+# 2. 退出程序后，任务数据还在吗？
+# 3. 这个实验证明了分层架构的什么优势？</code></pre></div>
+    <p><strong>实验结论：</strong>由于业务逻辑层（TaskManager）只依赖 Storage 的接口（load/save），而不关心具体实现，所以你可以轻松替换存储方式而不影响其他代码。这就是<strong>依赖注入</strong>和<strong>接口隔离</strong>的力量。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">错误</span>实战中最常见的三个翻车现场</h2>
+  <div class="lesson-explain">
+    <p>即使是这个小小的 Todo CLI，新手也容易在 AI 协作中踩坑：</p>
+    
+    <p><strong>1. 不做需求分析直接让 AI 写代码</strong> —— 你脑子里只有一个模糊的想法"做个 Todo 程序"，就让 AI 开始写。结果 AI 生成的功能和你想的完全不一样——它没有命令行参数、没有持久化、不支持中文。<strong>先花 5 分钟把自己的需求写清楚，列出功能清单和约束条件，再让 AI 动手。</strong></p>
+    
+    <p><strong>2. 不测试边界情况</strong> —— 你运行了 <code>python todo.py add "测试"</code>，成功了，就以为万事大吉。但有没有试过添加 1000 个任务？有没有试过任务标题是 500 个字符？有没有在 JSON 文件中间删掉一个逗号再运行程序？<strong>边界测试是发现 AI 代码隐藏 Bug 的最有效手段。</strong></p>
+    
+    <p><strong>3. 不处理异常</strong> —— AI 生成的代码往往在「Happy Path」（正常路径）上运行良好，但一旦遇到异常就崩溃。磁盘满了无法写文件怎么办？用户输入了负数 ID 怎么办？JSON 文件被其他程序篡改了怎么办？<strong>每当你看到 AI 代码里没有 try-except 的地方，都要警惕。</strong></p>
   </div>
 </section>
 
@@ -433,35 +529,6 @@ if __name__ == "__main__":
 </section>
 
 <section class="lesson-block">
-  <h2 class="lesson-title"><span class="lesson-num">错误</span>实战中最常见的三个翻车现场</h2>
-  <div class="lesson-explain">
-    <p>即使是这个小小的 Todo CLI，新手也容易在 AI 协作中踩坑：</p>
-    
-    <p><strong>1. 不做需求分析直接让 AI 写代码</strong> —— 你脑子里只有一个模糊的想法"做个 Todo 程序"，就让 AI 开始写。结果 AI 生成的功能和你想的完全不一样——它没有命令行参数、没有持久化、不支持中文。<strong>先花 5 分钟把自己的需求写清楚，列出功能清单和约束条件，再让 AI 动手。</strong></p>
-    
-    <p><strong>2. 不测试边界情况</strong> —— 你运行了 <code>python todo.py add "测试"</code>，成功了，就以为万事大吉。但有没有试过添加 1000 个任务？有没有试过任务标题是 500 个字符？有没有在 JSON 文件中间删掉一个逗号再运行程序？<strong>边界测试是发现 AI 代码隐藏 Bug 的最有效手段。</strong></p>
-    
-    <p><strong>3. 不处理异常</strong> —— AI 生成的代码往往在「Happy Path」（正常路径）上运行良好，但一旦遇到异常就崩溃。磁盘满了无法写文件怎么办？用户输入了负数 ID 怎么办？JSON 文件被其他程序篡改了怎么办？<strong>每当你看到 AI 代码里没有 try-except 的地方，都要警惕。</strong></p>
-  </div>
-</section>
-
-<section class="lesson-block">
-  <h2 class="lesson-title"><span class="lesson-num">总结</span>你已完成 Python + AI 协作入门</h2>
-  <div class="lesson-explain">
-    <p>恭喜！你已经完成了从 Python 基础到 AI 协作开发的完整学习路径。回顾这 11 章的内容：</p>
-    <ul>
-      <li>你学会了 Python 的基础语法、数据结构、函数和面向对象编程</li>
-      <li>你掌握了如何调用 AI API，让程序拥有智能</li>
-      <li>你理解了 Prompt 工程的精髓——精准提问</li>
-      <li>你实践了 AI 协作工作流，把大项目拆解为可控的小模块</li>
-      <li>你亲手完成了一个完整的命令行应用</li>
-    </ul>
-    <p>编程是一门手艺，AI 是你的电动工具。工具再先进，也需要一双熟练的手来驾驭。继续练习、继续迭代、继续和 AI 对话——你正在成为这个 AI 时代的「超级开发者」。</p>
-    <p class="text-center mt-8 text-xl text-brand"><strong>🚀 下一步：用你学到的知识，做一个真正属于你的项目吧！</strong></p>
-  </div>
-</section>
-
-<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">示例</span>完整项目代码</h2>
   <div class="lesson-explain">
     <p>以下脚本在 <code>examples/practice/</code> 目录中，是一个完整的命令行待办事项程序：</p>
@@ -479,65 +546,18 @@ python3 todo_cli.py --help</code></pre>
 </section>
 
 <section class="lesson-block">
-  <h2 class="lesson-title"><span class="lesson-num">实验</span>亲手探索 Todo CLI 的边界</h2>
+  <h2 class="lesson-title"><span class="lesson-num">总结</span>你已完成 Python + AI 协作入门</h2>
   <div class="lesson-explain">
-    <p>下面三个实验要求你已经把参考代码保存为 <code>todo.py</code> 并成功运行。我们将通过故意"搞破坏"来理解程序的鲁棒性。</p>
-    <p><strong>实验 1：观察数据文件的结构</strong></p>
-    <div class="lesson-code"><pre><code># 运行以下命令添加几个任务
-python todo.py add "买牛奶" --priority medium
-python todo.py add "写作业" --priority high
-python todo.py add "跑步" --priority low
-python todo.py list
-
-# 然后用文本编辑器打开 tasks.json，观察：
-# 1. JSON 文件的整体结构是什么？（列表？字典？）
-# 2. 每个任务有哪些字段？
-# 3. created_at 字段的格式是什么？
-
-# 手动编辑 tasks.json，把其中一个任务的 "completed" 改成 true
-# 再运行 python todo.py list，观察状态列的变化</code></pre></div>
-    <p><strong>实验结论：</strong>JSON 文件是人类可读的，你可以手动编辑它来理解数据模型，也可以用它来调试。</p>
-    <p><strong>实验 2：制造异常，观察程序的容错能力</strong></p>
-    <div class="lesson-code"><pre><code># 测试 1：添加空标题
-python todo.py add ""
-# 观察：程序是崩溃还是给出友好提示？
-
-# 测试 2：完成一个不存在的任务
-python todo.py complete 999
-# 观察：程序如何处理？
-
-# 测试 3：破坏 JSON 文件
-# 用文本编辑器打开 tasks.json，删掉最后一个 }
-# 保存后运行 python todo.py list
-# 观察：程序是崩溃还是优雅恢复？
-
-# 测试 4：尝试添加超长标题（500 个字符）
-python todo.py add "aaaaaaaa...(500个a)..."
-# 观察：程序能正常处理吗？显示是否正常？</code></pre></div>
-    <p><strong>实验结论：</strong>好的程序应该在异常输入和异常环境下保持优雅，而不是直接崩溃。你可以根据实验结果，给程序增加更多的防护措施。</p>
-    <p><strong>实验 3：分层替换实验</strong></p>
-    <div class="lesson-code"><pre><code># 当前 TaskStorage 使用 JSON 文件存储。
-# 试着创建一个新的 MemoryStorage 类：
-
-class MemoryStorage:
-    def __init__(self):
-        self._data = []
-    
-    def load(self):
-        return self._data
-    
-    def save(self, tasks):
-        self._data = tasks
-
-# 然后修改 main() 函数：
-# storage = TaskStorage()   # 原来
-storage = MemoryStorage()   # 改成内存存储
-
-# 运行程序，观察：
-# 1. 程序还能正常工作吗？
-# 2. 退出程序后，任务数据还在吗？
-# 3. 这个实验证明了分层架构的什么优势？</code></pre></div>
-    <p><strong>实验结论：</strong>由于业务逻辑层（TaskManager）只依赖 Storage 的接口（load/save），而不关心具体实现，所以你可以轻松替换存储方式而不影响其他代码。这就是<strong>依赖注入</strong>和<strong>接口隔离</strong>的力量。</p>
+    <p>恭喜！你已经完成了从 Python 基础到 AI 协作开发的完整学习路径。回顾这 11 章的内容：</p>
+    <ul>
+      <li>你学会了 Python 的基础语法、数据结构、函数和面向对象编程</li>
+      <li>你掌握了如何调用 AI API，让程序拥有智能</li>
+      <li>你理解了 Prompt 工程的精髓——精准提问</li>
+      <li>你实践了 AI 协作工作流，把大项目拆解为可控的小模块</li>
+      <li>你亲手完成了一个完整的命令行应用</li>
+    </ul>
+    <p>编程是一门手艺，AI 是你的电动工具。工具再先进，也需要一双熟练的手来驾驭。继续练习、继续迭代、继续和 AI 对话——你正在成为这个 AI 时代的「超级开发者」。</p>
+    <p class="text-center mt-8 text-xl text-brand"><strong>🚀 下一步：用你学到的知识，做一个真正属于你的项目吧！</strong></p>
   </div>
 </section>
 

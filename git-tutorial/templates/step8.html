@@ -9,6 +9,15 @@
 </div>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">场景</span>什么时候需要高级技巧</h2>
+  <div class="lesson-explain">
+    <p>当你用 Git 一段时间之后，会遇到一些基础命令解决不了的问题。比如正在写代码时突然要修复紧急 bug，或者希望提交历史更整洁，又或者要给发布的版本打标记。</p>
+    <p>这些场景下，stash、rebase 和 tag 就派上用场了。它们像是 Git 工具箱里的专业工具，平时不一定天天用，但关键时刻能让你的工作效率大幅提升。</p>
+    <p>就像一位木匠，除了锤子和锯子，还需要卡尺和角尺来做精细活。基础命令是锤子和锯子，高级命令就是那些精细工具。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">起源</span>高级命令的诞生故事</h2>
   <div class="lesson-explain">
     <p><strong>git stash</strong> 的诞生源于一个日常困境：开发者正在写一个新功能，工作区里有大量未完成的改动，突然经理说「线上出了紧急 bug，需要你马上修复」。如果直接切换分支，Git 会阻止你，因为未提交的改动可能会和目标分支冲突。如果匆忙提交半成品，提交历史里就会多出一个「临时保存」的 commit，污染历史。</p>
@@ -53,17 +62,6 @@
     <p><code>git stash</code> 把工作区和暂存区的改动保存起来，工作区恢复干净。<code>git stash push -m "描述"</code> 可以给 stash 加备注。<code>git stash list</code> 查看所有 stash。<code>git stash pop</code> 恢复最近一次 stash 并从列表中删除。<code>git stash apply</code> 恢复但不删除。</p>
     <p><code>git rebase 目标分支</code> 把当前分支的提交「嫁接」到目标分支的最新提交之后。<code>git rebase -i HEAD~3</code> 交互式 rebase，可以合并提交（squash）、修改提交信息、删除提交等。<strong>注意：已经 push 到远程的提交不要 rebase。</strong></p>
     <p><code>git tag 标签名</code> 给当前 commit 打轻量标签。<code>git tag -a v1.0 -m "版本 1.0 发布"</code> 打附注标签。<code>git push origin 标签名</code> 把标签推送到远程。<code>git push origin --tags</code> 推送所有标签。<code>git tag -d 标签名</code> 删除本地标签。</p>
-  </div>
-</section>
-
-<section class="lesson-block">
-  <h2 class="lesson-title"><span class="lesson-num">错误</span>高级命令的常见陷阱</h2>
-  <div class="lesson-explain">
-    <p><strong>stash 陷阱：</strong>stash 了很久之后忘记恢复， list 列表越来越长。建议给每个 stash 加描述（-m），定期清理不再需要的 stash。</p>
-    <p><strong>rebase 陷阱一：</strong>在公共分支上 rebase 然后 force push，导致队友的代码基础「悬空」，他们 pull 时会产生大量冲突。黄金法则：<strong>只 rebase 本地未 push 的提交。</strong></p>
-    <p><strong>rebase 陷阱二：</strong>rebase 过程中遇到冲突，解决后忘记执行 <code>git rebase --continue</code>，导致 rebase 一直处于暂停状态。</p>
-    <p><strong>tag 陷阱：</strong>打了标签但忘记 push 到远程，导致队友看不到标签。标签默认不会随 push 自动上传，需要显式推送。</p>
-    <p><strong>混用陷阱：</strong>stash 里存放了未提交的改动，pop 出来后直接 rebase。如果 stash 的内容和 rebase 目标有冲突，会让情况变得更复杂。建议先 pop 确认工作区干净，再考虑 rebase。</p>
   </div>
 </section>
 
@@ -131,6 +129,51 @@ git show v2.0
 </section>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">错误</span>高级命令的常见陷阱</h2>
+  <div class="lesson-explain">
+    <p><strong>stash 陷阱：</strong>stash 了很久之后忘记恢复， list 列表越来越长。建议给每个 stash 加描述（-m），定期清理不再需要的 stash。</p>
+    <p><strong>rebase 陷阱一：</strong>在公共分支上 rebase 然后 force push，导致队友的代码基础「悬空」，他们 pull 时会产生大量冲突。黄金法则：<strong>只 rebase 本地未 push 的提交。</strong></p>
+    <p><strong>rebase 陷阱二：</strong>rebase 过程中遇到冲突，解决后忘记执行 <code>git rebase --continue</code>，导致 rebase 一直处于暂停状态。</p>
+    <p><strong>tag 陷阱：</strong>打了标签但忘记 push 到远程，导致队友看不到标签。标签默认不会随 push 自动上传，需要显式推送。</p>
+    <p><strong>混用陷阱：</strong>stash 里存放了未提交的改动，pop 出来后直接 rebase。如果 stash 的内容和 rebase 目标有冲突，会让情况变得更复杂。建议先 pop 确认工作区干净，再考虑 rebase。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">示例</span>动手操作</h2>
+  <div class="lesson-explain">
+    <p>下面是真实工作区，你可以自由执行 stash、rebase、tag 等命令，观察它们的效果。每个按钮代表工作流中的一个步骤，你也可以在输入框中输入自定义命令。</p>
+    <p>试着 stash 一些未提交的改动，切换分支处理其他事情，然后再 pop 恢复。或者创建一个 feature 分支，在 main 上提交新内容，然后对 feature 执行 rebase。</p>
+  </div>
+  <div class="lesson-demo">
+    <div class="demo-label">命令操作台</div>
+    <div class="terminal" id="terminal"></div>
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="runCmd('git status')">查看状态</button>
+      <button class="btn btn-primary" onclick="runCmd('git log --oneline --graph --all')">图形化历史</button>
+      <button class="btn btn-secondary" onclick="runCmd('git stash list')">查看 stash 列表</button>
+      <button class="btn btn-secondary" onclick="runCmd('echo "临时代码" >> main.py && git stash push -m "保存临时工作"')">stash 保存改动</button>
+      <button class="btn btn-secondary" onclick="runCmd('git stash pop')">恢复 stash</button>
+      <button class="btn btn-secondary" onclick="runCmd('git branch feature-x && git switch feature-x')">创建 feature 分支</button>
+      <button class="btn btn-secondary" onclick="runCmd('echo "新功能代码" >> main.py && git add . && git commit -m "feat: 添加新功能"')">在 feature 上提交</button>
+      <button class="btn btn-secondary" onclick="runCmd('git switch main')">切换回 main</button>
+      <button class="btn btn-secondary" onclick="runCmd('echo "main 更新" >> main.py && git add . && git commit -m "main: 更新内容"')">在 main 上提交</button>
+      <button class="btn btn-secondary" onclick="runCmd('git switch feature-x && git rebase main')">rebase feature 到 main</button>
+      <button class="btn btn-secondary" onclick="runCmd('git switch main && git merge feature-x')">合并 feature</button>
+      <button class="btn btn-secondary" onclick="runCmd('git tag v1.0')">打轻量标签</button>
+      <button class="btn btn-secondary" onclick="runCmd('git tag -a v2.0 -m "版本 2.0"')">打附注标签</button>
+      <button class="btn btn-secondary" onclick="runCmd('git tag')">查看标签</button>
+      <button class="btn btn-secondary" onclick="runCmd('git show v2.0')">查看标签详情</button>
+      <button class="btn btn-danger" onclick="resetWorkspace()">重置工作区</button>
+    </div>
+    <div class="mt-3 flex gap-2">
+      <input type="text" id="customCmd" placeholder="输入自定义命令..." class="input flex-1">
+      <button class="btn btn-primary" onclick="runCustom()">执行</button>
+    </div>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">练习</span>高级技巧验证与设计</h2>
   <div class="exercise-box">
     <div class="lesson-explain">
@@ -155,39 +198,6 @@ git show v2.0
   <div class="exercise-box">
     <div class="lesson-explain">
       <p><strong>设计题：</strong>你的项目准备发布 1.0 正式版。请设计一套标签管理策略：打什么类型的标签（轻量还是附注）？标签命名遵循什么规范？标签如何推送到远程？发布后如果发现严重 bug 需要发修复版，标签应该如何演进？</p>
-    </div>
-  </div>
-</section>
-
-<section class="lesson-block">
-  <h2 class="lesson-title"><span class="lesson-num">实例</span>动手操作</h2>
-  <div class="lesson-explain">
-    <p>下面是真实工作区，你可以自由执行 stash、rebase、tag 等命令，观察它们的效果。</p>
-  </div>
-  <div class="lesson-demo">
-    <div class="demo-label">命令操作台</div>
-    <div class="terminal" id="terminal"></div>
-    <div class="btn-group">
-      <button class="btn btn-primary" onclick="runCmd('git status')">查看状态</button>
-      <button class="btn btn-primary" onclick="runCmd('git log --oneline --graph --all')">图形化历史</button>
-      <button class="btn btn-secondary" onclick="runCmd('git stash list')">查看 stash 列表</button>
-      <button class="btn btn-secondary" onclick="runCmd('echo "临时代码" >> main.py && git stash push -m "保存临时工作"')">stash 保存改动</button>
-      <button class="btn btn-secondary" onclick="runCmd('git stash pop')">恢复 stash</button>
-      <button class="btn btn-secondary" onclick="runCmd('git branch feature-x && git switch feature-x')">创建 feature 分支</button>
-      <button class="btn btn-secondary" onclick="runCmd('echo "新功能代码" >> main.py && git add . && git commit -m "feat: 添加新功能"')">在 feature 上提交</button>
-      <button class="btn btn-secondary" onclick="runCmd('git switch main')">切换回 main</button>
-      <button class="btn btn-secondary" onclick="runCmd('echo "main 更新" >> main.py && git add . && git commit -m "main: 更新内容"')">在 main 上提交</button>
-      <button class="btn btn-secondary" onclick="runCmd('git switch feature-x && git rebase main')">rebase feature 到 main</button>
-      <button class="btn btn-secondary" onclick="runCmd('git switch main && git merge feature-x')">合并 feature</button>
-      <button class="btn btn-secondary" onclick="runCmd('git tag v1.0')">打轻量标签</button>
-      <button class="btn btn-secondary" onclick="runCmd('git tag -a v2.0 -m \"版本 2.0\"')">打附注标签</button>
-      <button class="btn btn-secondary" onclick="runCmd('git tag')">查看标签</button>
-      <button class="btn btn-secondary" onclick="runCmd('git show v2.0')">查看标签详情</button>
-      <button class="btn btn-danger" onclick="resetWorkspace()">重置工作区</button>
-    </div>
-    <div class="mt-3 flex gap-2">
-      <input type="text" id="customCmd" placeholder="输入自定义命令..." class="input flex-1">
-      <button class="btn btn-primary" onclick="runCustom()">执行</button>
     </div>
   </div>
 </section>

@@ -9,6 +9,15 @@
 </div>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">场景</span>什么时候 add 和 commit</h2>
+  <div class="lesson-explain">
+    <p>当你完成了一部分有意义的工作，比如写好了登录功能或修复了某个 bug，就应该 add 和 commit。这相当于给当前的工作拍了一张快照，以后随时可以回到这个状态。</p>
+    <p>不要等所有功能都做完才提交。一个好的习惯是每完成一个小功能就提交一次。这样如果你的新改动引入了 bug，可以精确回退到出问题之前的状态。</p>
+    <p>想象你在拼一幅巨大的拼图。每拼完一小块，就用手机拍张照片记录下来。如果后面拼错了，你可以根据照片找回之前正确的状态，而不需要从头开始。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">起源</span>Git 的对象模型是怎么来的</h2>
   <div class="lesson-explain">
     <p>Linus Torvalds 在写 Git 的时候，借鉴了他在 Linux 内核开发中的经验。Linux 内核本身就是一个巨大的文件系统，Linus 对"如何高效地存储和索引文件"有着深刻的理解。</p>
@@ -24,14 +33,6 @@
     <p>Linus 设计这两步分离，其实是经过深思熟虑的。想象你在写一篇期末论文：你可能同时修改了引言、方法论和结论三个部分。但等你准备保存的时候，你发现结论部分还有几个数据没核对完，暂时不想保存。这时候你怎么办？</p>
     <p>git add 的作用就是让你"挑选"本次要保存的内容。你可以只 add 引言和方法论，把没写完的结论留到下次再提交。这种"暂存区"（也叫索引区）的设计，给了你一次"整理思绪"的机会，让你能把相关的改动打包成一次有意义的提交，而不是改一点就提交一点，最后历史记录乱成一团。</p>
     <p>当然，如果你确定所有修改都要提交，也可以直接用 git commit -a 跳过显式 add 的步骤。但理解暂存区的存在，是掌握 Git 精细控制的关键。</p>
-  </div>
-</section>
-
-<section class="lesson-block">
-  <h2 class="lesson-title"><span class="lesson-num">场景</span>什么时候 add 和 commit</h2>
-  <div class="lesson-explain">
-    <p>当你完成了一部分有意义的工作，比如「写好了登录功能」或「修复了某个 bug」，就应该 add 和 commit。这相当于给当前的工作拍了一张快照，以后随时可以回到这个状态。</p>
-    <p>不要等所有功能都做完才提交。一个好的习惯是：每完成一个小功能就提交一次。这样如果你的新改动引入了 bug，可以精确回退到出问题之前的状态。</p>
   </div>
 </section>
 
@@ -101,15 +102,6 @@
 </section>
 
 <section class="lesson-block">
-  <h2 class="lesson-title"><span class="lesson-num">错误</span>常见错误</h2>
-  <div class="lesson-explain">
-    <p>修改了文件但忘记 add 就直接 commit。结果提交的是旧版本，新改动没有进入仓库。</p>
-    <p>提交信息写 <code>"update"</code>、<code>"fix"</code>、<code>"改了东西"</code>。一周后再看完全不知道这次提交改了什么。</p>
-    <p>一次性 add 所有文件（<code>git add .</code>）而不检查，把临时文件、日志文件也提交了。</p>
-  </div>
-</section>
-
-<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">实验</span>观察 add 和 commit 的每一步变化</h2>
   <div class="lesson-explain">
     <p>下面的实验会带你追踪一个文件从"未被追踪"到"被提交到仓库"的完整生命周期。请特别注意 git status 的输出变化，它会告诉你文件当前处于哪个区域。</p>
@@ -150,6 +142,39 @@ $ git log --oneline
 # 你应该能看到刚才的提交记录</code></pre></div>
   <div class="lesson-explain">
     <p>这个实验最关键的一步是"实验 3"——当你 add 后又修改了文件，Git 会同时追踪两个版本：暂存区里的旧版本和工作区里的新版本。理解这一点，你就掌握了 Git 暂存机制的核心。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">错误</span>常见错误</h2>
+  <div class="lesson-explain">
+    <p>修改了文件但忘记 add 就直接 commit。结果提交的是旧版本，新改动没有进入仓库。</p>
+    <p>提交信息写 <code>"update"</code>、<code>"fix"</code>、<code>"改了东西"</code>。一周后再看完全不知道这次提交改了什么。</p>
+    <p>一次性 add 所有文件（<code>git add .</code>）而不检查，把临时文件、日志文件也提交了。</p>
+    <p>用 <code>git commit -a</code> 跳过 add 步骤时，误以为所有修改都会被提交。实际上 -a 只自动 add 已跟踪的文件，新建的文件仍然需要手动 add。</p>
+    <p>提交了未完成或带有 bug 的代码，导致团队成员 pull 下来的代码无法运行。提交前应该在本地测试，确保代码至少能正常编译或运行。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">示例</span>动手操作</h2>
+  <div class="lesson-explain">
+    <p>下面的终端连接真实工作区。你可以创建文件、添加到暂存区、提交到仓库，然后查看状态变化。</p>
+    <p>试着创建一个文件，用 git add 把它加入暂存区，再用 git commit 保存到仓库。注意观察 git status 的输出颜色变化：未跟踪的文件显示为红色，暂存区的文件显示为绿色。</p>
+  </div>
+  <div class="lesson-demo">
+    <div class="demo-label">命令操作台</div>
+    <div class="terminal" id="terminal"></div>
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="runCmd('git status')">查看状态</button>
+      <button class="btn btn-primary" onclick="runCmd('git add README.md')">add README</button>
+      <button class="btn btn-primary" onclick="runCmd('git add main.py')">add main.py</button>
+      <button class="btn btn-primary" onclick="runCmd('git commit -m "初次提交：添加项目基础文件"')">commit</button>
+      <button class="btn btn-secondary" onclick="runCmd('git log --oneline')">查看日志</button>
+      <button class="btn btn-secondary" onclick="runCmd('echo "新功能代码" >> main.py')">修改文件</button>
+      <button class="btn btn-secondary" onclick="runCmd('cat main.py')">查看文件内容</button>
+      <button class="btn btn-danger" onclick="resetWorkspace()">重置工作区</button>
+    </div>
   </div>
 </section>
 
@@ -203,27 +228,6 @@ $ git log --oneline
     <p><strong>5. 判断正误：git commit 执行后，暂存区的内容会被清空，但工作区的文件保持不变。</strong></p>
     <p>A. 正确</p>
     <p>B. 错误</p>
-  </div>
-</section>
-
-<section class="lesson-block">
-  <h2 class="lesson-title"><span class="lesson-num">实例</span>动手操作</h2>
-  <div class="lesson-explain">
-    <p>下面的终端连接真实工作区。你可以创建文件、添加到暂存区、提交到仓库，然后查看状态变化。</p>
-  </div>
-  <div class="lesson-demo">
-    <div class="demo-label">命令操作台</div>
-    <div class="terminal" id="terminal"></div>
-    <div class="btn-group">
-      <button class="btn btn-primary" onclick="runCmd('git status')">查看状态</button>
-      <button class="btn btn-primary" onclick="runCmd('git add README.md')">add README</button>
-      <button class="btn btn-primary" onclick="runCmd('git add main.py')">add main.py</button>
-      <button class="btn btn-primary" onclick="runCmd('git commit -m \"初次提交：添加项目基础文件\"')">commit</button>
-      <button class="btn btn-secondary" onclick="runCmd('git log --oneline')">查看日志</button>
-      <button class="btn btn-secondary" onclick="runCmd('echo \"新功能代码\" >> main.py')">修改文件</button>
-      <button class="btn btn-secondary" onclick="runCmd('cat main.py')">查看文件内容</button>
-      <button class="btn btn-danger" onclick="resetWorkspace()">重置工作区</button>
-    </div>
   </div>
 </section>
 

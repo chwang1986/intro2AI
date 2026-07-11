@@ -3,27 +3,27 @@
 {% block title %}Step 3 — 基础调用方式{% endblock %}
 
 {% block content %}
-<div class="page-header">
-  <h1>Step 3 — 基础调用方式</h1>
-  <p>Python requests / ollama 库、生成与聊天接口</p>
-</div>
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">场景</span>场景引入</h2>
+  <div class="lesson-explain">
+    <p>Ollama 已经安装好了，模型也拉下来了。现在你要写一个 Python 脚本，让它自动调用模型来回答用户的问题。你可以用两种方式：直接用 HTTP 请求，或者用 Ollama 官方提供的 Python 库。</p>
+  </div>
+</section>
 
-<div class="lesson-section">
-  <h2>场景</h2>
-  <p>Ollama 已经安装好了，模型也拉下来了。现在你要写一个 Python 脚本，让它自动调用模型来回答用户的问题。你可以用两种方式：直接用 HTTP 请求，或者用 Ollama 官方提供的 Python 库。</p>
-</div>
-
-<h2 class="lesson-title"><span class="lesson-num">起源</span>REST API：互联网通信的通用语言</h2>
-<div class="lesson-explain">
-  <p>在理解 Ollama 的 API 之前，让我们先了解一下 REST API 的历史。</p>
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">起源</span>REST API：互联网通信的通用语言</h2>
+  <div class="lesson-explain">
+    <p>在理解 Ollama 的 API 之前，让我们先了解一下 REST API 的历史。</p>
   <p><strong>2000 年</strong>，计算机科学家 <strong>Roy Fielding</strong> 在他的博士论文中提出了 <strong>REST</strong>（Representational State Transfer，表述性状态转移）架构风格。Fielding 也是 HTTP 协议的主要设计者之一。REST 的核心思想是：互联网上的一切资源（如用户、文章、模型）都可以通过统一的 URL 来标识，通过标准的 HTTP 方法（GET、POST、PUT、DELETE）来操作。</p>
   <p>REST API 之所以成为现代互联网服务的标准，是因为它具有简单、通用、无状态的特性。无论你是用 Python、JavaScript、Java 还是任何其他语言，只要你能发送 HTTP 请求，就能调用 REST API。这使得不同的系统之间可以方便地互相通信。</p>
   <p>Ollama 选择 REST API 作为接口，是一个深思熟虑的设计决策：它让 Ollama 不仅是一个命令行工具，更是一个可以被任何编程语言调用的"语言模型服务"。</p>
-</div>
+  </div>
+</section>
 
-<h2 class="lesson-title"><span class="lesson-num">思考</span>封装还是不封装？</h2>
-<div class="lesson-explain">
-  <p>当你面对一个 HTTP API 时，有两个选择：直接用底层的 HTTP 库（如 Python 的 <code>requests</code>），或者用官方提供的高层封装库（如 <code>ollama</code> Python 库）。怎么选？</p>
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">思考</span>封装还是不封装？</h2>
+  <div class="lesson-explain">
+    <p>当你面对一个 HTTP API 时，有两个选择：直接用底层的 HTTP 库（如 Python 的 <code>requests</code>），或者用官方提供的高层封装库（如 <code>ollama</code> Python 库）。怎么选？</p>
   <p><strong>直接用 requests 的理由</strong>：</p>
   <ul>
     <li>透明：你能看到每一个 HTTP 头、每一个状态码、每一个 JSON 字段。</li>
@@ -37,12 +37,13 @@
     <li>内置功能：流式输出的解析、错误类型的封装，官方库已经帮你做好了。</li>
   </ul>
   <p>这其实是软件工程中一个经典的权衡：<strong>控制 vs 便利</strong>。当你需要快速原型验证时，官方库更高效；当你需要深度定制或构建生产级系统时，直接用 HTTP 请求更可控。很多经验丰富的开发者会在项目中同时保留两种能力——用官方库快速开发，用 requests 处理特殊场景。</p>
-</div>
+  </div>
+</section>
 
-<div class="lesson-section">
-  <h2>原理</h2>
-
-  <div class="concept-card">
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">原理</span>核心原理</h2>
+  <div class="lesson-explain">
+    <div class="concept-card">
     <h4>方式一：直接用 requests</h4>
     <p>Ollama 的 API 就是普通的 HTTP REST 接口，任何能发 HTTP 请求的库都能调用。这是最底层、最灵活的方式。</p>
     <pre><code>import requests
@@ -138,21 +139,13 @@ print(response["message"]["content"])
       <li><code>assistant</code>：模型的回复（用于多轮对话时提供历史上下文）</li>
     </ul>
   </div>
-</div>
+  </div>
+</section>
 
-<div class="lesson-section">
-  <h2>要点</h2>
-  <ul>
-    <li>两种调用方式：底层 <code>requests</code>（灵活）和高层 <code>ollama</code> 库（简洁）</li>
-    <li><code>/api/generate</code> 适合单轮补全，<code>/api/chat</code> 适合多轮对话</li>
-    <li>消息列表中的 <code>role</code> 决定这段话的"身份"：system、user、assistant</li>
-    <li><code>system</code> 提示是控制模型行为的有力工具，后面会详细讲</li>
-  </ul>
-</div>
-
-<h2 class="lesson-title"><span class="lesson-num">论证</span>为什么 generate 和 chat 要分开？</h2>
-<div class="lesson-explain">
-  <p>Ollama 提供了两个核心接口——<code>/api/generate</code> 和 <code>/api/chat</code>。为什么需要两个接口，而不是一个"万能"接口？这背后是对不同应用场景的精准划分。</p>
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">论证</span>为什么 generate 和 chat 要分开？</h2>
+  <div class="lesson-explain">
+    <p>Ollama 提供了两个核心接口——<code>/api/generate</code> 和 <code>/api/chat</code>。为什么需要两个接口，而不是一个"万能"接口？这背后是对不同应用场景的精准划分。</p>
   <p><strong>generate 的设计哲学：简单补全</strong></p>
   <p><code>generate</code> 的本质是"文本补全"（completion）。你给它一个开头，它帮你续写。这种模式源自最早的 GPT 模型——它就是一个强大的"自动补全引擎"。<code>generate</code> 的场景包括：续写文章、翻译单句、代码补全、生成摘要。这些任务不需要"记忆"之前的对话，只需要根据当前 prompt 生成内容。</p>
   <p><strong>chat 的设计哲学：状态ful 的对话</strong></p>
@@ -167,11 +160,25 @@ print(response["message"]["content"])
   <div class="highlight-box">
     <p><strong>核心论证</strong>：接口设计不是技术问题，而是<strong>用户体验问题</strong>。好的 API 设计让开发者一眼就能知道该用哪个接口，减少犯错的可能。generate 和 chat 的分离，正是这种设计哲学的体现。</p>
   </div>
-</div>
+  </div>
+</section>
 
-<h2 class="lesson-title"><span class="lesson-num">实验</span>动手对比两种调用方式</h2>
-<div class="lesson-explain">
-  <p>这个实验将让你亲身体验 requests 和 ollama 库的差异，并理解 HTTP 请求的具体过程。</p>
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">要点</span>核心要点</h2>
+  <div class="lesson-explain">
+    <ul>
+    <li>两种调用方式：底层 <code>requests</code>（灵活）和高层 <code>ollama</code> 库（简洁）</li>
+    <li><code>/api/generate</code> 适合单轮补全，<code>/api/chat</code> 适合多轮对话</li>
+    <li>消息列表中的 <code>role</code> 决定这段话的"身份"：system、user、assistant</li>
+    <li><code>system</code> 提示是控制模型行为的有力工具，后面会详细讲</li>
+  </ul>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">实验</span>动手对比两种调用方式</h2>
+  <div class="lesson-explain">
+    <p>这个实验将让你亲身体验 requests 和 ollama 库的差异，并理解 HTTP 请求的具体过程。</p>
   <p><strong>实验 1：用 requests 发送原始 HTTP 请求</strong></p>
   <ol>
     <li>打开 Python 交互式环境（<code>python3</code>）或 Jupyter Notebook。</li>
@@ -229,11 +236,13 @@ print(response["message"]["content"])
     <li>尝试修改 system 消息的内容（如"你是一个严肃的教授"），再次运行，观察输出风格的变化。</li>
     <li>在 messages 列表中追加一轮对话历史，再发送新消息，验证模型是否能记住上下文。</li>
   </ol>
-</div>
+  </div>
+</section>
 
-<div class="lesson-section">
-  <h2>常见错误</h2>
-  <div class="highlight-box">
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">错误</span>常见错误</h2>
+  <div class="lesson-explain">
+    <div class="highlight-box">
     <p><strong>错误 1：忘记设置 stream=False，结果被流式响应搞混</strong></p>
     <p>Ollama 默认是流式输出（stream=True）。如果直接用 <code>response.json()</code> 解析，会报错。要么显式设置 <code>stream=False</code>，要么用循环读取流。</p>
   </div>
@@ -245,11 +254,13 @@ print(response["message"]["content"])
     <p><strong>错误 3：模型名写错或模型未下载</strong></p>
     <p>如果收到 <code>model not found</code>，先运行 <code>ollama list</code> 确认本地有这个模型，再检查名称拼写和大小写。</p>
   </div>
-</div>
+  </div>
+</section>
 
-<div class="lesson-section">
-  <h2>示例：封装一个调用函数</h2>
-  <p>实际项目中，你不会每次都写一遍完整的请求代码。封装一个函数是更好的做法：</p>
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">示例</span>代码示例</h2>
+  <div class="lesson-explain">
+    <p>实际项目中，你不会每次都写一遍完整的请求代码。封装一个函数是更好的做法：</p>
   <pre><code>import ollama
 
 def ask_model(prompt, model="qwen2.5:7b"):
@@ -276,22 +287,26 @@ print(answer)
     <li>错误处理集中在一处</li>
     <li>以后如果要切换模型或加参数，只需要改这个函数</li>
   </ul>
-</div>
+  </div>
+</section>
 
-<div class="lesson-section">
-  <h2>练习</h2>
-  <ol>
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">练习</span>课后练习</h2>
+  <div class="lesson-explain">
+    <ol>
     <li>用 requests 和 ollama 库两种方式分别调用 <code>/api/generate</code>，比较代码量的差异。</li>
     <li>用 <code>/api/chat</code> 实现一个简单的多轮对话：先问"你好"，再问"你叫什么名字"，观察模型是否能记住上下文。</li>
     <li>把上面的 <code>ask_model</code> 函数改成支持 <code>chat</code> 接口的版本，能接受 messages 列表作为输入。</li>
     <li>（设计题）设计一个"智能客服"的调用函数，要求：使用 chat 接口、支持 system 提示设定角色、支持传入历史对话、返回简洁的文本回答。写出函数签名和实现。</li>
     <li>（验证题）使用 requests 直接调用 <code>/api/chat</code>，构造包含 system、user、assistant 角色的 messages 列表，观察不同 system 提示对输出风格的影响。</li>
   </ol>
-</div>
+  </div>
+</section>
 
-<h2 class="lesson-title"><span class="lesson-num">测验</span>你掌握了吗？</h2>
-<div class="lesson-explain">
-  <div class="demo-card">
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">测验</span>你掌握了吗？</h2>
+  <div class="lesson-explain">
+    <div class="demo-card">
     <p><strong>题目 1（选择）</strong>：<code>/api/generate</code> 和 <code>/api/chat</code> 的主要区别是：</p>
     <p>A. generate 速度更快<br>B. generate 适合单轮补全，chat 适合多轮对话<br>C. chat 只能返回 JSON，generate 可以返回纯文本<br>D. 两者没有区别</p>
   </div>
@@ -311,5 +326,6 @@ print(answer)
     <p><strong>题目 5（选择）</strong>：以下哪种情况最适合使用 <code>/api/generate</code> 而不是 <code>/api/chat</code>？</p>
     <p>A. 构建一个聊天机器人<br>B. 翻译一句话<br>C. 实现多轮对话记忆<br>D. 以上都不适合</p>
   </div>
-</div>
+  </div>
+</section>
 {% endblock %}

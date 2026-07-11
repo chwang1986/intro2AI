@@ -52,21 +52,6 @@ if (fclose(f) != 0) {
 </section>
 
 <section class="lesson-block">
-  <h2 class="lesson-title"><span class="lesson-num">论证</span>为什么 try/except 比错误码更靠谱？</h2>
-  <div class="lesson-explain">
-    <p>你可能会问：C 语言用了几十年的错误码不也活得好好的吗？为什么 Python 非要搞异常？让我们从几个维度对比：</p>
-    <p><strong>1. 错误是否会被静默忽略</strong></p>
-    <p>错误码方式下，如果你忘了检查返回值，程序会继续运行，可能产生级联错误。而异常如果不被捕获，程序会立刻终止并打印堆栈信息——<strong>失败要趁早、要响亮</strong>，这是 Python 的设计哲学。</p>
-    <p><strong>2. 代码可读性</strong></p>
-    <p>错误码让每一行正常代码都被 <code>if (error)</code> 包围，而 try/except 把"正常路径"和"异常路径"分开，代码结构像小说一样有主线和支线。</p>
-    <p><strong>3. 跨层传播</strong></p>
-    <p>假设 A 函数调用 B，B 调用 C，C 出错了。用错误码的话，C 要返回错误，B 要检查并返回，A 也要检查——错误码要层层传递。而异常会自动沿着调用栈向上<strong>冒泡</strong>，直到被捕获，中间各层无需做任何额外工作。</p>
-    <p><strong>4. with 语句 vs 手动关闭</strong></p>
-    <p>手动管理资源就像租了房子后自己记着要交还钥匙；with 语句则像自动门——你走进去，它自动打开；你走出来，它自动关上。无论中间发生什么（甚至发生火灾/异常），门一定会关上。</p>
-  </div>
-</section>
-
-<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">原理</span>文件指针与异常传播链</h2>
   <div class="lesson-explain">
     <p>打开文件时，操作系统会返回一个<strong>文件指针</strong>，像书签一样标记当前读写到哪个位置。read() 从头读到尾，write() 从当前位置写入。用完文件必须<strong>关闭</strong>，否则数据可能丢失，内存也会泄漏。</p>
@@ -151,6 +136,21 @@ if (fclose(f) != 0) {
 </section>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">论证</span>为什么 try/except 比错误码更靠谱？</h2>
+  <div class="lesson-explain">
+    <p>你可能会问：C 语言用了几十年的错误码不也活得好好的吗？为什么 Python 非要搞异常？让我们从几个维度对比：</p>
+    <p><strong>1. 错误是否会被静默忽略</strong></p>
+    <p>错误码方式下，如果你忘了检查返回值，程序会继续运行，可能产生级联错误。而异常如果不被捕获，程序会立刻终止并打印堆栈信息——<strong>失败要趁早、要响亮</strong>，这是 Python 的设计哲学。</p>
+    <p><strong>2. 代码可读性</strong></p>
+    <p>错误码让每一行正常代码都被 <code>if (error)</code> 包围，而 try/except 把"正常路径"和"异常路径"分开，代码结构像小说一样有主线和支线。</p>
+    <p><strong>3. 跨层传播</strong></p>
+    <p>假设 A 函数调用 B，B 调用 C，C 出错了。用错误码的话，C 要返回错误，B 要检查并返回，A 也要检查——错误码要层层传递。而异常会自动沿着调用栈向上<strong>冒泡</strong>，直到被捕获，中间各层无需做任何额外工作。</p>
+    <p><strong>4. with 语句 vs 手动关闭</strong></p>
+    <p>手动管理资源就像租了房子后自己记着要交还钥匙；with 语句则像自动门——你走进去，它自动打开；你走出来，它自动关上。无论中间发生什么（甚至发生火灾/异常），门一定会关上。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">要点</span>文件操作与异常处理</h2>
   <div class="lesson-explain">
     <p><strong>open()</strong> 函数接收文件名和模式（r 读/w 写/a 追加）；<strong>with</strong> 语句是最安全的文件操作方式，自动处理关闭。<strong>try/except/else/finally</strong> 构成完整的异常处理结构：try 放可能出错的代码，except 捕获特定异常，else 放成功后的逻辑，finally 放必须执行的清理。</p>
@@ -205,6 +205,54 @@ finally:
 </section>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">实验</span>亲手验证异常与 with 语句</h2>
+  <div class="lesson-explain">
+    <p>下面三个小实验，你只需要打开 Python 交互式环境（命令行输入 <code>python3</code>），一步一步跟着做，观察现象。</p>
+    <p><strong>实验 1：观察异常传播</strong></p>
+    <div class="lesson-code"><pre><code># 在交互式环境中输入：
+1 / 0
+
+# 观察：Python 打印了 ZeroDivisionError，并且告诉你出错的文件和行号
+# 注意：异常没有被捕获，程序（交互式会话）并没有崩溃，只是这一行执行失败</code></pre></div>
+    <p><strong>实验 2：对比手动关闭和 with 语句</strong></p>
+    <div class="lesson-code"><pre><code># 先创建一个测试文件
+def manual_open():
+    f = open("test.txt", "w")
+    f.write("hello")
+    # 故意不调用 f.close()
+    # 在 Windows 上，这个文件会被 Python 进程锁定，其他程序打不开
+
+manual_open()
+# 现在检查：文件内容是否已经写入？（不一定！操作系统有缓冲）
+
+# 再试试 with 语句：
+with open("test2.txt", "w") as f:
+    f.write("world")
+# 退出 with 块后，文件一定已经正确关闭，内容一定已经落盘</code></pre></div>
+    <p><strong>实验 3：制造并捕获多种异常</strong></p>
+    <div class="lesson-code"><pre><code># 实验 3a：文件不存在
+open("不存在的文件.txt", "r")
+# 观察：FileNotFoundError
+
+# 实验 3b：类型错误
+int("abc")
+# 观察：ValueError
+
+# 实验 3c：捕获异常后继续执行
+try:
+    result = int("abc")
+except ValueError as e:
+    print(f"捕获到异常：{e}")
+    result = 0
+print(f"result = {result}")  # 程序没有崩溃，继续运行！</code></pre></div>
+    <p><strong>实验记录表（建议手写或记在笔记里）：</strong></p>
+    <p>1. 当你不关闭文件时，尝试在文件管理器中删除它——能删除吗？</p>
+    <p>2. 在 try 块中故意写多个可能出错的语句，观察到底是哪个语句触发了异常。</p>
+    <p>3. 尝试用一个 except 捕获多个异常类型：<code>except (ValueError, TypeError):</code></p>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">错误</span>常见陷阱</h2>
   <div class="lesson-explain">
     <p><strong>1. 忘记关闭文件</strong>：打开文件不关闭会导致资源泄漏，在 Windows 上还可能锁定文件，其他程序无法访问。</p>
@@ -255,54 +303,6 @@ except ZeroDivisionError:
 python3 01_read_file.py
 python3 02_write_file.py
 python3 03_try_except.py</code></pre>
-  </div>
-</section>
-
-<section class="lesson-block">
-  <h2 class="lesson-title"><span class="lesson-num">实验</span>亲手验证异常与 with 语句</h2>
-  <div class="lesson-explain">
-    <p>下面三个小实验，你只需要打开 Python 交互式环境（命令行输入 <code>python3</code>），一步一步跟着做，观察现象。</p>
-    <p><strong>实验 1：观察异常传播</strong></p>
-    <div class="lesson-code"><pre><code># 在交互式环境中输入：
-1 / 0
-
-# 观察：Python 打印了 ZeroDivisionError，并且告诉你出错的文件和行号
-# 注意：异常没有被捕获，程序（交互式会话）并没有崩溃，只是这一行执行失败</code></pre></div>
-    <p><strong>实验 2：对比手动关闭和 with 语句</strong></p>
-    <div class="lesson-code"><pre><code># 先创建一个测试文件
-def manual_open():
-    f = open("test.txt", "w")
-    f.write("hello")
-    # 故意不调用 f.close()
-    # 在 Windows 上，这个文件会被 Python 进程锁定，其他程序打不开
-
-manual_open()
-# 现在检查：文件内容是否已经写入？（不一定！操作系统有缓冲）
-
-# 再试试 with 语句：
-with open("test2.txt", "w") as f:
-    f.write("world")
-# 退出 with 块后，文件一定已经正确关闭，内容一定已经落盘</code></pre></div>
-    <p><strong>实验 3：制造并捕获多种异常</strong></p>
-    <div class="lesson-code"><pre><code># 实验 3a：文件不存在
-open("不存在的文件.txt", "r")
-# 观察：FileNotFoundError
-
-# 实验 3b：类型错误
-int("abc")
-# 观察：ValueError
-
-# 实验 3c：捕获异常后继续执行
-try:
-    result = int("abc")
-except ValueError as e:
-    print(f"捕获到异常：{e}")
-    result = 0
-print(f"result = {result}")  # 程序没有崩溃，继续运行！</code></pre></div>
-    <p><strong>实验记录表（建议手写或记在笔记里）：</strong></p>
-    <p>1. 当你不关闭文件时，尝试在文件管理器中删除它——能删除吗？</p>
-    <p>2. 在 try 块中故意写多个可能出错的语句，观察到底是哪个语句触发了异常。</p>
-    <p>3. 尝试用一个 except 捕获多个异常类型：<code>except (ValueError, TypeError):</code></p>
   </div>
 </section>
 

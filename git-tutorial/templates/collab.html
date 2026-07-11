@@ -9,6 +9,14 @@
 </div>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">场景</span>两个人怎么一起工作</h2>
+  <div class="lesson-explain">
+    <p>实际工作中，一个项目通常由多个人共同开发。每个人在本地开发自己的功能，然后把代码推送到远程仓库。Git 会自动合并不冲突的修改，如果两个人改了同一处代码，就需要手动解决冲突。</p>
+    <p>这个页面模拟了两个人（用户A 和 用户B）共同开发一个项目的完整流程。点击下方「创建协作环境」按钮，系统会自动生成远程仓库和两个本地克隆。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">起源</span>从 Linux 内核开发到 Git 的诞生</h2>
   <div class="lesson-explain">
     <p>2005 年以前，Linux 内核开发团队一直使用一款商业版本控制软件 BitKeeper。这款软件是专有的，Linux 创始人 Linus Torvalds 和 BitKeeper 公司达成了一项特殊协议，允许内核开发者免费使用。</p>
@@ -29,6 +37,15 @@
 </section>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">原理</span>分布式协作的底层机制</h2>
+  <div class="lesson-explain">
+    <p>Git 的分布式设计意味着每个开发者的本地仓库都包含完整的项目历史。远程仓库在技术上并不比你的本地仓库更特殊，它只是另一个克隆。</p>
+    <p>当你执行 git push 时，Git 会把本地的新提交对象复制到远程仓库，并更新远程分支指针。当你执行 git pull 时，Git 先从远程下载新的提交对象，然后尝试自动合并。</p>
+    <p>冲突的产生是因为两个开发者基于同一个祖先版本做了不同的修改。Git 使用三方合并算法来定位冲突区域，把不冲突的部分自动合并，冲突部分留给你手动决定。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">论证</span>为什么分布式协作是更好的方案？</h2>
   <div class="lesson-explain">
     <p>分布式协作之所以被现代开发团队普遍接受，不是因为「新」，而是因为它解决了集中式系统的根本问题。</p>
@@ -41,24 +58,6 @@
 </section>
 
 <section class="lesson-block">
-  <h2 class="lesson-title"><span class="lesson-num">场景</span>两个人怎么一起工作</h2>
-  <div class="lesson-explain">
-    <p>实际工作中，一个项目通常由多个人共同开发。每个人在本地开发自己的功能，然后把代码推送到远程仓库。Git 会自动合并不冲突的修改，如果两个人改了同一处代码，就需要手动解决冲突。</p>
-    <p>这个页面模拟了两个人（用户A 和 用户B）共同开发一个项目的完整流程。点击下方「创建协作环境」按钮，系统会自动生成远程仓库和两个本地克隆。</p>
-  </div>
-</section>
-
-<section class="lesson-block">
-  <h2 class="lesson-title"><span class="lesson-num">规范</span>多人协作的日常约定</h2>
-  <div class="lesson-explain">
-    <p><strong>分支命名：</strong>团队应该约定统一的分支命名规则。常见的做法是：<code>feature/登录功能</code>、<code>bugfix/修复空指针</code>、<code>hotfix/紧急修复</code>。一眼就能看出分支的用途。不要在分支名里写中文拼音或缩写，比如 <code>xg</code>、<code>xiugai</code>，一个月后没人知道这是什么。</p>
-    <p><strong>提交信息：</strong>提交信息不是写给自己看的，是给队友看的。好的提交信息应该说明「做了什么」和「为什么」。推荐格式：<code>类型: 简短描述</code>，比如 <code>feat: 添加用户登录接口</code>、<code>fix: 修复订单金额计算错误</code>、<code>docs: 更新 API 文档</code>。</p>
-    <p><strong>先 pull 再 push：</strong>推代码前先拉取最新代码，这是最基本的礼貌。如果你直接 push，而远程已经有了新提交，Git 会拒绝。养成习惯：开始工作前 <code>git pull</code>，准备 push 前再 <code>git pull</code> 一次。</p>
-    <p><strong>通过 Pull Request 合并：</strong>不要直接把代码 push 到 main 分支。应该推送到自己的 feature 分支，然后发起 Pull Request，让至少一个队友审查通过后再合并。这是防止 bug 进入主线的最后一道防线。</p>
-  </div>
-</section>
-
-<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">要点</span>协作的核心流程</h2>
   <div class="lesson-explain">
     <p><strong>1. 各自开发：</strong>每个人从 main 切出自己的 feature 分支，在上面开发。不要直接在 main 上写代码，这是协作的基本纪律。开发完成后，把 feature 分支 push 到远程。</p>
@@ -66,38 +65,25 @@
     <p><strong>3. 解决冲突：</strong>如果两个人改了同一个文件的同一处代码，Git 会在文件中插入 <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</code> 标记。你需要打开文件，保留正确的代码，删掉标记，然后重新 add 和 commit。冲突不可怕，可怕的是不看清楚就随便选一个版本。</p>
     <p><strong>4. 代码审查：</strong>通过 Pull Request 让队友审查代码。审查时重点看逻辑是否正确、有没有明显的 bug、代码风格是否统一。审查通过后再点击合并按钮，把 feature 分支合并到 main。</p>
   </div>
-</section>
-
-<section class="lesson-block">
-  <h2 class="lesson-title"><span class="lesson-num">错误</span>协作中常见的坑</h2>
-  <div class="lesson-explain">
-    <p><strong>冲突解决不当：</strong>遇到冲突时，有人直接用 <code>git checkout --ours</code> 或 <code>--theirs</code> 强制选一边，结果把队友的功能删掉了。正确做法是打开冲突文件，理解两边的修改意图，手动合并出最好的方案。</p>
-    <p><strong>代码被覆盖：</strong>A 改了文件 X 的第 10 行，B 也改了文件 X 的第 10 行，B 先 push，A pull 时产生冲突。A 解决冲突时没注意，把 B 的改动覆盖了。这种情况只能通过代码审查和测试来预防。</p>
-    <p><strong>误推敏感信息：</strong>把密码、API 密钥、数据库连接字符串直接写进代码并 push 到远程。即使后续删除，敏感信息仍然留在历史记录中。正确做法是使用环境变量或配置文件（并把配置文件加入 .gitignore）。</p>
-    <p><strong>大文件提交：</strong>把视频、图片数据集、编译产物等几百兆的文件提交到 Git。Git 不适合管理大文件，每次 clone 都要下载这些历史大文件，仓库会迅速膨胀到几个 G。应该使用 Git LFS 或云存储。</p>
-    <p><strong>在 main 上直接开发：</strong>为了省事直接在 main 分支上写代码，结果把未完成的功能或带 bug 的代码推到了生产环境。main 分支应该始终保持可发布状态。</p>
+    <div class="lesson-explain mt-4">
+      <p><strong>协作约定：</strong></p>
+<div class="lesson-explain">
+    <p><strong>分支命名：</strong>团队应该约定统一的分支命名规则。常见的做法是：<code>feature/登录功能</code>、<code>bugfix/修复空指针</code>、<code>hotfix/紧急修复</code>。一眼就能看出分支的用途。不要在分支名里写中文拼音或缩写，比如 <code>xg</code>、<code>xiugai</code>，一个月后没人知道这是什么。</p>
+    <p><strong>提交信息：</strong>提交信息不是写给自己看的，是给队友看的。好的提交信息应该说明「做了什么」和「为什么」。推荐格式：<code>类型: 简短描述</code>，比如 <code>feat: 添加用户登录接口</code>、<code>fix: 修复订单金额计算错误</code>、<code>docs: 更新 API 文档</code>。</p>
+    <p><strong>先 pull 再 push：</strong>推代码前先拉取最新代码，这是最基本的礼貌。如果你直接 push，而远程已经有了新提交，Git 会拒绝。养成习惯：开始工作前 <code>git pull</code>，准备 push 前再 <code>git pull</code> 一次。</p>
+    <p><strong>通过 Pull Request 合并：</strong>不要直接把代码 push 到 main 分支。应该推送到自己的 feature 分支，然后发起 Pull Request，让至少一个队友审查通过后再合并。这是防止 bug 进入主线的最后一道防线。</p>
   </div>
-</section>
-
-<section class="lesson-block">
-  <h2 class="lesson-title"><span class="lesson-num">AI</span>人与 AI 协作的额外注意</h2>
-  <div class="lesson-explain">
+    </div>
+    <div class="lesson-explain mt-4">
+      <p><strong>人与 AI 协作的额外注意：</strong></p>
+<div class="lesson-explain">
     <p>随着 AI 辅助编程的普及，团队中除了人类开发者，还多了 AI 这个「虚拟队友」。AI 可以快速生成代码、修复 bug、重构函数，但它也带来了一些人类协作中没有的新问题。</p>
     <p><strong>规则一：AI 不直接操作 main。</strong>AI 的所有修改都应该在 feature 分支上进行，经过人类审查后才能合并。不要给 AI 直接 push 到 main 的权限。</p>
     <p><strong>规则二：AI 的提交必须明确标注。</strong>commit message 中应该说明这是 AI 生成的代码，比如 <code>feat(ai): 由 AI 生成用户登录接口</code>。这样出了问题可以追溯到来源。</p>
     <p><strong>规则三：AI 修改的范围要受限。</strong>通过 .gitignore 和文件权限限制 AI 能修改的文件范围。配置文件、密钥文件、CI/CD 脚本等敏感文件不应该让 AI 触碰。</p>
     <p><strong>规则四：AI 代码必须经过测试。</strong>AI 生成的代码可能看起来正确，但实际运行时会有边界情况问题。合并前必须跑通自动化测试，核心功能还需要人工手动验证。</p>
   </div>
-</section>
-
-<section class="lesson-block">
-  <h2 class="lesson-title"><span class="lesson-num">案例</span>人-AI 协作的典型场景</h2>
-  <div class="lesson-explain">
-    <p><strong>案例一：AI 生成了新功能。</strong>你让 AI 写一个排序函数，AI 很快生成了代码。你不要直接复制到 main 分支，而是让 AI 把代码放到 <code>feature/ai-sort</code> 分支，然后你发起 Pull Request，检查逻辑是否正确、边界情况是否处理、代码风格是否统一，确认无误后合并。</p>
-    <p><strong>案例二：AI 和人类改了同一个文件。</strong>你手动修改了 <code>utils.py</code> 的第 20 行，同时 AI 也在另一个分支修改了同一处。合并时产生冲突。你需要打开文件，比较人类代码和 AI 代码，保留更优的实现，或者把两者的优点结合起来。</p>
-    <p><strong>案例三：AI 误改了配置文件。</strong>AI 在批量重构时，把 <code>.env</code> 文件中的数据库连接字符串改成了示例值，并把修改一起提交了。如果 push 到远程，敏感信息可能泄露（即使改回正确的，历史记录中仍有痕迹）。解决方案：用 .gitignore 忽略 .env，使用环境变量注入配置。</p>
-    <p><strong>案例四：AI 生成了大量代码但测试不通过。</strong>AI 一次性生成了 500 行代码，看起来很完整，但跑测试时失败了 3 个用例。不要试图手动修复这 3 个用例然后把整段代码合并——应该先让 AI 定位失败原因，重新生成修复版本，再次测试通过后再合并。</p>
-  </div>
+    </div>
 </section>
 
 <section class="lesson-block">
@@ -156,7 +142,18 @@ git push origin main</code></pre>
 </section>
 
 <section class="lesson-block">
-  <h2 class="lesson-title"><span class="lesson-num">实例</span>模拟两人协作</h2>
+  <h2 class="lesson-title"><span class="lesson-num">错误</span>协作中常见的坑</h2>
+  <div class="lesson-explain">
+    <p><strong>冲突解决不当：</strong>遇到冲突时，有人直接用 <code>git checkout --ours</code> 或 <code>--theirs</code> 强制选一边，结果把队友的功能删掉了。正确做法是打开冲突文件，理解两边的修改意图，手动合并出最好的方案。</p>
+    <p><strong>代码被覆盖：</strong>A 改了文件 X 的第 10 行，B 也改了文件 X 的第 10 行，B 先 push，A pull 时产生冲突。A 解决冲突时没注意，把 B 的改动覆盖了。这种情况只能通过代码审查和测试来预防。</p>
+    <p><strong>误推敏感信息：</strong>把密码、API 密钥、数据库连接字符串直接写进代码并 push 到远程。即使后续删除，敏感信息仍然留在历史记录中。正确做法是使用环境变量或配置文件（并把配置文件加入 .gitignore）。</p>
+    <p><strong>大文件提交：</strong>把视频、图片数据集、编译产物等几百兆的文件提交到 Git。Git 不适合管理大文件，每次 clone 都要下载这些历史大文件，仓库会迅速膨胀到几个 G。应该使用 Git LFS 或云存储。</p>
+    <p><strong>在 main 上直接开发：</strong>为了省事直接在 main 分支上写代码，结果把未完成的功能或带 bug 的代码推到了生产环境。main 分支应该始终保持可发布状态。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">示例</span>模拟两人协作</h2>
   <div class="lesson-explain">
     <p>点击「创建协作环境」后，会出现两个终端：左边是用户A，右边是用户B。你可以分别在这两个终端中执行命令，观察协作效果。</p>
   </div>
@@ -194,6 +191,15 @@ git push origin main</code></pre>
       </div>
     </div>
   </div>
+    <div class="lesson-explain mt-4">
+      <p><strong>人-AI 协作的典型场景：</strong></p>
+<div class="lesson-explain">
+    <p><strong>案例一：AI 生成了新功能。</strong>你让 AI 写一个排序函数，AI 很快生成了代码。你不要直接复制到 main 分支，而是让 AI 把代码放到 <code>feature/ai-sort</code> 分支，然后你发起 Pull Request，检查逻辑是否正确、边界情况是否处理、代码风格是否统一，确认无误后合并。</p>
+    <p><strong>案例二：AI 和人类改了同一个文件。</strong>你手动修改了 <code>utils.py</code> 的第 20 行，同时 AI 也在另一个分支修改了同一处。合并时产生冲突。你需要打开文件，比较人类代码和 AI 代码，保留更优的实现，或者把两者的优点结合起来。</p>
+    <p><strong>案例三：AI 误改了配置文件。</strong>AI 在批量重构时，把 <code>.env</code> 文件中的数据库连接字符串改成了示例值，并把修改一起提交了。如果 push 到远程，敏感信息可能泄露（即使改回正确的，历史记录中仍有痕迹）。解决方案：用 .gitignore 忽略 .env，使用环境变量注入配置。</p>
+    <p><strong>案例四：AI 生成了大量代码但测试不通过。</strong>AI 一次性生成了 500 行代码，看起来很完整，但跑测试时失败了 3 个用例。不要试图手动修复这 3 个用例然后把整段代码合并——应该先让 AI 定位失败原因，重新生成修复版本，再次测试通过后再合并。</p>
+  </div>
+    </div>
 </section>
 
 <section class="lesson-block">

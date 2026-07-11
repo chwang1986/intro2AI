@@ -9,6 +9,15 @@
 </div>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">场景</span>为什么需要远程仓库</h2>
+  <div class="lesson-explain">
+    <p>本地仓库只能在你自己的电脑上访问。如果硬盘坏了、电脑丢了，或者你想在另一台电脑上继续工作，本地仓库就帮不上忙了。</p>
+    <p>远程仓库（如 GitHub、Gitee）就是放在云端的 Git 仓库。它既是备份，也是协作的桥梁。你可以把本地提交推送到远程，也可以从远程拉取别人的更新。</p>
+    <p>想象本地仓库是你家里的书架，远程仓库是公共图书馆。你可以把自己写的书送到图书馆分享给他人，也可以从图书馆借回别人新出版的书。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">起源</span>分布式设计的诞生背景</h2>
   <div class="lesson-explain">
     <p>2005 年 Linus Torvalds 设计 Git 时，一个核心目标就是摆脱对中央服务器的依赖。在此之前，Linux 内核团队使用 BitKeeper 进行版本控制。BitKeeper 虽然是分布式的，但它是商业软件，许可协议限制颇多。Linus 想要一个完全开源、任何人都能自由使用的工具。</p>
@@ -26,14 +35,6 @@
     <p><strong>方案二：纯 P2P 同步（没有中央节点）。</strong>每个开发者直接把自己的修改推送给其他开发者。但问题是：没有明确的「权威版本」，1000 个人互相推送会变成混乱的网状结构，不知道以谁的版本为准。</p>
     <p><strong>方案三：技术分布式 + 社会集中式（Git 的做法）。</strong>每个克隆都是完整仓库，技术上完全平等；但社会层面约定一个「官方仓库」作为协作中心。平时离线工作随意提交，有网了再和官方仓库同步。这既保证了对单点故障的免疫力，又保留了清晰的协作秩序。</p>
     <p>Linus 选择方案三，因为 Linux 内核开发本身就有「Linus 维护官方树」的传统。Git 的设计与这个工作流程天然契合。</p>
-  </div>
-</section>
-
-<section class="lesson-block">
-  <h2 class="lesson-title"><span class="lesson-num">场景</span>为什么需要远程仓库</h2>
-  <div class="lesson-explain">
-    <p>本地仓库只能在你自己的电脑上访问。如果硬盘坏了、电脑丢了，或者你想在另一台电脑上继续工作，本地仓库就帮不上忙了。</p>
-    <p>远程仓库（如 GitHub、Gitee）就是放在云端的 Git 仓库。它既是备份，也是协作的桥梁。你可以把本地提交推送到远程，也可以从远程拉取别人的更新。</p>
   </div>
 </section>
 
@@ -109,15 +110,6 @@
 </section>
 
 <section class="lesson-block">
-  <h2 class="lesson-title"><span class="lesson-num">错误</span>常见错误</h2>
-  <div class="lesson-explain">
-    <p>push 被拒绝，提示「更新被拒绝，因为远程包含本地没有的工作」。这通常是因为有人在远程提交了新的内容。解决方案：先 <code>git pull</code> 拉取合并，再 push。</p>
-    <p>clone 时用了 HTTPS 地址，每次 push 都要输入密码。更好的方式是配置 SSH 密钥，或者使用个人访问令牌（PAT）。</p>
-    <p>在错误的分支上 push。比如你在 feature 分支上开发了新功能，但 push 到了远程的 main 分支，把未完成的功能发布到了生产环境。</p>
-  </div>
-</section>
-
-<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">实验</span>探索远程仓库的内部机制</h2>
   <div class="lesson-explain">
     <p>下面的实验将带你理解远程仓库在 Git 内部是如何表示的。你会发现「远程」并没有那么神秘，它只是一组配置和引用。</p>
@@ -155,6 +147,36 @@ git branch -vv
 </section>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">错误</span>常见错误</h2>
+  <div class="lesson-explain">
+    <p>push 被拒绝，提示「更新被拒绝，因为远程包含本地没有的工作」。这通常是因为有人在远程提交了新的内容。解决方案：先 <code>git pull</code> 拉取合并，再 push。</p>
+    <p>clone 时用了 HTTPS 地址，每次 push 都要输入密码。更好的方式是配置 SSH 密钥，或者使用个人访问令牌（PAT）。</p>
+    <p>在错误的分支上 push。比如你在 feature 分支上开发了新功能，但 push 到了远程的 main 分支，把未完成的功能发布到了生产环境。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">示例</span>动手操作</h2>
+  <div class="lesson-explain">
+    <p>下面模拟一个完整的远程仓库操作：在本地仓库添加远程地址、推送代码、然后克隆到另一个目录。使用操作台执行这些命令。</p>
+    <p>注意观察 git remote -v 的输出，它显示了当前关联的远程仓库地址。第一次推送时使用 -u 参数可以建立追踪关系，之后直接 git push 即可。</p>
+  </div>
+  <div class="lesson-demo">
+    <div class="demo-label">命令操作台</div>
+    <div class="terminal" id="terminal"></div>
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="runCmd('git remote -v')">查看远程地址</button>
+      <button class="btn btn-secondary" onclick="runCmd('git remote add origin https://github.com/chwang1986/intro2AI.git')">添加远程仓库</button>
+      <button class="btn btn-secondary" onclick="runCmd('git branch -M main')">重命名分支为 main</button>
+      <button class="btn btn-primary" onclick="runCmd('git push -u origin main')">推送到远程</button>
+      <button class="btn btn-secondary" onclick="runCmd('git fetch origin')">获取远程更新</button>
+      <button class="btn btn-secondary" onclick="runCmd('git pull origin main')">拉取并合并</button>
+      <button class="btn btn-danger" onclick="resetWorkspace()">重置工作区</button>
+    </div>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">练习</span>远程操作验证与设计</h2>
   <div class="exercise-box">
     <div class="lesson-explain">
@@ -174,26 +196,6 @@ git branch -vv
   <div class="exercise-box">
     <div class="lesson-explain">
       <p><strong>设计题：</strong>假设你们宿舍 4 个同学要合作完成一个课程设计项目。请设计一套基于 Git 的协作流程：谁创建远程仓库？每个人怎么获取代码？每天开始工作前和结束工作后要执行什么命令？如果有人在睡梦中 push 了有 bug 的代码，其他人应该怎么处理？</p>
-    </div>
-  </div>
-</section>
-
-<section class="lesson-block">
-  <h2 class="lesson-title"><span class="lesson-num">实例</span>动手操作</h2>
-  <div class="lesson-explain">
-    <p>下面模拟一个完整的远程仓库操作：在本地仓库添加远程地址、推送代码、然后克隆到另一个目录。</p>
-  </div>
-  <div class="lesson-demo">
-    <div class="demo-label">命令操作台</div>
-    <div class="terminal" id="terminal"></div>
-    <div class="btn-group">
-      <button class="btn btn-primary" onclick="runCmd('git remote -v')">查看远程地址</button>
-      <button class="btn btn-secondary" onclick="runCmd('git remote add origin https://github.com/chwang1986/intro2AI.git')">添加远程仓库</button>
-      <button class="btn btn-secondary" onclick="runCmd('git branch -M main')">重命名分支为 main</button>
-      <button class="btn btn-primary" onclick="runCmd('git push -u origin main')">推送到远程</button>
-      <button class="btn btn-secondary" onclick="runCmd('git fetch origin')">获取远程更新</button>
-      <button class="btn btn-secondary" onclick="runCmd('git pull origin main')">拉取并合并</button>
-      <button class="btn btn-danger" onclick="resetWorkspace()">重置工作区</button>
     </div>
   </div>
 </section>

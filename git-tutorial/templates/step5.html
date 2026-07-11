@@ -9,6 +9,15 @@
 </div>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">场景</span>为什么要用分支</h2>
+  <div class="lesson-explain">
+    <p>想象你正在开发一个稳定运行的项目。突然想尝试一个新功能，但不确定能不能成功。如果你直接在主代码上改，万一改坏了，整个项目就崩了。</p>
+    <p>分支就是解决这个问题的方法。你从当前代码复制一条独立的时间线，在上面随意尝试。成功了就合并回主线，失败了就直接删掉，不影响原来的代码。</p>
+    <p>就像写小说时，作家会保存一份原稿，然后在副本上尝试不同的剧情走向。如果新剧情更好，就用副本替换原稿；如果不如原稿，直接扔掉副本即可。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">起源</span>分支的概念从哪来</h2>
   <div class="lesson-explain">
     <p>2005 年，Linus Torvalds 在创建 Git 时，面临一个严峻的问题：Linux 内核有上千名开发者，有人正在修复紧急漏洞，有人在开发新功能，还有人在做实验性重构。这些工作必须同时进行，但不能互相干扰。</p>
@@ -27,14 +36,6 @@
     <p><strong>方案二：打标签标记版本。</strong>用标签记录稳定版本，开发者自己在本地管理不同版本。缺点是没有系统化的合并机制，两个人基于同一版本开发的代码很难整合到一起。</p>
     <p><strong>方案三：指针式分支（Git 的做法）。</strong>分支只是一个引用，指向某个 commit。创建工作瞬间完成，切换工作也只是更新工作区的文件。因为成本极低，开发者可以频繁创建和销毁分支。</p>
     <p>Linus 选择方案三的原因是：Git 的底层存储结构是有向无环图（DAG），每个 commit 已经记录了其父 commit。既然历史本身就是一张网，那分支只需要在网的不同节点上放几个「书签」就可以了。这个设计与 Git 的底层数据结构天然契合。</p>
-  </div>
-</section>
-
-<section class="lesson-block">
-  <h2 class="lesson-title"><span class="lesson-num">场景</span>为什么要用分支</h2>
-  <div class="lesson-explain">
-    <p>想象你正在开发一个稳定运行的项目。突然想尝试一个新功能，但不确定能不能成功。如果你直接在主代码上改，万一改坏了，整个项目就崩了。</p>
-    <p>分支就是解决这个问题的方法。你从当前代码「复制」一条独立的时间线，在上面随意尝试。成功了就合并回主线，失败了就直接删掉，不影响原来的代码。</p>
   </div>
 </section>
 
@@ -113,15 +114,6 @@
 </section>
 
 <section class="lesson-block">
-  <h2 class="lesson-title"><span class="lesson-num">错误</span>常见错误</h2>
-  <div class="lesson-explain">
-    <p>在错误的分支上开发了很久，才发现自己不在 main 上。养成习惯：每次开始工作前先 <code>git status</code> 确认当前分支。</p>
-    <p>遇到冲突时直接用别人的版本或自己的版本，没有仔细对比。这可能导致功能丢失或 bug 引入。冲突时一定要理解两边的修改意图。</p>
-    <p>合并后忘记删除已经没用的分支，导致分支列表越来越长。定期清理已合并的分支是个好习惯。</p>
-  </div>
-</section>
-
-<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">实验</span>验证分支的本质</h2>
   <div class="lesson-explain">
     <p>下面的实验将带你亲眼看到「分支只是一个指针」这个事实。你会观察创建分支前后 Git 内部文件的变化。</p>
@@ -158,6 +150,38 @@ git merge test-branch
 </section>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">错误</span>常见错误</h2>
+  <div class="lesson-explain">
+    <p>在错误的分支上开发了很久，才发现自己不在 main 上。养成习惯：每次开始工作前先 <code>git status</code> 确认当前分支。</p>
+    <p>遇到冲突时直接用别人的版本或自己的版本，没有仔细对比。这可能导致功能丢失或 bug 引入。冲突时一定要理解两边的修改意图。</p>
+    <p>合并后忘记删除已经没用的分支，导致分支列表越来越长。定期清理已合并的分支是个好习惯。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">示例</span>动手操作</h2>
+  <div class="lesson-explain">
+    <p>创建 feature 分支，在上面添加新功能，然后合并回 main。使用下面的操作台，你可以体验分支的完整生命周期。</p>
+    <p>注意观察创建分支、切换分支和合并分支时 git log --graph 的变化。你会发现分支本质上只是指针的移动。</p>
+  </div>
+  <div class="lesson-demo">
+    <div class="demo-label">命令操作台</div>
+    <div class="terminal" id="terminal"></div>
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="runCmd('git branch')">查看分支</button>
+      <button class="btn btn-primary" onclick="runCmd('git branch feature-login')">创建 feature 分支</button>
+      <button class="btn btn-primary" onclick="runCmd('git switch feature-login')">切换到 feature</button>
+      <button class="btn btn-secondary" onclick="runCmd('echo "// 登录功能代码" >> main.py && git add . && git commit -m "feature: 添加登录功能"')">在 feature 上提交</button>
+      <button class="btn btn-primary" onclick="runCmd('git switch main')">切换回 main</button>
+      <button class="btn btn-primary" onclick="runCmd('git merge feature-login')">合并 feature</button>
+      <button class="btn btn-secondary" onclick="runCmd('git branch -d feature-login')">删除 feature 分支</button>
+      <button class="btn btn-secondary" onclick="runCmd('git log --oneline --graph --all')">图形化查看</button>
+      <button class="btn btn-danger" onclick="resetWorkspace()">重置工作区</button>
+    </div>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">练习</span>动手验证与设计思考</h2>
   <div class="exercise-box">
     <div class="lesson-explain">
@@ -177,28 +201,6 @@ git merge test-branch
   <div class="exercise-box">
     <div class="lesson-explain">
       <p><strong>设计题：</strong>假设你正在开发一个校园二手交易平台，团队有 3 个人：小明负责用户系统，小红负责商品发布系统，你自己负责订单系统。请设计一套分支管理策略：需要哪些分支？命名规则是什么？什么时候创建、什么时候合并？每个人如何协作才能避免冲突？</p>
-    </div>
-  </div>
-</section>
-
-<section class="lesson-block">
-  <h2 class="lesson-title"><span class="lesson-num">实例</span>动手操作</h2>
-  <div class="lesson-explain">
-    <p>创建 feature 分支，在上面添加新功能，然后合并回 main。</p>
-  </div>
-  <div class="lesson-demo">
-    <div class="demo-label">命令操作台</div>
-    <div class="terminal" id="terminal"></div>
-    <div class="btn-group">
-      <button class="btn btn-primary" onclick="runCmd('git branch')">查看分支</button>
-      <button class="btn btn-primary" onclick="runCmd('git branch feature-login')">创建 feature 分支</button>
-      <button class="btn btn-primary" onclick="runCmd('git switch feature-login')">切换到 feature</button>
-      <button class="btn btn-secondary" onclick="runCmd('echo "// 登录功能代码" >> main.py && git add . && git commit -m "feature: 添加登录功能"')">在 feature 上提交</button>
-      <button class="btn btn-primary" onclick="runCmd('git switch main')">切换回 main</button>
-      <button class="btn btn-primary" onclick="runCmd('git merge feature-login')">合并 feature</button>
-      <button class="btn btn-secondary" onclick="runCmd('git branch -d feature-login')">删除 feature 分支</button>
-      <button class="btn btn-secondary" onclick="runCmd('git log --oneline --graph --all')">图形化查看</button>
-      <button class="btn btn-danger" onclick="resetWorkspace()">重置工作区</button>
     </div>
   </div>
 </section>

@@ -35,21 +35,6 @@
 </section>
 
 <section class="lesson-block">
-  <h2 class="lesson-title"><span class="lesson-num">论证</span>为什么结构化 Prompt 比随意提问有效？</h2>
-  <div class="lesson-explain">
-    <p>有些同学可能会质疑："我随便写个问题，AI 也能回答啊，为什么要费心思设计 Prompt？"让我们从认知科学和概率模型的角度，论证结构化 Prompt 的价值。</p>
-    <p><strong>1. 角色设定的原理：激活特定知识区域</strong></p>
-    <p>大语言模型在训练时读了互联网上的海量文本，包括技术文档、小说、论坛帖子、论文等等。当你说"你是一位 Python 专家"时，你实际上是在提高模型激活"技术文档风格"和"Python 相关知识"的概率，同时抑制"网络段子"和"口语文体"的概率。这类似于给搜索引擎加了精准的关键词过滤。</p>
-    <p><strong>2. Few-shot vs Zero-shot：示例的力量</strong></p>
-    <p>认知心理学中有一个概念叫"格式塔原理"——人类擅长从例子中归纳模式。AI 模型也是如此。<strong>Zero-shot</strong>（零示例）是"直接问"，模型只能依赖训练时的泛化能力。<strong>Few-shot</strong>（给几个示例）则是"做给你看"，模型可以从示例中捕捉到输出格式、风格、深度等细粒度信息。研究表明，在某些分类任务上，Few-shot Prompt 的准确率可以比 Zero-shot 高出 20% 以上。</p>
-    <p><strong>3. 约束条件：缩小概率空间</strong></p>
-    <p>模型生成每一个词时，都在一个巨大的词表上做概率选择。Prompt 中的约束条件（如"用 JSON 格式""不超过 100 字"）相当于在概率空间中画了一个圈，让模型只在圈内采样。约束越明确，"跑偏"的概率越低。</p>
-    <p><strong>4. 反面论证：为什么过度复杂的 Prompt 也不好？</strong></p>
-    <p>Prompt 不是越长越好。模型的上下文窗口有限（虽然现在已经很大了），且过长的 Prompt 会稀释关键信息。研究发现，模型对 Prompt 开头和结尾的信息最敏感，中间部分容易被"遗忘"。所以好的 Prompt 应该像好文章：结构清晰、重点突出、没有废话。</p>
-  </div>
-</section>
-
-<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">原理</span>好 Prompt = 角色 + 任务 + 约束 + 格式</h2>
   <div class="lesson-explain">
     <p>AI 模型的「大脑」是一个巨大的概率机器，它根据你提供的上下文来预测下一个最可能出现的词。Prompt 就是你给这台机器设定的<strong>上下文窗口</strong>——窗口里的信息越完整、结构越清晰，AI 的「猜测」就越准确。</p>
@@ -116,6 +101,21 @@
         </marker>
       </defs>
     </svg>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">论证</span>为什么结构化 Prompt 比随意提问有效？</h2>
+  <div class="lesson-explain">
+    <p>有些同学可能会质疑："我随便写个问题，AI 也能回答啊，为什么要费心思设计 Prompt？"让我们从认知科学和概率模型的角度，论证结构化 Prompt 的价值。</p>
+    <p><strong>1. 角色设定的原理：激活特定知识区域</strong></p>
+    <p>大语言模型在训练时读了互联网上的海量文本，包括技术文档、小说、论坛帖子、论文等等。当你说"你是一位 Python 专家"时，你实际上是在提高模型激活"技术文档风格"和"Python 相关知识"的概率，同时抑制"网络段子"和"口语文体"的概率。这类似于给搜索引擎加了精准的关键词过滤。</p>
+    <p><strong>2. Few-shot vs Zero-shot：示例的力量</strong></p>
+    <p>认知心理学中有一个概念叫"格式塔原理"——人类擅长从例子中归纳模式。AI 模型也是如此。<strong>Zero-shot</strong>（零示例）是"直接问"，模型只能依赖训练时的泛化能力。<strong>Few-shot</strong>（给几个示例）则是"做给你看"，模型可以从示例中捕捉到输出格式、风格、深度等细粒度信息。研究表明，在某些分类任务上，Few-shot Prompt 的准确率可以比 Zero-shot 高出 20% 以上。</p>
+    <p><strong>3. 约束条件：缩小概率空间</strong></p>
+    <p>模型生成每一个词时，都在一个巨大的词表上做概率选择。Prompt 中的约束条件（如"用 JSON 格式""不超过 100 字"）相当于在概率空间中画了一个圈，让模型只在圈内采样。约束越明确，"跑偏"的概率越低。</p>
+    <p><strong>4. 反面论证：为什么过度复杂的 Prompt 也不好？</strong></p>
+    <p>Prompt 不是越长越好。模型的上下文窗口有限（虽然现在已经很大了），且过长的 Prompt 会稀释关键信息。研究发现，模型对 Prompt 开头和结尾的信息最敏感，中间部分容易被"遗忘"。所以好的 Prompt 应该像好文章：结构清晰、重点突出、没有废话。</p>
   </div>
 </section>
 
@@ -225,36 +225,6 @@ print(json.dumps(result, indent=2, ensure_ascii=False))</code></pre>
 </section>
 
 <section class="lesson-block">
-  <h2 class="lesson-title"><span class="lesson-num">错误</span>Prompt 编写的四大雷区</h2>
-  <div class="lesson-explain">
-    <p>即使掌握了技巧，这些常见错误仍然会让你的 Prompt 功亏一篑：</p>
-    
-    <p><strong>1. 指令太模糊</strong> —— "帮我优化一下""写个好点的版本"。AI 不知道"好"的标准是什么。就像你对理发师说"剪短一点"，结果可能完全不是你想的。<strong>要量化、要具体："将函数行数减少到 20 行以内，并添加类型注解"。</strong></p>
-    
-    <p><strong>2. 不给上下文</strong> —— 直接丢给 AI 一段代码说"修 Bug"，却不解释这段代码是干什么的、在什么环境下运行。AI 没有读心术。<strong>提供背景信息："这是一个处理用户登录的 Flask 视图函数，使用的是 PostgreSQL 数据库"。</strong></p>
-    
-    <p><strong>3. 要求一次做太多事</strong> —— "设计数据库、写后端 API、做前端页面、部署到服务器"。AI 的上下文窗口有限，一次性塞太多任务会导致每个部分都做得敷衍。<strong>分步骤进行，每轮对话聚焦一个明确目标。</strong></p>
-    
-    <p><strong>4. 不验证输出</strong> —— 盲目相信 AI 的每一行代码，直接复制粘贴到生产环境。AI 会「幻觉」——生成看起来对但实际错误的代码。<strong>永远把 AI 当作「草稿生成器」，最终代码必须经过人工审查和测试。</strong></p>
-  </div>
-</section>
-
-<section class="lesson-block">
-  <h2 class="lesson-title"><span class="lesson-num">示例</span>独立运行脚本</h2>
-  <div class="lesson-explain">
-    <p>以下脚本在 <code>examples/step9/</code> 目录中，每个都可以单独运行：</p>
-    <p><strong><code>01_structured_prompt.py</code></strong> —— build_prompt() 函数，展示翻译/总结/代码生成 Prompt。</p>
-    <p><strong><code>02_few_shot.py</code></strong> —— Few-shot Prompt 演示，情感分析任务。</p>
-  </div>
-  <div class="lesson-code">
-    <div class="demo-label">运行方式</div>
-    <pre><code>cd examples/step9
-python3 01_structured_prompt.py
-python3 02_few_shot.py</code></pre>
-  </div>
-</section>
-
-<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">实验</span>亲手对比不同 Prompt 的效果</h2>
   <div class="lesson-explain">
     <p>下面三个实验可以用任何大模型工具完成（如 ChatGPT、Claude、文心一言等）。重点是<strong>观察同一个模型在不同 Prompt 下的表现差异</strong>。</p>
@@ -308,6 +278,36 @@ python3 02_few_shot.py</code></pre>
 
 # 对比"直接回答"和"请一步一步推理"两种 Prompt 的准确率。</code></pre></div>
     <p><strong>实验结论：</strong>对于数学和逻辑推理题，要求模型"一步步想"能显著提升准确率。这被称为 Chain-of-Thought Prompting。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">错误</span>Prompt 编写的四大雷区</h2>
+  <div class="lesson-explain">
+    <p>即使掌握了技巧，这些常见错误仍然会让你的 Prompt 功亏一篑：</p>
+    
+    <p><strong>1. 指令太模糊</strong> —— "帮我优化一下""写个好点的版本"。AI 不知道"好"的标准是什么。就像你对理发师说"剪短一点"，结果可能完全不是你想的。<strong>要量化、要具体："将函数行数减少到 20 行以内，并添加类型注解"。</strong></p>
+    
+    <p><strong>2. 不给上下文</strong> —— 直接丢给 AI 一段代码说"修 Bug"，却不解释这段代码是干什么的、在什么环境下运行。AI 没有读心术。<strong>提供背景信息："这是一个处理用户登录的 Flask 视图函数，使用的是 PostgreSQL 数据库"。</strong></p>
+    
+    <p><strong>3. 要求一次做太多事</strong> —— "设计数据库、写后端 API、做前端页面、部署到服务器"。AI 的上下文窗口有限，一次性塞太多任务会导致每个部分都做得敷衍。<strong>分步骤进行，每轮对话聚焦一个明确目标。</strong></p>
+    
+    <p><strong>4. 不验证输出</strong> —— 盲目相信 AI 的每一行代码，直接复制粘贴到生产环境。AI 会「幻觉」——生成看起来对但实际错误的代码。<strong>永远把 AI 当作「草稿生成器」，最终代码必须经过人工审查和测试。</strong></p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">示例</span>独立运行脚本</h2>
+  <div class="lesson-explain">
+    <p>以下脚本在 <code>examples/step9/</code> 目录中，每个都可以单独运行：</p>
+    <p><strong><code>01_structured_prompt.py</code></strong> —— build_prompt() 函数，展示翻译/总结/代码生成 Prompt。</p>
+    <p><strong><code>02_few_shot.py</code></strong> —— Few-shot Prompt 演示，情感分析任务。</p>
+  </div>
+  <div class="lesson-code">
+    <div class="demo-label">运行方式</div>
+    <pre><code>cd examples/step9
+python3 01_structured_prompt.py
+python3 02_few_shot.py</code></pre>
   </div>
 </section>
 

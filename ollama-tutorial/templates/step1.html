@@ -3,28 +3,28 @@
 {% block title %}Step 1 — 大模型基本原理{% endblock %}
 
 {% block content %}
-<div class="page-header">
-  <h1>Step 1 — 大模型基本原理</h1>
-  <p>Transformer、注意力机制、Token 与参数规模</p>
-</div>
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">场景</span>场景引入</h2>
+  <div class="lesson-explain">
+    <p>你正在写一个 Python 脚本，希望调用一个 AI 来帮用户总结文章。你选择了 Ollama，因为它免费、本地运行、不需要联网。但在写代码之前，你需要理解这个"黑盒"里面到底在发生什么——这样当输出结果不理想时，你才知道该调哪个参数。</p>
+  </div>
+</section>
 
-<div class="lesson-section">
-  <h2>场景</h2>
-  <p>你正在写一个 Python 脚本，希望调用一个 AI 来帮用户总结文章。你选择了 Ollama，因为它免费、本地运行、不需要联网。但在写代码之前，你需要理解这个"黑盒"里面到底在发生什么——这样当输出结果不理想时，你才知道该调哪个参数。</p>
-</div>
-
-<h2 class="lesson-title"><span class="lesson-num">起源</span>从 RNN 到 Transformer：一场 NLP 的革命</h2>
-<div class="lesson-explain">
-  <p>要理解大模型，我们得先回到 2017 年之前，看看那时的自然语言处理（NLP）是什么样子。</p>
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">起源</span>从 RNN 到 Transformer：一场 NLP 的革命</h2>
+  <div class="lesson-explain">
+    <p>要理解大模型，我们得先回到 2017 年之前，看看那时的自然语言处理（NLP）是什么样子。</p>
   <p>在 2017 年以前，处理序列数据（如一句话、一段文字）的主流技术是<strong>循环神经网络（RNN）</strong>和它的改进版 <strong>LSTM/GRU</strong>。RNN 的核心思想是"逐个读、逐个记"：从第一个字开始，读一个字更新一次记忆，再读下一个字，再更新……就像一个人读文章，只能一个字一个字地读，而且记忆力有限，读到后面就忘了前面。</p>
   <p>RNN 有个致命问题：<strong>长距离依赖困难</strong>。假设文章开头提到"小明"，结尾问"他去了哪里？"，RNN 很可能已经忘了"他"指的是"小明"。LSTM 通过"门控机制"缓解了这个问题，但没有从根本上解决。</p>
   <p><strong>2017 年 6 月</strong>，Google 机器翻译团队的 <strong>Ashish Vaswani</strong> 等人在论文《Attention Is All You Need》中提出了 <strong>Transformer</strong> 架构。这篇论文的标题本身就极具宣言性——它宣称：以前人们用各种复杂的循环结构来建模序列，其实根本没必要，只要一个"注意力机制"就够了。</p>
   <p>Transformer 发布后，迅速横扫了 NLP 领域的各项基准测试。2018 年的 BERT（Google）和 GPT-1（OpenAI），2019 年的 GPT-2，2020 年的 GPT-3……它们都是基于 Transformer 的变体。大语言模型（LLM）时代就此开启。</p>
-</div>
+  </div>
+</section>
 
-<h2 class="lesson-title"><span class="lesson-num">思考</span>为什么 Transformer 能解决"遗忘"问题？</h2>
-<div class="lesson-explain">
-  <p>想象你在读一篇很长的论文。RNN 就像一个只能逐行阅读且记忆力有限的人，读到第 50 页时，第 1 页的内容已经模糊了。而 Transformer 的做法是：直接翻到任意一页，同时看所有页，并根据当前问题决定哪些页最重要。</p>
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">思考</span>为什么 Transformer 能解决"遗忘"问题？</h2>
+  <div class="lesson-explain">
+    <p>想象你在读一篇很长的论文。RNN 就像一个只能逐行阅读且记忆力有限的人，读到第 50 页时，第 1 页的内容已经模糊了。而 Transformer 的做法是：直接翻到任意一页，同时看所有页，并根据当前问题决定哪些页最重要。</p>
   <p>具体来说，Transformer 的核心洞察是：<strong>每个词的位置都应该能直接"看到"其他所有词的位置</strong>，而不是像 RNN 那样只能看到前面的词。这叫做"全局自注意力"（Global Self-Attention）。</p>
   <p>举个例子，对于句子"猫坐在垫子上，因为它很温暖"：</p>
   <ul>
@@ -33,12 +33,13 @@
   </ul>
   <p>这种"全局可见"的设计，让 Transformer 在处理长文本时具有天然优势。上下文窗口从早期的 512 Token，发展到今天的 128K 甚至 1M Token。</p>
   <p>但 Transformer 也有代价：计算量巨大。RNN 逐个处理，内存占用稳定；Transformer 需要同时计算所有词之间的关联，内存和计算复杂度随序列长度平方增长。这个 trade-off（权衡）是理解大模型硬件需求的关键。</p>
-</div>
+  </div>
+</section>
 
-<div class="lesson-section">
-  <h2>原理</h2>
-
-  <div class="concept-card">
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">原理</span>核心原理</h2>
+  <div class="lesson-explain">
+    <div class="concept-card">
     <h4>Transformer：大模型的骨架</h4>
     <p>2017 年 Google 提出的 Transformer 架构，是目前几乎所有大语言模型的基础。它的核心思想是：<strong>把输入的每一句话拆成小块，然后让每个小块都能看到其他所有小块，根据相关性决定应该关注谁。</strong></p>
     <p>想象你在读一句话："猫坐在垫子上，因为它很温暖。" 当读到"它"的时候，你需要知道"它"指的是"垫子"而不是"猫"。Transformer 的注意力机制就是干这个的——它让每个词都能"看到"上下文中的所有其他词，并计算彼此之间的关联度。</p>
@@ -108,22 +109,13 @@
     </ol>
     <p>这个过程叫做<strong>自回归生成</strong>——每次只预测下一个字，然后把预测结果作为新的输入继续预测。就像一个人写文章，每写一个字就要停下来想一想下一个字该写什么。</p>
   </div>
-</div>
+  </div>
+</section>
 
-<div class="lesson-section">
-  <h2>要点</h2>
-  <ul>
-    <li>Transformer 的核心是<strong>注意力机制</strong>，它让模型理解词与词之间的关系</li>
-    <li><strong>Token</strong>是模型处理文本的最小单位，不是人类眼中的"字"</li>
-    <li><strong>上下文窗口</strong>限制了模型一次能"记住"的内容长度</li>
-    <li><strong>参数规模</strong>决定了模型的复杂度和硬件需求，量化可以降低门槛</li>
-    <li>模型生成是<strong>逐 Token 预测</strong>的过程，不是一次性输出整段答案</li>
-  </ul>
-</div>
-
-<h2 class="lesson-title"><span class="lesson-num">论证</span>为什么 Transformer 是"对的"架构？</h2>
-<div class="lesson-explain">
-  <p>你可能会问：既然 Transformer 计算量这么大，为什么它还能取代 RNN 成为主流？我们需要从多个维度来论证。</p>
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">论证</span>为什么 Transformer 是"对的"架构？</h2>
+  <div class="lesson-explain">
+    <p>你可能会问：既然 Transformer 计算量这么大，为什么它还能取代 RNN 成为主流？我们需要从多个维度来论证。</p>
   <p><strong>维度 1：并行计算能力</strong></p>
   <p>RNN 必须逐个处理序列中的每个元素，第 10 个词的计算必须等第 9 个词算完。这种"串行"特性让 RNN 很难利用现代 GPU/TPU 的并行计算能力。而 Transformer 的自注意力机制可以同时计算所有词对之间的关联——整个序列一次性处理，完美契合 GPU 的大规模并行架构。在硬件层面，Transformer 是"GPU 友好"的。</p>
   <p><strong>维度 2：长距离依赖</strong></p>
@@ -146,11 +138,26 @@
       <tr><td>计算复杂度</td><td>O(n) 每步</td><td>O(n²) 整体</td></tr>
     </tbody>
   </table>
-</div>
+  </div>
+</section>
 
-<h2 class="lesson-title"><span class="lesson-num">实验</span>动手体验 Token 和注意力</h2>
-<div class="lesson-explain">
-  <p>这些实验不需要写代码，用在线工具就能完成，帮助你直观感受大模型的内部工作方式。</p>
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">要点</span>核心要点</h2>
+  <div class="lesson-explain">
+    <ul>
+    <li>Transformer 的核心是<strong>注意力机制</strong>，它让模型理解词与词之间的关系</li>
+    <li><strong>Token</strong>是模型处理文本的最小单位，不是人类眼中的"字"</li>
+    <li><strong>上下文窗口</strong>限制了模型一次能"记住"的内容长度</li>
+    <li><strong>参数规模</strong>决定了模型的复杂度和硬件需求，量化可以降低门槛</li>
+    <li>模型生成是<strong>逐 Token 预测</strong>的过程，不是一次性输出整段答案</li>
+  </ul>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">实验</span>动手体验 Token 和注意力</h2>
+  <div class="lesson-explain">
+    <p>这些实验不需要写代码，用在线工具就能完成，帮助你直观感受大模型的内部工作方式。</p>
   <p><strong>实验 1：观察 Token 的分割方式</strong></p>
   <ol>
     <li>打开 OpenAI 的 Tokenizer 工具（搜索 "OpenAI Tokenizer"）。</li>
@@ -173,11 +180,13 @@
     <li>注意看：有时候模型生成到一半会"反悔"，删掉刚写的半句话重新写。这就是自回归生成的特点。</li>
   </ol>
   <p><strong>预期现象</strong>：模型不会一次性写出完整答案。每个新 Token 的生成依赖于之前所有已生成的 Token。这种"一边想一边说"的特性，也是模型偶尔产生逻辑跳跃的原因。</p>
-</div>
+  </div>
+</section>
 
-<div class="lesson-section">
-  <h2>常见错误</h2>
-  <div class="highlight-box">
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">错误</span>常见错误</h2>
+  <div class="lesson-explain">
+    <div class="highlight-box">
     <p><strong>错误 1：以为模型"理解"了内容</strong></p>
     <p>模型并不真正"理解"语言，它只是在统计意义上学会了 Token 之间的关联模式。它可能会给出听起来很对但实际上错误的答案（幻觉）。</p>
   </div>
@@ -189,11 +198,13 @@
     <p><strong>错误 3：认为参数越多越好</strong></p>
     <p>70B 模型在消费级电脑上跑不动。对于日常任务，7B 或 14B 的量化模型往往足够，速度还快得多。</p>
   </div>
-</div>
+  </div>
+</section>
 
-<div class="lesson-section">
-  <h2>示例：Token 计数</h2>
-  <p>用 Python 大致估算一段文本的 Token 数量（简化版）：</p>
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">示例</span>代码示例</h2>
+  <div class="lesson-explain">
+    <p>用 Python 大致估算一段文本的 Token 数量（简化版）：</p>
   <pre><code>def rough_token_count(text):
     """粗略估算 Token 数：中文按 1 字 ≈ 1.5 Token，英文按 1 词 ≈ 1.3 Token"""
     import re
@@ -206,22 +217,26 @@ print(f"估算 Token 数: {rough_token_count(text)}")
 # 输出: 估算 Token 数: 9
 </code></pre>
   <p>实际 Token 数因分词器不同而有差异。Ollama 使用的模型有各自的分词器（如 Llama 用 SentencePiece，GPT 用 BPE）。</p>
-</div>
+  </div>
+</section>
 
-<div class="lesson-section">
-  <h2>练习</h2>
-  <ol>
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">练习</span>课后练习</h2>
+  <div class="lesson-explain">
+    <ol>
     <li>用上面的函数估算你平时写的一段邮件/消息有多少 Token。如果上下文窗口是 4096，你的内容占了多少比例？</li>
     <li>思考：为什么模型处理"苹果"和"Apple"时，可能把它们当作完全不同的 Token？这对你的程序设计有什么影响？</li>
     <li>如果你的电脑只有 8GB 内存，想在本地运行一个 70B 参数的模型，需要用什么技术？代价是什么？</li>
     <li>（设计题）假设你要为一家出版社开发一个"长文档自动摘要"工具。考虑到上下文窗口限制，你会如何设计这个系统的处理流程？请画出流程图并说明每个步骤的目的。</li>
     <li>（验证题）查阅 Transformer 原始论文《Attention Is All You Need》，找出论文中描述的模型参数量和训练数据量。对比今天的 GPT-4 或 Llama 3，分析模型规模增长了多少倍。</li>
   </ol>
-</div>
+  </div>
+</section>
 
-<h2 class="lesson-title"><span class="lesson-num">测验</span>你掌握了吗？</h2>
-<div class="lesson-explain">
-  <div class="demo-card">
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">测验</span>你掌握了吗？</h2>
+  <div class="lesson-explain">
+    <div class="demo-card">
     <p><strong>题目 1（选择）</strong>：Transformer 架构首次提出的时间是：</p>
     <p>A. 2012 年<br>B. 2017 年<br>C. 2020 年<br>D. 2023 年</p>
   </div>
@@ -241,5 +256,6 @@ print(f"估算 Token 数: {rough_token_count(text)}")
     <p><strong>题目 5（选择）</strong>：Transformer 相比 RNN 的最大优势是：</p>
     <p>A. 模型体积更小<br>B. 可以并行计算，且能捕捉长距离依赖<br>C. 不需要训练数据<br>D. 只能处理英文</p>
   </div>
-</div>
+  </div>
+</section>
 {% endblock %}

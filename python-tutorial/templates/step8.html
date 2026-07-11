@@ -38,26 +38,6 @@
 </section>
 
 <section class="lesson-block">
-  <h2 class="lesson-title"><span class="lesson-num">论证</span>为什么是 REST + JSON，而不是其他方案？</h2>
-  <div class="lesson-explain">
-    <p>在调用 AI API 时，你可能没意识到背后是一场"技术路线的胜利"。历史上曾有过多种 competing 的方案，REST + JSON 能在今天成为主流，有其必然性。</p>
-    <p><strong>1. REST vs SOAP vs GraphQL</strong></p>
-    <p>2000 年代初期，企业级 Web 服务主要用 <strong>SOAP</strong>（Simple Object Access Protocol）。SOAP 基于 XML，每条消息都包裹在复杂的信封里，像一个层层包装的俄罗斯套娃。它很严谨，但也很臃肿——一个简单的请求可能要几百行 XML。</p>
-    <p>REST 则像一张明信片：简单、直接、无状态。你用 HTTP 的 GET/POST/PUT/DELETE 对应增删改查，用 URL 定位资源，用 HTTP 状态码表示结果。对于 AI API 这种"发一个问题，收一个回答"的场景，REST 的简洁恰到好处。</p>
-    <p>GraphQL（2015 年由 Facebook 开源）允许客户端精确指定需要哪些字段，避免了过度获取数据。但 AI API 的响应结构通常是固定的，GraphQL 的优势不明显，而增加的复杂度却不小。</p>
-    <p><strong>2. JSON vs XML</strong></p>
-    <p>XML 是人类可读的，但标签冗余严重。一个简单对象 <code>{"name": "Tom", "age": 20}</code> 用 XML 要写：</p>
-    <div class="lesson-code"><pre><code>&lt;person&gt;
-  &lt;name&gt;Tom&lt;/name&gt;
-  &lt;age&gt;20&lt;/age&gt;
-&lt;/person&gt;</code></pre></div>
-    <p>JSON 的体积通常只有 XML 的 30%~40%，解析速度更快，而且和 JavaScript/Python 的数据结构天然对应。对于按 token 计费的 AI API 来说，省下的每一字节都是钱。</p>
-    <p><strong>3. HTTP 为什么能胜任？</strong></p>
-    <p>HTTP 是互联网上最成熟、最普及的协议。防火墙普遍放行 80/443 端口，CDN 和缓存基础设施完善，调试工具（curl、Postman、浏览器开发者工具）一应俱全。用 HTTP 作为 AI API 的传输层，就像是把商店开在繁华的商业街——客流（开发者）自然多。</p>
-  </div>
-</section>
-
-<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">原理</span>一次 API 调用的旅程</h2>
   <div class="lesson-explain">
     <p>当你调用 AI API 时，数据经历了怎样的旅程？就像寄一封特快专递：</p>
@@ -121,6 +101,26 @@
       <!-- 底部说明 -->
       <text x="360" y="30" font-size="14" font-weight="bold" fill="#334155" text-anchor="middle">AI API 调用流程图</text>
     </svg>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">论证</span>为什么是 REST + JSON，而不是其他方案？</h2>
+  <div class="lesson-explain">
+    <p>在调用 AI API 时，你可能没意识到背后是一场"技术路线的胜利"。历史上曾有过多种 competing 的方案，REST + JSON 能在今天成为主流，有其必然性。</p>
+    <p><strong>1. REST vs SOAP vs GraphQL</strong></p>
+    <p>2000 年代初期，企业级 Web 服务主要用 <strong>SOAP</strong>（Simple Object Access Protocol）。SOAP 基于 XML，每条消息都包裹在复杂的信封里，像一个层层包装的俄罗斯套娃。它很严谨，但也很臃肿——一个简单的请求可能要几百行 XML。</p>
+    <p>REST 则像一张明信片：简单、直接、无状态。你用 HTTP 的 GET/POST/PUT/DELETE 对应增删改查，用 URL 定位资源，用 HTTP 状态码表示结果。对于 AI API 这种"发一个问题，收一个回答"的场景，REST 的简洁恰到好处。</p>
+    <p>GraphQL（2015 年由 Facebook 开源）允许客户端精确指定需要哪些字段，避免了过度获取数据。但 AI API 的响应结构通常是固定的，GraphQL 的优势不明显，而增加的复杂度却不小。</p>
+    <p><strong>2. JSON vs XML</strong></p>
+    <p>XML 是人类可读的，但标签冗余严重。一个简单对象 <code>{"name": "Tom", "age": 20}</code> 用 XML 要写：</p>
+    <div class="lesson-code"><pre><code>&lt;person&gt;
+  &lt;name&gt;Tom&lt;/name&gt;
+  &lt;age&gt;20&lt;/age&gt;
+&lt;/person&gt;</code></pre></div>
+    <p>JSON 的体积通常只有 XML 的 30%~40%，解析速度更快，而且和 JavaScript/Python 的数据结构天然对应。对于按 token 计费的 AI API 来说，省下的每一字节都是钱。</p>
+    <p><strong>3. HTTP 为什么能胜任？</strong></p>
+    <p>HTTP 是互联网上最成熟、最普及的协议。防火墙普遍放行 80/443 端口，CDN 和缓存基础设施完善，调试工具（curl、Postman、浏览器开发者工具）一应俱全。用 HTTP 作为 AI API 的传输层，就像是把商店开在繁华的商业街——客流（开发者）自然多。</p>
   </div>
 </section>
 
@@ -200,34 +200,6 @@ print(result)</code></pre>
 </section>
 
 <section class="lesson-block">
-  <h2 class="lesson-title"><span class="lesson-num">错误</span>这些坑千万别踩</h2>
-  <div class="lesson-explain">
-    <p>新手调用 AI API 时，总会犯一些「低级错误」。下面三个是最常见、也最危险的：</p>
-    
-    <p><strong>1. 硬编码 API Key</strong> —— 把密钥直接写在代码里，然后不小心提交到了 GitHub。这就像把银行卡密码写在名片上到处发。攻击者拿到你的 Key 后，可以疯狂调用 API，让你一夜之间欠下巨额账单。<strong>务必使用环境变量或专用密钥管理服务。</strong></p>
-    
-    <p><strong>2. 不处理网络异常</strong> —— 以为网络永远畅通无阻。现实中，WiFi 会断、服务器会挂、DNS 会失效。如果不加 <code>try-except</code> 和超时设置，程序遇到一点网络波动就会崩溃，用户体验极差。<strong>永远为网络请求加上异常处理和超时参数。</strong></p>
-    
-    <p><strong>3. 忽略 API 限流（Rate Limit）</strong> —— 像机关枪一样连续发送请求，结果被服务商封禁。API 提供商通常限制每分钟/每小时的调用次数。不处理 429 状态码，不仅会导致请求失败，还可能触发账号风控。<strong>实现指数退避重试机制，遇到限流时主动等待。</strong></p>
-  </div>
-</section>
-
-<section class="lesson-block">
-  <h2 class="lesson-title"><span class="lesson-num">示例</span>独立运行脚本</h2>
-  <div class="lesson-explain">
-    <p>以下脚本在 <code>examples/step8/</code> 目录中，每个都可以单独运行：</p>
-    <p><strong><code>01_mock_api.py</code></strong> —— 模拟 AI API 调用，展示请求构造和响应解析。</p>
-    <p><strong><code>02_api_with_key.py</code></strong> —— 从环境变量读取 API Key，展示请求头和错误处理。</p>
-  </div>
-  <div class="lesson-code">
-    <div class="demo-label">运行方式</div>
-    <pre><code>cd examples/step8
-python3 01_mock_api.py
-python3 02_api_with_key.py</code></pre>
-  </div>
-</section>
-
-<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">实验</span>亲手拆解一次 HTTP 请求</h2>
   <div class="lesson-explain">
     <p>下面三个实验不需要你有真实的 AI API Key，我们用公开的服务或模拟数据来理解 HTTP 请求的本质。</p>
@@ -290,6 +262,34 @@ print(f"消耗 token 数: {mock_response['usage']['total_tokens']}")
 
 # 如果没有 API Key，可以思考：为什么温度参数会影响随机性？
 # 提示：temperature 控制的是模型输出下一个词时的概率分布"平滑度"。</code></pre></div>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">错误</span>这些坑千万别踩</h2>
+  <div class="lesson-explain">
+    <p>新手调用 AI API 时，总会犯一些「低级错误」。下面三个是最常见、也最危险的：</p>
+    
+    <p><strong>1. 硬编码 API Key</strong> —— 把密钥直接写在代码里，然后不小心提交到了 GitHub。这就像把银行卡密码写在名片上到处发。攻击者拿到你的 Key 后，可以疯狂调用 API，让你一夜之间欠下巨额账单。<strong>务必使用环境变量或专用密钥管理服务。</strong></p>
+    
+    <p><strong>2. 不处理网络异常</strong> —— 以为网络永远畅通无阻。现实中，WiFi 会断、服务器会挂、DNS 会失效。如果不加 <code>try-except</code> 和超时设置，程序遇到一点网络波动就会崩溃，用户体验极差。<strong>永远为网络请求加上异常处理和超时参数。</strong></p>
+    
+    <p><strong>3. 忽略 API 限流（Rate Limit）</strong> —— 像机关枪一样连续发送请求，结果被服务商封禁。API 提供商通常限制每分钟/每小时的调用次数。不处理 429 状态码，不仅会导致请求失败，还可能触发账号风控。<strong>实现指数退避重试机制，遇到限流时主动等待。</strong></p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">示例</span>独立运行脚本</h2>
+  <div class="lesson-explain">
+    <p>以下脚本在 <code>examples/step8/</code> 目录中，每个都可以单独运行：</p>
+    <p><strong><code>01_mock_api.py</code></strong> —— 模拟 AI API 调用，展示请求构造和响应解析。</p>
+    <p><strong><code>02_api_with_key.py</code></strong> —— 从环境变量读取 API Key，展示请求头和错误处理。</p>
+  </div>
+  <div class="lesson-code">
+    <div class="demo-label">运行方式</div>
+    <pre><code>cd examples/step8
+python3 01_mock_api.py
+python3 02_api_with_key.py</code></pre>
   </div>
 </section>
 

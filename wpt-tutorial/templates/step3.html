@@ -3,38 +3,37 @@
 {% block title %}Step 3 磁共振耦合 — 无线电能输电教程{% endblock %}
 
 {% block content %}
-<div class="page-header">
-  <h1>Step 3 — 磁共振耦合</h1>
-  <p>LC谐振、耦合系数、频率分裂现象</p>
-</div>
-
-<div class="lesson-block">
-  <div class="lesson-title">场景</div>
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">场景</span>场景引入</h2>
   <div class="lesson-explain">
     <p>电磁感应式无线充电要求发射端和接收端几乎紧贴（距离 &lt; 1cm），稍微远一点效率就急剧下降。2007 年 MIT 的团队发现：如果让两个线圈在<strong>相同的谐振频率</strong>上工作，即使相隔几米，也能实现较高的传输效率。这就是<strong>磁共振耦合（Magnetic Resonance Coupling）</strong>。</p>
   </div>
-</div>
+</section>
 
-<h2 class="lesson-title"><span class="lesson-num">起源</span>MIT 的"灯泡实验"</h2>
-<div class="lesson-explain">
-  <p><strong>2006 年</strong>，麻省理工学院的物理学教授 <strong>Marin Soljačić</strong> 正在家里经历一件烦心事：他的手机又一次因为忘记充电而自动关机了。Soljačić 想，如果手机能像连接 Wi-Fi 一样自动充电，该有多好？</p>
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">起源</span>MIT 的"灯泡实验"</h2>
+  <div class="lesson-explain">
+    <p><strong>2006 年</strong>，麻省理工学院的物理学教授 <strong>Marin Soljačić</strong> 正在家里经历一件烦心事：他的手机又一次因为忘记充电而自动关机了。Soljačić 想，如果手机能像连接 Wi-Fi 一样自动充电，该有多好？</p>
   <p>但这在当时的科学界看来几乎不可能。电磁感应式充电要求发射端和接收端紧贴在一起，距离稍远就毫无效果。而电磁波辐射（如微波）虽然能传得远，但能量向四面八方扩散，效率极低，而且对人体有潜在危害。</p>
   <p>Soljačić 想到了一个被遗忘的物理概念：<strong>谐振</strong>。他意识到，如果让发射端和接收端都在同一个频率上谐振，就像两个调音相同的音叉——当一个音叉振动时，另一个即使在较远的地方也会跟着振动。能量不会在空间中无差别地扩散，而是被"锁定"在两个谐振器之间高效传递。</p>
   <p><strong>2007 年</strong>，Soljačić 的团队在《科学》杂志上发表论文，宣布他们成功点亮了一个距离电源 2 米远的 60W 灯泡，效率约 40%。这个实验震撼了整个工程界——它证明了中距离无线输电是可能的。</p>
   <p>这项技术的专利后来授权给了一家名为 <strong>WiTricity</strong> 的公司，磁共振无线充电从此走上了商业化的道路。</p>
-</div>
+  </div>
+</section>
 
-<h2 class="lesson-title"><span class="lesson-num">思考</span>为什么谐振能"锁定"能量？</h2>
-<div class="lesson-explain">
-  <p>Soljačić 当时面临的核心问题是：<strong>如何让能量不扩散到空间中，而是精准地到达接收端？</strong></p>
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">思考</span>为什么谐振能"锁定"能量？</h2>
+  <div class="lesson-explain">
+    <p>Soljačić 当时面临的核心问题是：<strong>如何让能量不扩散到空间中，而是精准地到达接收端？</strong></p>
   <p>想象你站在一个空旷的广场上喊一个人的名字。你的声音会向四面八方传播，大部分能量被广场吸收或散失，只有一小部分传到对方耳朵里。这是电磁波辐射的困境。</p>
   <p>现在换一种方式：你和对方各拿一个调音完全相同的音叉。你敲击自己的音叉，对方的音叉虽然没有被直接触碰，但也会开始振动并发出声音。为什么？因为空气中的声波中，只有和对方音叉<strong>固有频率相同</strong>的那部分能量才能引起共振，其他频率的声波都被"过滤"掉了。</p>
   <p>Soljačić 把同样的思路应用到了磁场中。发射线圈和接收线圈各自由电感和电容组成 LC 谐振回路，调谐到相同的频率。此时，发射线圈发出的交变磁场中，只有接收线圈的谐振频率分量才能被有效吸收——其余频率的能量仍然散失在空间中，但谐振频率上的能量被"优先投递"给了接收端。</p>
   <p>这就好比在嘈杂的派对上，你和你的朋友约定了一个暗号。周围虽然人声鼎沸，但只要听到这个特定的暗号，你们就能立刻锁定彼此。</p>
-</div>
+  </div>
+</section>
 
-<div class="lesson-block">
-  <div class="lesson-title">原理</div>
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">原理</span>无线输电的基本原理</h2>
   <div class="lesson-explain">
     <h4>LC 谐振电路</h4>
     <p>一个电感 $L$ 和一个电容 $C$ 组成的回路，具有一个固有谐振频率：</p>
@@ -83,24 +82,12 @@
       <li>在过耦合区域（$k > k_{critical}$），系统的最大效率点出现在分裂后的两个频率上，而不是原来的 $\omega_0$。</li>
     </ul>
   </div>
-</div>
+</section>
 
-<div class="lesson-block">
-  <div class="lesson-title">要点</div>
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">论证</span>为什么磁共振是"最优解"？</h2>
   <div class="lesson-explain">
-    <ol>
-      <li><strong>谐振是无线输电的"放大器"</strong>：没有谐振时，远距离传输效率极低；谐振后，效率可以提升数倍到数十倍。</li>
-      <li><strong>频率匹配必须精确</strong>：如果发射端和接收端的谐振频率相差 1%，效率可能下降 30% 以上。实际系统中需要自动频率调谐（AFC）。</li>
-      <li><strong>品质因数 Q 越高越好</strong>：$Q = \frac{\omega_0 L}{R} = \frac{1}{\omega_0 C R}$。Q 值越高，谐振峰越尖锐，频率选择性越好，传输距离越远。</li>
-      <li><strong>临界耦合</strong>：存在一个最优耦合系数 $k_{opt}$，使得在给定距离下效率最高。过耦合（太近）和欠耦合（太远）都会降低效率。</li>
-      <li><strong>频率分裂是过耦合的标志</strong>：如果在频谱上看到两个峰，说明两个线圈太近了，应该稍微拉开距离或调整频率。</li>
-    </ol>
-  </div>
-</div>
-
-<h2 class="lesson-title"><span class="lesson-num">论证</span>为什么磁共振是"最优解"？</h2>
-<div class="lesson-explain">
-  <p>磁共振耦合并不是实现无线输电的唯一方式，但它在"距离"和"效率"这对矛盾中找到了最佳的折中点。我们来系统地对比一下。</p>
+    <p>磁共振耦合并不是实现无线输电的唯一方式，但它在"距离"和"效率"这对矛盾中找到了最佳的折中点。我们来系统地对比一下。</p>
   <p><strong>方案 1：单纯电磁感应（非谐振）</strong></p>
   <p>两个线圈靠近，靠互感传递能量。这种方式简单直接，但问题是磁场向四面八方扩散，只有很少一部分能被接收线圈捕获。稍微拉开距离，效率就断崖式下跌。适合距离 &lt; 1cm 的场景，比如手机无线充电。</p>
   <p><strong>方案 2：磁共振耦合（谐振）</strong></p>
@@ -124,43 +111,26 @@
   </div>
   <p><strong>为什么 Q 值越高越好？</strong></p>
   <p>品质因数 $Q$ 描述了一个谐振回路的"锐度"。高 Q 意味着谐振峰很窄、很尖锐。这就像一把精准的狙击枪：虽然瞄准范围小，但只要瞄准了，命中率极高。高 Q 回路能更严格地筛选频率，只允许极窄频带内的能量通过，从而进一步减少泄漏。</p>
-</div>
+  </div>
+</section>
 
-<div class="lesson-block">
-  <div class="lesson-title">常见错误</div>
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">要点</span>核心要点</h2>
   <div class="lesson-explain">
-    <div class="mistake-card">
-        <p><strong>❌ 认为谐振只是"频率相同"</strong><br>谐振不仅是频率相同，还要求回路的 Q 值足够高。低 Q 值的谐振回路，能量损耗太快，无法形成有效的能量交换。</p>
-    </div>
-    <div class="mistake-card">
-        <p><strong>❌ 忽略频率分裂的影响</strong><br>在近距离时，如果仍然用原始谐振频率 $\omega_0$ 驱动，实际效率可能远低于预期，因为系统的真实谐振峰已经偏移了。</p>
-    </div>
-    <div class="mistake-card">
-        <p><strong>❌ 用普通变压器思维理解磁共振</strong><br>变压器是强耦合（$k \approx 1$）、非谐振（50Hz/60Hz）；磁共振耦合是弱耦合（$k \ll 1$）、高频谐振（100kHz ~ 10MHz）。两者的设计逻辑完全不同。</p>
-      </div>
-    </div>
+    <ol>
+      <li><strong>谐振是无线输电的"放大器"</strong>：没有谐振时，远距离传输效率极低；谐振后，效率可以提升数倍到数十倍。</li>
+      <li><strong>频率匹配必须精确</strong>：如果发射端和接收端的谐振频率相差 1%，效率可能下降 30% 以上。实际系统中需要自动频率调谐（AFC）。</li>
+      <li><strong>品质因数 Q 越高越好</strong>：$Q = \frac{\omega_0 L}{R} = \frac{1}{\omega_0 C R}$。Q 值越高，谐振峰越尖锐，频率选择性越好，传输距离越远。</li>
+      <li><strong>临界耦合</strong>：存在一个最优耦合系数 $k_{opt}$，使得在给定距离下效率最高。过耦合（太近）和欠耦合（太远）都会降低效率。</li>
+      <li><strong>频率分裂是过耦合的标志</strong>：如果在频谱上看到两个峰，说明两个线圈太近了，应该稍微拉开距离或调整频率。</li>
+    </ol>
   </div>
-</div>
+</section>
 
-<div class="lesson-block">
-  <div class="lesson-title">示例</div>
-  <div class="lesson-demo">
-    <div class="demo-label">谐振频率计算</div>
-    <div class="demo-card">
-        <p ><strong>已知</strong>：线圈电感 $L = 10\,\mu\text{H}$，谐振电容 $C = 253\,\text{pF}$。</p>
-        <p ><strong>求</strong>：谐振频率 $f_0$。</p>
-        <p ><strong>解</strong>：</p>
-        <div class="formula-box plain">
-          $$f_0 = \frac{1}{2\pi\sqrt{LC}} = \frac{1}{2\pi\sqrt{10 \times 10^{-6} \times 253 \times 10^{-12}}}$$
-          $$f_0 = \frac{1}{2\pi\sqrt{2.53 \times 10^{-15}}} = \frac{1}{2\pi \times 5.03 \times 10^{-8}} \approx 3.16\,\text{MHz}$$
-        </div>
-    </div>
-  </div>
-</div>
-
-<h2 class="lesson-title"><span class="lesson-num">实验</span>观察谐振现象</h2>
-<div class="lesson-explain">
-  <p>这个实验利用一个常见的物理玩具——牛顿摆或简单的音叉——来类比磁共振的能量传递。</p>
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">实验</span>观察谐振现象</h2>
+  <div class="lesson-explain">
+    <p>这个实验利用一个常见的物理玩具——牛顿摆或简单的音叉——来类比磁共振的能量传递。</p>
   <p><strong>实验 1：音叉共振（定性观察）</strong></p>
   <ol>
     <li>准备两个相同的音叉（可以在网上购买，或向物理实验室借用）。</li>
@@ -185,10 +155,44 @@
     <li>从低频扫到高频，记录电压幅值最大时的频率。</li>
   </ol>
   <p><strong>预期现象</strong>：在某个特定频率（即谐振频率 $f_0 = 1/(2\pi\sqrt{LC})$）处，电容两端电压达到峰值，远高于输入电压。这就是谐振的"电压放大"效应。</p>
-</div>
+  </div>
+</section>
 
-<div class="lesson-block">
-  <div class="lesson-title">练习</div>
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">错误</span>常见错误</h2>
+  <div class="lesson-explain">
+    <div class="mistake-card">
+        <p><strong>❌ 认为谐振只是"频率相同"</strong><br>谐振不仅是频率相同，还要求回路的 Q 值足够高。低 Q 值的谐振回路，能量损耗太快，无法形成有效的能量交换。</p>
+    </div>
+    <div class="mistake-card">
+        <p><strong>❌ 忽略频率分裂的影响</strong><br>在近距离时，如果仍然用原始谐振频率 $\omega_0$ 驱动，实际效率可能远低于预期，因为系统的真实谐振峰已经偏移了。</p>
+    </div>
+    <div class="mistake-card">
+        <p><strong>❌ 用普通变压器思维理解磁共振</strong><br>变压器是强耦合（$k \approx 1$）、非谐振（50Hz/60Hz）；磁共振耦合是弱耦合（$k \ll 1$）、高频谐振（100kHz ~ 10MHz）。两者的设计逻辑完全不同。</p>
+      </div>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">示例</span>典型应用与数据</h2>
+  <div class="lesson-explain">
+    <div class="lesson-demo">
+    <div class="demo-label">谐振频率计算</div>
+    <div class="demo-card">
+        <p ><strong>已知</strong>：线圈电感 $L = 10\,\mu\text{H}$，谐振电容 $C = 253\,\text{pF}$。</p>
+        <p ><strong>求</strong>：谐振频率 $f_0$。</p>
+        <p ><strong>解</strong>：</p>
+        <div class="formula-box plain">
+          $$f_0 = \frac{1}{2\pi\sqrt{LC}} = \frac{1}{2\pi\sqrt{10 \times 10^{-6} \times 253 \times 10^{-12}}}$$
+          $$f_0 = \frac{1}{2\pi\sqrt{2.53 \times 10^{-15}}} = \frac{1}{2\pi \times 5.03 \times 10^{-8}} \approx 3.16\,\text{MHz}$$
+        </div>
+    </div>
+  </div>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">练习</span>课后练习</h2>
   <div class="lesson-explain">
     <div class="exercise-box">
         <p ><strong>练习 1</strong>：设计一个谐振频率为 6.78 MHz（ISM 频段，Qi 标准也使用附近频段）的 LC 回路，已知电感 $L = 5\,\mu\text{H}$，求需要的电容 $C$。</p>
@@ -198,11 +202,12 @@
         <p ><strong>练习 5（验证题）</strong>：查找 WiTricity 公司的产品资料，分析磁共振耦合技术在电动汽车领域的最新进展。与传统插线充电相比，磁共振无线充电的优势和劣势分别是什么？</p>
     </div>
   </div>
-</div>
+</section>
 
-<h2 class="lesson-title"><span class="lesson-num">测验</span>你掌握了吗？</h2>
-<div class="lesson-explain">
-  <div class="demo-card">
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">测验</span>你掌握了吗？</h2>
+  <div class="lesson-explain">
+    <div class="demo-card">
     <p><strong>题目 1（判断）</strong>：磁共振耦合中，只要发射端和接收端的频率完全相同，就一定能实现高效能量传输。</p>
     <p>A. 正确  B. 错误</p>
   </div>
@@ -222,5 +227,6 @@
     <p><strong>题目 5（选择）</strong>：当耦合系数 $k$ 增大到超过临界耦合值时，系统效率最高的工作频率：</p>
     <p>A. 仍然是原始谐振频率 $\omega_0$<br>B. 分裂后的两个频率 $\omega_+$ 和 $\omega_-$<br>C. 介于 $\omega_+$ 和 $\omega_-$ 之间的某个频率<br>D. 与频率无关</p>
   </div>
-</div>
+  </div>
+</section>
 {% endblock %}

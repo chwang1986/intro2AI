@@ -36,31 +36,6 @@
 </section>
 
 <section class="lesson-block">
-  <h2 class="lesson-title"><span class="lesson-num">论证</span>为什么 OOP 能解决代码组织问题？</h2>
-  <div class="lesson-explain">
-    <p>有人可能会说："我用函数也能写出好代码啊，为什么非要学 OOP？"没错，对于小程序，过程式完全够用。但当项目超过一定规模，OOP 的组织优势就会显现。让我们从几个角度论证：</p>
-    <p><strong>1. 封装 vs 裸数据</strong></p>
-    <p>过程式编程中，数据是裸露的，任何函数都能修改。OOP 通过封装把数据保护起来，只允许通过规定的方法访问。就像银行的金库——你不直接进去数钱，而是通过柜台办理业务。这样可以在方法里加入校验逻辑（比如余额不能为负数），保证数据始终有效。</p>
-    <p><strong>2. 继承 vs 复制粘贴</strong></p>
-    <p>假设 Dog 和 Cat 都有 name、age 和 eat() 方法。过程式编程里，你要写两套几乎一样的代码。OOP 的继承让你把共性放到 Animal 父类里，子类只写差异部分。不仅减少了重复代码，而且当共性需要修改时（比如给 eat() 增加"进食日志"），只需改父类一处。</p>
-    <p><strong>3. 多态 vs 条件分支</strong></p>
-    <p>过程式编程处理"不同类型不同行为"时，通常要写一长串 if/else：</p>
-    <div class="lesson-code"><pre><code># 过程式风格（痛苦）
-def make_sound(animal_type, name):
-    if animal_type == "dog":
-        print(f"{name} 汪汪")
-    elif animal_type == "cat":
-        print(f"{name} 喵喵")
-    elif animal_type == "duck":
-        print(f"{name} 嘎嘎")
-    # 每增加一种动物，就要修改这个函数！</code></pre></div>
-    <p>OOP 的多态让每种动物自己决定怎么叫，调用者无需关心具体类型。增加新动物时，旧代码完全不需要修改——这就是著名的<strong>开闭原则</strong>（对扩展开放，对修改关闭）。</p>
-    <p><strong>4. 但 OOP 不是银弹</strong></p>
-    <p>Python 不像 Java 那样强制所有代码都包在类里。如果你只是写个简单的脚本，几行函数就够了。过度使用 OOP（比如给每个小功能都创建一个类）反而会让代码臃肿。<strong>好的设计是选择合适的工具，而不是把工具当成信仰。</strong></p>
-  </div>
-</section>
-
-<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">原理</span>类、对象与继承</h2>
   <div class="lesson-explain">
     <p><strong>类（Class）</strong>是对象的蓝图，定义了这类事物有什么属性、能做什么。<strong>对象（Object）</strong>是类的实例，是内存中真实存在的数据。<strong>继承（Inheritance）</strong>则让子类复用父类的代码，同时扩展自己的特性，避免重复造轮子。</p>
@@ -133,6 +108,31 @@ def make_sound(animal_type, name):
 </section>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">论证</span>为什么 OOP 能解决代码组织问题？</h2>
+  <div class="lesson-explain">
+    <p>有人可能会说："我用函数也能写出好代码啊，为什么非要学 OOP？"没错，对于小程序，过程式完全够用。但当项目超过一定规模，OOP 的组织优势就会显现。让我们从几个角度论证：</p>
+    <p><strong>1. 封装 vs 裸数据</strong></p>
+    <p>过程式编程中，数据是裸露的，任何函数都能修改。OOP 通过封装把数据保护起来，只允许通过规定的方法访问。就像银行的金库——你不直接进去数钱，而是通过柜台办理业务。这样可以在方法里加入校验逻辑（比如余额不能为负数），保证数据始终有效。</p>
+    <p><strong>2. 继承 vs 复制粘贴</strong></p>
+    <p>假设 Dog 和 Cat 都有 name、age 和 eat() 方法。过程式编程里，你要写两套几乎一样的代码。OOP 的继承让你把共性放到 Animal 父类里，子类只写差异部分。不仅减少了重复代码，而且当共性需要修改时（比如给 eat() 增加"进食日志"），只需改父类一处。</p>
+    <p><strong>3. 多态 vs 条件分支</strong></p>
+    <p>过程式编程处理"不同类型不同行为"时，通常要写一长串 if/else：</p>
+    <div class="lesson-code"><pre><code># 过程式风格（痛苦）
+def make_sound(animal_type, name):
+    if animal_type == "dog":
+        print(f"{name} 汪汪")
+    elif animal_type == "cat":
+        print(f"{name} 喵喵")
+    elif animal_type == "duck":
+        print(f"{name} 嘎嘎")
+    # 每增加一种动物，就要修改这个函数！</code></pre></div>
+    <p>OOP 的多态让每种动物自己决定怎么叫，调用者无需关心具体类型。增加新动物时，旧代码完全不需要修改——这就是著名的<strong>开闭原则</strong>（对扩展开放，对修改关闭）。</p>
+    <p><strong>4. 但 OOP 不是银弹</strong></p>
+    <p>Python 不像 Java 那样强制所有代码都包在类里。如果你只是写个简单的脚本，几行函数就够了。过度使用 OOP（比如给每个小功能都创建一个类）反而会让代码臃肿。<strong>好的设计是选择合适的工具，而不是把工具当成信仰。</strong></p>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">要点</span>面向对象的核心语法</h2>
   <div class="lesson-explain">
     <p><strong>class</strong> 定义类；<strong>__init__</strong> 是构造方法，在创建对象时自动执行；<strong>self</strong> 代表实例自身，必须通过它访问实例属性；<strong>继承</strong>在类名后的括号中指定父类，子类自动拥有父类的全部属性和方法。</p>
@@ -198,67 +198,6 @@ for animal in animals:
 </section>
 
 <section class="lesson-block">
-  <h2 class="lesson-title"><span class="lesson-num">错误</span>常见陷阱</h2>
-  <div class="lesson-explain">
-    <p><strong>1. 忘记写 self</strong>：实例方法的第一个参数必须是 self，代表对象自身。忘记写会导致 TypeError。</p>
-    <pre><code>class Person:
-    def __init__(name):   # 错误！漏了 self
-        self.name = name
-
-# 正确
-class Person:
-    def __init__(self, name):
-        self.name = name</code></pre>
-    <p><strong>2. 方法名和属性名冲突</strong>：不要用相同的名字定义方法和属性，否则后定义的会覆盖前者。</p>
-    <pre><code>class Circle:
-    def __init__(self, radius):
-        self.radius = radius
-
-    def area(self):           # 方法
-        return 3.14 * self.radius ** 2
-
-# 不要这样做：
-c = Circle(5)
-c.area = 100   # 糟糕！把方法 area 覆盖成了整数 100
-# 现在 c.area() 会报错：'int' object is not callable</code></pre>
-    <p><strong>3. 过度使用继承</strong>："是一个"关系才用继承（Dog 是 Animal），"有一个"关系应该用组合（Car 有一个 Engine）。滥用继承会让类关系像意大利面条一样纠缠不清。</p>
-    <pre><code># 错误的继承：企鹅不是典型的鸟（不会飞）
-class Bird:
-    def fly(self): ...
-
-class Penguin(Bird):   # 企鹅继承鸟？
-    def fly(self):       # 被迫重写为空或抛异常
-        raise Exception("我不会飞")
-
-# 正确的组合：把"能否飞"拆成行为对象
-class FlyBehavior:
-    def fly(self): ...
-
-class CannotFly(FlyBehavior):
-    def fly(self): return "不会飞"
-
-class Bird:
-    def __init__(self, fly_behavior):
-        self.fly_behavior = fly_behavior</code></pre>
-  </div>
-</section>
-
-<section class="lesson-block">
-  <h2 class="lesson-title"><span class="lesson-num">示例</span>独立运行脚本</h2>
-  <div class="lesson-explain">
-    <p>以下脚本在 <code>examples/step7/</code> 目录中，每个都可以单独运行：</p>
-    <p><strong><code>01_class_basics.py</code></strong> —— Dog 类、__init__、属性、方法、创建实例。</p>
-    <p><strong><code>02_inheritance.py</code></strong> —— Animal 父类、Dog/Cat 子类、重写、super()、多态。</p>
-  </div>
-  <div class="lesson-code">
-    <div class="demo-label">运行方式</div>
-    <pre><code>cd examples/step7
-python3 01_class_basics.py
-python3 02_inheritance.py</code></pre>
-  </div>
-</section>
-
-<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">实验</span>亲手揭开 self 和继承的面纱</h2>
   <div class="lesson-explain">
     <p>打开 Python 交互式环境，跟着下面的实验一步步操作，观察输出结果，理解背后的原理。</p>
@@ -317,6 +256,67 @@ c = Child()
 print(c.parent_attr)  # 能访问到吗？
 print(c.child_attr)   # 能访问到吗？</code></pre></div>
     <p><strong>实验结论：</strong>如果不写 <code>super().__init__()</code>，子类实例就不会拥有父类在 <code>__init__</code> 中定义的属性。super() 像一个"父类代理"，帮你调用父类的方法。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">错误</span>常见陷阱</h2>
+  <div class="lesson-explain">
+    <p><strong>1. 忘记写 self</strong>：实例方法的第一个参数必须是 self，代表对象自身。忘记写会导致 TypeError。</p>
+    <pre><code>class Person:
+    def __init__(name):   # 错误！漏了 self
+        self.name = name
+
+# 正确
+class Person:
+    def __init__(self, name):
+        self.name = name</code></pre>
+    <p><strong>2. 方法名和属性名冲突</strong>：不要用相同的名字定义方法和属性，否则后定义的会覆盖前者。</p>
+    <pre><code>class Circle:
+    def __init__(self, radius):
+        self.radius = radius
+
+    def area(self):           # 方法
+        return 3.14 * self.radius ** 2
+
+# 不要这样做：
+c = Circle(5)
+c.area = 100   # 糟糕！把方法 area 覆盖成了整数 100
+# 现在 c.area() 会报错：'int' object is not callable</code></pre>
+    <p><strong>3. 过度使用继承</strong>："是一个"关系才用继承（Dog 是 Animal），"有一个"关系应该用组合（Car 有一个 Engine）。滥用继承会让类关系像意大利面条一样纠缠不清。</p>
+    <pre><code># 错误的继承：企鹅不是典型的鸟（不会飞）
+class Bird:
+    def fly(self): ...
+
+class Penguin(Bird):   # 企鹅继承鸟？
+    def fly(self):       # 被迫重写为空或抛异常
+        raise Exception("我不会飞")
+
+# 正确的组合：把"能否飞"拆成行为对象
+class FlyBehavior:
+    def fly(self): ...
+
+class CannotFly(FlyBehavior):
+    def fly(self): return "不会飞"
+
+class Bird:
+    def __init__(self, fly_behavior):
+        self.fly_behavior = fly_behavior</code></pre>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">示例</span>独立运行脚本</h2>
+  <div class="lesson-explain">
+    <p>以下脚本在 <code>examples/step7/</code> 目录中，每个都可以单独运行：</p>
+    <p><strong><code>01_class_basics.py</code></strong> —— Dog 类、__init__、属性、方法、创建实例。</p>
+    <p><strong><code>02_inheritance.py</code></strong> —— Animal 父类、Dog/Cat 子类、重写、super()、多态。</p>
+  </div>
+  <div class="lesson-code">
+    <div class="demo-label">运行方式</div>
+    <pre><code>cd examples/step7
+python3 01_class_basics.py
+python3 02_inheritance.py</code></pre>
   </div>
 </section>
 

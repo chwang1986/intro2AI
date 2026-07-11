@@ -3,166 +3,74 @@
 {% block title %}Step 5 应用与挑战 — 无线电能输电教程{% endblock %}
 
 {% block content %}
-<div class="page-header">
-  <h1>Step 5 — 应用与挑战</h1>
-  <p>手机充电、电动汽车、医疗植入、空间太阳能</p>
-</div>
-
-<div class="lesson-block">
-  <div class="lesson-title">场景</div>
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">场景</span>场景引入</h2>
   <div class="lesson-explain">
     <p>经过前面四步的理论学习，现在来看看无线输电技术在现实世界中是如何应用的，以及每个应用场景面临的核心挑战。</p>
   </div>
-</div>
+</section>
 
-<h2 class="lesson-title"><span class="lesson-num">起源</span>从实验室到商场：无线输电的商业化之路</h2>
-<div class="lesson-explain">
-  <p>无线输电从科学发现到商业产品，走了将近 200 年。</p>
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">起源</span>从实验室到商场：无线输电的商业化之路</h2>
+  <div class="lesson-explain">
+    <p>无线输电从科学发现到商业产品，走了将近 200 年。</p>
   <p><strong>1831 年</strong>，法拉第发现电磁感应，当时这只是一个纯粹的科学发现，没有任何商业应用。直到 19 世纪末，交流发电机和变压器的发明，才让电磁感应走进了工业世界。</p>
   <p><strong>1891 年</strong>，特斯拉的无线点灯实验震撼了公众，但他的"全球无线输电"愿景过于超前，在当时的材料科学和电力电子技术条件下根本无法实现。沃登克里弗塔在 1901 年开工，1905 年因资金断裂而废弃。</p>
   <p><strong>20 世纪中后期</strong>，射频识别（RFID）技术开始利用电磁感应进行短距离通信和微弱的能量传输。这是无线输电概念首次大规模商用，只不过传输的是信息和小功率电能（如门禁卡、公交卡）。</p>
   <p><strong>2008 年</strong>，无线充电联盟（WPC）成立，开始制定 Qi 标准。这个标准统一了手机无线充电的接口和协议，让不同品牌的充电板和手机可以互相兼容。</p>
   <p><strong>2017 年</strong>，苹果在 iPhone 8 和 iPhone X 中引入 Qi 无线充电，标志着这项技术正式进入主流消费电子市场。此后，安卓阵营迅速跟进，无线充电成为中高端手机的标配。</p>
   <p><strong>2020 年至今</strong>，电动汽车无线充电开始进入实用化阶段。宝马、奔驰、现代等车企推出了支持无线充电的车型，WiTricity 等公司的技术方案逐渐成熟。</p>
-</div>
+  </div>
+</section>
 
-<h2 class="lesson-title"><span class="lesson-num">思考</span>为什么无线输电的普及这么慢？</h2>
-<div class="lesson-explain">
-  <p>如果无线输电这么好，为什么我们的家里仍然到处都是电线？</p>
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">思考</span>为什么无线输电的普及这么慢？</h2>
+  <div class="lesson-explain">
+    <p>如果无线输电这么好，为什么我们的家里仍然到处都是电线？</p>
   <p>这是一个典型的<strong>技术-经济-社会</strong>综合问题。从技术角度看，无线输电的效率始终无法与有线相比。一根铜导线的传输效率可以超过 99%，而即使是最好的磁共振系统也很难突破 95%。对于大功率场景（如电动汽车充电），5% 的损耗意味着数百瓦的热量需要散掉。</p>
   <p>从经济角度看，无线充电系统需要额外的发射线圈、功率电子、控制电路和通信模块，成本远高于一根电源线。对于手机这种小功率设备，额外的成本可以接受；但对于洗衣机、空调这种大功率家电，增加的成本和复杂度完全不划算。</p>
   <p>从社会角度看，标准的不统一是巨大障碍。在 Qi 出现之前，各厂商的无线充电器互不兼容。今天的电动汽车无线充电领域也面临同样的问题：SAE J2954、IEC 61980、CENELEC 等标准组织正在争夺话语权。</p>
   <p>但最重要的是：<strong>无线输电解决的不是"所有设备"的问题，而是"特定设备"的问题</strong>。它最适合那些"有线不方便"的场景——手机频繁拿起放下、电动汽车自动泊车、心脏起搏器植入体内。在这些场景中，无线输电的价值远超其成本和效率损失。</p>
-</div>
-
-<div class="lesson-block">
-  <div class="lesson-title">应用一：消费电子无线充电</div>
-  <div class="lesson-explain">
-    <div class="concept-card">
-      <h4>📱 Qi 标准（电磁感应式）</h4>
-      <div class="grid-2">
-        <div>
-          <p class="mb-2"><strong>参数</strong></p>
-          <ul class="text-sm text-secondary m-0">
-            <li>距离：0 ~ 5 mm</li>
-            <li>功率：5W ~ 15W</li>
-            <li>频率：87 ~ 205 kHz</li>
-            <li>效率：70% ~ 80%</li>
-          </ul>
-        </div>
-        <div>
-          <p class="mb-2"><strong>挑战</strong></p>
-          <ul class="text-sm text-secondary m-0">
-            <li>必须精确对准</li>
-            <li>充电时发热明显</li>
-            <li>无法边充边玩（拿起来就断）</li>
-            <li>金属异物检测（FOD）</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <div class="highlight-box">
-      <p><strong>技术细节</strong>：Qi 标准的发射端和接收端都有线圈，但 Qi 不依赖谐振（虽然线圈有电容调谐，但主要原理仍是电磁感应）。Qi 2.0 引入了磁吸对准（类似 MagSafe），解决了"对不准就效率低"的问题。</p>
-    </div>
   </div>
-</div>
+</section>
 
-<div class="lesson-block">
-  <div class="lesson-title">应用二：电动汽车无线充电</div>
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">原理</span>从理论到应用的桥梁</h2>
   <div class="lesson-explain">
-    <div class="concept-card">
-      <h4>🚗 SAE J2954 / IEC 61980（磁共振耦合式）</h4>
-      <div class="grid-2">
-        <div>
-          <p class="mb-2"><strong>参数</strong></p>
-          <ul class="text-sm text-secondary m-0">
-            <li>距离：10 ~ 25 cm（地面到车底）</li>
-            <li>功率：3.7 kW ~ 11 kW</li>
-            <li>频率：81.38 ~ 90 kHz 或 140 kHz</li>
-            <li>效率：90% ~ 93%</li>
-          </ul>
-        </div>
-        <div>
-          <p class="mb-2"><strong>挑战</strong></p>
-          <ul class="text-sm text-secondary m-0">
-            <li>线圈尺寸大（直径 25 ~ 75 cm）</li>
-            <li>停车对准精度要求高</li>
-            <li>地面线圈的防水防尘</li>
-            <li>生物电磁安全限值</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <p>磁共振耦合是电动汽车无线充电的主流技术路线。由于功率大（几千瓦到几十千瓦），线圈采用平板式螺旋结构，埋在地面下。车辆停到位后，车载线圈与地面线圈对齐，自动开始充电。</p>
+    <p>经过前面四步的学习，我们已经掌握了无线输电的核心理论。现在让我们把这些原理串联起来，看看它们如何在实际应用中协同工作。</p>
+<p><strong>电磁感应</strong>是无线输电的物理基石。法拉第定律告诉我们：变化的磁场会在导体中感应出电动势。这意味着只要发射端产生交变磁场，接收端就能捕获能量。但普通的电磁感应有个限制——距离稍远，效率就急剧下降。</p>
+<p><strong>磁共振耦合</strong>解决了这个难题。通过在发射端和接收端各加入谐振电容，形成 LC 谐振回路，能量可以在特定频率上高效传递。这就像两个调音相同的音叉，即使相隔一段距离，也能互相传递振动。</p>
+<p><strong>效率公式</strong>揭示了设计的核心目标。要提高效率，要么增大耦合系数（减小距离、对准线圈），要么提高品质因数（使用更好的导线、优化线圈结构）。在实际应用中，工程师需要在这几个原理之间做权衡。</p>
+<p>手机充电追求便捷，用电磁感应就够了；电动汽车需要几十厘米的距离，必须用磁共振；空间太阳能电站要跨越数万公里，只能依靠微波辐射。不同的场景，对应不同的技术路线，但底层原理是相通的。</p>
   </div>
-</div>
+</section>
 
-<div class="lesson-block">
-  <div class="lesson-title">应用三：医疗植入设备</div>
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">论证</span>无线输电真的值得吗？</h2>
   <div class="lesson-explain">
-    <div class="concept-card">
-      <h4>❤️ 心脏起搏器 / 人工耳蜗（磁共振耦合式）</h4>
-      <div class="grid-2">
-        <div>
-          <p class="mb-2"><strong>参数</strong></p>
-          <ul class="text-sm text-secondary m-0">
-            <li>距离：1 ~ 3 cm（穿过皮肤）</li>
-            <li>功率：10 mW ~ 100 mW</li>
-            <li>频率：100 kHz ~ 10 MHz</li>
-            <li>效率：不是首要指标</li>
-          </ul>
-        </div>
-        <div>
-          <p class="mb-2"><strong>挑战</strong></p>
-          <ul class="text-sm text-secondary m-0">
-            <li>人体组织吸收能量（发热）</li>
-            <li>SAR（比吸收率）安全限值</li>
-            <li>植入线圈体积受限</li>
-            <li>生物兼容性材料</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <p>医疗植入设备对效率的要求相对宽松（因为外部充电功率可以任意大），但对<strong>安全性</strong>的要求极其严格。人体组织在交变磁场中会产生涡流，导致发热。国际标准（如 ICNIRP）对电磁暴露有严格的 SAR 限值。</p>
+    <p>在课程的最后，让我们以一个工程师的视角，冷静地评估无线输电的利弊。</p>
+  <p><strong>正方论据：为什么要用无线输电？</strong></p>
+  <ol>
+    <li><strong>便利性</strong>：用户不需要插拔线缆，设备可以全天候待机充电。对于电动汽车，停车即充电，无需费力插枪。</li>
+    <li><strong>可靠性</strong>：没有机械接触点，不存在磨损、氧化、接触不良等问题。植入式医疗设备因此可以工作数年无需更换。</li>
+    <li><strong>安全性</strong>：消除了裸露的导电接口，降低了触电和短路风险。在潮湿环境（如浴室）中尤其重要。</li>
+    <li><strong>自动化</strong>：与自动驾驶、自动泊车结合，电动汽车可以在无人干预的情况下完成充电。</li>
+  </ol>
+  <p><strong>反方论据：为什么不直接用有线？</strong></p>
+  <ol>
+    <li><strong>效率损失</strong>：有线输电效率 >99%，无线充电通常 70%~93%。对于大功率应用，这意味着巨大的能源浪费和散热挑战。</li>
+    <li><strong>成本高</strong>：无线充电系统的发射端和接收端都需要额外的硬件，成本远高于一根电源线。</li>
+    <li><strong>对准要求</strong>：线圈必须对准才能高效工作。手机放偏了充电变慢，汽车停歪了可能充不上。</li>
+    <li><strong>电磁兼容</strong>：强磁场可能干扰周围的电子设备，需要额外的屏蔽设计。</li>
+  </ol>
+  <div class="highlight-box">
+    <p><strong>综合判断</strong>：无线输电不是"更好"的技术，而是"更适合特定场景"的技术。它的价值在于解决"有线无法解决或解决起来很笨拙"的问题。作为工程师，我们的任务是准确识别这些场景，并在设计时权衡效率、成本、便利性和安全性。</p>
   </div>
-</div>
-
-<div class="lesson-block">
-  <div class="lesson-title">应用四：空间太阳能电站</div>
-  <div class="lesson-explain">
-    <div class="concept-card">
-      <h4>🛰️ SSPS（微波输电 / 激光输电）</h4>
-      <div class="grid-2">
-        <div>
-          <p class="mb-2"><strong>参数</strong></p>
-          <ul class="text-sm text-secondary m-0">
-            <li>距离：36,000 km（地球同步轨道）</li>
-            <li>功率：GW 级（吉瓦）</li>
-            <li>频率：2.45 GHz 或 5.8 GHz</li>
-            <li>效率：50% ~ 60%</li>
-          </ul>
-        </div>
-        <div>
-          <p class="mb-2"><strong>挑战</strong></p>
-          <ul class="text-sm text-secondary m-0">
-            <li>发射天线直径数公里</li>
-            <li>接收天线（整流天线）占地数十平方公里</li>
-            <li>大气衰减和天气影响</li>
-            <li>成本极高（万亿级）</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <p>空间太阳能电站（Space Solar Power Station, SSPS）是最雄心勃勃的无线输电应用。在地球同步轨道上建造巨大的太阳能电池阵，将电能转化为微波发射到地面接收站。这个想法自 1968 年提出以来，至今仍处于概念验证阶段。中国在 2022 年完成了世界首个全链路验证实验。</p>
   </div>
-</div>
+</section>
 
-<div class="lesson-block">
-  <div class="lesson-title">核心挑战总结</div>
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">要点</span>核心要点</h2>
   <div class="lesson-explain">
     <div class="table-wrap">
       <table class="table">
@@ -198,46 +106,20 @@
         </tbody>
       </table>
     </div>
-  </div>
-</div>
 
-<div class="lesson-block">
-  <div class="lesson-title">前沿方向</div>
-  <div class="lesson-explain">
-    <ul>
+<ul>
       <li><strong>多设备同时充电</strong>：一个发射端同时给多个接收端供电，需要解决功率分配和干扰问题。</li>
       <li><strong>动态无线充电</strong>：电动汽车在行驶中充电（类似电气化公路），需要沿途铺设发射线圈阵列。</li>
       <li><strong>水下无线输电</strong>：用于水下机器人、海洋传感器网络，海水对电磁波的衰减是主要挑战。</li>
       <li><strong>超导线圈</strong>：利用超导材料的零电阻特性实现极高的 Q 值（$Q > 10^5$），大幅提升效率。</li>
     </ul>
   </div>
-</div>
+</section>
 
-<h2 class="lesson-title"><span class="lesson-num">论证</span>无线输电真的值得吗？</h2>
-<div class="lesson-explain">
-  <p>在课程的最后，让我们以一个工程师的视角，冷静地评估无线输电的利弊。</p>
-  <p><strong>正方论据：为什么要用无线输电？</strong></p>
-  <ol>
-    <li><strong>便利性</strong>：用户不需要插拔线缆，设备可以全天候待机充电。对于电动汽车，停车即充电，无需费力插枪。</li>
-    <li><strong>可靠性</strong>：没有机械接触点，不存在磨损、氧化、接触不良等问题。植入式医疗设备因此可以工作数年无需更换。</li>
-    <li><strong>安全性</strong>：消除了裸露的导电接口，降低了触电和短路风险。在潮湿环境（如浴室）中尤其重要。</li>
-    <li><strong>自动化</strong>：与自动驾驶、自动泊车结合，电动汽车可以在无人干预的情况下完成充电。</li>
-  </ol>
-  <p><strong>反方论据：为什么不直接用有线？</strong></p>
-  <ol>
-    <li><strong>效率损失</strong>：有线输电效率 >99%，无线充电通常 70%~93%。对于大功率应用，这意味着巨大的能源浪费和散热挑战。</li>
-    <li><strong>成本高</strong>：无线充电系统的发射端和接收端都需要额外的硬件，成本远高于一根电源线。</li>
-    <li><strong>对准要求</strong>：线圈必须对准才能高效工作。手机放偏了充电变慢，汽车停歪了可能充不上。</li>
-    <li><strong>电磁兼容</strong>：强磁场可能干扰周围的电子设备，需要额外的屏蔽设计。</li>
-  </ol>
-  <div class="highlight-box">
-    <p><strong>综合判断</strong>：无线输电不是"更好"的技术，而是"更适合特定场景"的技术。它的价值在于解决"有线无法解决或解决起来很笨拙"的问题。作为工程师，我们的任务是准确识别这些场景，并在设计时权衡效率、成本、便利性和安全性。</p>
-  </div>
-</div>
-
-<h2 class="lesson-title"><span class="lesson-num">实验</span>调研身边的无线输电产品</h2>
-<div class="lesson-explain">
-  <p>这是一个"市场调研 + 技术分析"的综合实验，帮助你把理论知识与现实产品联系起来。</p>
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">实验</span>调研身边的无线输电产品</h2>
+  <div class="lesson-explain">
+    <p>这是一个"市场调研 + 技术分析"的综合实验，帮助你把理论知识与现实产品联系起来。</p>
   <p><strong>实验 1：拆解信息收集</strong></p>
   <ol>
     <li>找到你身边的 3 个无线供电设备（手机无线充电器、电动牙刷、无线鼠标等）。</li>
@@ -259,10 +141,137 @@
     <li>对比两者的发热差异。</li>
   </ol>
   <p><strong>预期现象</strong>：无线充电时，手机和充电板都会明显发热。这部分热量就是能量传输过程中的损耗。有线充电时，发热主要集中在充电头内部，手机本身发热较小。</p>
-</div>
+  </div>
+</section>
 
-<div class="lesson-block">
-  <div class="lesson-title">练习</div>
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">错误</span>应用中的常见误区</h2>
+  <div class="lesson-explain">
+    <div class="mistake-card">
+    <p><strong>错误 1：认为无线输电可以取代有线输电</strong><br>无线输电的效率目前仍低于有线，且成本更高。它最适合有线不方便的场景，而不是所有场景。试图用无线方案替代所有电源线，既不经济也不现实。</p>
+</div>
+<div class="mistake-card">
+    <p><strong>错误 2：忽略不同技术路线的适用距离</strong><br>电磁感应只能用于毫米级，磁共振适合厘米到米级，微波才能到达公里级。选错技术路线会导致系统完全无法工作。就像用渔网去捕蝴蝶，工具与目标不匹配。</p>
+</div>
+<div class="mistake-card">
+    <p><strong>错误 3：低估安全设计的复杂度</strong><br>大功率无线输电涉及强磁场，必须考虑对人体的电磁暴露、对植入式医疗设备的影响，以及金属异物的涡流发热问题。安全不是可选项，而是产品上市的前提。</p>
+</div>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">示例</span>典型应用与数据</h2>
+  <div class="lesson-explain">
+    <div class="concept-card">
+      <h4>📱 Qi 标准（电磁感应式）</h4>
+      <div class="grid-2">
+        <div>
+          <p class="mb-2"><strong>参数</strong></p>
+          <ul class="text-sm text-secondary m-0">
+            <li>距离：0 ~ 5 mm</li>
+            <li>功率：5W ~ 15W</li>
+            <li>频率：87 ~ 205 kHz</li>
+            <li>效率：70% ~ 80%</li>
+          </ul>
+        </div>
+        <div>
+          <p class="mb-2"><strong>挑战</strong></p>
+          <ul class="text-sm text-secondary m-0">
+            <li>必须精确对准</li>
+            <li>充电时发热明显</li>
+            <li>无法边充边玩（拿起来就断）</li>
+            <li>金属异物检测（FOD）</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight-box">
+      <p><strong>技术细节</strong>：Qi 标准的发射端和接收端都有线圈，但 Qi 不依赖谐振（虽然线圈有电容调谐，但主要原理仍是电磁感应）。Qi 2.0 引入了磁吸对准（类似 MagSafe），解决了"对不准就效率低"的问题。</p>
+    </div>
+
+<div class="concept-card">
+      <h4>🚗 SAE J2954 / IEC 61980（磁共振耦合式）</h4>
+      <div class="grid-2">
+        <div>
+          <p class="mb-2"><strong>参数</strong></p>
+          <ul class="text-sm text-secondary m-0">
+            <li>距离：10 ~ 25 cm（地面到车底）</li>
+            <li>功率：3.7 kW ~ 11 kW</li>
+            <li>频率：81.38 ~ 90 kHz 或 140 kHz</li>
+            <li>效率：90% ~ 93%</li>
+          </ul>
+        </div>
+        <div>
+          <p class="mb-2"><strong>挑战</strong></p>
+          <ul class="text-sm text-secondary m-0">
+            <li>线圈尺寸大（直径 25 ~ 75 cm）</li>
+            <li>停车对准精度要求高</li>
+            <li>地面线圈的防水防尘</li>
+            <li>生物电磁安全限值</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <p>磁共振耦合是电动汽车无线充电的主流技术路线。由于功率大（几千瓦到几十千瓦），线圈采用平板式螺旋结构，埋在地面下。车辆停到位后，车载线圈与地面线圈对齐，自动开始充电。</p>
+
+<div class="concept-card">
+      <h4>❤️ 心脏起搏器 / 人工耳蜗（磁共振耦合式）</h4>
+      <div class="grid-2">
+        <div>
+          <p class="mb-2"><strong>参数</strong></p>
+          <ul class="text-sm text-secondary m-0">
+            <li>距离：1 ~ 3 cm（穿过皮肤）</li>
+            <li>功率：10 mW ~ 100 mW</li>
+            <li>频率：100 kHz ~ 10 MHz</li>
+            <li>效率：不是首要指标</li>
+          </ul>
+        </div>
+        <div>
+          <p class="mb-2"><strong>挑战</strong></p>
+          <ul class="text-sm text-secondary m-0">
+            <li>人体组织吸收能量（发热）</li>
+            <li>SAR（比吸收率）安全限值</li>
+            <li>植入线圈体积受限</li>
+            <li>生物兼容性材料</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <p>医疗植入设备对效率的要求相对宽松（因为外部充电功率可以任意大），但对<strong>安全性</strong>的要求极其严格。人体组织在交变磁场中会产生涡流，导致发热。国际标准（如 ICNIRP）对电磁暴露有严格的 SAR 限值。</p>
+
+<div class="concept-card">
+      <h4>🛰️ SSPS（微波输电 / 激光输电）</h4>
+      <div class="grid-2">
+        <div>
+          <p class="mb-2"><strong>参数</strong></p>
+          <ul class="text-sm text-secondary m-0">
+            <li>距离：36,000 km（地球同步轨道）</li>
+            <li>功率：GW 级（吉瓦）</li>
+            <li>频率：2.45 GHz 或 5.8 GHz</li>
+            <li>效率：50% ~ 60%</li>
+          </ul>
+        </div>
+        <div>
+          <p class="mb-2"><strong>挑战</strong></p>
+          <ul class="text-sm text-secondary m-0">
+            <li>发射天线直径数公里</li>
+            <li>接收天线（整流天线）占地数十平方公里</li>
+            <li>大气衰减和天气影响</li>
+            <li>成本极高（万亿级）</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <p>空间太阳能电站（Space Solar Power Station, SSPS）是最雄心勃勃的无线输电应用。在地球同步轨道上建造巨大的太阳能电池阵，将电能转化为微波发射到地面接收站。这个想法自 1968 年提出以来，至今仍处于概念验证阶段。中国在 2022 年完成了世界首个全链路验证实验。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">练习</span>课后练习</h2>
   <div class="lesson-explain">
     <div class="exercise-box">
         <p ><strong>练习 1</strong>：比较 Qi 无线充电和电动汽车无线充电在频率、距离、功率上的差异，解释为什么会有这些差异。</p>
@@ -272,11 +281,12 @@
         <p ><strong>练习 5（验证题）</strong>：查阅 ISO 19363 和 SAE J2954 标准，列出电动汽车无线充电的频率范围、功率等级和安全要求。对比中国和欧美在这些标准上的异同。</p>
     </div>
   </div>
-</div>
+</section>
 
-<h2 class="lesson-title"><span class="lesson-num">测验</span>你掌握了吗？</h2>
-<div class="lesson-explain">
-  <div class="demo-card">
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">测验</span>你掌握了吗？</h2>
+  <div class="lesson-explain">
+    <div class="demo-card">
     <p><strong>题目 1（选择）</strong>：Qi 标准主要采用的无线输电技术是：</p>
     <p>A. 微波辐射<br>B. 电磁感应<br>C. 磁共振耦合<br>D. 激光输电</p>
   </div>
@@ -296,5 +306,6 @@
     <p><strong>题目 5（选择）</strong>：以下哪种场景最不适合使用无线输电？</p>
     <p>A. 心脏起搏器充电<br>B. 手机桌面充电<br>C. 家用电热水器供电<br>D. 电动汽车停车充电</p>
   </div>
-</div>
+  </div>
+</section>
 {% endblock %}

@@ -9,6 +9,15 @@
 </div>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">场景</span>什么时候需要查看历史</h2>
+  <div class="lesson-explain">
+    <p>代码出问题了，想知道是哪次提交引入的 bug。或者你想参考两周前某个功能的实现方式。又或者你不小心删了一段代码，想把它找回来。这些时候都需要查看历史。</p>
+    <p>Git 的每一次提交都是一个完整的快照，而不是增量补丁。这意味着你可以瞬间回到任意一个历史版本，不需要逐条撤销修改。</p>
+    <p>想象你有一台时光相机，每拍一张照片就永久保存那个时刻的全貌。当你想回顾某个时刻时，直接拿出那张照片即可，不需要一步步倒退时间。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">起源</span>Git 的历史链设计灵感来自哪里</h2>
   <div class="lesson-explain">
     <p>Git 的核心数据结构——"有向无环图"（DAG）——并不是 Linus Torvalds 凭空发明的。在 BitKeeper 中，就已经有了类似的提交链概念。Linus 在设计 Git 时，吸收了 BitKeeper 中关于"每个提交都知道自己的父提交"这一思想，但做了重大改进。</p>
@@ -23,14 +32,6 @@
     <p>很多初学者会被 Git 的各种"回退"命令搞晕：git reset、git revert、git checkout……为什么一件事要有这么多不同的做法？</p>
     <p>这其实是 Git 设计哲学的一个体现：不同场景下，"回退"的含义完全不同。有时候你想"撤销某次提交的效果，但保留历史记录"（比如公共仓库中你推错了代码）；有时候你想"彻底回到过去的某个状态，扔掉之后的所有改动"（比如本地实验搞砸了）；有时候你只是想"看看过去某个版本长什么样，但不打算长期停留"。</p>
     <p>Linus 在设计这些命令时，刻意让它们保持独立，而不是用一个"万能回退"命令包揽所有场景。这样做的好处是：你必须明确知道自己的意图，才能选择合适的命令。虽然学习曲线更陡一些，但它极大地降低了误操作的风险。想想看，如果有一个"回退"按钮，你点下去却不知道它会删除历史还是保留历史，那该多危险。</p>
-  </div>
-</section>
-
-<section class="lesson-block">
-  <h2 class="lesson-title"><span class="lesson-num">场景</span>什么时候需要查看历史</h2>
-  <div class="lesson-explain">
-    <p>代码出问题了，想知道是哪次提交引入的 bug。或者你想参考两周前某个功能的实现方式。又或者你不小心删了一段代码，想把它找回来。这些时候都需要查看历史。</p>
-    <p>Git 的每一次提交都是一个完整的快照，而不是增量补丁。这意味着你可以瞬间回到任意一个历史版本，不需要逐条撤销修改。</p>
   </div>
 </section>
 
@@ -98,15 +99,6 @@
 </section>
 
 <section class="lesson-block">
-  <h2 class="lesson-title"><span class="lesson-num">错误</span>常见错误</h2>
-  <div class="lesson-explain">
-    <p>用 <code>git reset --hard</code> 回退后发现删错了，但已经关掉了终端，找不到之前的 commit ID。实际上可以用 <code>git reflog</code> 找回。</p>
-    <p>在「分离 HEAD」状态下修改了代码并提交，然后切换回 main 分支，结果那些提交「消失」了。分离 HEAD 的提交不会被任何分支引用，切换后就找不到了。</p>
-    <p><code>git checkout</code> 时没保存工作区的修改，导致未提交的改动丢失。checkout 前应该先 add/commit 或 stash。</p>
-  </div>
-</section>
-
-<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">实验</span>体验 diff、checkout 和 reset 的不同效果</h2>
   <div class="lesson-explain">
     <p>这个实验需要你预先准备一个有多次提交的仓库。如果你手头没有，可以先按照下面的前置步骤快速建立一个实验环境。</p>
@@ -155,6 +147,37 @@ $ git reflog
 # 观察："版本4" 被找回来了</code></pre></div>
   <div class="lesson-explain">
     <p>这个实验最值得注意的是"实验 4"和"实验 6"的区别：checkout 让你临时查看历史，不影响分支走向；reset 则直接改写了分支历史。实验 7 则展示了 reflog 这个"时光机"——即使你用 reset 删掉了提交，只要没超过一定时间，都能找回来。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">错误</span>常见错误</h2>
+  <div class="lesson-explain">
+    <p>用 <code>git reset --hard</code> 回退后发现删错了，但已经关掉了终端，找不到之前的 commit ID。实际上可以用 <code>git reflog</code> 找回。</p>
+    <p>在「分离 HEAD」状态下修改了代码并提交，然后切换回 main 分支，结果那些提交「消失」了。分离 HEAD 的提交不会被任何分支引用，切换后就找不到了。</p>
+    <p><code>git checkout</code> 时没保存工作区的修改，导致未提交的改动丢失。checkout 前应该先 add/commit 或 stash。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">示例</span>动手操作</h2>
+  <div class="lesson-explain">
+    <p>先创建几个提交，然后练习查看历史、对比差异、回退版本。你可以使用下面的操作台自由执行命令。</p>
+    <p>试着创建几个提交，然后用 git log 查看历史。再用 git diff 对比不同版本之间的差异。注意观察提交哈希值的变化。</p>
+  </div>
+  <div class="lesson-demo">
+    <div class="demo-label">命令操作台</div>
+    <div class="terminal" id="terminal"></div>
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="runCmd('git log --oneline')">查看历史</button>
+      <button class="btn btn-primary" onclick="runCmd('git log --oneline --graph --all')">图形化历史</button>
+      <button class="btn btn-primary" onclick="runCmd('git diff')">查看差异</button>
+      <button class="btn btn-secondary" onclick="runCmd('echo "// 功能A" >> main.py && git add . && git commit -m "添加功能A"')">创建提交A</button>
+      <button class="btn btn-secondary" onclick="runCmd('echo "// 功能B" >> main.py && git add . && git commit -m "添加功能B"')">创建提交B</button>
+      <button class="btn btn-secondary" onclick="runCmd('git reflog')">查看 reflog</button>
+      <button class="btn btn-danger" onclick="runCmd('git reset --hard HEAD~1')">回退1步</button>
+      <button class="btn btn-danger" onclick="resetWorkspace()">重置工作区</button>
+    </div>
   </div>
 </section>
 
@@ -208,27 +231,6 @@ $ git reflog
     <p><strong>5. 判断正误：git checkout 某次旧提交后，再创建新的提交，这些新提交会自动附加到原来的分支上。</strong></p>
     <p>A. 正确</p>
     <p>B. 错误</p>
-  </div>
-</section>
-
-<section class="lesson-block">
-  <h2 class="lesson-title"><span class="lesson-num">实例</span>动手操作</h2>
-  <div class="lesson-explain">
-    <p>先创建几个提交，然后练习查看历史、对比差异、回退版本。</p>
-  </div>
-  <div class="lesson-demo">
-    <div class="demo-label">命令操作台</div>
-    <div class="terminal" id="terminal"></div>
-    <div class="btn-group">
-      <button class="btn btn-primary" onclick="runCmd('git log --oneline')">查看历史</button>
-      <button class="btn btn-primary" onclick="runCmd('git log --oneline --graph --all')">图形化历史</button>
-      <button class="btn btn-primary" onclick="runCmd('git diff')">查看差异</button>
-      <button class="btn btn-secondary" onclick="runCmd('echo \"// 功能A\" >> main.py && git add . && git commit -m \"添加功能A\"')">创建提交A</button>
-      <button class="btn btn-secondary" onclick="runCmd('echo \"// 功能B\" >> main.py && git add . && git commit -m \"添加功能B\"')">创建提交B</button>
-      <button class="btn btn-secondary" onclick="runCmd('git reflog')">查看 reflog</button>
-      <button class="btn btn-danger" onclick="runCmd('git reset --hard HEAD~1')">回退1步</button>
-      <button class="btn btn-danger" onclick="resetWorkspace()">重置工作区</button>
-    </div>
   </div>
 </section>
 

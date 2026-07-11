@@ -9,6 +9,15 @@
 </div>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">场景</span>一个完整的开发流程</h2>
+  <div class="lesson-explain">
+    <p>假设你接到了一个新任务：给项目添加用户登录功能。下面是使用 Git 的完整工作流，从接到任务到代码上线。</p>
+    <p>在实际团队开发中，你很少会独自完成整个项目。更常见的情况是：多个同学同时开发不同功能，代码需要频繁同步，bug 需要快速修复，新功能需要经过审查才能合并。</p>
+    <p>这个综合实战页面把前面学到的所有知识串联起来，模拟一个真实的工作场景。你将体验到从创建分支、开发功能、提交代码，到推送远程、发起审查、合并上线的完整流程。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">起源</span>从随意提交到标准工作流</h2>
   <div class="lesson-explain">
     <p>Git 诞生后的最初几年，人们使用它的方式非常简单：一个 master 分支，所有人直接往上 commit，然后 push。这种「直接提交」的方式在小型项目中没什么问题，反正就一两个人，彼此知根知底。</p>
@@ -25,6 +34,15 @@
     <p>想象一下这个场景：你和两个同学合作一个大作业。A 同学直接在 main 上写了一半的功能就 push 了，B 同学 pull 下来后发现代码跑不通，自己的功能也没法测试。A 说「我还没写完呢」，B 说「那你 push 干嘛」。这就是没有流程约束的后果。</p>
     <p>再想象一下：你们各自开发了三天，每个人都觉得自己写得很顺。到了要合并的时候，发现三个人改了同一个文件的同一个函数，冲突密密麻麻几十处。如果没有每天同步的习惯，这种冲突会摧毁团队的士气。</p>
     <p>所以，标准工作流的核心目的不是「增加步骤」，而是「减少意外」。每一步都有明确的意图：更新代码是为了拿到最新版本，创建分支是为了隔离风险，提交代码是为了保存进度，代码审查是为了提前发现 bug。流程越规范，协作越顺畅。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">原理</span>标准工作流的设计原理</h2>
+  <div class="lesson-explain">
+    <p>标准工作流的设计目标是让团队协作既高效又安全。它把开发过程拆解为明确的步骤，每一步都有清晰的目的和验收标准。</p>
+    <p>创建 feature 分支的核心原理是隔离风险。就像化学实验要在通风橱里进行一样，新功能的开发应该在独立的分支上进行，避免污染主分支。</p>
+    <p>Pull Request 的机制本质上是引入了一个代码审查的关卡。它让至少两个人的眼睛看过每一行进入主分支的代码，大大降低了 bug 流入生产环境的概率。</p>
   </div>
 </section>
 
@@ -48,14 +66,7 @@
 </section>
 
 <section class="lesson-block">
-  <h2 class="lesson-title"><span class="lesson-num">场景</span>一个完整的开发流程</h2>
-  <div class="lesson-explain">
-    <p>假设你接到了一个新任务：给项目添加用户登录功能。下面是使用 Git 的完整工作流，从接到任务到代码上线。</p>
-  </div>
-</section>
-
-<section class="lesson-block">
-  <h2 class="lesson-title"><span class="lesson-num">流程</span>8 步标准工作流</h2>
+  <h2 class="lesson-title"><span class="lesson-num">要点</span>8 步标准工作流</h2>
   <div class="lesson-explain">
     <p><strong>1. 更新代码：</strong><code>git pull origin main</code> —— 确保本地代码是最新的。</p>
     <p><strong>2. 创建分支：</strong><code>git branch feature-login && git switch feature-login</code> —— 在独立分支上开发，不影响主分支。</p>
@@ -118,7 +129,17 @@ git log --oneline --graph</code></pre>
 </section>
 
 <section class="lesson-block">
-  <h2 class="lesson-title"><span class="lesson-num">实战</span>自由操作</h2>
+  <h2 class="lesson-title"><span class="lesson-num">错误</span>工作流中的常见陷阱</h2>
+  <div class="lesson-explain">
+    <p>跳过 git pull 直接创建分支。如果你在过时的代码基础上开发，最后合并时可能产生大量冲突。养成习惯：每次开始新任务前先拉取最新代码。</p>
+    <p>在 feature 分支上开发了很久才同步主线。分支偏离越远，合并时的冲突越多。建议每天至少同步一次主线。</p>
+    <p>删除 feature 分支前忘记确认是否已合并。如果分支还有未合并的提交，使用 git branch -d 会失败（这是好事），但有些人会改用 -D 强制删除，导致代码丢失。</p>
+    <p>提交信息写得过于简单。比如 fix 或 update 这样的信息，一个月后回看完全不知道改了什么。好的提交信息应该说明做了什么以及为什么做。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">示例</span>自由操作</h2>
   <div class="lesson-explain">
     <p>下面是真实工作区，你可以自由执行任何 Git 命令，练习上面的完整流程。每个按钮代表工作流中的一个步骤，你也可以在输入框中输入自定义命令。</p>
   </div>

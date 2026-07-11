@@ -9,6 +9,15 @@
 </div>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">场景</span>什么时候初始化仓库</h2>
+  <div class="lesson-explain">
+    <p>每当你开始一个新项目，或者想让一个已有项目被 Git 管理时，第一步就是初始化仓库。这会在项目根目录创建一个隐藏的 .git 文件夹，Git 的所有记录都保存在这里。</p>
+    <p>想象你准备写一本日记。在开始记录之前，你需要先准备一个笔记本，确定页码格式和目录结构。git init 就是为你准备这个笔记本的过程。</p>
+    <p>如果你在没有初始化的情况下直接使用 git add 或 git commit，Git 会提示你当前目录不是一个仓库。这是 Git 在提醒你：先准备好档案室，再开始存档。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">起源</span>Git 为什么要被发明出来</h2>
   <div class="lesson-explain">
     <p>2005 年，Linux 内核的开发遇到了一个大麻烦。当时全球有上千名开发者在为 Linux 写代码，他们需要一种工具来管理这些代码的变更。之前他们用的是一款叫 BitKeeper 的商业软件，但那一年 BitKeeper 的版权方收回了免费使用权。</p>
@@ -23,13 +32,6 @@
     <p>想象你要开始写日记。第一步是什么？不是直接拿起笔写，而是先准备一个本子。这个本子要有页码，要有目录，要有固定的格式，这样你以后翻阅才不会乱。</p>
     <p>Git 也是同样的道理。在开始记录代码变更之前，Git 需要先在你的项目文件夹里搭建一个"档案室"——也就是 .git 目录。这个档案室有自己的组织架构：哪里放文件快照，哪里放分支记录，哪里放配置信息。没有这个档案室，Git 就无从知道该把数据存在哪里。</p>
     <p>Linus 在设计时其实也可以让 Git 自动追踪所有文件，不需要显式初始化。但他选择了让用户主动执行 git init，因为这样可以明确区分"这是一个被 Git 管理的项目"和"这只是一个普通文件夹"。这种显式的边界感，避免了很多意外的误操作。</p>
-  </div>
-</section>
-
-<section class="lesson-block">
-  <h2 class="lesson-title"><span class="lesson-num">场景</span>什么时候初始化仓库</h2>
-  <div class="lesson-explain">
-    <p>每当你开始一个新项目，或者想让一个已有项目被 Git 管理时，第一步就是初始化仓库。这会在项目根目录创建一个隐藏的 <code>.git</code> 文件夹，Git 的所有记录都保存在这里。</p>
   </div>
 </section>
 
@@ -96,14 +98,6 @@
 </section>
 
 <section class="lesson-block">
-  <h2 class="lesson-title"><span class="lesson-num">错误</span>常见错误</h2>
-  <div class="lesson-explain">
-    <p>在错误的目录执行 <code>git init</code>，比如在「下载」或「桌面」这种包含很多无关文件的目录。结果 Git 把所有文件都标记为未跟踪，<code>git status</code> 输出一大串无关内容。</p>
-    <p>忘记配置用户名和邮箱就提交。Git 要求每次提交都记录作者信息，如果没有配置，提交会失败或显示匿名作者。</p>
-  </div>
-</section>
-
-<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">实验</span>亲手揭开 .git 目录的面纱</h2>
   <div class="lesson-explain">
     <p>下面这组操作会带你一步步观察 git init 到底做了什么。建议你在本地跟着做一遍，亲眼看看 .git 目录是怎么诞生的。</p>
@@ -139,6 +133,35 @@ $ cat .git/config
 # 观察 [user] 段落是否被写入了 config 文件</code></pre></div>
   <div class="lesson-explain">
     <p>做完这组实验，你应该对"初始化仓库"有了更具体的理解。git init 不是做了什么神秘的操作，它只是在你的项目文件夹里建立了一套规范的文件结构。这套结构就是 Git 工作的基础。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">错误</span>常见错误</h2>
+  <div class="lesson-explain">
+    <p>在错误的目录执行 <code>git init</code>，比如在「下载」或「桌面」这种包含很多无关文件的目录。结果 Git 把所有文件都标记为未跟踪，<code>git status</code> 输出一大串无关内容。</p>
+    <p>忘记配置用户名和邮箱就提交。Git 要求每次提交都记录作者信息，如果没有配置，提交会失败或显示匿名作者。</p>
+    <p>不小心删除或修改了 <code>.git</code> 目录里的内容。这个目录是 Git 的档案室，手动改动可能导致仓库损坏。如果 .git 被删除，整个版本历史就消失了。</p>
+    <p>在一个已有的 Git 仓库内部再执行 <code>git init</code>。这会在子目录里创建嵌套的仓库，导致外层仓库无法跟踪内层目录的文件，容易出现混乱。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">示例</span>动手操作</h2>
+  <div class="lesson-explain">
+    <p>下面是一个真实的工作区。点击按钮执行命令，观察 .git 目录和文件状态的变化。你可以尝试执行 git status 查看当前状态，或者用 git config 配置你的用户名和邮箱。</p>
+    <p>注意观察每次命令执行后的输出信息，特别是 git init 成功时提示的 "Initialized empty Git repository" 字样。这意味着档案室已经搭建完成，等待你存入第一份文件。</p>
+  </div>
+  <div class="lesson-demo">
+    <div class="demo-label">命令操作台</div>
+    <div class="terminal" id="terminal"></div>
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="runCmd('git status')">git status</button>
+      <button class="btn btn-primary" onclick="runCmd('ls -la')">查看文件</button>
+      <button class="btn btn-secondary" onclick="runCmd('git config user.name')">查看用户名</button>
+      <button class="btn btn-secondary" onclick="runCmd('git config user.email')">查看邮箱</button>
+      <button class="btn btn-danger" onclick="resetWorkspace()">重置工作区</button>
+    </div>
   </div>
 </section>
 
@@ -192,24 +215,6 @@ $ cat .git/config
     <p><strong>5. 判断正误：git init 执行后，当前目录下的所有文件会自动被 Git 追踪。</strong></p>
     <p>A. 正确</p>
     <p>B. 错误</p>
-  </div>
-</section>
-
-<section class="lesson-block">
-  <h2 class="lesson-title"><span class="lesson-num">实例</span>动手操作</h2>
-  <div class="lesson-explain">
-    <p>下面是一个真实的工作区。点击按钮执行命令，观察 <code>.git</code> 目录和文件状态的变化。</p>
-  </div>
-  <div class="lesson-demo">
-    <div class="demo-label">命令操作台</div>
-    <div class="terminal" id="terminal"></div>
-    <div class="btn-group">
-      <button class="btn btn-primary" onclick="runCmd('git status')">git status</button>
-      <button class="btn btn-primary" onclick="runCmd('ls -la')">查看文件</button>
-      <button class="btn btn-secondary" onclick="runCmd('git config user.name')">查看用户名</button>
-      <button class="btn btn-secondary" onclick="runCmd('git config user.email')">查看邮箱</button>
-      <button class="btn btn-danger" onclick="resetWorkspace()">重置工作区</button>
-    </div>
   </div>
 </section>
 

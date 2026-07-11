@@ -102,7 +102,10 @@
 <section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">要点</span>三个核心概念</h2>
   <div class="lesson-explain">
-    <p>Git 的核心只需要理解三个东西：<strong>工作区</strong>、<strong>暂存区</strong>、<strong>仓库</strong>。它们之间的关系就像工厂的生产线。</p>
+    <p>Git 的核心只需要理解三个东西：工作区、暂存区、仓库。它们之间的关系就像工厂的生产线。</p>
+    <p>工作区是你实际编辑的文件夹，就像车间里的操作台。你可以在这里自由修改文件，Git 不会干涉你的工作。</p>
+    <p>暂存区像一个待发货的货架。你用 git add 把改好的文件放上去，可以挑选哪些要发货、哪些再等等。这个设计让你能灵活组合本次要提交的改动。</p>
+    <p>仓库是永久档案室。git commit 把货架上的货物打包存档，生成一张带编号的快照。以后你可以随时调出任何一张快照，回顾当时的状态。</p>
   </div>
   <div class="lesson-demo">
     <div class="demo-label">概念图解</div>
@@ -113,15 +116,6 @@
       <div class="concept-arrow">→<span>git commit</span></div>
       <div class="concept-box"><div class="concept-title">本地仓库</div><div class="concept-desc">历史版本记录，每次提交生成一个快照</div></div>
     </div>
-  </div>
-</section>
-
-<section class="lesson-block">
-  <h2 class="lesson-title"><span class="lesson-num">错误</span>初学者常犯的错误</h2>
-  <div class="lesson-explain">
-    <p>以为 <code>git add</code> 就是「添加到仓库」。实际上 add 只是把文件放到暂存区，真正的保存是 <code>git commit</code>。</p>
-    <p>提交信息写得太随意，比如 <code>改了点东西</code>、<code>更新</code>。一个月后回头看，完全不知道这次提交做了什么。</p>
-    <p>直接在工作目录里复制文件做备份（<code>备份_2024</code>），而不是用 Git 管理版本。这样既占空间，又容易搞混。</p>
   </div>
 </section>
 
@@ -166,7 +160,20 @@ git log --oneline</code></pre>
 </section>
 
 <section class="lesson-block">
-  <h2 class="lesson-title"><span class="lesson-num">实例</span>常用命令速查</h2>
+  <h2 class="lesson-title"><span class="lesson-num">错误</span>初学者常犯的错误</h2>
+  <div class="lesson-explain">
+    <p>以为 <code>git add</code> 就是「添加到仓库」。实际上 add 只是把文件放到暂存区，真正的保存是 <code>git commit</code>。</p>
+    <p>提交信息写得太随意，比如 <code>改了点东西</code>、<code>更新</code>。一个月后回头看，完全不知道这次提交做了什么。</p>
+    <p>直接在工作目录里复制文件做备份（<code>备份_2024</code>），而不是用 Git 管理版本。这样既占空间，又容易搞混。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">示例</span>常用命令速查</h2>
+  <div class="lesson-explain">
+    <p>下面的命令是 Git 中最常用的基础操作。刚开始不需要记住所有参数，先掌握这六条命令，就能完成大部分日常操作。</p>
+    <p>git init 就像给项目建立一个档案室；git status 像查看当前工作台的整洁程度；git add 把文件放上待发货货架；git commit 把货架上的货物打包存档；git log 翻阅历史档案；git diff 对比不同版本的差异。</p>
+  </div>
   <div class="lesson-code">
     <div class="demo-label">核心命令</div>
     <pre><code>git init              # 初始化仓库

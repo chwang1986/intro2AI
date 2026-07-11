@@ -9,6 +9,15 @@
 </div>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">场景</span>两个人怎么一起工作</h2>
+  <div class="lesson-explain">
+    <p>实际工作中，一个项目通常由多个人共同开发。每个人在本地开发自己的功能，然后把代码推送到远程仓库。Git 会自动合并不冲突的修改，如果两个人改了同一处代码，就需要手动解决冲突。</p>
+    <p>这个页面模拟了两个人（用户A 和 用户B）共同开发一个项目的完整流程。点击下方「创建协作环境」按钮，系统会自动生成远程仓库和两个本地克隆。</p>
+    <p>想象两个厨师在同一张菜谱上改进菜品。一个加了更多香料，另一个换了烹饪顺序。如果改动不冲突，Git 会自动把两道菜的特点合并；如果冲突了，就需要厨师商量决定最终版本。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">起源</span>冲突是如何被定义的</h2>
   <div class="lesson-explain">
     <p>版本控制中的「冲突」概念并不是 Git 发明的。早在 1986 年，RCS（Revision Control System）就已经需要处理多人修改同一文件的情况。但 RCS 和早期的 CVS 处理冲突的方式比较粗糙：如果两个人改了同一个文件，后提交的人会被拒绝，必须先手动把对方的改动复制到自己的文件中。</p>
@@ -26,14 +35,6 @@
     <p><strong>策略二：自动猜测合并。</strong>让算法尝试「智能地」合并两边的修改，比如把两个函数都保留下来。优点是减少了人工干预，缺点是算法不可能理解代码的语义，自动合并的结果可能引入编译错误或逻辑 bug。</p>
     <p><strong>策略三：标记冲突并强制人工确认（Git 的做法）。</strong>对于不冲突的部分自动合并，对于冲突的部分插入标记，停止合并过程，要求开发者手动解决。优点是最大程度保证了代码的正确性，缺点是开发者必须花时间理解两边的修改。</p>
     <p>Linus 选择了策略三，因为他认为：<strong>代码合并的正确性比方便性更重要。</strong>Git 宁愿让合并过程「吵吵闹闹」地停下来，也不愿意让错误的代码悄无声息地进入仓库。这个设计哲学体现了对代码质量的尊重。</p>
-  </div>
-</section>
-
-<section class="lesson-block">
-  <h2 class="lesson-title"><span class="lesson-num">场景</span>两个人怎么一起工作</h2>
-  <div class="lesson-explain">
-    <p>实际工作中，一个项目通常由多个人共同开发。每个人在本地开发自己的功能，然后把代码推送到远程仓库。Git 会自动合并不冲突的修改，如果两个人改了同一处代码，就需要手动解决冲突。</p>
-    <p>这个页面模拟了两个人（用户A 和 用户B）共同开发一个项目的完整流程。点击下方「创建协作环境」按钮，系统会自动生成远程仓库和两个本地克隆。</p>
   </div>
 </section>
 
@@ -65,16 +66,6 @@
     <p><strong>3. 编辑冲突文件：</strong>打开文件，找到 <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code> 标记的区域。理解 HEAD 版本和对方版本的意图，手动编辑出最优的合并结果，然后删掉所有冲突标记。</p>
     <p><strong>4. 完成合并：</strong>修改完所有冲突文件后，执行 <code>git add .</code> 标记冲突已解决，然后 <code>git commit</code> 完成合并提交。合并提交会有两个父提交，分别指向合并前的两个分支。</p>
     <p><strong>5. 预防冲突的好习惯：</strong>频繁地 pull 最新代码、每个功能独立分支、避免大范围重构、提交前与队友沟通——这些都能显著减少冲突的发生。</p>
-  </div>
-</section>
-
-<section class="lesson-block">
-  <h2 class="lesson-title"><span class="lesson-num">错误</span>冲突处理中的常见错误</h2>
-  <div class="lesson-explain">
-    <p><strong>冲突解决不当：</strong>遇到冲突时，有人直接用 <code>git checkout --ours</code> 或 <code>--theirs</code> 强制选一边，结果把队友的功能删掉了。正确做法是打开冲突文件，理解两边的修改意图，手动合并出最好的方案。</p>
-    <p><strong>代码被覆盖：</strong>A 改了文件 X 的第 10 行，B 也改了文件 X 的第 10 行，B 先 push，A pull 时产生冲突。A 解决冲突时没注意，把 B 的改动覆盖了。这种情况只能通过代码审查和测试来预防。</p>
-    <p><strong>忘记删除冲突标记：</strong>匆忙编辑后没有检查是否还有残留的 <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code>，导致代码无法编译或运行异常。提交前一定要全局搜索这些标记。</p>
-    <p><strong>在 main 上直接开发：</strong>为了省事直接在 main 分支上写代码，结果把未完成的功能或带 bug 的代码推到了生产环境。main 分支应该始终保持可发布状态。</p>
   </div>
 </section>
 
@@ -137,6 +128,58 @@ git log --oneline --graph --all
 </section>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">错误</span>冲突处理中的常见错误</h2>
+  <div class="lesson-explain">
+    <p><strong>冲突解决不当：</strong>遇到冲突时，有人直接用 <code>git checkout --ours</code> 或 <code>--theirs</code> 强制选一边，结果把队友的功能删掉了。正确做法是打开冲突文件，理解两边的修改意图，手动合并出最好的方案。</p>
+    <p><strong>代码被覆盖：</strong>A 改了文件 X 的第 10 行，B 也改了文件 X 的第 10 行，B 先 push，A pull 时产生冲突。A 解决冲突时没注意，把 B 的改动覆盖了。这种情况只能通过代码审查和测试来预防。</p>
+    <p><strong>忘记删除冲突标记：</strong>匆忙编辑后没有检查是否还有残留的 <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code>，导致代码无法编译或运行异常。提交前一定要全局搜索这些标记。</p>
+    <p><strong>在 main 上直接开发：</strong>为了省事直接在 main 分支上写代码，结果把未完成的功能或带 bug 的代码推到了生产环境。main 分支应该始终保持可发布状态。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">示例</span>模拟两人协作</h2>
+  <div class="lesson-explain">
+    <p>点击「创建协作环境」后，会出现两个终端：左边是用户A，右边是用户B。你可以分别在这两个终端中执行命令，观察协作效果。尝试让 A 和 B 都修改 README.md 的同一行，然后 push/pull 观察冲突的产生和解决。</p>
+    <p>这个模拟环境让你能安全地体验协作中的各种情况，包括推送冲突、拉取合并和手动解决冲突。</p>
+  </div>
+
+  <div class="btn-group mb-4">
+    <button class="btn btn-primary" onclick="setupCollab()">创建协作环境</button>
+    <button class="btn btn-secondary" onclick="showStatus()">查看状态</button>
+  </div>
+
+  <div class="row">
+    <div class="col-6">
+      <div class="lesson-demo">
+        <div class="demo-label">用户 A（开发者A）</div>
+        <div class="terminal" id="terminalA"></div>
+        <div class="btn-group">
+          <button class="btn btn-primary btn-sm" onclick="runCmdA('git status')">status</button>
+          <button class="btn btn-primary btn-sm" onclick="runCmdA('git log --oneline')">log</button>
+          <button class="btn btn-secondary btn-sm" onclick="runCmdA('echo "# A的新功能" >> README.md && git add . && git commit -m "A: 添加新功能"')">开发并提交</button>
+          <button class="btn btn-secondary btn-sm" onclick="runCmdA('git push origin main')">push</button>
+          <button class="btn btn-secondary btn-sm" onclick="runCmdA('git pull origin main')">pull</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="lesson-demo">
+        <div class="demo-label">用户 B（开发者B）</div>
+        <div class="terminal" id="terminalB"></div>
+        <div class="btn-group">
+          <button class="btn btn-primary btn-sm" onclick="runCmdB('git status')">status</button>
+          <button class="btn btn-primary btn-sm" onclick="runCmdB('git log --oneline')">log</button>
+          <button class="btn btn-secondary btn-sm" onclick="runCmdB('echo "# B的改进" >> main.py && git add . && git commit -m "B: 改进代码"')">开发并提交</button>
+          <button class="btn btn-secondary btn-sm" onclick="runCmdB('git push origin main')">push</button>
+          <button class="btn btn-secondary btn-sm" onclick="runCmdB('git pull origin main')">pull</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">练习</span>冲突处理验证与设计</h2>
   <div class="exercise-box">
     <div class="lesson-explain">
@@ -156,47 +199,6 @@ git log --oneline --graph --all
   <div class="exercise-box">
     <div class="lesson-explain">
       <p><strong>设计题：</strong>假设你和小红合作写一个 Python 程序。你负责优化算法性能，小红负责添加异常处理。你们很可能会修改同一个文件的同一区域。请设计一套工作流程，最大限度地减少冲突发生的概率。同时设计一个冲突发生时的处理 checklist（检查清单），确保不会因为匆忙而漏掉关键步骤。</p>
-    </div>
-  </div>
-</section>
-
-<section class="lesson-block">
-  <h2 class="lesson-title"><span class="lesson-num">实例</span>模拟两人协作</h2>
-  <div class="lesson-explain">
-    <p>点击「创建协作环境」后，会出现两个终端：左边是用户A，右边是用户B。你可以分别在这两个终端中执行命令，观察协作效果。尝试让 A 和 B 都修改 README.md 的同一行，然后 push/pull 观察冲突的产生和解决。</p>
-  </div>
-
-  <div class="btn-group mb-4">
-    <button class="btn btn-primary" onclick="setupCollab()">创建协作环境</button>
-    <button class="btn btn-secondary" onclick="showStatus()">查看状态</button>
-  </div>
-
-  <div class="row">
-    <div class="col-6">
-      <div class="lesson-demo">
-        <div class="demo-label">用户 A（开发者A）</div>
-        <div class="terminal" id="terminalA"></div>
-        <div class="btn-group">
-          <button class="btn btn-primary btn-sm" onclick="runCmdA('git status')">status</button>
-          <button class="btn btn-primary btn-sm" onclick="runCmdA('git log --oneline')">log</button>
-          <button class="btn btn-secondary btn-sm" onclick="runCmdA('echo "# A的新功能" >> README.md && git add . && git commit -m \"A: 添加新功能\"')">开发并提交</button>
-          <button class="btn btn-secondary btn-sm" onclick="runCmdA('git push origin main')">push</button>
-          <button class="btn btn-secondary btn-sm" onclick="runCmdA('git pull origin main')">pull</button>
-        </div>
-      </div>
-    </div>
-    <div class="col-6">
-      <div class="lesson-demo">
-        <div class="demo-label">用户 B（开发者B）</div>
-        <div class="terminal" id="terminalB"></div>
-        <div class="btn-group">
-          <button class="btn btn-primary btn-sm" onclick="runCmdB('git status')">status</button>
-          <button class="btn btn-primary btn-sm" onclick="runCmdB('git log --oneline')">log</button>
-          <button class="btn btn-secondary btn-sm" onclick="runCmdB('echo "# B的改进" >> README.md && git add . && git commit -m \"B: 改进代码\"')">开发并提交</button>
-          <button class="btn btn-secondary btn-sm" onclick="runCmdB('git push origin main')">push</button>
-          <button class="btn btn-secondary btn-sm" onclick="runCmdB('git pull origin main')">pull</button>
-        </div>
-      </div>
     </div>
   </div>
 </section>
