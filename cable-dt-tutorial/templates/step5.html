@@ -47,6 +47,170 @@
   </div>
 </section>
 
+<!-- 论文写作环境准备检查清单 -->
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">准备</span>论文写作环境准备检查清单</h2>
+  <div class="lesson-explain">
+    <p>在动笔之前，请按以下清单准备论文写作工具链。一个高效的写作环境可以节省 30% 以上的时间。</p>
+    <div class="concept-card">
+      <h4>必备工具</h4>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>工具</th>
+            <th>用途</th>
+            <th>推荐版本/配置</th>
+            <th>安装方式</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>LaTeX / Overleaf</td>
+            <td>论文排版</td>
+            <td>TeX Live 2023+ / Overleaf 免费版</td>
+            <td>官网下载 / 在线注册</td>
+          </tr>
+          <tr>
+            <td>Zotero</td>
+            <td>文献管理</td>
+            <td>Zotero 6.0+</td>
+            <td>官网下载</td>
+          </tr>
+          <tr>
+            <td>Grammarly</td>
+            <td>语法检查</td>
+            <td>Grammarly Free / Premium</td>
+            <td>浏览器插件 / 桌面版</td>
+          </tr>
+          <tr>
+            <td>LanguageTool</td>
+            <td>开源语法检查</td>
+            <td>LanguageTool 6.0+</td>
+            <td>官网下载</td>
+          </tr>
+          <tr>
+            <td>Microsoft Excel / Python</td>
+            <td>数据整理与图表</td>
+            <td>Excel 2019+ / pandas + matplotlib</td>
+            <td>Office 365 / pip install</td>
+          </tr>
+          <tr>
+            <td>draw.io / Visio</td>
+            <td>流程图与架构图</td>
+            <td>draw.io 免费版</td>
+            <td>在线 / 桌面版</td>
+          </tr>
+          <tr>
+            <td>Git / GitHub</td>
+            <td>版本控制</td>
+            <td>Git 2.40+</td>
+            <td>git-scm.com</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="concept-card">
+      <h4>LaTeX 环境快速搭建（macOS）</h4>
+      <div class="lesson-code"><pre><code># 预计安装时间: 15-30 分钟（取决于网络）
+# 依赖版本: TeX Live 2023+
+
+# 方式一：MacTeX（推荐，完整版约 4GB）
+brew install --cask mactex
+
+# 方式二：BasicTeX（精简版约 100MB，后续按需安装包）
+brew install --cask basictex
+sudo tlmgr install IEEEtran natbib hyperref graphicx booktabs multirow
+
+# 验证安装
+pdflatex --version</code></pre></div>
+    </div>
+    <div class="concept-card">
+      <h4>Zotero 配置检查清单</h4>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>检查项</th>
+            <th>目标状态</th>
+            <th>状态</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Zotero 账户已注册</td>
+            <td>同步空间 > 300MB</td>
+            <td>是/否</td>
+          </tr>
+          <tr>
+            <td>Zotero Connector 浏览器插件已安装</td>
+            <td>支持 IEEE / ScienceDirect / CNKI</td>
+            <td>是/否</td>
+          </tr>
+          <tr>
+            <td>Better BibTeX 插件已安装</td>
+            <td>自动生成 BibTeX key</td>
+            <td>是/否</td>
+          </tr>
+          <tr>
+            <td>GB/T 7714 中文引用样式已导入</td>
+            <td>适用于中文期刊投稿</td>
+            <td>是/否</td>
+          </tr>
+          <tr>
+            <td>文献库分类文件夹已创建</td>
+            <td>按研究方向/期刊/年份分类</td>
+            <td>是/否</td>
+          </tr>
+          <tr>
+            <td>文献条目标签体系已建立</td>
+            <td>至少包含：核心/参考/待读</td>
+            <td>是/否</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="concept-card">
+      <h4>Grammarly 与 LanguageTool 对比</h4>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>维度</th>
+            <th>Grammarly Premium</th>
+            <th>LanguageTool</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>费用</td>
+            <td>$12/月</td>
+            <td>免费（基础版）</td>
+          </tr>
+          <tr>
+            <td>学术写作支持</td>
+            <td>中等（偏商务）</td>
+            <td>良好（支持 LaTeX 插件）</td>
+          </tr>
+          <tr>
+            <td>与 Overleaf 集成</td>
+            <td>需复制粘贴</td>
+            <td>浏览器插件直接支持</td>
+          </tr>
+          <tr>
+            <td>中文支持</td>
+            <td>无</td>
+            <td>有限</td>
+          </tr>
+          <tr>
+            <td>隐私</td>
+            <td>云端处理</td>
+            <td>可本地部署</td>
+          </tr>
+        </tbody>
+      </table>
+      <p><strong>建议：</strong>英文初稿用 Grammarly 检查基础语法，终稿用 LanguageTool 做学术风格优化；中文论文用 LanguageTool + 人工校对。</p>
+    </div>
+  </div>
+</section>
+
 <!-- 原理 -->
 <section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">原理</span>论文写作的核心逻辑</h2>
@@ -133,6 +297,9 @@
           <tr>
             <th>期刊名称</th>
             <th>级别</th>
+            <th>审稿周期</th>
+            <th>录用率</th>
+            <th>版面费</th>
             <th>特点与偏好</th>
           </tr>
         </thead>
@@ -140,16 +307,25 @@
           <tr>
             <td>《计算机集成制造系统》</td>
             <td>中文核心 / EI</td>
+            <td>2-4 个月</td>
+            <td>25-35%</td>
+            <td>约 3000-5000 元</td>
             <td>侧重智能制造、数字孪生、MES/ERP 集成，对系统架构类论文友好</td>
           </tr>
           <tr>
             <td>《中国机械工程》</td>
             <td>中文核心 / EI</td>
+            <td>2-3 个月</td>
+            <td>20-30%</td>
+            <td>约 2500-4000 元</td>
             <td>覆盖面广，工艺优化、质量控制、设备诊断均可投</td>
           </tr>
           <tr>
             <td>《仪器仪表学报》</td>
             <td>中文核心 / EI</td>
+            <td>2-3 个月</td>
+            <td>20-30%</td>
+            <td>约 2000-3500 元</td>
             <td>偏好传感器、信号处理、检测技术，适合有硬件/数据采集内容的论文</td>
           </tr>
         </tbody>
@@ -162,6 +338,9 @@
           <tr>
             <th>期刊名称</th>
             <th>分区/IF</th>
+            <th>审稿周期</th>
+            <th>录用率</th>
+            <th>版面费</th>
             <th>特点与偏好</th>
           </tr>
         </thead>
@@ -169,21 +348,33 @@
           <tr>
             <td>IEEE Transactions on Industrial Informatics (TII)</td>
             <td>JCR Q1 / IF ~11</td>
+            <td>3-6 个月</td>
+            <td>15-25%</td>
+            <td>OA: $2195; 非 OA: 免费</td>
             <td>工业信息学顶刊，偏好工业 AI、物联网、数字孪生，要求有实际工业验证</td>
           </tr>
           <tr>
             <td>IEEE Transactions on SMC: Systems</td>
             <td>JCR Q1 / IF ~8</td>
+            <td>3-5 个月</td>
+            <td>15-25%</td>
+            <td>OA: $2195; 非 OA: 免费</td>
             <td>复杂系统方向，偏好系统工程、人机协同、平行系统理论应用</td>
           </tr>
           <tr>
             <td>Computers & Industrial Engineering</td>
             <td>JCR Q1 / IF ~7</td>
+            <td>2-4 个月</td>
+            <td>20-30%</td>
+            <td>OA: $3050; 非 OA: 免费</td>
             <td>运筹与计算交叉，偏好调度优化、质量预测、数据分析在制造中的应用</td>
           </tr>
           <tr>
             <td>Journal of Manufacturing Systems</td>
             <td>JCR Q1 / IF ~6</td>
+            <td>2-4 个月</td>
+            <td>20-30%</td>
+            <td>OA: $3000; 非 OA: 免费</td>
             <td>制造系统方向，偏好产线级/车间级研究，数字孪生专刊多</td>
           </tr>
         </tbody>
@@ -196,6 +387,9 @@
           <tr>
             <th>会议名称</th>
             <th>级别</th>
+            <th>审稿周期</th>
+            <th>录用率</th>
+            <th>版面费</th>
             <th>特点与偏好</th>
           </tr>
         </thead>
@@ -203,16 +397,25 @@
           <tr>
             <td>IEEE CASE</td>
             <td>IEEE 旗舰会议</td>
+            <td>1-2 个月</td>
+            <td>35-45%</td>
+            <td>约 $500-800</td>
             <td>自动化科学与工程，偏好工业应用和系统集成</td>
           </tr>
           <tr>
             <td>IEEE SMC</td>
             <td>IEEE 年会</td>
+            <td>1-2 个月</td>
+            <td>40-50%</td>
+            <td>约 $400-600</td>
             <td>系统、人与控制论，接受平行系统、数字孪生方向论文</td>
           </tr>
           <tr>
             <td>Prognostics and Health Management (PHM)</td>
             <td>国际会议</td>
+            <td>1-2 个月</td>
+            <td>40-50%</td>
+            <td>约 $300-500</td>
             <td>故障预测与健康管理，适合设备预测性维护和异常检测方向</td>
           </tr>
         </tbody>
@@ -230,43 +433,123 @@
       <ol>
         <li>
           <p><strong>基于 LSTM 的电缆绝缘层厚度预测：</strong>用挤出过程时序数据预测绝缘厚度，替代离线测量。方法成熟，工业价值明确。</p>
+          <p class="mt-2"><strong>预期实验规模：</strong>数据量：至少 500 盘电缆的挤出时序数据（每盘 7200 个时间步），总计约 360 万条记录；算力：单张 NVIDIA RTX 3060 即可训练，训练时间约 2-4 小时；总研究周期：3-4 个月（含数据收集 1 个月、建模 1 个月、实验与写作 1-2 个月）。</p>
           <p class="mt-2"><em>研究空白：</em>现有研究多聚焦于金属切削或注塑成型，针对电缆绝缘挤出的厚度预测极少；且现有方法未充分考虑挤出机螺杆转速与牵引速度的耦合时序关系，导致预测滞后。该选题填补了电缆挤出工序在线质量预测的空白。</p>
+          <div class="concept-card mt-3">
+            <h5>论文结构模板（IMRaD填空）</h5>
+            <p><strong>Introduction：</strong>电缆绝缘厚度离线测量耗时____小时，导致____（问题）。现有____方法无法处理____（时序耦合/滞后）。本文提出用LSTM预测____，实现____（目标）。</p>
+            <p><strong>Methods：</strong>数据集来自____（工厂/产线），包含____盘电缆，____个时间步。特征包括____（温度、速度等）。LSTM结构：输入维=____，隐藏层=____，层数=____。损失函数=____，优化器=____，学习率=____。</p>
+            <p><strong>Results：</strong>与____（baseline）对比，LSTM的RMSE=____mm，R²=____。消融实验：去掉____特征后RMSE上升____%。</p>
+            <p><strong>Discussion：</strong>预测误差主要来自____（工况切换/传感器噪声）。工艺建议：当速度>____m/min时，应提前____秒调整温度，以补偿____（物理机制）。</p>
+          </div>
         </li>
         <li>
           <p><strong>基于数字孪生的电缆挤出工艺优化：</strong>构建挤出工序的数字孪生体，实现虚拟调试和参数优化。系统级论文，适合投 TII 或 JMS。</p>
+          <p class="mt-2"><strong>预期实验规模：</strong>数据量：至少 3 个月连续生产数据（约 2000 盘电缆），含 PLC 时序 + MES 工艺 + LIMS 质检；算力：普通台式机即可运行机理模型，若加入 AI 模块建议 16GB 内存 + 4 核 CPU；总研究周期：6-12 个月（含系统开发 3 个月、验证 2 个月、写作 1-2 个月）。</p>
           <p class="mt-2"><em>研究空白：</em>数字孪生研究多集中在航空航天、汽车零部件等离散制造，对电缆挤出这类连续流程制造的数字孪生研究几乎空白；且现有数字孪生系统缺乏与 MES/SCADA 的实时闭环集成。该选题将数字孪生理论落地到流程制造场景。</p>
+          <div class="concept-card mt-3">
+            <h5>论文结构模板（IMRaD填空）</h5>
+            <p><strong>Introduction：</strong>电缆挤出工艺调试依赖____（物理试错），单次试机成本约____元，周期____天。数字孪生可实现____（虚拟调试/参数优化），但现有研究集中于____（离散制造）。本文构建____（系统名称），实现____（闭环功能）。</p>
+            <p><strong>Methods：</strong>孪生体包含____层：数据采集层（____Hz）、机理建模层（____方程）、数据驱动层（____算法）、优化层（____算法）。虚实映射精度：温度误差<____°C，速度误差<____%。</p>
+            <p><strong>Results：</strong>虚拟调试将试机次数从____次降至____次，参数收敛时间缩短____%。工艺优化后，厚度CV从____%降至____%。</p>
+            <p><strong>Discussion：</strong>虚实偏差主要来自____（模型简化/边界条件）。系统局限：未考虑____（材料批次差异/设备磨损），下一步将集成____（在线校准模块）。</p>
+          </div>
         </li>
         <li>
           <p><strong>小样本条件下的电缆缺陷检测：</strong>针对缺陷样本极少的问题，研究迁移学习、数据增强或代价敏感学习策略。适合投方法类期刊。</p>
+          <p class="mt-2"><strong>预期实验规模：</strong>数据量：正常样本 > 1000 张/条，每类缺陷样本 20-50 张/条（共 3-5 类缺陷）；算力：若用深度学习，建议 NVIDIA RTX 3060 及以上，训练时间 4-8 小时；总研究周期：4-6 个月（含数据收集 2 个月、方法设计与实验 1-2 个月、写作 1 个月）。</p>
           <p class="mt-2"><em>研究空白：</em>工业缺陷检测的深度学习研究多基于大量标注数据（如钢板、PCB 缺陷），电缆缺陷样本极不均衡且标注成本高；现有小样本学习方法在电缆领域的迁移效果缺乏验证。该选题解决了电缆行业"缺陷少、标注难"的痛点。</p>
+          <div class="concept-card mt-3">
+            <h5>论文结构模板（IMRaD填空）</h5>
+            <p><strong>Introduction：</strong>电缆缺陷样本仅占____%，现有深度学习需要____张/类标注，标注成本____元/张。本文针对____（缺陷类型），研究____（迁移学习/数据增强/代价敏感）策略，目标是在____个样本条件下达到____%检出率。</p>
+            <p><strong>Methods：</strong>源域数据来自____（相似产线/公开数据集），目标域为____（具体电缆型号）。方法细节：____（如：基于ResNet的迁移学习，冻结前____层，微调____层）。数据增强策略：____（旋转/翻转/亮度/合成）。</p>
+            <p><strong>Results：</strong>基线方法（无增强）F1=____，本文方法F1=____。消融实验：去掉____模块后F1下降____%。与人工标注对比，漏检率从____%降至____%。</p>
+            <p><strong>Discussion：</strong>小样本下____（某类缺陷）仍易混淆，因其与____（正常纹理/其他缺陷）视觉特征相似。建议：当样本<____张时，优先采用____策略而非深度学习。</p>
+          </div>
         </li>
         <li>
           <p><strong>基于 SHAP 的电缆质量关键影响因子分析：</strong>用可解释 AI 方法识别影响击穿电压/绝缘电阻的关键工艺参数，输出工艺改进建议。</p>
+          <p class="mt-2"><strong>预期实验规模：</strong>数据量：至少 800 盘电缆的工艺参数 + 质检数据（约 10-20 个特征）；算力：普通笔记本即可，SHAP 计算时间 < 5 分钟；总研究周期：3-4 个月（含数据收集 1 个月、建模与解释分析 1 个月、写作 1-2 个月）。</p>
           <p class="mt-2"><em>研究空白：</em>可解释 AI 研究多聚焦于金融、医疗领域，在电缆工艺领域的应用刚刚起步；现有研究多使用相关性分析，无法捕捉工艺参数间的非线性交互效应。该选题将 SHAP 等前沿可解释方法引入电缆工艺分析。</p>
+          <div class="concept-card mt-3">
+            <h5>论文结构模板（IMRaD填空）</h5>
+            <p><strong>Introduction：</strong>电缆____（击穿电压/绝缘电阻）受多因素影响，传统____（相关性/回归）方法无法解释____（非线性交互）。本文用SHAP分析____（数量）个工艺参数，识别关键因子并给出____（工艺建议）。</p>
+            <p><strong>Methods：</strong>模型为____（XGBoost/随机森林），训练样本____，特征____个。SHAP计算：TreeExplainer，输出____（全局摘要/单样本解释/交互效应）。对比基线：Permutation Importance、Pearson相关系数。</p>
+            <p><strong>Results：</strong>Top-3关键因子：1.____（SHAP值=____），2.____，3.____。与Permutation Importance排序一致性=____%（Kendall Tau）。工艺发现：当____>____时，击穿电压显著下降。</p>
+            <p><strong>Discussion：</strong>SHAP揭示的____（因子）与工艺知识一致/矛盾，原因是____。可操作性建议：将____控制在____范围内，预计可将不合格率从____%降至____%。</p>
+          </div>
         </li>
         <li>
           <p><strong>电缆生产多源异构数据融合方法：</strong>研究 PLC 时序数据、MES 工艺参数、LIMS 质检数据的时序对齐和融合方法。</p>
+          <p class="mt-2"><strong>预期实验规模：</strong>数据量：PLC 数据 > 100 万条（秒级，3 个月），MES 数据约 5000 条（盘级），LIMS 数据约 500 条（批次级）；算力：16GB 内存台式机，数据对齐处理时间约 1-2 小时；总研究周期：4-6 个月（含数据对接 2 个月、融合方法开发 1-2 个月、验证与写作 1-2 个月）。</p>
           <p class="mt-2"><em>研究空白：</em>PLC 时序数据、MES 工艺参数、LIMS 质检数据的采样频率与数据格式差异巨大，现有数据融合方法多针对同构数据；跨系统的时序对齐和语义对齐缺乏通用框架。该选题构建面向电缆行业的多源数据融合规范。</p>
+          <div class="concept-card mt-3">
+            <h5>论文结构模板（IMRaD填空）</h5>
+            <p><strong>Introduction：</strong>电缆生产数据来自____（PLC/MES/LIMS），采样频率分别为____Hz、____、____，时间粒度差异导致____（对齐困难/信息丢失）。现有____方法无法解决____（异构性/语义鸿沟）。本文提出____融合框架。</p>
+            <p><strong>Methods：</strong>时序对齐策略：____（最近邻插值/动态时间规整/事件触发对齐）。语义对齐：建立____（本体/知识图谱），映射____个字段。融合层级：____（原始层/特征层/决策层）。</p>
+            <p><strong>Results：</strong>对齐精度：时间戳匹配率____%，字段映射准确率____%。对比单源数据，融合后模型AUC从____提升至____。消融：去掉____数据源后AUC下降____%。</p>
+            <p><strong>Discussion：</strong>____数据源贡献最大，因其直接反映____（工艺状态）。____数据源噪声大，需预处理（____方法）。框架可推广至____（其他流程制造行业）。</p>
+          </div>
         </li>
         <li>
           <p><strong>基于 Isolation Forest 的挤出过程异常检测：</strong>无监督检测工艺偏离，无需缺陷标签，适合数据标注困难的工厂。</p>
+          <p class="mt-2"><strong>预期实验规模：</strong>数据量：至少 3000 条正常工况记录（多维工艺参数），异常记录可有可无；算力：普通笔记本即可，训练时间 < 1 分钟；总研究周期：2-3 个月（含数据收集 2-4 周、模型调参与验证 3-4 周、写作 3-4 周）。</p>
           <p class="mt-2"><em>研究空白：</em>无监督异常检测研究多基于公开数据集（如 Yahoo S5、NASA），电缆挤出过程的正常工况边界模糊，异常定义依赖工艺专家知识；现有方法在强噪声工业环境下的虚警率偏高。该选题建立面向电缆挤出的无监督异常检测基准。</p>
+          <div class="concept-card mt-3">
+            <h5>论文结构模板（IMRaD填空）</h5>
+            <p><strong>Introduction：</strong>电缆挤出过程____%为正常工况，异常类型多样（____、____、____），标注困难。现有监督方法依赖____标签，无监督方法____（问题）。本文用Isolation Forest建立____基准。</p>
+            <p><strong>Methods：</strong>特征：____维工艺参数。Isolation Forest参数：n_estimators=____，contamination=____（基于历史异常率____%）。对比基线：One-Class SVM、3σ规则、Autoencoder。</p>
+            <p><strong>Results：</strong>Isolation Forest AUC=____，优于____（基线）。在contamination=____时，检出率=____%，虚警率=____%。工艺验证：检出的____%异常与____（停机/换料记录）吻合。</p>
+            <p><strong>Discussion：</strong>虚警主要来自____（工况切换/传感器噪声），可通过____（滑动窗口平滑/增加工艺规则过滤）降低。未检出的异常多为____类型，需____（增加特征/调整阈值）。</p>
+          </div>
         </li>
         <li>
           <p><strong>电缆护套挤出能耗预测与优化：</strong>用机器学习预测能耗，结合工艺约束优化参数，实现节能降耗。</p>
+          <p class="mt-2"><strong>预期实验规模：</strong>数据量：至少 6 个月能耗数据（电表读数，约 5000 条记录），含工艺参数；算力：普通笔记本即可，XGBoost 训练时间 < 1 分钟；总研究周期：3-5 个月（含数据收集 1-2 个月、建模与优化 1 个月、写作 1-2 个月）。</p>
           <p class="mt-2"><em>研究空白：</em>制造过程能耗预测研究多集中在钢铁、水泥等高耗能行业，电缆挤出工序的能耗模型缺乏；且现有能耗优化未同时考虑质量约束，存在"为节能而降质"的风险。该选题实现能耗与质量的协同优化。</p>
+          <div class="concept-card mt-3">
+            <h5>论文结构模板（IMRaD填空）</h5>
+            <p><strong>Introduction：</strong>电缆挤出工序能耗占生产成本____%，现有能耗管理依赖____（经验/事后统计），无法____（实时优化）。本文构建____模型，预测能耗并优化____参数，实现节能____%且质量指标不恶化。</p>
+            <p><strong>Methods：</strong>能耗数据来自____（电表/PLC），采样间隔____。特征：____（温度、速度、产量等）。模型：____（XGBoost/神经网络）。优化：____算法，约束条件包括____（质量下限/设备上限/安全范围）。</p>
+            <p><strong>Results：</strong>能耗预测RMSE=____kWh，MAPE=____%。优化后，单位产量能耗从____降至____kWh/kg。质量指标（____）保持在____（范围内），未出现降质。</p>
+            <p><strong>Discussion：</strong>能耗主要受____（温度/速度）影响，与____（产量）呈____关系。优化建议：在____工况下，优先降低____（参数），而非____。年节约电费约____万元。</p>
+          </div>
         </li>
         <li>
           <p><strong>基于平行系统的电缆质量闭环控制：</strong>用 ACP（人工系统-计算实验-平行执行）理论指导电缆工艺优化，理论深度高。</p>
+          <p class="mt-2"><strong>预期实验规模：</strong>数据量：物理系统数据 > 5000 条，虚拟系统需构建机理模型（约 10-20 个方程）；算力：16GB 内存 + 4 核 CPU，仿真时间约 10-30 分钟/批次；总研究周期：6-12 个月（含理论研究与模型构建 3 个月、计算实验 2 个月、平行执行验证 2 个月、写作 1-2 个月）。</p>
           <p class="mt-2"><em>研究空白：</em>ACP 理论多应用于交通、社会系统，在电缆制造等物理化学过程中的应用几乎空白；平行系统与物理挤出过程的虚实交互机制尚不成熟。该选题拓展了平行系统理论在流程制造中的适用边界。</p>
+          <div class="concept-card mt-3">
+            <h5>论文结构模板（IMRaD填空）</h5>
+            <p><strong>Introduction：</strong>电缆工艺优化依赖____（物理实验），周期长、成本高。ACP理论通过____（人工系统/计算实验/平行执行）实现虚实互动，但现有应用集中于____（交通/社会系统）。本文首次将ACP应用于____（电缆挤出/拉丝/成缆）。</p>
+            <p><strong>Methods：</strong>人工系统：用____（机理模型/离散事件仿真）构建虚拟产线，参数____个。计算实验：设计____组场景，探索____（参数空间）。平行执行：虚实差异反馈周期=____秒，校准策略=____。</p>
+            <p><strong>Results：</strong>虚拟系统与物理系统的温度偏差<____°C，速度偏差<____%。经____轮平行执行，工艺参数收敛至____（最优区），产品合格率从____%提升至____%。</p>
+            <p><strong>Discussion：</strong>ACP的优势在于____（快速试错/风险隔离），局限是____（模型简化/计算延迟）。下一步将集成____（实时数据/自学习模块），缩短反馈周期至____秒。</p>
+          </div>
         </li>
         <li>
           <p><strong>电缆生产线数字孪生可视化平台：</strong>研究三维可视化、实时数据接入、虚实映射技术，工程系统类论文。</p>
+          <p class="mt-2"><strong>预期实验规模：</strong>数据量：设备模型（约 10-20 台设备的三维模型），实时数据接入量约 100-500 点位/秒；算力：开发端建议 16GB 内存 + GTX 1060 及以上显卡，部署端普通服务器即可；总研究周期：6-12 个月（含三维建模 2-3 个月、数据接入开发 2 个月、平台集成 2 个月、写作 1-2 个月）。</p>
           <p class="mt-2"><em>研究空白：</em>工业可视化研究多关注三维几何建模，缺乏工艺机理与实时数据的可视化融合；电缆生产线的设备布局复杂，现有平台在虚实映射的实时性和精度上难以兼顾。该选题构建"机理+数据"双驱动的可视化方案。</p>
+          <div class="concept-card mt-3">
+            <h5>论文结构模板（IMRaD填空）</h5>
+            <p><strong>Introduction：</strong>电缆生产线设备____台，布局____（复杂/分散），传统监控依赖____（2D组态/分散报表），无法____（全局感知/预测预警）。本文构建三维可视化平台，集成____（实时数据/机理模型/AI预测）。</p>
+            <p><strong>Methods：</strong>三维引擎：____（Unity/Unreal/Three.js）。数据接入：____（OPC UA/MQTT/Kafka），延迟<____ms。虚实映射：几何精度____mm，数据刷新率____Hz。核心功能：____（设备状态/质量预测/能耗监控/异常告警）。</p>
+            <p><strong>Results：</strong>平台响应时间____ms，支持____并发用户。虚实映射误差：位置<____mm，温度显示<____°C。用户调研：____%操作人员认为平台提升了____（效率/感知）。</p>
+            <p><strong>Discussion：</strong>三维模型精度与实时性的权衡：____（LOD策略/简化建模）。当前局限：未覆盖____（设备/工序），下一步将接入____（AR/VR）实现沉浸式巡检。</p>
+          </div>
         </li>
         <li>
           <p><strong>基于联邦学习的多工厂电缆质量协同建模：</strong>在不共享原始数据的前提下，联合多个电缆厂训练质量预测模型，符合数据安全趋势。</p>
+          <p class="mt-2"><strong>预期实验规模：</strong>数据量：参与方 3-5 家电缆厂，每厂数据量 500-2000 条，特征维度 10-20 维；算力：每厂普通服务器即可，联邦聚合节点 4 核 8GB 内存足够；总研究周期：6-9 个月（含合作对接 2-3 个月、联邦算法开发 2 个月、实验验证 1-2 个月、写作 1-2 个月）。</p>
           <p class="mt-2"><em>研究空白：</em>联邦学习研究多应用于医疗、金融，在工业质量预测中的研究极少；电缆厂之间的产品规格、设备型号差异大，现有联邦聚合算法（如 FedAvg）在非独立同分布数据下的收敛性差。该选题提出面向异构工业设备的联邦学习改进策略。</p>
+          <div class="concept-card mt-3">
+            <h5>论文结构模板（IMRaD填空）</h5>
+            <p><strong>Introduction：</strong>电缆厂____（数量）家，各厂数据涉及____（商业机密/客户信息），无法集中共享。联邦学习可实现____（数据不出厂/协同建模），但现有FedAvg在非IID数据下____（收敛慢/性能差）。本文提出____改进算法。</p>
+            <p><strong>Methods：</strong>参与方：____家电缆厂，数据量分别为____。特征空间：____维（公共特征+私有特征）。聚合策略：____（FedProx/SCAFFOLD/自定义），本地epoch=____，通信轮数=____。隐私保护：____（差分隐私/安全聚合）。</p>
+            <p><strong>Results：</strong>联邦模型AUC=____，与集中训练（AUC=____）差距<____%。各厂本地模型AUC平均=____，联邦模型提升____%。通信开销：每轮____MB，总轮数____。</p>
+            <p><strong>Discussion：</strong>非IID主要体现为____（设备差异/产品规格/工艺习惯），通过____（特征对齐/个性化层）缓解。数据安全：原始数据未离开本地，满足____（法规/标准）。</p>
+          </div>
         </li>
       </ol>
     </div>
@@ -324,6 +607,288 @@
       </table>
     </div>
     <p><strong>实验任务：</strong>下载 3 篇目标期刊的论文，用上述模板拆解。完成后，你会清楚自己的论文与已发表工作的差距，以及需要补充哪些内容。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">实验</span>论文拆解工作表（填空版）</h2>
+  <div class="lesson-explain">
+    <p>选择一篇目标论文，逐项填入以下内容。完成后，对照自己的研究，明确差距和改进方向。</p>
+    <div class="concept-card">
+      <h4>论文基本信息</h4>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>项目</th>
+            <th>目标论文</th>
+            <th>我的论文（对照）</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>题目</td>
+            <td>_______________</td>
+            <td>_______________</td>
+          </tr>
+          <tr>
+            <td>期刊/会议</td>
+            <td>_______________</td>
+            <td>目标投稿：________</td>
+          </tr>
+          <tr>
+            <td>发表年份</td>
+            <td>_______________</td>
+            <td>预计投稿：________</td>
+          </tr>
+          <tr>
+            <td>核心方法</td>
+            <td>_______________</td>
+            <td>_______________</td>
+          </tr>
+          <tr>
+            <td>应用场景</td>
+            <td>_______________</td>
+            <td>_______________</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="concept-card">
+      <h4>结构与内容拆解</h4>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>模块</th>
+            <th>目标论文内容摘要</th>
+            <th>我的论文差距分析</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Introduction（重要性论证）</td>
+            <td>_______________</td>
+            <td>_______________</td>
+          </tr>
+          <tr>
+            <td>Introduction（研究Gap）</td>
+            <td>_______________</td>
+            <td>_______________</td>
+          </tr>
+          <tr>
+            <td>Related Work（文献组织逻辑）</td>
+            <td>_______________</td>
+            <td>_______________</td>
+          </tr>
+          <tr>
+            <td>Method（核心创新点）</td>
+            <td>_______________</td>
+            <td>_______________</td>
+          </tr>
+          <tr>
+            <td>Method（可复现性）</td>
+            <td>超参数：_____<br>代码：_____</td>
+            <td>超参数：_____<br>代码：_____</td>
+          </tr>
+          <tr>
+            <td>Experiment（数据集）</td>
+            <td>规模：_____<br>来源：_____</td>
+            <td>规模：_____<br>来源：_____</td>
+          </tr>
+          <tr>
+            <td>Experiment（Baseline）</td>
+            <td>对比了____个方法</td>
+            <td>计划对比____个</td>
+          </tr>
+          <tr>
+            <td>Experiment（评价指标）</td>
+            <td>_______________</td>
+            <td>_______________</td>
+          </tr>
+          <tr>
+            <td>Experiment（显著性检验）</td>
+            <td>有/无（方法：_____）</td>
+            <td>有/无（计划：_____）</td>
+          </tr>
+          <tr>
+            <td>Discussion（工程意义）</td>
+            <td>_______________</td>
+            <td>_______________</td>
+          </tr>
+          <tr>
+            <td>Discussion（工艺建议）</td>
+            <td>_______________</td>
+            <td>_______________</td>
+          </tr>
+          <tr>
+            <td>Limitation</td>
+            <td>讨论了_____</td>
+            <td>计划讨论_____</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="concept-card">
+      <h4>差距总结与行动计划</h4>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>差距类型</th>
+            <th>具体表现</th>
+            <th>改进措施</th>
+            <th>截止日期</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>实验规模</td>
+            <td>_______________</td>
+            <td>_______________</td>
+            <td>_______________</td>
+          </tr>
+          <tr>
+            <td>Baseline对比</td>
+            <td>_______________</td>
+            <td>_______________</td>
+            <td>_______________</td>
+          </tr>
+          <tr>
+            <td>可解释性</td>
+            <td>_______________</td>
+            <td>_______________</td>
+            <td>_______________</td>
+          </tr>
+          <tr>
+            <td>工程落地</td>
+            <td>_______________</td>
+            <td>_______________</td>
+            <td>_______________</td>
+          </tr>
+          <tr>
+            <td>写作规范</td>
+            <td>_______________</td>
+            <td>_______________</td>
+            <td>_______________</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 本周任务清单 -->
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">规划</span>本周任务清单（从想法到初稿的7天冲刺）</h2>
+  <div class="lesson-explain">
+    <p>以下任务清单将论文写作拆解为每日可执行的具体动作，适合已有实验数据、需要在1周内完成初稿的研究者。</p>
+    <div class="concept-card">
+      <h4>周一：确定选题和期刊</h4>
+      <ul>
+        <li>从本模块10个选题角度中选择1个，或基于自身数据确定核心贡献。</li>
+        <li>阅读目标期刊最近2年的3篇相关论文，确认选题在期刊scope内。</li>
+        <li>用论文拆解工作表（见上节）填写目标论文的基本信息。</li>
+        <li>输出：确定投稿期刊 + 1篇最相近的参考论文。</li>
+      </ul>
+    </div>
+    <div class="concept-card">
+      <h4>周二：搜索相关文献10篇</h4>
+      <ul>
+        <li>Google Scholar搜索核心关键词，筛选近5年、被引>10的论文。</li>
+        <li>精读摘要和Introduction，记录每篇的：研究问题、方法、与本文的关系（支持/对比/补充）。</li>
+        <li>用文献管理工具（Zotero/Mendeley）分类存储，生成BibTeX。</li>
+        <li>输出：10篇核心文献 + 1页文献综述框架。</li>
+      </ul>
+    </div>
+    <div class="concept-card">
+      <h4>周三：完成实验复现与补充</h4>
+      <ul>
+        <li>复现参考论文的核心实验，确认baseline性能是否一致。</li>
+        <li>补充缺失实验：至少2个baseline对比、1组消融实验。</li>
+        <li>整理所有图表：统一配色、分辨率>300dpi、字体大小一致。</li>
+        <li>输出：完整的实验结果表格 + 所有图表的初稿。</li>
+      </ul>
+    </div>
+    <div class="concept-card">
+      <h4>周四：撰写方法和实验部分</h4>
+      <ul>
+        <li>Methods：按"数据→特征→模型→训练细节"顺序撰写，包含超参数表格。</li>
+        <li>Experiment：先写数据集描述，再写对比实验，最后写消融实验。</li>
+        <li>每个图表必须有明确的文字结论支撑，避免只描述"图X展示了"。</li>
+        <li>输出：Methods + Experiment 初稿（约2000-3000词）。</li>
+      </ul>
+    </div>
+    <div class="concept-card">
+      <h4>周五：撰写引言和结论</h4>
+      <ul>
+        <li>Introduction：按"背景→重要性→现有问题→研究Gap→本文贡献→结构"撰写。</li>
+        <li>Related Work：按"时间线/方法类别/应用场景"组织，每段以"与本文不同"结尾。</li>
+        <li>Conclusion：总结3点核心贡献，指出2点局限，展望1个方向。</li>
+        <li>输出：Introduction + Related Work + Conclusion 初稿。</li>
+      </ul>
+    </div>
+    <div class="concept-card">
+      <h4>周末：修改和润色</h4>
+      <ul>
+        <li>周六：通读全文，检查逻辑链条是否完整：每个论点是否有数据支撑？</li>
+        <li>周六下午：使用Grammarly或LanguageTool检查语法错误。</li>
+        <li>周日：请导师/同事快速审阅，重点听取"哪里看不懂"而非"哪里写得好"。</li>
+        <li>周日下午：根据反馈修改，准备Cover Letter和推荐审稿人名单。</li>
+        <li>输出：完整初稿 + Cover Letter + 推荐审稿人（3-5位）。</li>
+      </ul>
+    </div>
+    <div class="concept-card">
+      <h4>每日检查清单</h4>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>检查项</th>
+            <th>周一</th>
+            <th>周二</th>
+            <th>周三</th>
+            <th>周四</th>
+            <th>周五</th>
+            <th>周末</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>今日核心产出是否完成？</td>
+            <td>是/否</td>
+            <td>是/否</td>
+            <td>是/否</td>
+            <td>是/否</td>
+            <td>是/否</td>
+            <td>是/否</td>
+          </tr>
+          <tr>
+            <td>是否有阻塞问题需求助？</td>
+            <td>是/否</td>
+            <td>是/否</td>
+            <td>是/否</td>
+            <td>是/否</td>
+            <td>是/否</td>
+            <td>是/否</td>
+          </tr>
+          <tr>
+            <td>是否备份了数据和代码？</td>
+            <td>是/否</td>
+            <td>是/否</td>
+            <td>是/否</td>
+            <td>是/否</td>
+            <td>是/否</td>
+            <td>是/否</td>
+          </tr>
+          <tr>
+            <td>文献引用格式是否正确？</td>
+            <td>是/否</td>
+            <td>是/否</td>
+            <td>是/否</td>
+            <td>是/否</td>
+            <td>是/否</td>
+            <td>是/否</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </section>
 
@@ -490,6 +1055,161 @@
   </div>
 </section>
 
+<!-- Cover Letter 模板 -->
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">模板</span>Cover Letter（投稿信）填空模板</h2>
+  <div class="lesson-explain">
+    <p>Cover Letter是编辑对论文的第一印象，直接影响是否送外审。以下模板可直接填空使用。</p>
+    <div class="concept-card">
+      <h4>模板正文</h4>
+      <p>Dear Editor-in-Chief / Dear Dr. [Editor Name],</p>
+      <p>We wish to submit our manuscript entitled "<strong>[论文题目，与系统填写一致]</strong>" for consideration for publication in <strong>[期刊全称]</strong>.</p>
+      <p><strong>【第一段：研究背景与问题】</strong></p>
+      <p>[电缆/挤出/绝缘] 是电缆制造中的核心工序，其质量直接影响 [击穿电压/使用寿命/安全性]。现有 [离线检测/经验控制/单参数监控] 方法存在 [滞后/主观/片面] 等问题，导致 [年损失/不合格率/安全事故]。</p>
+      <p><strong>【第二段：核心贡献】</strong></p>
+      <p>本文提出 [方法名称]，首次将 [某方法/某理论] 应用于 [电缆/挤出/绝缘] 场景。核心贡献包括：(1) [贡献1，如：构建XX特征提取方法]；(2) [贡献2，如：提出XX优化策略]；(3) [贡献3，如：在真实产线验证，不合格率降低XX%]。</p>
+      <p><strong>【第三段：与期刊的匹配度】</strong></p>
+      <p>本文与贵刊的 Aim &amp; Scope 高度契合，特别是 ["Industrial AI" / "Digital Twin in Manufacturing" / "Quality Prediction"] 方向。文中包含 [真实工业数据验证/系统架构设计/可解释性分析]，符合贵刊对 [应用深度/系统创新/工程价值] 的要求。</p>
+      <p><strong>【第四段：声明】</strong></p>
+      <p>This manuscript is original, has not been published before, and is not under consideration for publication elsewhere. All authors have approved the manuscript and agree with its submission to [期刊名].</p>
+      <p>We suggest the following experts as potential reviewers:</p>
+      <ol>
+        <li>Prof. [姓名], [单位], [邮箱], 专长：[领域]</li>
+        <li>Prof. [姓名], [单位], [邮箱], 专长：[领域]</li>
+        <li>Prof. [姓名], [单位], [邮箱], 专长：[领域]</li>
+      </ol>
+      <p>We would like to respectfully request that the following individuals not be invited as reviewers due to potential conflicts of interest: [姓名/单位，可选]</p>
+      <p>Thank you for your time and consideration. We look forward to hearing from you.</p>
+      <p>Sincerely,<br>[通讯作者签名]<br>[单位]<br>[邮箱]<br>[日期]</p>
+    </div>
+    <div class="concept-card">
+      <h4>填写检查清单</h4>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>检查项</th>
+            <th>状态</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>期刊名称是否与投稿系统一致？</td>
+            <td>是/否</td>
+          </tr>
+          <tr>
+            <td>论文题目是否与系统填写完全一致？</td>
+            <td>是/否</td>
+          </tr>
+          <tr>
+            <td>是否明确指出了3点核心贡献？</td>
+            <td>是/否</td>
+          </tr>
+          <tr>
+            <td>是否说明了与期刊Aim &amp; Scope的匹配度？</td>
+            <td>是/否</td>
+          </tr>
+          <tr>
+            <td>推荐审稿人是否来自不同机构？</td>
+            <td>是/否</td>
+          </tr>
+          <tr>
+            <td>是否有拼写或语法错误？（Grammarly检查）</td>
+            <td>是/否</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 审稿意见回复模板 -->
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">模板</span>审稿意见回复模板（3种常见意见）</h2>
+  <div class="lesson-explain">
+    <p>以下模板覆盖最常见的3类审稿意见，可直接套用框架，填入具体内容。</p>
+    <div class="concept-card">
+      <h4>意见类型1："创新性不足"（Novelty is limited）</h4>
+      <p><strong>审稿人原文：</strong>"The proposed method is a straightforward application of existing techniques, and the novelty is limited."</p>
+      <p><strong>回复框架：</strong></p>
+      <p><strong>Response：</strong>We thank the reviewer for this important comment. We agree that the core algorithm (XGBoost/LSTM/Isolation Forest) is not new. However, we would like to clarify that the novelty of this work lies in <strong>[问题新/应用新/洞察新/系统新]</strong>, rather than in proposing a new algorithm.</p>
+      <p>Specifically, our unique contributions are:</p>
+      <ol>
+        <li><strong>Problem novelty:</strong> To the best of our knowledge, this is the first work that addresses [电缆绝缘挤出厚度预测/电缆挤出数字孪生/电缆多源数据融合]. Existing studies focus on [金属切削/注塑/其他行业], whose data characteristics and process mechanisms are fundamentally different from cable extrusion.</li>
+        <li><strong>Application novelty:</strong> We have adapted the [方法名] to the cable domain by [具体适配：特征构建/损失函数调整/约束条件]. This adaptation is non-trivial because [工艺特殊性，如：温度-速度耦合/小样本/高噪声].</li>
+        <li><strong>Insight novelty:</strong> Our SHAP analysis reveals that [关键发现，如：温度波动方差是最重要的负向因子]，which contradicts the conventional belief that [传统观点]. This finding provides actionable guidance for process optimization.</li>
+      </ol>
+      <p><strong>Action：</strong>We have revised the Introduction (Page X, Paragraph Y) and Discussion (Page Z, Paragraph W) to explicitly highlight these contributions and contrast them with [最新相关论文1] and [最新相关论文2].</p>
+    </div>
+    <div class="concept-card">
+      <h4>意见类型2："实验不充分"（Experiments are insufficient）</h4>
+      <p><strong>审稿人原文：</strong>"The experimental evaluation is insufficient. More baseline methods and ablation studies are needed."</p>
+      <p><strong>回复框架：</strong></p>
+      <p><strong>Response：</strong>We sincerely thank the reviewer for this constructive suggestion. We have significantly strengthened the experimental section as follows:</p>
+      <ol>
+        <li><strong>Additional baselines:</strong> We have added [2/3] more baseline methods: [Baseline A] and [Baseline B], which represent [传统方法/最新SOTA/工业常用方法]. The results (Table X, Page Y) show that our method outperforms all baselines by at least [XX%] in terms of [AUC/F1/RMSE].</li>
+        <li><strong>Ablation studies:</strong> We have conducted comprehensive ablation studies (Table Z, Page W) to verify the contribution of each module: (a) without [模块A], performance drops by [XX%]; (b) without [模块B], performance drops by [XX%]. These results confirm that each component is necessary.</li>
+        <li><strong>Statistical significance:</strong> We have added paired t-test / Wilcoxon signed-rank test results (Table V, Page U). The p-values for all comparisons are &lt; 0.05, confirming that the improvements are statistically significant.</li>
+        <li><strong>Sensitivity analysis:</strong> We have added Figure X (Page Y) showing the model performance under different [超参数/数据规模/噪声水平], demonstrating the robustness of our method.</li>
+      </ol>
+      <p><strong>Action：</strong>All new experimental results have been added to Section [X], and the relevant discussion has been updated in Section [Y].</p>
+    </div>
+    <div class="concept-card">
+      <h4>意见类型3："缺乏物理/工程意义解释"（Lack of physical interpretation）</h4>
+      <p><strong>审稿人原文：</strong>"The authors should provide more physical interpretation of the results and practical recommendations for process improvement."</p>
+      <p><strong>回复框架：</strong></p>
+      <p><strong>Response：</strong>We appreciate the reviewer for pointing out this important aspect. We have substantially expanded the Discussion section to bridge the gap between data-driven insights and physical process understanding:</p>
+      <ol>
+        <li><strong>Physical interpretation of key features:</strong> We have added detailed analysis (Page X, Paragraph Y) explaining why [特征A] is the most important factor. From a physical perspective, [特征A] directly affects [物理机制，如：物料塑化程度/熔体黏度/冷却速率], which in turn determines [质量指标].</li>
+        <li><strong>Process improvement recommendations:</strong> Based on our findings, we have added specific, actionable recommendations (Page Z, Paragraph W):
+          <ul>
+            <li>Recommendation 1: Adjust [参数A] to within [范围], which is expected to reduce [质量波动] by approximately [XX%].</li>
+            <li>Recommendation 2: When [工况B] occurs, prioritize controlling [参数C] rather than [参数D], because our SHAP analysis shows that [参数C] has a [XX times] larger impact on [质量指标].</li>
+          </ul>
+        </li>
+        <li><strong>Validation by domain experts:</strong> We have consulted with [3/5] process engineers from [电缆厂名/合作企业]. Their feedback (quoted in Page V, Paragraph U) confirms that our data-driven insights align with their practical experience, and they have already implemented [某建议] with positive preliminary results.</li>
+      </ol>
+      <p><strong>Action：</strong>The Discussion section has been expanded from [原长度] to [新长度] words, with 3 new paragraphs dedicated to physical interpretation and engineering recommendations.</p>
+    </div>
+    <div class="concept-card">
+      <h4>回复信通用格式检查清单</h4>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>检查项</th>
+            <th>状态</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>每条意见是否都感谢了审稿人？</td>
+            <td>是/否</td>
+          </tr>
+          <tr>
+            <td>是否明确说明了修改位置（页码、段落）？</td>
+            <td>是/否</td>
+          </tr>
+          <tr>
+            <td>修改后的正文是否用蓝色/高亮标注？</td>
+            <td>是/否</td>
+          </tr>
+          <tr>
+            <td>是否提供了修改后的文字内容（方便审稿人查看）？</td>
+            <td>是/否</td>
+          </tr>
+          <tr>
+            <td>若不同意审稿人意见，是否先感谢再礼貌解释？</td>
+            <td>是/否</td>
+          </tr>
+          <tr>
+            <td>回复信长度是否为修改稿的20%-50%？</td>
+            <td>是/否</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
 <!-- 示例 -->
 <section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">示例</span>一篇高质量论文的摘要和结构分析</h2>
@@ -524,6 +1244,351 @@
         <li>你的实验数据来自某电缆厂的真实生产线，但在论文中如何描述数据来源才能既保证可信度，又不泄露商业机密？</li>
         <li>为什么工业应用类论文的 Discussion 部分必须包含"对工艺改进的指导建议"？如果缺少这部分，审稿人可能提出什么质疑？</li>
       </ol>
+    </div>
+  </div>
+</section>
+
+<!-- 验收：研究可行性验收标准与实验复现测试 -->
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">验收</span>研究可行性验收标准与实验复现测试</h2>
+  <div class="lesson-explain">
+    <p>以下验收标准覆盖10个论文选题方向，包含最低可行数据集规模、实验周期、预期指标基线，以及实验复现的波动范围要求。可用于开题前自评、导师审核、投稿前检查。</p>
+
+    <div class="concept-card">
+      <h4>1. 各论文方向研究可行性验收标准</h4>
+      <p>每个方向的验收标准分为三个维度：最低可行数据集、实验周期与资源、预期指标基线。若任一维度不满足，建议调整选题或缩小研究范围。</p>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>论文方向</th>
+            <th>测试目的</th>
+            <th>前置条件</th>
+            <th>最低可行数据集验收标准</th>
+            <th>实验周期验收标准</th>
+            <th>预期指标基线（量化）</th>
+            <th>失败处理建议</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>基于LSTM的电缆绝缘层厚度预测</td>
+            <td>验证时序预测研究的数据充分性与实验可行性</td>
+            <td>已获取挤出机PLC数据；时间戳准确；厚度有离线测量记录</td>
+            <td>样本量：≥500盘电缆时序，每盘≥1000个时间步，总计≥50万条；特征数：≥8维（温度、速度、压力等）；时间跨度：≥3个月（覆盖不同季节/原料批次）</td>
+            <td>数据收集≤1个月；模型开发与调参≤1个月；论文写作≤1.5个月；总计≤3.5个月</td>
+            <td>RMSE ≤ 0.05mm（厚度公差10%以内）；R² ≥ 0.75；相比滑动窗口+RF的R²提升 ≥ 0.03</td>
+            <td>若数据量不足，缩小预测目标为"合格/不合格"二分类；若R²&lt;0.75，检查是否遗漏关键特征（如模头温度）</td>
+          </tr>
+          <tr>
+            <td>基于数字孪生的电缆挤出工艺优化</td>
+            <td>验证系统级研究的数据完整性与工程可行性</td>
+            <td>已对接PLC/MES/LIMS至少两个系统；有工艺专家支持</td>
+            <td>样本量：PLC数据≥100万条（秒级，≥3个月），MES数据≥2000条（盘级），LIMS数据≥200条（批次级）；特征数：≥15维（跨系统）；时间跨度：≥3个月</td>
+            <td>系统开发≤3个月；虚实标定与验证≤2个月；论文写作≤1.5个月；总计≤6.5个月</td>
+            <td>虚拟-实际温度映射误差 ≤ ±3°C；速度映射误差 ≤ ±2%；虚拟调试减少试机次数 ≥ 30%</td>
+            <td>若MES/LIMS数据不可得，改为纯数据驱动孪生体；若虚实误差&gt;5°C，检查机理模型参数（如传热系数）是否校准</td>
+          </tr>
+          <tr>
+            <td>小样本条件下的电缆缺陷检测</td>
+            <td>验证小样本方法研究的数据边界条件</td>
+            <td>已有缺陷样本标注；缺陷类型已定义；有相似领域公开数据集可参考</td>
+            <td>样本量：正常样本≥1000张/条，每类缺陷≥20张/条（共≥3类），总计≥1060；特征数：图像≥64×64像素 / 表格≥10维；时间跨度：≥6个月（覆盖不同批次缺陷）</td>
+            <td>数据收集与标注≤2个月；方法设计与实验≤1.5个月；论文写作≤1个月；总计≤4.5个月</td>
+            <td>每类缺陷F1 ≥ 0.70；平均F1 ≥ 0.75；相比无增强基线提升 ≥ 0.10</td>
+            <td>若缺陷样本&lt;20张/类，采用迁移学习+强数据增强；若F1&lt;0.70，检查标注质量（一致性≥90%）</td>
+          </tr>
+          <tr>
+            <td>基于SHAP的电缆质量关键影响因子分析</td>
+            <td>验证可解释AI研究的数据质量与解释稳定性</td>
+            <td>有工艺参数和质检结果的一一对应记录；特征物理含义明确</td>
+            <td>样本量：≥800盘电缆（每盘1条记录）；特征数：≥10维且≤30维（过多维度导致SHAP计算慢）；时间跨度：≥2个月</td>
+            <td>数据收集≤1个月；建模与SHAP分析≤1个月；论文写作≤1个月；总计≤3个月</td>
+            <td>XGBoost测试集F1 ≥ 0.80；SHAP Top-3特征与工艺经验一致性 ≥ 2/3；Permutation Importance与SHAP排序Kendall Tau ≥ 0.70</td>
+            <td>若样本&lt;800，改用贝叶斯回归增强稳定性；若一致性&lt;2/3，检查是否有未测量的混杂变量（如环境湿度）</td>
+          </tr>
+          <tr>
+            <td>电缆生产多源异构数据融合方法</td>
+            <td>验证数据融合研究的多源可用性与对齐精度</td>
+            <td>至少三个系统（PLC/MES/LIMS）的数据已导出；有时间戳字段</td>
+            <td>样本量：PLC≥50万条（秒级），MES≥1000条，LIMS≥100条；特征数：跨系统原始字段≥20个；时间跨度：≥2个月</td>
+            <td>数据对接与清洗≤1.5个月；融合方法开发≤1个月；验证与写作≤1.5个月；总计≤4个月</td>
+            <td>时序对齐精度（时间戳匹配率）≥ 95%；字段映射准确率 ≥ 90%；融合后模型AUC相比单源最高AUC提升 ≥ 0.03</td>
+            <td>若时间戳匹配率&lt;90%，检查各系统时钟是否同步（NTP）；若提升&lt;0.03，尝试决策层融合替代特征层融合</td>
+          </tr>
+          <tr>
+            <td>基于Isolation Forest的挤出过程异常检测</td>
+            <td>验证无监督异常检测研究的正常工况覆盖度</td>
+            <td>有连续正常运行记录；异常事件（若存在）有工艺日志佐证</td>
+            <td>样本量：正常工况记录≥3000条；特征数：≥5维工艺参数；时间跨度：≥1个月（覆盖换料、速度调整等正常变化）</td>
+            <td>数据收集≤2周；模型调参与验证≤3周；论文写作≤3周；总计≤2.5个月</td>
+            <td>AUC ≥ 0.75（若有标签验证）；虚警率 ≤ 5%（contamination设为先验异常率）；检出率 ≥ 75%</td>
+            <td>若虚警率&gt;5%，增加滑动窗口平滑或工艺规则过滤；若检出率&lt;75%，检查contamination是否设置过低</td>
+          </tr>
+          <tr>
+            <td>电缆护套挤出能耗预测与优化</td>
+            <td>验证能耗研究的数据粒度与优化空间</td>
+            <td>有电表或PLC能耗数据；能耗与产量、工艺参数可关联</td>
+            <td>样本量：≥3000条记录（盘级或小时级）；特征数：≥8维（温度、速度、产量、规格等）；时间跨度：≥3个月（覆盖不同订单类型）</td>
+            <td>数据收集≤1个月；建模与优化≤1个月；论文写作≤1个月；总计≤3个月</td>
+            <td>能耗预测MAPE ≤ 10%；优化后单位产量能耗下降 ≥ 5%；质量指标不恶化（合格率变化 &lt; ±2%）</td>
+            <td>若MAPE&gt;15%，增加设备运行时长、环境温度等外部特征；若能耗下降&lt;3%，检查约束条件是否过严</td>
+          </tr>
+          <tr>
+            <td>基于平行系统的电缆质量闭环控制</td>
+            <td>验证ACP理论研究的虚实系统完备性</td>
+            <td>已构建机理模型或离散事件仿真模型；有物理系统对比数据</td>
+            <td>样本量：物理系统数据≥3000条；虚拟系统参数≥10个可标定参数；特征数：≥10维；时间跨度：≥2个月</td>
+            <td>理论研究与模型构建≤2个月；计算实验≤1.5个月；平行执行验证≤1.5个月；写作≤1个月；总计≤6个月</td>
+            <td>虚实温度偏差 ≤ ±5°C；速度偏差 ≤ ±3%；经平行执行后合格率提升 ≥ 5%</td>
+            <td>若虚实偏差&gt;10°C，重新标定传热/摩擦参数；若合格率无提升，检查虚拟系统是否过度简化</td>
+          </tr>
+          <tr>
+            <td>电缆生产线数字孪生可视化平台</td>
+            <td>验证可视化平台的工程落地与用户体验</td>
+            <td>有三维模型或CAD图纸；有实时数据接入接口；有操作工人可参与调研</td>
+            <td>样本量：设备三维模型≥5台核心设备；实时数据点位≥50个；用户调研样本≥10人；特征数：N/A；时间跨度：N/A</td>
+            <td>三维建模≤2个月；数据接入开发≤1.5个月；平台集成≤1.5个月；写作≤1个月；总计≤6个月</td>
+            <td>平台响应延迟 ≤ 500ms（本地）；虚实数据刷新率 ≥ 1Hz；用户满意度调研≥70%认为"提升效率"</td>
+            <td>若延迟&gt;1s，采用LOD简化三维模型或数据采样降频；若满意度&lt;70%，增加报警/预警功能后再调研</td>
+          </tr>
+          <tr>
+            <td>基于联邦学习的多工厂电缆质量协同建模</td>
+            <td>验证联邦学习研究的跨厂数据可用性与算法收敛性</td>
+            <td>已联系≥3家电缆厂；各厂数据格式已确认；有数据合规协议</td>
+            <td>样本量：参与方≥3厂，每厂≥500条，总计≥1500条；特征数：各厂统一≥10维（需对齐）；时间跨度：各厂≥2个月</td>
+            <td>合作对接与协议≤2个月；联邦算法开发≤1个月；实验验证≤1个月；写作≤1个月；总计≤5个月</td>
+            <td>联邦模型相比各厂本地最优模型平均F1提升 ≥ 0.03；非IID程度（特征分布JS散度）≥ 0.1且 ≤ 0.5；通信轮数≤50轮收敛</td>
+            <td>若联邦模型无提升，检查各厂标签定义是否一致；若JS散度&gt;0.5，采用个性化联邦（FedProx/FedPer）</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="concept-card">
+      <h4>2. 最低可行数据集（MVD）验收标准详解</h4>
+      <p>"最低可行数据集"是指支撑论文结论的最小数据规模。低于此规模，统计显著性和泛化性均无法保证。</p>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>研究方向大类</th>
+            <th>样本量（最低）</th>
+            <th>特征数（最低）</th>
+            <th>时间跨度（最低）</th>
+            <th>验收测试方法</th>
+            <th>未达标风险</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>时序预测（LSTM等）</td>
+            <td>≥500条序列，每序列≥1000步</td>
+            <td>≥8维</td>
+            <td>≥3个月</td>
+            <td>用最近1个月数据做时序交叉验证，若R²下降&gt;0.05则数据不足</td>
+            <td>模型过拟合特定批次；季节/批次效应未覆盖；审稿人质疑泛化性</td>
+          </tr>
+          <tr>
+            <td>表格数据监督学习（XGBoost/RF等）</td>
+            <td>≥800条（分类）/ ≥500条（回归）</td>
+            <td>≥10维</td>
+            <td>≥2个月</td>
+            <td>5折交叉验证标准差 &lt; 0.05；若&gt;0.05说明样本不稳定</td>
+            <td>交叉验证波动大；结论不可靠；无法通过统计显著性检验</td>
+          </tr>
+          <tr>
+            <td>小样本缺陷检测</td>
+            <td>正常≥1000，每类缺陷≥20</td>
+            <td>图像≥64×64 / 表格≥10维</td>
+            <td>≥6个月</td>
+            <td>留一法（LOO）或Bootstrap验证；置信区间半宽 &lt; 0.10</td>
+            <td>F1置信区间过宽；审稿人质疑偶然性；无法复现</td>
+          </tr>
+          <tr>
+            <td>无监督异常检测</td>
+            <td>正常工况≥3000条</td>
+            <td>≥5维</td>
+            <td>≥1个月</td>
+            <td>用不同月份数据做自洽性检验：正常样本被标为异常的比例 &lt; 5%</td>
+            <td>正常工况覆盖不全；虚警率虚高；工业现场无法部署</td>
+          </tr>
+          <tr>
+            <td>数字孪生/系统级</td>
+            <td>跨系统数据≥3个月</td>
+            <td>跨系统≥15维</td>
+            <td>≥3个月</td>
+            <td>连续7天虚实对比，日均误差波动CV &lt; 10%</td>
+            <td>虚实映射不稳定；系统可信度不足；缺乏长期验证</td>
+          </tr>
+          <tr>
+            <td>联邦学习</td>
+            <td>每厂≥500条，总计≥1500条</td>
+            <td>对齐后≥10维</td>
+            <td>各厂≥2个月</td>
+            <td>单厂本地5折CV vs 联邦模型CV；联邦模型平均F1 ≥ 本地最优</td>
+            <td>联邦无增益；数据对齐失败；隐私合规风险</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="concept-card">
+      <h4>3. 实验复现测试</h4>
+      <p>以下测试用例确保给定相同数据，独立复现者能得到在预期波动范围内的结果。这是论文可信度的底线。</p>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>测试项</th>
+            <th>测试目的</th>
+            <th>前置条件</th>
+            <th>输入</th>
+            <th>操作步骤</th>
+            <th>预期结果</th>
+            <th>通过标准（量化）</th>
+            <th>失败处理建议</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>固定种子复现</td>
+            <td>验证相同代码+相同数据+相同种子能否得到完全一致的结果</td>
+            <td>代码已整理为可运行脚本；随机种子已显式设置；依赖版本已记录（requirements.txt）</td>
+            <td>完整数据集；运行脚本；随机种子（如42）</td>
+            <td>1. 记录第一次运行的测试集F1、AUC、关键系数<br>2. 清空缓存，更换机器/环境<br>3. 第二次运行相同脚本<br>4. 对比两次结果</td>
+            <td>两次结果在浮点精度范围内一致</td>
+            <td>分类指标差异 &lt; 1e-6；回归指标（R²/RMSE）差异 &lt; 1e-5</td>
+            <td>若差异过大，检查是否有未固定种子的库（如torch.cuda、numpy多线程）；记录所有依赖版本并锁定</td>
+          </tr>
+          <tr>
+            <td>不同初始化复现（深度学习）</td>
+            <td>验证神经网络在不同随机初始化下的结果波动范围</td>
+            <td>LSTM/Autoencoder已训练；可修改种子</td>
+            <td>相同数据集；3个不同随机种子（如0, 42, 123）</td>
+            <td>1. 用种子0训练，记录测试集R²<br>2. 用种子42训练，记录R²<br>3. 用种子123训练，记录R²<br>4. 计算均值和标准差</td>
+            <td>波动范围可接受，均值可信</td>
+            <td>R²标准差 &lt; 0.03；最大值-最小值 &lt; 0.08；论文报告均值±标准差</td>
+            <td>若标准差&gt;0.05，增加集成（如5个模型平均）或增加早停 patience；报告集成结果而非单模型</td>
+          </tr>
+          <tr>
+            <td>交叉验证稳定性</td>
+            <td>验证传统机器学习模型在不同划分下的结果稳定性</td>
+            <td>数据集已清洗；特征工程已完成</td>
+            <td>完整数据集；5折或10折交叉验证配置</td>
+            <td>1. 运行5折StratifiedKFold（分类）或KFold（回归）<br>2. 记录每折的F1/R²<br>3. 计算5折的均值、标准差、最大值、最小值</td>
+            <td>各折结果相近，无异常低折</td>
+            <td>标准差 &lt; 0.03；最小值与均值差异 &lt; 0.06；无某折结果低于均值0.10以上</td>
+            <td>若某折显著偏低，检查该折是否包含异常分布（如某批次数据集中）；考虑按时间或批次分层抽样</td>
+          </tr>
+          <tr>
+            <td>数据子采样复现</td>
+            <td>验证结论对数据量的敏感度，排除"数据量过大导致的虚假显著性"</td>
+            <td>原始数据量≥最低可行数据集的2倍</td>
+            <td>完整数据集；采样比例（50%、70%、90%）</td>
+            <td>1. 随机采样50%数据训练，测试集不变，记录F1<br>2. 随机采样70%数据训练，记录F1<br>3. 用100%数据训练，记录F1<br>4. 对比三个结果</td>
+            <td>随着数据量增加，性能单调提升或趋于平稳</td>
+            <td>100% vs 50%的F1差异 &lt; 0.05；70% vs 100%差异 &lt; 0.02；说明数据量已饱和</td>
+            <td>若100%显著优于70%（差异&gt;0.05），说明数据量仍不足，需继续收集；若50%与100%几乎无差异，说明存在冗余</td>
+          </tr>
+          <tr>
+            <td>独立复现者测试</td>
+            <td>模拟独立研究者使用相同数据和公开代码复现论文结果</td>
+            <td>代码已上传GitHub；README包含运行步骤；数据集已脱敏并共享</td>
+            <td>GitHub仓库链接；脱敏数据集；README文档</td>
+            <td>1. 找一位未参与项目的同学/同事<br>2. 仅提供GitHub链接和数据集<br>3. 要求其独立运行并报告结果<br>4. 对比其报告与论文声称结果</td>
+            <td>独立复现结果与论文声称结果在误差范围内一致</td>
+            <td>核心指标差异 &lt; 0.03（分类F1/AUC）或 &lt; 5%相对误差（回归RMSE/MAPE）</td>
+            <td>若差异&gt;0.05，检查README是否遗漏关键步骤（如特征工程顺序、特殊参数）；录制运行视频补充说明</td>
+          </tr>
+          <tr>
+            <td>消融实验复现</td>
+            <td>验证每个模块贡献的稳定性，排除随机波动导致的虚假贡献</td>
+            <td>完整模型已训练；可逐个移除模块</td>
+            <td>完整数据集；模块清单（如注意力机制、数据增强、特征交叉）</td>
+            <td>1. 完整模型：记录F1<br>2. 去掉模块A：记录F1<br>3. 去掉模块B：记录F1<br>4. 每个消融实验重复3次不同种子，取平均</td>
+            <td>模块贡献方向一致（某模块始终提升或始终下降）</td>
+            <td>某模块3次重复实验中，对F1的贡献方向一致；贡献幅度标准差 &lt; 0.02</td>
+            <td>若某模块贡献方向不稳定，说明该模块与随机初始化强耦合；考虑固定更多组件或增大样本量</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="concept-card">
+      <h4>4. 论文投稿前验收检查表</h4>
+      <p>在点击"Submit"之前，逐项确认以下标准：</p>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>检查维度</th>
+            <th>验收项</th>
+            <th>量化标准</th>
+            <th>自检方法</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td rowspan="3">数据合规</td>
+            <td>数据集规模达到最低可行标准</td>
+            <td>满足本模块MVD表格对应方向的最低要求</td>
+            <td>对照MVD表格逐行核对样本量、特征数、时间跨度</td>
+          </tr>
+          <tr>
+            <td>数据脱敏与伦理审查</td>
+            <td>无商业机密泄露；无个人隐私信息；有数据使用授权</td>
+            <td>请非项目组成员检查数据描述段落；确认授权文件齐全</td>
+          </tr>
+          <tr>
+            <td>训练/测试划分无泄露</td>
+            <td>时序数据必须按时间划分；非时序数据若存在样本间依赖（如同一盘电缆多条记录），必须按盘划分</td>
+            <td>检查划分脚本，确认无未来信息、无同盘样本跨集</td>
+          </tr>
+          <tr>
+            <td rowspan="3">实验可靠</td>
+            <td>核心指标有置信区间或标准差</td>
+            <td>分类指标报告"均值±标准差"或95% CI；重复实验次数≥3次或交叉验证折数≥5</td>
+            <td>检查Results段落，确认非单次运行结果</td>
+          </tr>
+          <tr>
+            <td>消融实验完整</td>
+            <td>每个创新模块均有对应的消融实验；消融方向稳定（3次重复一致）</td>
+            <td>列出所有声称的"贡献点"，检查是否有对应的消融表格</td>
+          </tr>
+          <tr>
+            <td>基线对比充分</td>
+            <td>至少与2个主流基线方法对比；使用相同训练/测试集；报告统计显著性（pvalue或置信区间）</td>
+            <td>检查Experiments表格，确认基线非 trivial 方法</td>
+          </tr>
+          <tr>
+            <td rowspan="2">结果可信</td>
+            <td>实验复现波动范围可控</td>
+            <td>固定种子复现差异 &lt; 1e-5；不同种子标准差 &lt; 0.03</td>
+            <td>独立运行3次核心实验，记录波动</td>
+          </tr>
+          <tr>
+            <td>性能提升有实际意义</td>
+            <td>不仅是统计显著（p&lt;0.05），且对工艺有实际价值（如合格率提升≥3%、能耗下降≥5%）</td>
+            <td>邀请工艺专家评估：若模型预测准确率高3%，对现场决策是否有影响</td>
+          </tr>
+          <tr>
+            <td rowspan="2">写作规范</td>
+            <td>代码与数据可获取</td>
+            <td>GitHub仓库可访问；README完整；有requirements.txt；数据集至少提供样本格式</td>
+            <td>用匿名浏览器打开GitHub链接，按README从头运行</td>
+          </tr>
+          <tr>
+            <td>引用与格式符合目标期刊</td>
+            <td>参考文献≥30篇；近5年文献占比≥40%；格式与期刊模板一致</td>
+            <td>用Zotero/EndNote检查格式；统计近5年文献比例</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="highlight-box">
+      <p><strong>验收总原则：</strong>论文投稿前必须通过本模块中≥90%的验收项；实验复现是底线要求——若独立复现者无法得到相近结果，论文不应投稿；最低可行数据集（MVD）是硬性门槛，低于MVD的研究应定位为"探索性研究"或"方法验证"，不宜声称工业应用。</p>
+      <p><strong>常见失败模式：</strong>（1）数据量刚好踩线，但交叉验证标准差&gt;0.05，说明样本不稳定；（2）消融实验仅做一次，导致模块贡献方向在重复实验中反转；（3）基线方法过于简单（如未调参的默认模型），对比不公平；（4）时序数据未按时间划分，泄露未来信息导致指标虚高。</p>
     </div>
   </div>
 </section>

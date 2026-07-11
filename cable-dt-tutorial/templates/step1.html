@@ -128,6 +128,62 @@
     <div class="highlight-box">
       <p><strong>类比理解：</strong>就像一位经验丰富的老师傅，看了三十年的挤出机参数和产品质量，心里形成了"直觉"——一看温度曲线就知道这批料会不会出问题。数据驱动模型，就是把这位老师傅的"直觉"数字化、可量化、可复制。</p>
     </div>
+
+    <div class="concept-card">
+      <h4>拿到数据后的第一步：今天就能动手做的具体操作清单</h4>
+      <p>不要急着建模。拿到数据后，先完成以下 6 项操作，每项都有明确的产出物和判断标准：</p>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>步骤</th>
+            <th>具体操作</th>
+            <th>预期产出</th>
+            <th>合格标准</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>用 pandas 读取数据，执行 df.shape 和 df.columns.tolist()</td>
+            <td>数据形状清单 + 字段名列表</td>
+            <td>能说出总行数、总列数、每个字段的中文含义</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>执行 df.dtypes，标记所有 object 类型字段</td>
+            <td>数据类型映射表</td>
+            <td>区分数值型、分类型、时间型字段；object 字段确认是否为类别标签</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>对时间字段执行 df['time'].min() 和 max()</td>
+            <td>数据时间跨度</td>
+            <td>明确记录起始日期、结束日期、是否覆盖完整生产周期</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>执行 df.isnull().sum()，计算缺失比例</td>
+            <td>缺失值统计表</td>
+            <td>缺失率 &lt; 5% 标记为"可接受"；5%-20% 标记为"需处理"；&gt; 20% 标记为"高风险"</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>对数值字段执行 df.describe()，标记超出物理常识范围的值</td>
+            <td>异常值候选清单</td>
+            <td>温度超出 0-500℃、压力为负数、速度超过设备上限等视为异常</td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td>与车间工艺员核对：每个字段的业务含义和数据来源</td>
+            <td>字段业务释义文档</td>
+            <td>每个字段能写出"谁采集的、怎么采集的、代表什么物理量"</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="highlight-box">
+        <p><strong>今日行动：</strong>如果你手头有数据，请在今天下班前完成前 5 步（约 30 分钟），把产出物保存为一份 "data_inventory.md" 文件。第 6 步需要约 1 小时与工艺员沟通，安排在明天上午。</p>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -175,26 +231,89 @@
     <div class="concept-card">
       <h4>1. 全量分析 vs 抽样检测</h4>
       <p>数据驱动的核心优势不是"算法更高级"，而是能对<strong>每一米电缆</strong>进行分析，而不是只检测1%的样品。</p>
+      <p><strong>如何判断已满足：</strong>数据采集覆盖全部产线或全部产品，分析粒度达到单盘/单米级别；全量分析覆盖率 &gt;= 95%（允许传感器故障导致的少量缺失）。</p>
     </div>
 
     <div class="concept-card">
       <h4>2. 事前预测 vs 事后追溯</h4>
       <p>传统质检是"亡羊补牢"，数据驱动是"未雨绸缪"。在质量问题发生前数小时甚至数天发出预警。</p>
+      <p><strong>如何判断已满足：</strong>预警提前时间 &gt;= 30 分钟（挤出工序）或 &gt;= 2 小时（成缆/护套工序）；预警后到缺陷实际发生的时间窗口足够操作人员干预。</p>
     </div>
 
     <div class="concept-card">
       <h4>3. 多源数据融合</h4>
       <p>单一数据源（如只看温度）的预测能力有限。真正有效的方法是融合设备参数、原材料批次、环境条件、操作记录等多维度数据。</p>
+      <p><strong>如何判断已满足：</strong>参与建模的数据源种类 &gt;= 3 类（如设备传感器 + MES 工艺参数 + 质检报告 + 环境数据）；特征重要性前 5 名中至少包含 2 个不同来源的字段。</p>
     </div>
 
     <div class="concept-card">
       <h4>4. 模型需要持续迭代</h4>
       <p>生产环境会变化（设备老化、原料更换、季节变化），模型不是"一次训练永久使用"，需要定期用新数据重新训练。</p>
+      <p><strong>如何判断已满足：</strong>模型重训练周期 &lt;= 3 个月；近 3 个月内至少完成 1 次重训练；重训练后验证集指标（如 F1-score 或 R²）未下降超过 5%。</p>
     </div>
 
     <div class="concept-card">
       <h4>5. 业务闭环是关键</h4>
       <p>再准确的预测，如果操作人员不采取行动，也只是"数字游戏"。数据驱动的最终价值在于形成"预测→预警→调整→验证"的闭环。</p>
+      <p><strong>如何判断已满足：</strong>预警触发后操作人员响应率 &gt;= 80%；每次响应均有记录（调整参数、停机检查、确认误报）；月度闭环完成率（从预警到验证结果归档）&gt;= 90%。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 检查清单 -->
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">检查</span>数据摸底完成度检查清单</h2>
+  <div class="lesson-explain">
+    <p>在继续下一步之前，请确认以下事项已完成。每项均附带量化合格标准：</p>
+    <ul class="checklist">
+      <li><label><input type="checkbox"> 我已确认数据中有哪些字段（能列出完整字段清单；字段总数 &gt;= 5 且 &lt;= 50）</label></li>
+      <li><label><input type="checkbox"> 我已统计每条记录的时间跨度（起始日期、结束日期、时间间隔与采样频率误差 &lt; 10%）</label></li>
+      <li><label><input type="checkbox"> 我已计算缺失值比例（关键字段缺失率 &lt; 5%；非关键字段 &lt; 20%；已输出缺失数量及百分比表格）</label></li>
+      <li><label><input type="checkbox"> 我已标记异常值（超出物理合理范围的记录已单独列出；异常记录占比 &lt; 5%）</label></li>
+      <li><label><input type="checkbox"> 我已理解每个字段的业务含义（每个字段能写出：采集源、物理单位、合理范围；可向非技术人员解释清楚）</label></li>
+    </ul>
+
+    <div class="concept-card">
+      <h4>清单项 1 验收标准：字段清单确认</h4>
+      <p><strong>输入：</strong>原始数据文件（CSV / Excel / 数据库连接）</p>
+      <p><strong>操作：</strong>运行 <code>df.columns.tolist()</code> 与 <code>len(df.columns)</code></p>
+      <p><strong>预期输出：</strong>完整字段名称列表及字段总数 N</p>
+      <p><strong>通过条件：</strong>5 &lt;= N &lt;= 50，且每个字段能写出中文业务含义</p>
+    </div>
+
+    <div class="concept-card">
+      <h4>清单项 2 验收标准：时间跨度统计</h4>
+      <p><strong>输入：</strong>已加载的 DataFrame（含时间戳字段）</p>
+      <p><strong>操作：</strong>执行 <code>df['timestamp'].min()</code>、<code>.max()</code>，计算相邻记录时间差分布</p>
+      <p><strong>预期输出：</strong>起始日期、结束日期、采样间隔中位数、与预期频率的偏差百分比</p>
+      <p><strong>通过条件：</strong>时间跨度明确（覆盖完整生产周期），采样频率误差 &lt; 10%，无负时间差</p>
+    </div>
+
+    <div class="concept-card">
+      <h4>清单项 3 验收标准：缺失值比例</h4>
+      <p><strong>输入：</strong>DataFrame</p>
+      <p><strong>操作：</strong>执行 <code>df.isnull().sum() / len(df) * 100</code></p>
+      <p><strong>预期输出：</strong>每字段缺失数量及缺失率百分比表格</p>
+      <p><strong>通过条件：</strong>关键字段（温度、压力等）缺失率 &lt; 5%；非关键字段 &lt; 20%；已输出缺失数量及百分比表格</p>
+    </div>
+
+    <div class="concept-card">
+      <h4>清单项 4 验收标准：异常值标记</h4>
+      <p><strong>输入：</strong>数值型字段列</p>
+      <p><strong>操作：</strong>执行 <code>df.describe()</code>，标记超出物理常识范围的值（温度 &lt; 0 或 &gt; 500℃，压力 &lt; 0 等）</p>
+      <p><strong>预期输出：</strong>异常值候选清单（含字段名、异常值、记录索引）</p>
+      <p><strong>通过条件：</strong>异常记录占比 &lt; 5%；超出物理合理范围的记录已单独列出并说明原因</p>
+    </div>
+
+    <div class="concept-card">
+      <h4>清单项 5 验收标准：字段业务含义</h4>
+      <p><strong>输入：</strong>字段清单及空白释义模板</p>
+      <p><strong>操作：</strong>与车间工艺员逐字段核对：采集源、物理单位、合理范围、业务含义</p>
+      <p><strong>预期输出：</strong>字段业务释义文档（每个字段 4 项释义）</p>
+      <p><strong>通过条件：</strong>释义覆盖率 = 100%；每个字段可向非技术人员解释清楚；工艺员签字确认</p>
+    </div>
+    <div class="highlight-box">
+      <p><strong>硬性要求：</strong>以上 5 项全部勾选且满足量化标准后，才能进入 Step 2。如有未达标项，返回"实验"模块完成对应检查。</p>
     </div>
   </div>
 </section>
@@ -203,63 +322,295 @@
 <section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">实验</span>打开电缆生产数据，观察数据结构和缺失值</h2>
   <div class="lesson-explain">
-    <p>下面是一段Python代码，用于加载一个典型的电缆生产数据CSV文件，查看其结构、统计信息和缺失值情况。你可以将这段代码保存为 <code>inspect_data.py</code> 并运行。</p>
+    <p>下面是一段完整的、可直接运行的 Python 代码。如果你没有现成的电缆数据，代码会自动生成一份包含 5000 条记录的示例数据。将代码保存为 <code>inspect_data.py</code> 后运行即可。</p>
 
     <div class="lesson-code">
-<pre><code>import pandas as pd
+<pre><code>"""
+inspect_data.py
+电缆生产数据摸底检查脚本
+成功标准：运行后输出数据形状、列类型、缺失值统计、目标分布四张表，无异常报错
+"""
+
+import os
+import pandas as pd
 import numpy as np
 
-# 1. 加载电缆生产数据
-# 假设CSV包含以下列：温度、压力、挤出速度、牵引速度、
-# 导体直径、绝缘厚度、偏心度、是否合格
-df = pd.read_csv('cable_production_data.csv')
 
-# 2. 查看数据基本信息
-print("=" * 50)
-print("数据形状:", df.shape)
-print("\n列名和数据类型:")
-print(df.dtypes)
+def generate_sample_data(filepath: str, n_rows: int = 5000) -> None:
+    """
+    生成示例电缆生产数据并保存为 CSV。
+    包含字段：时间戳、温度、压力、挤出速度、牵引速度、导体直径、绝缘厚度、偏心度、是否合格
+    """
+    np.random.seed(42)
+    timestamps = pd.date_range(start='2023-01-01', periods=n_rows, freq='min')
+    temperature = np.random.normal(loc=195.0, scale=8.0, size=n_rows).clip(160, 240)
+    pressure = np.random.normal(loc=15.0, scale=2.0, size=n_rows).clip(10, 22)
+    extrusion_speed = np.random.normal(loc=12.0, scale=1.5, size=n_rows).clip(8, 18)
+    traction_speed = np.random.normal(loc=1.2, scale=0.1, size=n_rows).clip(0.8, 1.6)
+    conductor_diameter = np.random.normal(loc=15.0, scale=0.2, size=n_rows).clip(14.0, 16.0)
+    insulation_thickness = np.random.normal(loc=4.5, scale=0.15, size=n_rows).clip(3.8, 5.2)
+    eccentricity = np.random.normal(loc=8.0, scale=3.0, size=n_rows).clip(0, 20)
 
-# 3. 查看前5行
-print("\n前5行数据:")
-print(df.head())
+    # 合格判定：偏心度 &lt; 10 且绝缘厚度在 4.0~5.0 之间
+    is_qualified = ((eccentricity &lt; 10) &amp; (insulation_thickness &gt;= 4.0) &amp; (insulation_thickness &lt;= 5.0)).astype(int)
 
-# 4. 统计描述
-print("\n数值列统计描述:")
-print(df.describe())
+    df = pd.DataFrame({
+        'timestamp': timestamps,
+        'temperature': temperature,
+        'pressure': pressure,
+        'extrusion_speed': extrusion_speed,
+        'traction_speed': traction_speed,
+        'conductor_diameter': conductor_diameter,
+        'insulation_thickness': insulation_thickness,
+        'eccentricity': eccentricity,
+        'is_qualified': is_qualified
+    })
 
-# 5. 缺失值检查
-print("\n缺失值统计:")
-missing = df.isnull().sum()
-missing_pct = (missing / len(df) * 100).round(2)
-missing_df = pd.DataFrame({
-    '缺失数量': missing,
-    '缺失比例(%)': missing_pct
-})
-print(missing_df[missing_df['缺失数量'] > 0])
+    # 人工引入部分缺失值，模拟真实场景
+    missing_idx = np.random.choice(df.index, size=int(n_rows * 0.024), replace=False)
+    df.loc[missing_idx[:int(n_rows*0.024*0.5)], 'extrusion_speed'] = np.nan
+    df.loc[missing_idx[int(n_rows*0.024*0.5):], 'insulation_thickness'] = np.nan
 
-# 6. 目标变量分布（假设目标列为 'is_qualified'）
-if 'is_qualified' in df.columns:
-    print("\n合格率分布:")
-    print(df['is_qualified'].value_counts(normalize=True))
+    df.to_csv(filepath, index=False)
+    print(f'[INFO] 示例数据已生成：{filepath}，共 {n_rows} 行，{df.shape[1]} 列')
+
+
+def inspect_cable_data(filepath: str) -> pd.DataFrame:
+    """
+    加载并检查电缆生产数据，输出结构、类型、缺失值、目标分布。
+    返回加载后的 DataFrame 供后续使用。
+    """
+    # 1. 检查文件是否存在，不存在则自动生成示例数据
+    if not os.path.exists(filepath):
+        print(f'[WARNING] 未找到 {filepath}，正在生成示例数据...')
+        generate_sample_data(filepath)
+
+    # 2. 加载数据
+    try:
+        df = pd.read_csv(filepath, parse_dates=['timestamp'])
+    except Exception as e:
+        print(f'[ERROR] 读取 CSV 失败：{e}')
+        raise
+
+    # 3. 输出数据形状与字段类型
+    print('\n' + '=' * 60)
+    print('【1/4】数据形状与列类型')
+    print('=' * 60)
+    print(f'行数：{df.shape[0]}，列数：{df.shape[1]}')
+    print('\n列名及数据类型：')
+    print(df.dtypes)
+
+    # 4. 查看前 5 行
+    print('\n' + '=' * 60)
+    print('【2/4】前 5 行数据预览')
+    print('=' * 60)
+    print(df.head())
+
+    # 5. 数值列统计描述
+    print('\n' + '=' * 60)
+    print('【3/4】数值列统计描述')
+    print('=' * 60)
+    print(df.describe())
+
+    # 6. 缺失值统计
+    print('\n' + '=' * 60)
+    print('【4/4】缺失值与目标变量分布')
+    print('=' * 60)
+    missing = df.isnull().sum()
+    missing_pct = (missing / len(df) * 100).round(2)
+    missing_df = pd.DataFrame({
+        '缺失数量': missing,
+        '缺失比例(%)': missing_pct
+    })
+    print('\n缺失值统计：')
+    print(missing_df[missing_df['缺失数量'] &gt; 0])
+
+    # 7. 目标变量分布（假设目标列为 'is_qualified'）
+    if 'is_qualified' in df.columns:
+        print('\n目标变量分布（is_qualified）：')
+        print(df['is_qualified'].value_counts(normalize=True).round(4))
+
+    return df
+
+
+def data_audit(df: pd.DataFrame) -> dict:
+    """
+    对电缆数据进行 10 项自动化审计检查，返回检查结果字典。
+    合格标准：
+      - 检查 1：总行数 &gt;= 500，总列数在 5-50 之间
+      - 检查 4：关键字段缺失率 &lt; 5%，非关键字段 &lt; 20%
+      - 检查 5：正负样本比例在 1:1 到 1:10 之间
+      - 检查 6：温度在 0-500℃，压力 &gt; 0
+      - 检查 7：重复记录数 = 0
+    """
+    results = {}
+
+    # 检查 1：数据形状
+    results['shape_ok'] = df.shape[0] &gt;= 500 and 5 &lt;= df.shape[1] &lt;= 50
+    results['n_rows'] = df.shape[0]
+    results['n_cols'] = df.shape[1]
+
+    # 检查 4：缺失值比例
+    if 'temperature' in df.columns:
+        results['temp_missing_pct'] = df['temperature'].isnull().mean() * 100
+    if 'pressure' in df.columns:
+        results['pressure_missing_pct'] = df['pressure'].isnull().mean() * 100
+
+    # 检查 5：目标变量分布
+    if 'is_qualified' in df.columns:
+        vc = df['is_qualified'].value_counts(normalize=True)
+        min_ratio = vc.min()
+        results['class_balance_ok'] = min_ratio &gt;= 0.09  # 约 1:10 以内
+        results['min_class_ratio'] = round(min_ratio, 4)
+
+    # 检查 6：数值范围
+    if 'temperature' in df.columns:
+        t = df['temperature'].dropna()
+        results['temp_range_ok'] = t.min() &gt;= 0 and t.max() &lt;= 500
+    if 'pressure' in df.columns:
+        p = df['pressure'].dropna()
+        results['pressure_positive'] = p.min() &gt; 0
+
+    # 检查 7：重复记录
+    results['duplicates'] = int(df.duplicated().sum())
+    results['no_duplicates'] = results['duplicates'] == 0
+
+    print('\n' + '=' * 60)
+    print('【自动化审计结果】')
+    print('=' * 60)
+    for k, v in results.items():
+        print(f'{k}: {v}')
+    return results
+
+
+if __name__ == '__main__':
+    CSV_FILE = 'cable_production_data.csv'
+    try:
+        df = inspect_cable_data(CSV_FILE)
+        audit_results = data_audit(df)
+        print('\n[SUCCESS] 数据摸底完成，请对照下方检查清单逐项确认。')
+    except Exception as e:
+        print(f'\n[FAILED] 运行出错：{e}')
 </code></pre>
+    </div>
+
+    <div class="concept-card">
+      <h4>数据摸底检查清单（10 项必查）</h4>
+      <p>运行代码后，对照以下 10 项逐项检查。每项均有量化合格标准：</p>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>序号</th>
+            <th>检查项</th>
+            <th>合格标准（量化指标）</th>
+            <th>如果不通过，下一步做什么</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>数据形状是否合理</td>
+            <td>总行数 &gt;= 500；总列数在 5-50 之间</td>
+            <td>联系 IT 确认是否只导出了部分数据</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>列名是否有中文/英文混杂</td>
+            <td>同一物理量仅存在 1 种字段命名，无重复别名</td>
+            <td>建立字段映射表，统一命名规范</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>时间字段是否可解析</td>
+            <td>pd.to_datetime() 不报错；时间间隔与采样频率误差 &lt; 10%</td>
+            <td>检查原始数据源的时间格式；必要时手动转换</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>缺失值比例是否可接受</td>
+            <td>关键字段（温度、压力）缺失率 &lt; 5%；非关键字段 &lt; 20%</td>
+            <td>缺失率 5%-20%：用插值或均值填充；&gt; 20%：删除该字段或重新采集</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>目标变量分布是否极端</td>
+            <td>少数类样本占比 &gt;= 9%（即正负样本比例 &lt;= 1:10）</td>
+            <td>&gt; 1:10 属于类别不平衡，需用过采样、欠采样或调整类别权重</td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td>数值范围是否在物理合理区间</td>
+            <td>温度在 0-500℃；压力 &gt; 0；速度在设备铭牌标称范围内</td>
+            <td>标记异常值，询问工艺员是否为传感器故障或记录错误</td>
+          </tr>
+          <tr>
+            <td>7</td>
+            <td>是否存在重复记录</td>
+            <td>df.duplicated().sum() == 0</td>
+            <td>保留第一条或最后一条，记录去重规则</td>
+          </tr>
+          <tr>
+            <td>8</td>
+            <td>数据类型是否正确</td>
+            <td>数值字段为 float64/int64；类别字段为 category；时间字段为 datetime64[ns]</td>
+            <td>用 astype() 转换；注意字符串数字要先处理异常字符</td>
+          </tr>
+          <tr>
+            <td>9</td>
+            <td>是否存在明显的离群批次</td>
+            <td>按批次分组统计，各批次均值差异在 2 个标准差以内的占比 &gt;= 95%</td>
+            <td>与生产记录核对：该批次是否更换了原料、设备或操作人员</td>
+          </tr>
+          <tr>
+            <td>10</td>
+            <td>字段间时间戳是否对齐</td>
+            <td>同一盘电缆的工艺参数与质检结果时间差 &lt;= 该工序标准生产时长的 2 倍</td>
+            <td>以盘号/工单号为 key 进行关联，检查未匹配上的记录</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="highlight-box">
+        <p><strong>成功标准：</strong>运行 <code>inspect_data.py</code> 后，终端输出包含 4 张统计表（形状、预览、描述、缺失值），无报错；audit_results 中 shape_ok、temp_range_ok、pressure_positive、no_duplicates 均为 True。</p>
+      </div>
+      <div class="highlight-box">
+        <p><strong>操作建议：</strong>把这 10 项检查写成函数，封装为 <code>data_audit(df)</code>，每次拿到新数据先运行一次。通过全部 10 项，才能进入下一步特征工程。</p>
+      </div>
     </div>
 
     <div class="demo-card">
       <p><strong>预期输出示例：</strong></p>
-<pre><code>数据形状: (5000, 9)
+<pre><code>============================================================
+【1/4】数据形状与列类型
+============================================================
+行数：5000，列数：9
 
-缺失值统计:
-          缺失数量  缺失比例(%)
-挤出速度        120        2.40
-绝缘厚度         45        0.90
+列名及数据类型：
+timestamp               datetime64[ns]
+temperature                    float64
+pressure                       float64
+extrusion_speed                float64
+traction_speed                 float64
+conductor_diameter             float64
+insulation_thickness           float64
+eccentricity                   float64
+is_qualified                     int64
+dtype: object
 
-合格率分布:
-1    0.92
-0    0.08
+============================================================
+【4/4】缺失值与目标变量分布
+============================================================
+
+缺失值统计：
+                  缺失数量  缺失比例(%)
+extrusion_speed        60         1.20
+insulation_thickness   60         1.20
+
+目标变量分布（is_qualified）：
+1    0.9142
+0    0.0858
 Name: is_qualified, dtype: float64
 </code></pre>
-      <p class="demo-caption">数据中的缺失值和类别不平衡（92%合格，8%不合格）是电缆生产数据的典型特征，需要在建模前处理。</p>
+      <p class="demo-caption">成功运行后，应输出上述格式的 4 张表。缺失值比例 &lt; 5%、目标类别占比 &gt; 8% 为可接受范围。</p>
     </div>
   </div>
 </section>
@@ -342,6 +693,104 @@ Name: is_qualified, dtype: float64
       <li>每周召开"数据质量例会"，生产、技术、质量三个部门共同分析模型预警和实际结果</li>
     </ul>
 
+    <div class="concept-card">
+      <h4>落地时间表：从 8% 降到 2% 的具体操作步骤</h4>
+      <p>以下不是笼统描述，而是可以直接执行的第 1 周到第 12 周行动计划：</p>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>周次</th>
+            <th>行动事项</th>
+            <th>具体动作</th>
+            <th>交付物</th>
+            <th>验收标准</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>第 1 周</td>
+            <td>数据摸底</td>
+            <td>导出过去 6 个月挤出机 PLC 数据、质检记录、原材料入库记录；运行 data_audit() 检查清单</td>
+            <td>数据质量报告</td>
+            <td>明确字段清单、缺失率、时间跨度；确认可用字段 &gt; 10 个</td>
+          </tr>
+          <tr>
+            <td>第 2 周</td>
+            <td>字段对齐</td>
+            <td>以"盘号+时间戳"为 key，把工艺参数、质检结果、原料批次三张表关联成一张宽表</td>
+            <td>宽表（1 行 = 1 盘电缆）</td>
+            <td>关联成功率 &gt; 95%；未关联的记录说明原因</td>
+          </tr>
+          <tr>
+            <td>第 3 周</td>
+            <td>根因初筛</td>
+            <td>用 Pearson 相关系数和随机森林特征重要性，找出与"是否合格"相关性最高的前 5 个参数</td>
+            <td>关键影响因素排序表</td>
+            <td>Top 5 因素有工艺解释（如温度、压力、原料批次）</td>
+          </tr>
+          <tr>
+            <td>第 4 周</td>
+            <td>建立基线模型</td>
+            <td>用随机森林训练二分类模型（合格/不合格），5 折交叉验证，记录 F1-score</td>
+            <td>基线模型 + 评估报告</td>
+            <td>F1-score &gt; 0.60；如果低于 0.60，检查数据质量</td>
+          </tr>
+          <tr>
+            <td>第 5-6 周</td>
+            <td>工艺关联分析</td>
+            <td>把"原料供应商""环境湿度""班次"等类别变量加入模型；分析哪类组合缺陷率最高</td>
+            <td>高风险组合清单</td>
+            <td>识别出至少 2 个可干预的高风险组合（如"供应商 A + 湿度 &gt; 70%"）</td>
+          </tr>
+          <tr>
+            <td>第 7 周</td>
+            <td>现场验证</td>
+            <td>与工艺员一起核对模型发现的高风险组合是否符合实际经验；修正误关联</td>
+            <td>验证签字表</td>
+            <td>工艺员认可 &gt; 80% 的发现；不认可的记录具体原因</td>
+          </tr>
+          <tr>
+            <td>第 8 周</td>
+            <td>制定干预规则</td>
+            <td>针对高风险组合制定 SOP：湿度 &gt; 70% 时切换到供应商 B；温度偏差 &gt; 5℃ 时自动报警</td>
+            <td>操作指导书（SOP）</td>
+            <td>SOP 张贴在车间现场；操作人员培训完成</td>
+          </tr>
+          <tr>
+            <td>第 9 周</td>
+            <td>试运行</td>
+            <td>在 1 条产线试点运行预警规则，每天记录报警次数、实际缺陷数、误报数</td>
+            <td>试运行日志</td>
+            <td>试运行 7 天，缺陷率下降 &gt; 20%</td>
+          </tr>
+          <tr>
+            <td>第 10 周</td>
+            <td>迭代优化</td>
+            <td>根据试运行日志调整阈值：降低误报率、提高命中率；更新模型</td>
+            <td>优化后模型 + 新阈值</td>
+            <td>误报率 &lt; 15%；命中率 &gt; 70%</td>
+          </tr>
+          <tr>
+            <td>第 11 周</td>
+            <td>全厂推广</td>
+            <td>把验证后的规则部署到全部 4 条产线；培训各班组长</td>
+            <td>部署记录 + 培训签到表</td>
+            <td>4 条产线全部接入预警系统；班组长能独立操作系统</td>
+          </tr>
+          <tr>
+            <td>第 12 周</td>
+            <td>固化与复盘</td>
+            <td>召开复盘会：对比推广前后 4 周的废品率、报警准确率、操作人员反馈；写入年度质量报告</td>
+            <td>复盘报告</td>
+            <td>月度废品率从 8% 降至 &lt; 3%；形成可复制的推广手册</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="highlight-box">
+        <p><strong>关键成功因素：</strong>第 7 周的"现场验证"不可跳过。模型发现的相关性不等于因果性，必须经过工艺员确认才能转化为干预规则。跳过这步，可能制定出违背物理规律的荒谬 SOP。</p>
+      </div>
+    </div>
+
     <div class="highlight-box">
       <p><strong>核心启示：</strong>技术只是基础，真正带来改变的是"数据→洞察→行动→反馈"的闭环机制。模型准确率从75%提升到90%的价值，远不如让操作人员<strong>真正信任并使用</strong>预警系统的价值大。</p>
     </div>
@@ -400,6 +849,72 @@ Name: is_qualified, dtype: float64
 
     <div class="highlight-box">
       <p><strong>参考答案：</strong>1-B，2-B，3-D，4-C，5-C</p>
+    </div>
+  </div>
+</section>
+
+<!-- 验收 -->
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">验收</span>Step 1 可执行验收测试用例</h2>
+  <div class="lesson-explain">
+    <div class="concept-card">
+      <h4>验收测试 1：数据质量基线检查</h4>
+      <p><strong>目的：</strong>验证原始数据满足分析最低要求，确保进入 Step 2 前数据质量可控</p>
+      <p><strong>前置条件：</strong>已获得电缆厂最近 30 天生产数据 CSV 文件；Python 3.8+ 环境已安装 pandas、numpy</p>
+      <p><strong>输入数据：</strong><code>cable_production_data.csv</code>（文件大小 &gt; 0，编码为 UTF-8）</p>
+      <p><strong>操作步骤：</strong>运行 <code>inspect_data.py</code> 脚本中的 <code>data_audit(df)</code> 函数</p>
+      <p><strong>预期结果：</strong>终端输出 10 项审计结果，shape_ok、temp_range_ok、pressure_positive、no_duplicates 均为 True</p>
+      <p><strong>通过标准：</strong>总行数 &gt;= 500；总列数在 5-50 之间；关键字段缺失率 &lt; 5%；异常记录占比 &lt; 5%；重复记录数 = 0。五项全部满足 → 进入 Step 2；任一不达标 → 返回数据提供方补充。</p>
+      <p><strong>失败处理：</strong>如总行数 &lt; 500，要求扩大数据采集时间窗口或补充历史数据；如缺失率 &gt;= 5%，要求补充缺失时段数据并重新运行审计；如重复记录数 &gt; 0，要求 IT 部门排查数据源并去重后重新导出。</p>
+    </div>
+
+    <div class="concept-card">
+      <h4>验收测试 2：字段释义完整性检查</h4>
+      <p><strong>目的：</strong>确保每个字段的业务含义已被准确理解，避免后续建模出现"用错字段"的低级错误</p>
+      <p><strong>前置条件：</strong>已完成数据审计；已预约工艺员/设备员时间 &gt;= 30 分钟</p>
+      <p><strong>输入数据：</strong>字段清单（来自 df.columns.tolist()）及空白字段释义模板</p>
+      <p><strong>操作步骤：</strong>逐字段向工艺员确认：① 该字段代表什么物理量；② 由哪个设备/系统采集；③ 物理单位是什么；④ 合理范围是多少。将结果填入模板。</p>
+      <p><strong>预期结果：</strong>生成 <code>field_glossary.md</code>，包含所有字段的 4 项释义</p>
+      <p><strong>通过标准：</strong>字段释义覆盖率 = 100%（无空项）；工艺员签字确认；释义文档能在 5 分钟内被非技术人员读懂。全部满足 → 通过；释义覆盖率 &lt; 100% → 补充确认后重测。</p>
+      <p><strong>失败处理：</strong>如工艺员无法解释某字段，标记为"待澄清"并溯源至原始采集系统；如某字段无物理单位，要求补充单位标注或从设备手册中查找。</p>
+    </div>
+
+    <div class="concept-card">
+      <h4>验收测试 3：时间对齐与采样一致性检查</h4>
+      <p><strong>目的：</strong>验证时间戳可解析且采样频率稳定，防止后续时序建模出现时间错位</p>
+      <p><strong>前置条件：</strong>数据已加载为 DataFrame，时间字段已解析为 datetime 类型</p>
+      <p><strong>输入数据：</strong>DataFrame 及预期采样频率（如 1 Hz、1 分钟、每盘一次）</p>
+      <p><strong>操作步骤：</strong>① 执行 <code>df['timestamp'].min()</code> 与 <code>.max()</code>；② 计算相邻记录时间差 <code>df['timestamp'].diff().dt.total_seconds()</code>；③ 统计时间差分布并与预期频率对比。</p>
+      <p><strong>预期结果：</strong>输出起始/结束日期、实际采样间隔中位数、与预期频率的偏差百分比</p>
+      <p><strong>通过标准：</strong>时间跨度 &gt;= 7 天；采样间隔中位数与预期频率偏差 &lt; 10%；无负时间差（乱序记录）；时间解析零报错。全部满足 → 通过；偏差 &gt;= 10% → 检查数据源时钟同步设置。</p>
+      <p><strong>失败处理：</strong>如出现负时间差，按时间戳重新排序并标记乱序记录占比；如采样间隔偏差 &gt; 20%，排查传感器采集配置或网络延迟日志。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 常见问题排查 -->
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">排查</span>常见问题排查</h2>
+  <div class="lesson-explain">
+    <div class="mistake-card">
+      <p><strong>错误 1：运行 inspect_data.py 时报 FileNotFoundError: [Errno 2] No such file or directory</strong></p>
+      <p><strong>现象：</strong><code>pd.read_csv('cable_production_data.csv')</code> 抛出文件不存在异常，且未触发自动示例数据生成。</p>
+      <p><strong>根因：</strong>脚本运行目录与 CSV 文件所在目录不一致；或旧版本代码缺少自动生成逻辑。</p>
+      <p><strong>解决方法：</strong>① 确认脚本与数据文件在同一目录，或在代码中使用绝对路径；② 使用本教程提供的完整代码（包含 <code>if not os.path.exists(filepath): generate_sample_data(filepath)</code> 分支）；③ 手动执行 <code>python -c "import pandas as pd; pd.DataFrame({'a':[1]}).to_csv('cable_production_data.csv', index=False)"</code> 验证路径权限。</p>
+    </div>
+
+    <div class="mistake-card">
+      <p><strong>错误 2：执行 df.describe() 时温度出现负数或压力出现 NaN，导致异常值判断失误</strong></p>
+      <p><strong>现象：</strong>describe 输出中 min 为负数，或某列 count 明显小于总行数，但代码未提示异常。</p>
+      <p><strong>根因：</strong>传感器故障导致采集到超出物理范围的值；PLC 通信中断导致部分记录缺失。</p>
+      <p><strong>解决方法：</strong>① 在 <code>data_audit()</code> 中增加硬阈值检查：温度 &lt; 0 或 &gt; 500 时打印 <code>[ALERT]</code>；② 对关键字段使用 <code>df['temperature'].clip(lower=0)</code> 或标记为异常；③ 与工艺员确认设备铭牌参数，将合理范围写入配置文件而非硬编码。</p>
+    </div>
+
+    <div class="mistake-card">
+      <p><strong>错误 3：目标变量 is_qualified 正负样本比例严重失衡（如 1:50），模型无法学习</strong></p>
+      <p><strong>现象：</strong>运行后 <code>value_counts()</code> 显示少数类占比 &lt; 2%，后续建模时召回率接近 0。</p>
+      <p><strong>根因：</strong>数据采集周期内产品质量整体较好，缺陷品天然稀少；或缺陷定义过于严格，导致合格品被过度标记。</p>
+      <p><strong>解决方法：</strong>① 确认质检标准：与质检部门核对"不合格"定义是否一致；② 延长数据采集时间窗口至 &gt;= 6 个月，积累足够缺陷样本（目标 &gt;= 30 条）；③ 若样本仍不足，采用 SMOTE 过采样、类别权重调整（<code>class_weight='balanced'</code>）或改用异常检测算法（Isolation Forest）。</p>
     </div>
   </div>
 </section>

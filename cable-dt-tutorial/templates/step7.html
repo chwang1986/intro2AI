@@ -161,6 +161,8 @@
           <th>层级</th>
           <th>技术选型</th>
           <th>选型理由</th>
+          <th>学习成本</th>
+          <th>维护成本</th>
         </tr>
       </thead>
       <tbody>
@@ -168,44 +170,63 @@
           <td>后端框架</td>
           <td>Python + FastAPI/Flask</td>
           <td>Python 是 AI/数据科学的标准语言；FastAPI 异步高性能，自动生成 API 文档；Flask 轻量灵活，适合中小型项目</td>
+          <td>低（1-2 周，团队熟悉 Python）</td>
+          <td>低（社区活跃，文档完善）</td>
         </tr>
         <tr>
           <td>时序数据库</td>
           <td>InfluxDB</td>
           <td>专为时序数据优化，高写入吞吐，内置连续查询和保留策略，与 Grafana 无缝集成</td>
+          <td>中（2-3 周，需学习 Flux 查询语言）</td>
+          <td>低（官方托管版或开源版均稳定）</td>
         </tr>
         <tr>
           <td>关系数据库</td>
           <td>PostgreSQL</td>
           <td>功能强大、稳定可靠，支持 JSON 字段和复杂查询，开源免费，社区生态丰富</td>
+          <td>低（1 周，标准 SQL）</td>
+          <td>低（成熟稳定，备份方案完善）</td>
         </tr>
         <tr>
           <td>文件存储</td>
           <td>MinIO</td>
           <td>兼容 S3 API 的对象存储，适合存储模型文件、日志文件、报表导出文件，可私有化部署</td>
+          <td>低（1 周，兼容 S3 SDK）</td>
+          <td>低（单节点或分布式部署均简单）</td>
         </tr>
         <tr>
           <td>前端框架</td>
           <td>Vue3 + Element Plus / React + Ant Design</td>
           <td>组件库成熟，开发效率高；Vue3 响应式系统性能优异，适合数据密集型仪表盘</td>
+          <td>中（2-4 周，取决于前端基础）</td>
+          <td>中（需跟进版本升级，Node 生态变化快）</td>
         </tr>
         <tr>
           <td>机器学习</td>
           <td>scikit-learn + XGBoost + PyTorch</td>
           <td>scikit-learn 适合传统机器学习流程；XGBoost 在表格数据上效果优异；PyTorch 适合深度学习模型</td>
+          <td>高（4-8 周，需掌握模型调优和部署）</td>
+          <td>高（模型迭代频繁，需监控漂移和重训练）</td>
         </tr>
         <tr>
           <td>数字孪生</td>
           <td>Three.js / Unity WebGL</td>
           <td>Three.js 轻量、开源、浏览器原生支持；Unity 适合复杂场景和高精度渲染，但需插件支持</td>
+          <td>高（4-6 周，需掌握 3D 图形学和 WebGL）</td>
+          <td>中（模型文件管理复杂，性能优化需经验）</td>
         </tr>
         <tr>
           <td>部署运维</td>
           <td>Docker + Kubernetes</td>
           <td>Docker 保证环境一致性，"一次构建，到处运行"；Kubernetes 提供自动扩缩容、故障恢复、滚动更新</td>
+          <td>中（2-4 周，Docker 简单，K8s 较复杂）</td>
+          <td>中（K8s 运维门槛高，建议先使用 Docker Compose）</td>
         </tr>
       </tbody>
     </table>
+    <div class="highlight-box">
+      <p><strong>成本说明：</strong>"学习成本"指一名有 3 年以上经验的工程师从入门到能独立开发/维护所需的时间；"维护成本"指该技术在生产环境中长期运行所需的人力和技术投入。团队技术储备不同，实际成本会有偏差，建议预留 20% 缓冲时间。</p>
+    </div>
   </div>
 </section>
 
@@ -245,6 +266,145 @@
     <div class="concept-card">
       <h4>7. 报表分析模块</h4>
       <p>多维度质量分析报表：按产品型号统计合格率、按设备统计故障频次、按班次统计废品率、按时间统计质量趋势。支持定时自动生成和邮件推送，支持导出 PDF/Excel。</p>
+    </div>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">要点</span>系统性能指标（量化目标）</h2>
+  <div class="lesson-explain">
+    <p>以下是电缆数字孪生系统的核心性能指标及量化目标，用于验收和持续监控。</p>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>指标类别</th>
+          <th>指标名称</th>
+          <th>目标值</th>
+          <th>测量方法</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td rowspan="3">响应性能</td>
+          <td>API 平均响应时间</td>
+          <td>&lt; 200ms（P95 &lt; 500ms）</td>
+          <td>通过 API 网关日志统计，使用 Locust 压测</td>
+        </tr>
+        <tr>
+          <td>实时预测延迟</td>
+          <td>&lt; 100ms（端到端，含网络传输）</td>
+          <td>从数据入库到预测结果返回的全链路耗时</td>
+        </tr>
+        <tr>
+          <td>3D 数字孪生首屏加载时间</td>
+          <td>&lt; 3s（模型文件 &lt; 10MB）</td>
+          <td>Chrome DevTools Network 面板测量</td>
+        </tr>
+        <tr>
+          <td rowspan="3">吞吐能力</td>
+          <td>并发用户支持</td>
+          <td>1000 并发（监控大屏模式）</td>
+          <td>使用 JMeter/Locust 模拟并发连接</td>
+        </tr>
+        <tr>
+          <td>时序数据写入吞吐</td>
+          <td>&gt; 10,000 点/秒</td>
+          <td>InfluxDB 内置监控指标</td>
+        </tr>
+        <tr>
+          <td>批量预测吞吐</td>
+          <td>&gt; 500 条/秒</td>
+          <td>发送批量请求，统计每秒处理样本数</td>
+        </tr>
+        <tr>
+          <td rowspan="3">可用性</td>
+          <td>系统可用性（Uptime）</td>
+          <td>&gt; 99.5%（月度）</td>
+          <td>总运行时间减去故障时间，除以总运行时间</td>
+        </tr>
+        <tr>
+          <td>数据采全率</td>
+          <td>&gt; 99%（按设备统计）</td>
+          <td>实际采集数据点数 / 应采集数据点数</td>
+        </tr>
+        <tr>
+          <td>故障恢复时间（RTO）</td>
+          <td>&lt; 5 分钟</td>
+          <td>从服务宕机到完全恢复的时间</td>
+        </tr>
+        <tr>
+          <td rowspan="2">准确性</td>
+          <td>质量预测 MAPE</td>
+          <td>&lt; 5%</td>
+          <td>预测值与真实值对比，计算平均绝对百分比误差</td>
+        </tr>
+        <tr>
+          <td>预警准确率（Precision）</td>
+          <td>&gt; 85%</td>
+          <td>真阳性 /（真阳性 + 假阳性）</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="highlight-box">
+      <p><strong>压测建议：</strong>在系统上线前，使用 Locust 编写压测脚本，模拟 1000 并发用户持续访问监控大屏和 API。重点关注数据库连接池耗尽、内存泄漏、CPU 飙升等问题。压测报告应包含 QPS、P50/P95/P99 延迟、错误率、资源占用曲线。</p>
+    </div>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">要点</span>MVP 功能清单（第一个可用版本）</h2>
+  <div class="lesson-explain">
+    <p>最小可行产品（MVP）不是"半成品"，而是"刚好能验证核心价值的最小功能集"。以下是电缆数字孪生系统第一个可用版本必须包含的 5 个核心功能。</p>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>优先级</th>
+          <th>功能名称</th>
+          <th>功能描述</th>
+          <th>验收标准（量化）</th>
+          <th>预计工作量</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>P0</td>
+          <td>PLC 数据采集与存储</td>
+          <td>通过 OPC UA 协议从挤出机 PLC 实时采集温度、转速、速度等工艺参数，写入 InfluxDB 时序数据库</td>
+          <td>支持至少 1 台 PLC，采集频率 1Hz，数据采全率 &gt; 99%，写入延迟 &lt; 500ms</td>
+          <td>2-3 周（1 名后端工程师）</td>
+        </tr>
+        <tr>
+          <td>P0</td>
+          <td>基础质量预测 API</td>
+          <td>提供 RESTful API，输入当前工艺参数，输出绝缘层厚度预测值</td>
+          <td>API 响应时间 &lt; 200ms，预测 MAPE &lt; 8%（MVP 阶段可适当放宽）</td>
+          <td>3-4 周（1 名算法工程师 + 0.5 名后端工程师）</td>
+        </tr>
+        <tr>
+          <td>P0</td>
+          <td>实时预警推送</td>
+          <td>当预测厚度超出预设阈值时，通过企业微信/邮件推送预警消息</td>
+          <td>预警延迟 &lt; 5s（从异常发生到消息送达），支持 3 人以上同时接收</td>
+          <td>1-2 周（1 名后端工程师）</td>
+        </tr>
+        <tr>
+          <td>P1</td>
+          <td>监控大屏（只读）</td>
+          <td>Web 页面展示实时工艺参数、预测结果、最近 10 条预警记录</td>
+          <td>页面刷新频率 1Hz，支持 50 并发访问不卡顿，适配 1920x1080 大屏</td>
+          <td>2-3 周（1 名前端工程师）</td>
+        </tr>
+        <tr>
+          <td>P1</td>
+          <td>数据质量看板</td>
+          <td>展示各数据点的缺失率、异常率、最近采集时间，帮助工程师快速发现数据问题</td>
+          <td>数据状态更新延迟 &lt; 30s，支持按设备/数据点筛选，导出 CSV</td>
+          <td>1-2 周（1 名前端工程师 + 0.5 名后端工程师）</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="highlight-box">
+      <p><strong>MVP 边界说明：</strong>第一个版本<strong>不包含</strong>以下功能：3D 数字孪生、MES/ERP 对接、AutoML 模型训练、A/B 测试、复杂报表、移动端适配、多产线扩展。这些功能在验证核心价值后再逐步迭代。MVP 的目标是在 8-10 周内让工厂看到"数据能被采集、质量能被预测、异常能被预警"，建立团队信心。</p>
     </div>
   </div>
 </section>
@@ -314,6 +474,641 @@
 </section>
 
 <section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">工具</span>项目目录结构</h2>
+  <div class="lesson-explain">
+    <p>以下是电缆数字孪生系统的完整目录结构，采用 tree 命令输出格式，每个文件/目录都附有作用说明。</p>
+    <div class="lesson-code">
+      <div class="demo-label">项目目录结构</div>
+      <pre><code>cable-dt-system/                  # 项目根目录
+├── backend/                      # 后端服务目录
+│   ├── app/                      # 应用代码目录
+│   │   ├── __init__.py           # 应用初始化
+│   │   ├── main.py               # FastAPI 主入口，注册路由和中间件
+│   │   ├── api/                  # API 路由目录
+│   │   │   ├── __init__.py
+│   │   │   ├── v1/               # API 版本 v1
+│   │   │   │   ├── __init__.py
+│   │   │   │   ├── data.py       # 数据查询相关接口
+│   │   │   │   ├── predict.py    # 质量预测接口
+│   │   │   │   ├── alert.py      # 预警规则与推送接口
+│   │   │   │   ├── model.py      # 模型管理接口（训练/部署/版本）
+│   │   │   │   └── device.py     # 设备管理接口
+│   │   ├── core/                 # 核心配置与公共组件
+│   │   │   ├── config.py         # 配置读取（从 config.yaml 加载）
+│   │   │   ├── security.py       # JWT 认证、密码哈希
+│   │   │   └── exceptions.py     # 全局异常处理
+│   │   ├── models/               # 数据模型（SQLAlchemy ORM）
+│   │   │   ├── __init__.py
+│   │   │   ├── device.py         # 设备信息表
+│   │   │   ├── quality_record.py # 质量预测记录表
+│   │   │   └── alert_rule.py     # 预警规则表
+│   │   ├── services/             # 业务逻辑层
+│   │   │   ├── __init__.py
+│   │   │   ├── data_service.py   # 数据查询与统计
+│   │   │   ├── predict_service.py# 预测推理服务封装
+│   │   │   └── alert_service.py  # 预警判断与推送
+│   │   ├── tasks/                # 定时任务（Celery）
+│   │   │   ├── __init__.py
+│   │   │   ├── data_sync.py      # 定时同步 PLC 数据
+│   │   │   └── model_retrain.py  # 定时模型重训练
+│   │   └── utils/                # 工具函数
+│   │       ├── __init__.py
+│   │       ├── db_connector.py   # 数据库连接池管理
+│   │       └── logger.py         # 日志格式化
+│   ├── alembic/                  # 数据库迁移脚本
+│   │   └── versions/             # 各版本迁移文件
+│   ├── tests/                    # 后端单元测试与集成测试
+│   │   ├── __init__.py
+│   │   ├── test_api.py           # API 接口测试
+│   │   └── test_predict.py       # 预测服务测试
+│   ├── Dockerfile                # 后端服务容器镜像构建文件
+│   ├── requirements.txt          # Python 依赖包清单
+│   └── gunicorn.conf.py          # Gunicorn 运行配置
+├── frontend/                     # 前端应用目录
+│   ├── public/                   # 静态资源
+│   │   └── models/               # 3D 模型文件（挤出机、冷却槽等 glTF）
+│   ├── src/
+│   │   ├── main.js               # Vue 应用入口
+│   │   ├── App.vue               # 根组件
+│   │   ├── router/               # Vue Router 路由配置
+│   │   ├── stores/               # Pinia 状态管理
+│   │   ├── views/                # 页面级组件
+│   │   │   ├── Dashboard.vue     # 监控大屏
+│   │   │   ├── Analysis.vue      # 工程师分析界面
+│   │   │   ├── DigitalTwin.vue   # 3D 数字孪生页面
+│   │   │   └── Report.vue        # 报表页面
+│   │   ├── components/           # 可复用组件
+│   │   │   ├── QualityChart.vue  # 质量趋势图
+│   │   │   ├── AlertPanel.vue    # 实时预警面板
+│   │   │   └── DeviceCard.vue    # 设备状态卡片
+│   │   └── api/                  # 前端 API 请求封装
+│   │       └── index.js          # 基于 axios 的请求拦截器
+│   ├── Dockerfile                # 前端 Nginx 容器镜像构建文件
+│   └── package.json              # Node.js 依赖
+├── ml/                           # 机器学习模型目录
+│   ├── notebooks/                # Jupyter 实验笔记本
+│   ├── src/                      # 模型训练与推理源码
+│   │   ├── __init__.py
+│   │   ├── train.py              # 模型训练脚本
+│   │   ├── inference.py          # 模型推理封装
+│   │   ├── feature_engineering.py# 特征工程
+│   │   └── evaluate.py           # 模型评估
+│   ├── models/                   # 训练好的模型文件（*.pkl, *.onnx）
+│   ├── config/                   # 模型配置文件
+│   │   └── model_config.yaml     # 超参数、特征列表、阈值
+│   └── Dockerfile                # 模型推理服务容器镜像
+├── data/                         # 数据目录（开发环境用，生产环境走对象存储）
+│   ├── raw/                      # 原始数据
+│   ├── processed/                # 清洗后数据
+│   └── samples/                  # 样本数据集
+├── docker-compose.yml            # Docker Compose 编排配置
+├── config.yaml                   # 全局配置文件
+├── nginx.conf                    # Nginx 反向代理配置
+├── Makefile                      # 常用命令封装（启动/停止/测试/部署）
+└── README.md                     # 项目说明文档
+</code></pre>
+    </div>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">配置</span>docker-compose.yml 配置文件</h2>
+  <div class="lesson-explain">
+    <p>以下是一份可直接运行的 Docker Compose 配置，包含后端、前端、时序数据库、关系数据库和对象存储服务。</p>
+    <div class="lesson-code">
+      <div class="demo-label">docker-compose.yml</div>
+      <pre><code>version: "3.8"
+
+services:
+  # ---------------------------
+  # 后端 API 服务
+  # ---------------------------
+  backend:
+    build: ./backend
+    container_name: cable-dt-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - ENV=production
+      - DATABASE_URL=postgresql://postgres:cable123@postgres:5432/cable_dt
+      - INFLUXDB_URL=http://influxdb:8086
+      - INFLUXDB_TOKEN=my-super-secret-token
+      - REDIS_URL=redis://redis:6379/0
+    volumes:
+      - ./config.yaml:/app/config.yaml:ro
+      - backend-logs:/app/logs
+    depends_on:
+      - postgres
+      - influxdb
+      - redis
+    networks:
+      - cable-dt-net
+    restart: unless-stopped
+
+  # ---------------------------
+  # 前端 Nginx 服务
+  # ---------------------------
+  frontend:
+    build: ./frontend
+    container_name: cable-dt-frontend
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - backend
+    networks:
+      - cable-dt-net
+    restart: unless-stopped
+
+  # ---------------------------
+  # PostgreSQL 关系数据库
+  # ---------------------------
+  postgres:
+    image: postgres:15-alpine
+    container_name: cable-dt-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: cable123
+      POSTGRES_DB: cable_dt
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./backend/alembic/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    ports:
+      - "5432:5432"
+    networks:
+      - cable-dt-net
+    restart: unless-stopped
+
+  # ---------------------------
+  # InfluxDB 时序数据库
+  # ---------------------------
+  influxdb:
+    image: influxdb:2.7
+    container_name: cable-dt-influxdb
+    environment:
+      DOCKER_INFLUXDB_INIT_MODE: setup
+      DOCKER_INFLUXDB_INIT_USERNAME: admin
+      DOCKER_INFLUXDB_INIT_PASSWORD: cable-influx-2024
+      DOCKER_INFLUXDB_INIT_ORG: cable-corp
+      DOCKER_INFLUXDB_INIT_BUCKET: sensor_data
+      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: my-super-secret-token
+    volumes:
+      - influxdb-data:/var/lib/influxdb2
+    ports:
+      - "8086:8086"
+    networks:
+      - cable-dt-net
+    restart: unless-stopped
+
+  # ---------------------------
+  # MinIO 对象存储
+  # ---------------------------
+  minio:
+    image: minio/minio:latest
+    container_name: cable-dt-minio
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minio-cable-2024
+    volumes:
+      - minio-data:/data
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    networks:
+      - cable-dt-net
+    restart: unless-stopped
+
+  # ---------------------------
+  # Redis 缓存与消息队列
+  # ---------------------------
+  redis:
+    image: redis:7-alpine
+    container_name: cable-dt-redis
+    volumes:
+      - redis-data:/data
+    ports:
+      - "6379:6379"
+    networks:
+      - cable-dt-net
+    restart: unless-stopped
+
+  # ---------------------------
+  # Celery 定时任务 Worker
+  # ---------------------------
+  celery-worker:
+    build: ./backend
+    container_name: cable-dt-celery
+    command: celery -A app.tasks worker --loglevel=info
+    environment:
+      - DATABASE_URL=postgresql://postgres:cable123@postgres:5432/cable_dt
+      - REDIS_URL=redis://redis:6379/0
+    volumes:
+      - ./config.yaml:/app/config.yaml:ro
+    depends_on:
+      - redis
+      - postgres
+    networks:
+      - cable-dt-net
+    restart: unless-stopped
+
+volumes:
+  postgres-data:
+  influxdb-data:
+  minio-data:
+  redis-data:
+  backend-logs:
+
+networks:
+  cable-dt-net:
+    driver: bridge
+</code></pre>
+    </div>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">配置</span>requirements.txt 依赖清单</h2>
+  <div class="lesson-explain">
+    <p>以下是后端服务所需的 Python 依赖包及推荐版本。</p>
+    <div class="lesson-code">
+      <div class="demo-label">backend/requirements.txt</div>
+      <pre><code># ========== Web 框架 ==========
+fastapi==0.111.0                # 高性能异步 Web 框架，自动生成 OpenAPI 文档
+uvicorn[standard]==0.30.0       # ASGI 服务器，支持 HTTP/2 和 WebSocket
+gunicorn==23.0.0                # WSGI/ASGI 生产服务器，支持多进程
+
+# ========== 数据库 ==========
+sqlalchemy==2.0.30              # ORM 框架，支持 PostgreSQL/MySQL
+alembic==1.13.1                 # 数据库迁移工具
+psycopg2-binary==2.9.9          # PostgreSQL 驱动
+influxdb-client==1.44.0         # InfluxDB 2.x 官方客户端
+redis==5.0.6                    # Redis 客户端
+
+# ========== 机器学习 ==========
+scikit-learn==1.5.0             # 传统机器学习算法库
+xgboost==2.0.3                  # 梯度提升树，表格数据首选
+lightgbm==4.3.0                 # 微软开源 GBDT，训练速度快
+torch==2.3.1                    # 深度学习框架（按需安装）
+numpy==1.26.4                   # 数值计算
+pandas==2.2.2                   # 数据处理与分析
+
+# ========== 任务调度 ==========
+celery==5.4.0                   # 分布式任务队列
+flower==2.0.1                   # Celery 监控界面（可选）
+
+# ========== 数字孪生相关 ==========
+opcua==0.98.13                  # OPC UA 客户端（连接西门子 PLC）
+pymodbus==3.6.9                 # Modbus TCP/RTU 客户端
+
+# ========== 工具库 ==========
+pydantic==2.7.4                 # 数据校验与序列化
+python-jose[cryptography]==3.3.0# JWT 令牌生成与验证
+passlib[bcrypt]==1.7.4          # 密码哈希
+python-multipart==0.0.9         # 文件上传解析
+httpx==0.27.0                   # 异步 HTTP 客户端
+pyyaml==6.0.1                   # YAML 配置文件解析
+python-dotenv==1.0.1            # .env 环境变量加载
+loguru==0.7.2                   # 结构化日志
+
+# ========== 测试 ==========
+pytest==8.2.2                   # 单元测试框架
+pytest-asyncio==0.23.7          # 异步测试支持
+httpx==0.27.0                   # API 测试客户端
+</code></pre>
+    </div>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">配置</span>config.yaml 配置文件模板</h2>
+  <div class="lesson-explain">
+    <p>以下是全局配置文件模板，包含数据库连接、模型参数、日志级别等配置项。生产环境建议通过环境变量注入敏感信息。</p>
+    <div class="lesson-code">
+      <div class="demo-label">config.yaml</div>
+      <pre><code># ============================
+# 电缆数字孪生系统 - 全局配置
+# ============================
+app:
+  name: "cable-dt-system"
+  version: "1.0.0"
+  env: "production"              # 可选：development / staging / production
+  debug: false
+  secret_key: "${SECRET_KEY}"    # 从环境变量读取，用于 JWT 签名
+
+# ---------------------------
+# 数据库配置
+# ---------------------------
+database:
+  postgresql:
+    host: "postgres"
+    port: 5432
+    username: "postgres"
+    password: "${DB_PASSWORD}"   # 从环境变量读取
+    database: "cable_dt"
+    pool_size: 20                # 连接池大小
+    max_overflow: 10             # 连接池溢出上限
+    echo: false                  # 是否打印 SQL 语句（调试用）
+
+  influxdb:
+    url: "http://influxdb:8086"
+    token: "${INFLUX_TOKEN}"     # 从环境变量读取
+    org: "cable-corp"
+    bucket: "sensor_data"
+    timeout: 5000                # 请求超时（毫秒）
+
+  redis:
+    host: "redis"
+    port: 6379
+    db: 0
+    password: ""                 # 无密码时留空
+
+# ---------------------------
+# 机器学习模型配置
+# ---------------------------
+model:
+  default_model: "xgboost_v1.2"
+  model_dir: "/app/models"
+  feature_columns:
+    - "extruder_temp_zone1"
+    - "extruder_temp_zone2"
+    - "extruder_temp_zone3"
+    - "extruder_temp_zone4"
+    - "screw_rpm"
+    - "traction_speed"
+    - "cooling_temp"
+    - "melt_index"
+  target_column: "insulation_thickness"
+  prediction_threshold:
+    warning: 0.05                # 偏差 5% 触发预警
+    critical: 0.10               # 偏差 10% 触发严重告警
+  retrain_schedule: "0 2 * * 0"  # 每周日凌晨 2 点自动重训练
+
+# ---------------------------
+# 数据采集配置
+# ---------------------------
+acquisition:
+  plc:
+    protocol: "opcua"
+    endpoint: "opc.tcp://192.168.1.10:4840"
+    namespace: "urn:西门子:S7-1500"
+    sample_rate: 1               # 采样频率（Hz）
+    timeout: 5000
+  modbus:
+    enabled: false
+    host: "192.168.1.11"
+    port: 502
+    slave_id: 1
+
+# ---------------------------
+# 预警推送配置
+# ---------------------------
+alert:
+  channels:
+    - type: "webhook"
+      url: "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=${WECHAT_KEY}"
+      enabled: true
+    - type: "email"
+      smtp_host: "smtp.company.com"
+      smtp_port: 587
+      username: "alert@company.com"
+      password: "${EMAIL_PASSWORD}"
+      to: ["engineer@company.com", "manager@company.com"]
+      enabled: true
+  cooldown_minutes: 10           # 同一预警的冷却时间（分钟）
+
+# ---------------------------
+# 日志配置
+# ---------------------------
+logging:
+  level: "INFO"                  # 可选：DEBUG / INFO / WARNING / ERROR
+  format: "{time:YYYY-MM-DD HH:mm:ss} | {level} | {name}:{function}:{line} | {message}"
+  rotation: "10 MB"              # 单文件大小上限
+  retention: "30 days"           # 保留时长
+  sink: "/app/logs/app.log"
+</code></pre>
+    </div>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">文档</span>API 设计文档</h2>
+  <div class="lesson-explain">
+    <p>以下是核心 RESTful API 接口列表，包含 URL、Method、Request、Response 说明。所有接口前缀为 <code>/api/v1</code>，返回统一包装格式 <code>{"code": 0, "data": ..., "message": "ok"}</code>。</p>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>功能模块</th>
+          <th>URL</th>
+          <th>Method</th>
+          <th>Request</th>
+          <th>Response</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>用户认证</td>
+          <td>/auth/login</td>
+          <td>POST</td>
+          <td>{"username": "admin", "password": "cable123"}</td>
+          <td>{"code": 0, "data": {"access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...", "token_type": "bearer"}, "message": "ok"}</td>
+        </tr>
+        <tr>
+          <td>用户认证</td>
+          <td>/auth/me</td>
+          <td>GET</td>
+          <td>Header: Authorization: Bearer &lt;token&gt;</td>
+          <td>{"code": 0, "data": {"user_id": 1, "username": "admin", "role": "engineer"}, "message": "ok"}</td>
+        </tr>
+        <tr>
+          <td>数据查询</td>
+          <td>/data/sensor</td>
+          <td>GET</td>
+          <td>Query: device_id=EXT-01&amp;start_time=2024-06-01T00:00:00Z&amp;end_time=2024-06-02T00:00:00Z&amp;limit=100</td>
+          <td>{"code": 0, "data": {"items": [{"timestamp": "2024-06-01T00:00:00Z", "value": 185.5, "tag": "temp_zone1"}], "total": 86400}, "message": "ok"}</td>
+        </tr>
+        <tr>
+          <td>数据查询</td>
+          <td>/data/quality</td>
+          <td>GET</td>
+          <td>Query: batch_no=20240601-A01&amp;product_model=110kV-XLPE&amp;start_date=2024-06-01&amp;end_date=2024-06-30</td>
+          <td>{"code": 0, "data": {"items": [{"batch_no": "20240601-A01", "thickness": 2.35, "status": "pass"}], "summary": {"avg_thickness": 2.35, "pass_rate": 0.98}}, "message": "ok"}</td>
+        </tr>
+        <tr>
+          <td>质量预测</td>
+          <td>/predict/realtime</td>
+          <td>POST</td>
+          <td>{"device_id": "EXT-01", "current_params": {"extruder_temp": 185.5, "screw_rpm": 45.2, "traction_speed": 12.5}}</td>
+          <td>{"code": 0, "data": {"prediction": 2.38, "confidence": 0.92, "status": "normal", "threshold_warning": 0.05}, "message": "ok"}</td>
+        </tr>
+        <tr>
+          <td>质量预测</td>
+          <td>/predict/batch</td>
+          <td>POST</td>
+          <td>{"batch_data": [{"extruder_temp": 185.5, "screw_rpm": 45.2}, {"extruder_temp": 186.0, "screw_rpm": 45.0}], "model_version": "xgboost_v1.2"}</td>
+          <td>{"code": 0, "data": {"predictions": [2.38, 2.41], "mape": 0.032, "model_version": "xgboost_v1.2"}, "message": "ok"}</td>
+        </tr>
+        <tr>
+          <td>预警管理</td>
+          <td>/alerts/rules</td>
+          <td>GET</td>
+          <td>Query: device_id=EXT-01&amp;enabled=true</td>
+          <td>{"code": 0, "data": {"items": [{"rule_id": 1, "metric": "thickness", "operator": "&gt;", "threshold": 2.5, "enabled": true}]}, "message": "ok"}</td>
+        </tr>
+        <tr>
+          <td>预警管理</td>
+          <td>/alerts/rules</td>
+          <td>POST</td>
+          <td>{"device_id": "EXT-01", "metric": "thickness", "operator": "&gt;", "threshold": 2.5, "severity": "warning"}</td>
+          <td>{"code": 0, "data": {"rule_id": 2, "created_at": "2024-06-01T08:00:00Z", "enabled": true}, "message": "ok"}</td>
+        </tr>
+        <tr>
+          <td>预警管理</td>
+          <td>/alerts/history</td>
+          <td>GET</td>
+          <td>Query: start_time=2024-06-01T00:00:00Z&amp;end_time=2024-06-30T23:59:59Z&amp;severity=warning&amp;page=1&amp;page_size=20</td>
+          <td>{"code": 0, "data": {"items": [{"alert_id": 101, "rule_id": 2, "message": "厚度超标", "triggered_at": "2024-06-15T10:30:00Z"}], "total": 50, "page": 1, "page_size": 20}, "message": "ok"}</td>
+        </tr>
+        <tr>
+          <td>模型管理</td>
+          <td>/models</td>
+          <td>GET</td>
+          <td>Query: status=deployed&amp;page=1&amp;page_size=10</td>
+          <td>{"code": 0, "data": {"items": [{"model_id": "a1b2c3d4", "name": "xgboost_v1.2", "status": "deployed", "metrics": {"mape": 0.032, "r2": 0.89}}], "total": 3}, "message": "ok"}</td>
+        </tr>
+        <tr>
+          <td>模型管理</td>
+          <td>/models/{model_id}/deploy</td>
+          <td>POST</td>
+          <td>Path: model_id=a1b2c3d4; Body: {"device_ids": ["EXT-01", "EXT-02"]}</td>
+          <td>{"code": 0, "data": {"deployed_at": "2024-06-01T10:00:00Z", "status": "active", "device_ids": ["EXT-01", "EXT-02"]}, "message": "ok"}</td>
+        </tr>
+        <tr>
+          <td>设备管理</td>
+          <td>/devices</td>
+          <td>GET</td>
+          <td>Query: line_id=L1&amp;status=online</td>
+          <td>{"code": 0, "data": {"items": [{"device_id": "EXT-01", "name": "挤出机#1", "status": "online", "last_heartbeat": "2024-06-20T14:35:00Z"}]}, "message": "ok"}</td>
+        </tr>
+        <tr>
+          <td>数字孪生</td>
+          <td>/twin/state</td>
+          <td>GET</td>
+          <td>Query: line_id=L1&amp;timestamp=2024-06-20T14:35:00Z（可选，默认最新）</td>
+          <td>{"code": 0, "data": {"line_id": "L1", "devices": [{"device_id": "EXT-01", "status": "running", "temperature": 185.5}], "quality_summary": {"avg_thickness": 2.35, "alert_count": 0}}, "message": "ok"}</td>
+        </tr>
+        <tr>
+          <td>报表导出</td>
+          <td>/reports/quality</td>
+          <td>POST</td>
+          <td>{"start_date": "2024-05-01", "end_date": "2024-05-31", "format": "pdf"}</td>
+          <td>{"code": 0, "data": {"download_url": "/static/reports/quality_202405.pdf", "expires_at": "2024-06-21T10:00:00Z", "file_size": 2048000}, "message": "ok"}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="highlight-box">
+      <p><strong>接口规范说明：</strong>所有 POST/PUT 请求的 Request Body 均通过 Pydantic 模型校验；所有列表接口支持分页（page/page_size）和排序（sort_by/sort_order）；错误响应统一返回 <code>{"code": &gt;0, "data": null, "message": "错误描述"}</code>；需要认证的接口必须在 Header 中携带 <code>Authorization: Bearer &lt;access_token&gt;</code>。</p>
+    </div>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">工具</span>开发环境搭建检查清单</h2>
+  <div class="lesson-explain">
+    <p>以下是从零开始搭建开发环境的 10 项完整步骤，每项都有验证命令和常见问题处理。</p>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>序号</th>
+          <th>步骤</th>
+          <th>命令/操作</th>
+          <th>验证方式</th>
+          <th>常见问题</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>安装 Docker Desktop</td>
+          <td>从官网下载安装包，按向导完成安装</td>
+          <td>docker --version</td>
+          <td>Windows 需开启 WSL2 后端；Mac M 系列选择 Apple Silicon 版本</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>安装 Docker Compose</td>
+          <td>Docker Desktop 已内置 Compose</td>
+          <td>docker compose version</td>
+          <td>旧版独立安装的 docker-compose 需卸载，避免命令冲突</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>安装 Python 3.11+</td>
+          <td>官网下载安装包或使用 pyenv</td>
+          <td>python --version</td>
+          <td>Windows 需勾选"Add Python to PATH"；Mac 建议用 Homebrew</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>安装 Node.js 18+</td>
+          <td>官网下载 LTS 版本或使用 nvm</td>
+          <td>node --version && npm --version</td>
+          <td>前端构建需要 Node 18+，低版本会导致依赖安装失败</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>克隆项目代码仓库</td>
+          <td>git clone https://github.com/your-org/cable-dt-system.git</td>
+          <td>ls cable-dt-system/</td>
+          <td>确保有仓库访问权限；大文件拉取失败可尝试 --depth 1</td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td>创建 Python 虚拟环境</td>
+          <td>cd backend && python -m venv venv && source venv/bin/activate</td>
+          <td>which python 显示 venv 路径</td>
+          <td>Windows 使用 venv\Scripts\activate；Git Bash 用 source venv/Scripts/activate</td>
+        </tr>
+        <tr>
+          <td>7</td>
+          <td>安装 Python 依赖</td>
+          <td>pip install -r requirements.txt</td>
+          <td>pip list | grep fastapi</td>
+          <td>安装缓慢可换国内镜像：pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt</td>
+        </tr>
+        <tr>
+          <td>8</td>
+          <td>安装前端依赖</td>
+          <td>cd frontend && npm install</td>
+          <td>ls node_modules/ | head</td>
+          <td>若卡住可换源：npm config set registry https://registry.npmmirror.com</td>
+        </tr>
+        <tr>
+          <td>9</td>
+          <td>启动基础设施服务</td>
+          <td>docker compose up -d postgres influxdb redis minio</td>
+          <td>docker compose ps</td>
+          <td>端口冲突时修改 docker-compose.yml 中的 ports 映射</td>
+        </tr>
+        <tr>
+          <td>10</td>
+          <td>启动后端与前端服务</td>
+          <td>后端：cd backend && uvicorn app.main:app --reload；前端：cd frontend && npm run dev</td>
+          <td>访问 http://localhost:8000/docs 和 http://localhost:5173</td>
+          <td>数据库连接失败检查 config.yaml 中的 host 是否为 localhost；前端代理配置检查 vite.config.js</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="highlight-box">
+      <p><strong>一键启动脚本：</strong>项目根目录下的 Makefile 封装了常用命令：<code>make infra-up</code> 启动基础设施，<code>make backend</code> 启动后端开发服务器，<code>make frontend</code> 启动前端开发服务器，<code>make test</code> 运行全部测试，<code>make logs</code> 查看服务日志。新成员只需执行 <code>make setup</code> 即可完成步骤 6-10 的自动化配置。</p>
+    </div>
+  </div>
+</section>
+
+<section class="lesson-block">
   <h2 class="lesson-title"><span class="lesson-num">错误</span>设计误区</h2>
   <div class="lesson-explain">
     <div class="mistake-card">
@@ -355,6 +1150,267 @@
     <p><strong>练习 1（验证）：</strong>根据你目前掌握的电缆数字孪生项目需求，画出系统架构图（可以用纸笔、ProcessOn、或 ASCII  art）。要求至少包含 4 个层次，每层至少 2 个组件。</p>
     <p><strong>练习 2（验证）：</strong>为你的系统选择技术栈，并说明理由。假设团队有 2 名 Python 后端工程师、1 名前端工程师、1 名算法工程师，预算 20 万元（含硬件和云服务）。</p>
     <p><strong>练习 3（设计）：</strong>设计"数据接入模块"的接口规范。假设需要接入西门子 S7-1500 PLC（OPC UA）和一台老旧的 Modbus RTU 设备，定义统一的数据输出格式（JSON Schema），并说明两种协议的数据如何映射到统一格式。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">验收</span>系统验收标准与测试用例</h2>
+  <div class="lesson-explain">
+    <p>在系统上线前，必须通过严格的验收测试，确保 API 功能正确、性能达标、部署可靠。以下是针对电缆数字孪生系统的验收测试用例和标准。</p>
+
+    <div class="concept-card">
+      <h4>API 端点单元测试（pytest 示例）</h4>
+      <p>以下是一份可运行的 Python pytest 测试代码，覆盖 5 个核心 API 端点：用户认证、传感器数据查询、质量预测、预警规则管理和健康检查。</p>
+      <div class="lesson-code">
+        <div class="demo-label">tests/test_api_acceptance.py</div>
+        <pre><code>import pytest
+from fastapi.testclient import TestClient
+from app.main import app
+
+client = TestClient(app)
+
+# ---------- 测试 1：用户登录 ----------
+def test_auth_login_success():
+    """测试目的：验证用户登录接口在合法凭据下返回正确的 JWT 令牌"""
+    # 前置条件：数据库中已存在用户 admin，密码为 cable123
+    response = client.post(
+        "/api/v1/auth/login",
+        json={"username": "admin", "password": "cable123"}
+    )
+    assert response.status_code == 200
+    data = response.json()
+    assert data["code"] == 0
+    assert "access_token" in data["data"]
+    assert data["data"]["token_type"] == "bearer"
+
+def test_auth_login_failure():
+    """测试目的：验证登录接口在错误密码下返回 401 且不提供令牌"""
+    response = client.post(
+        "/api/v1/auth/login",
+        json={"username": "admin", "password": "wrong_password"}
+    )
+    assert response.status_code == 401
+    assert response.json()["code"] > 0
+
+# ---------- 测试 2：传感器数据查询 ----------
+def test_sensor_data_query():
+    """测试目的：验证传感器数据查询接口返回正确的时间序列数据"""
+    # 前置条件：已登录并获取 token；InfluxDB 中存在 EXT-01 的测试数据
+    login = client.post("/api/v1/auth/login",
+                        json={"username": "admin", "password": "cable123"})
+    token = login.json()["data"]["access_token"]
+    response = client.get(
+        "/api/v1/data/sensor?device_id=EXT-01"
+        "&start_time=2024-06-01T00:00:00Z"
+        "&end_time=2024-06-01T01:00:00Z&limit=10",
+        headers={"Authorization": f"Bearer {token}"}
+    )
+    assert response.status_code == 200
+    data = response.json()
+    assert data["code"] == 0
+    assert len(data["data"]["items"]) <= 10
+    assert "timestamp" in data["data"]["items"][0]
+
+# ---------- 测试 3：实时质量预测 ----------
+def test_predict_realtime():
+    """测试目的：验证实时预测接口返回合理的厚度预测值和置信度"""
+    # 前置条件：模型 xgboost_v1.2 已部署并加载
+    login = client.post("/api/v1/auth/login",
+                        json={"username": "admin", "password": "cable123"})
+    token = login.json()["data"]["access_token"]
+    response = client.post(
+        "/api/v1/predict/realtime",
+        headers={"Authorization": f"Bearer {token}"},
+        json={
+            "device_id": "EXT-01",
+            "current_params": {
+                "extruder_temp": 185.5,
+                "screw_rpm": 45.2,
+                "traction_speed": 12.5
+            }
+        }
+    )
+    assert response.status_code == 200
+    data = response.json()
+    assert data["code"] == 0
+    assert 1.5 <= data["data"]["prediction"] <= 3.5
+    assert 0 <= data["data"]["confidence"] <= 1.0
+    assert data["data"]["status"] in ["normal", "warning", "critical"]
+
+# ---------- 测试 4：预警规则 CRUD ----------
+def test_alert_rule_crud():
+    """测试目的：验证预警规则的创建、查询、删除流程完整可用"""
+    login = client.post("/api/v1/auth/login",
+                        json={"username": "admin", "password": "cable123"})
+    token = login.json()["data"]["access_token"]
+    headers = {"Authorization": f"Bearer {token}"}
+    # 创建规则
+    create_resp = client.post(
+        "/api/v1/alerts/rules",
+        headers=headers,
+        json={
+            "device_id": "EXT-01",
+            "metric": "thickness",
+            "operator": ">",
+            "threshold": 2.5,
+            "severity": "warning"
+        }
+    )
+    assert create_resp.status_code == 200
+    rule_id = create_resp.json()["data"]["rule_id"]
+    # 查询规则
+    get_resp = client.get(
+        "/api/v1/alerts/rules?device_id=EXT-01&enabled=true",
+        headers=headers
+    )
+    assert get_resp.status_code == 200
+    assert any(r["rule_id"] == rule_id for r in get_resp.json()["data"]["items"])
+    # 删除规则（如支持）
+    # del_resp = client.delete(f"/api/v1/alerts/rules/{rule_id}", headers=headers)
+    # assert del_resp.status_code == 200
+
+# ---------- 测试 5：健康检查 ----------
+def test_health_check():
+    """测试目的：验证系统健康检查接口返回所有依赖服务状态正常"""
+    response = client.get("/api/v1/health")
+    assert response.status_code == 200
+    data = response.json()
+    assert data["code"] == 0
+    assert data["data"]["status"] == "healthy"
+    assert data["data"]["database"] == "connected"
+    assert data["data"]["influxdb"] == "connected"</code></pre>
+      </div>
+    </div>
+
+    <div class="concept-card">
+      <h4>系统性能验收标准</h4>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>测试用例编号</th>
+            <th>TC-PERF-001</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>测试目的</td><td>验证系统在目标并发量下的响应时间和错误率满足业务要求</td></tr>
+          <tr><td>前置条件</td><td>系统已完整部署（Docker Compose 或 K8s）；测试数据库已填充 30 天历史数据；压测工具（Locust/JMeter）已安装</td></tr>
+          <tr><td>输入</td><td>并发用户数：100 / 500 / 1000；测试脚本：模拟监控大屏页面访问 + API 调用</td></tr>
+          <tr><td>操作步骤</td><td>1. 启动压测工具，配置 100 并发，持续 5 分钟；2. 记录 P50/P95/P99 延迟和错误率；3. 逐步提升至 500 并发、1000 并发，重复测量；4. 监控服务器 CPU、内存、数据库连接池</td></tr>
+          <tr><td>预期结果</td><td>各并发级别下 API 响应稳定，错误率接近 0%</td></tr>
+          <tr><td>通过标准（量化指标）</td><td>
+            <strong>100 并发：</strong>P95 延迟 &lt; 200ms，错误率 &lt; 0.1%，CPU &lt; 50%，内存 &lt; 70%；<br>
+            <strong>500 并发：</strong>P95 延迟 &lt; 500ms，错误率 &lt; 0.5%，CPU &lt; 70%，内存 &lt; 80%；<br>
+            <strong>1000 并发：</strong>P95 延迟 &lt; 1000ms，错误率 &lt; 1.0%，CPU &lt; 85%，内存 &lt; 90%
+          </td></tr>
+          <tr><td>失败处理建议</td><td>若未达标：增加 Gunicorn worker 数量、启用 Redis 缓存、优化数据库索引、增加服务器节点、或启用 CDN 加速静态资源</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="concept-card">
+      <h4>部署验收检查表</h4>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>序号</th>
+            <th>检查项</th>
+            <th>验收标准（量化）</th>
+            <th>检查方式</th>
+            <th>检查结果</th>
+            <th>检查人签字</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>容器启动</td>
+            <td>docker-compose up -d 后 60 秒内所有服务状态为 Up</td>
+            <td>docker compose ps</td>
+            <td>□通过 □不通过</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>服务健康检查</td>
+            <td>/api/v1/health 返回 status=healthy，所有依赖为 connected</td>
+            <td>curl 调用健康检查接口</td>
+            <td>□通过 □不通过</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>数据库迁移</td>
+            <td>alembic upgrade head 执行成功，schema 版本与代码一致</td>
+            <td>查看 alembic_version 表</td>
+            <td>□通过 □不通过</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>API 文档可访问</td>
+            <td>/docs 返回 Swagger UI，所有接口文档完整</td>
+            <td>浏览器访问</td>
+            <td>□通过 □不通过</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>日志输出</td>
+            <td>所有服务有结构化日志输出，日志级别符合配置</td>
+            <td>docker logs 查看</td>
+            <td>□通过 □不通过</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td>数据持久化</td>
+            <td>容器重启后数据不丢失（InfluxDB/PostgreSQL/MinIO）</td>
+            <td>重启容器后查询历史数据</td>
+            <td>□通过 □不通过</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>7</td>
+            <td>备份机制</td>
+            <td>自动备份任务已配置，备份文件可成功恢复</td>
+            <td>查看 crontab，执行恢复演练</td>
+            <td>□通过 □不通过</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>8</td>
+            <td>网络连通性</td>
+            <td>前端可正常访问后端 API，跨域配置正确</td>
+            <td>浏览器 DevTools 查看请求</td>
+            <td>□通过 □不通过</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>9</td>
+            <td>安全配置</td>
+            <td>JWT 密钥非默认值，数据库密码非弱密码，HTTPS 已启用（生产环境）</td>
+            <td>检查环境变量和配置文件</td>
+            <td>□通过 □不通过</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>10</td>
+            <td>监控告警</td>
+            <td>Prometheus/Grafana 或基础监控已部署，关键指标有告警规则</td>
+            <td>查看监控面板和告警规则</td>
+            <td>□通过 □不通过</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td colspan="6"><strong>部署验收结论：</strong>□全部通过（10/10）  □有条件通过（通过 __ 项，整改项：________）  □不通过<br>运维工程师签字：________  技术经理签字：________  日期：________</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="highlight-box">
+      <p><strong>pytest 运行命令：</strong>在项目根目录执行 <code>cd backend && pytest tests/test_api_acceptance.py -v --tb=short</code> 即可运行全部验收测试。建议在 CI/CD 流水线中配置自动执行，每次代码合并前必须通过全部测试。</p>
+    </div>
   </div>
 </section>
 
