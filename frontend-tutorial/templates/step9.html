@@ -203,6 +203,160 @@
 </div>
 
 <div class="lesson-section">
+  <h2>示例</h2>
+  <h3>设计一个电商商品详情页的响应式布局</h3>
+  <p>假设你要为一个电商 App 设计商品详情页，页面包含商品图片、基本信息（价格/标题/销量）、SKU 选择、购买按钮、详情图文、推荐商品。如何让这个页面在手机、平板、桌面上都有良好的体验？</p>
+
+  <h4>1. 断点选择依据</h4>
+  <p>这个页面的核心内容是"商品图片 + 购买信息"。我们通过逐步缩小浏览器窗口来找到布局崩坏的临界点：</p>
+  <ul>
+    <li><strong>约 768px</strong>：当窗口小于这个宽度时，原本左右排列的图片和购买信息开始挤压，文字换行严重，SKU 选项的横向排列超出屏幕。因此设 768px 为第一个断点。</li>
+    <li><strong>约 992px</strong>：在 768px-992px 之间，两栏布局尚可工作，但详情图文的宽度利用率不高。超过 992px 后，三栏布局（左图、中信息、右推荐）能让信息层级更清晰。因此设 992px 为第二个断点。</li>
+  </ul>
+  <p>断点不是根据设备型号（如 iPhone 375px、iPad 768px）选择的，而是根据"内容何时开始崩坏"选择的。</p>
+
+  <h4>2. 三栏到单栏的布局演变</h4>
+  <div class="demo-card">
+    <div class="demo-label">布局演变示意</div>
+    <div class="demo-s9-ex1-layout">
+      <div class="demo-s9-ex1-col">
+        <div class="demo-s9-ex1-label">手机（&lt; 768px）</div>
+        <div class="demo-s9-ex1-phone">
+          <div class="demo-s9-ex1-img">图片</div>
+          <div class="demo-s9-ex1-info">
+            <div class="demo-s9-ex1-title">商品标题</div>
+            <div class="demo-s9-ex1-price">¥ 299</div>
+            <div class="demo-s9-ex1-sku">SKU 选择</div>
+            <button class="btn btn-primary demo-s9-ex1-btn">立即购买</button>
+          </div>
+          <div class="demo-s9-ex1-detail">详情图文</div>
+        </div>
+      </div>
+      <div class="demo-s9-ex1-col">
+        <div class="demo-s9-ex1-label">平板（768px - 992px）</div>
+        <div class="demo-s9-ex1-tablet">
+          <div class="demo-s9-ex1-img">图片</div>
+          <div class="demo-s9-ex1-info">
+            <div class="demo-s9-ex1-title">商品标题</div>
+            <div class="demo-s9-ex1-price">¥ 299</div>
+            <div class="demo-s9-ex1-sku">SKU 选择</div>
+            <button class="btn btn-primary demo-s9-ex1-btn">立即购买</button>
+          </div>
+        </div>
+        <div class="demo-s9-ex1-detail">详情图文</div>
+      </div>
+      <div class="demo-s9-ex1-col">
+        <div class="demo-s9-ex1-label">桌面（&gt; 992px）</div>
+        <div class="demo-s9-ex1-desktop">
+          <div class="demo-s9-ex1-left">
+            <div class="demo-s9-ex1-img">图片</div>
+            <div class="demo-s9-ex1-detail">详情图文</div>
+          </div>
+          <div class="demo-s9-ex1-center">
+            <div class="demo-s9-ex1-title">商品标题</div>
+            <div class="demo-s9-ex1-price">¥ 299</div>
+            <div class="demo-s9-ex1-sku">SKU 选择</div>
+            <button class="btn btn-primary demo-s9-ex1-btn">立即购买</button>
+          </div>
+          <div class="demo-s9-ex1-right">
+            <div class="demo-s9-ex1-rec">推荐商品</div>
+            <div class="demo-s9-ex1-rec">推荐商品</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p>布局演变逻辑：</p>
+  <ol>
+    <li><strong>手机（单列）</strong>：图片占满全宽，信息垂直排列，购买按钮固定在屏幕底部（sticky bottom），确保用户随时可下单。</li>
+    <li><strong>平板（两列）</strong>：图片与信息左右分栏（约 1:1），详情图文通栏展示。利用屏幕宽度减少纵向滚动。</li>
+    <li><strong>桌面（三列）</strong>：左侧大图 + 详情，中间核心信息 + 购买操作，右侧推荐商品。三栏比例约为 5:4:3，总最大宽度 1200px 居中，避免内容过度拉伸。</li>
+  </ol>
+
+  <h4>3. 触摸目标尺寸调整</h4>
+  <p>同一个"立即购买"按钮，在不同设备上的尺寸策略：</p>
+  <ul>
+    <li><strong>手机</strong>：宽度 100%，高度 48px。Apple HIG 建议触摸目标至少 44×44px，Material Design 建议 48×48px。48px 的高度能覆盖绝大多数用户的手指接触面积，降低误触率。</li>
+    <li><strong>平板</strong>：宽度自适应（如 min-width: 200px），高度 44px。平板用户可能用手指或触控笔操作，44px 是安全的下限。</li>
+    <li><strong>桌面</strong>：宽度自适应，高度 40px。桌面端使用鼠标，精度远高于手指，可以适当减小高度以节省空间，但仍需保证可点击感。</li>
+  </ul>
+  <p>SKU 选项（颜色、尺码）在手机端也要从横向排列改为纵向堆叠，每个选项高度不低于 44px，并留出足够的间距防止误触。</p>
+
+  <h4>4. 核心媒体查询代码</h4>
+  <pre class="code-block">/* 移动优先：基础样式针对手机 */
+.product-page {
+  padding: 16px;
+}
+.product-image {
+  width: 100%;
+  border-radius: 8px;
+}
+.product-info {
+  margin-top: 16px;
+}
+.buy-btn {
+  width: 100%;
+  height: 48px;
+  font-size: 16px;
+}
+.sku-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.sku-option {
+  min-height: 44px;
+  padding: 10px 16px;
+}
+
+/* 平板断点：两栏布局 */
+@media (min-width: 768px) {
+  .product-page {
+    padding: 24px;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+  .product-top {
+    display: flex;
+    gap: 24px;
+  }
+  .product-image {
+    width: 50%;
+  }
+  .product-info {
+    width: 50%;
+    margin-top: 0;
+  }
+  .buy-btn {
+    width: auto;
+    min-width: 200px;
+    height: 44px;
+  }
+  .sku-options {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}
+
+/* 桌面断点：三栏布局 */
+@media (min-width: 992px) {
+  .product-page {
+    max-width: 1200px;
+    display: grid;
+    grid-template-columns: 5fr 4fr 3fr;
+    gap: 32px;
+  }
+  .product-image {
+    width: 100%;
+  }
+  .buy-btn {
+    height: 40px;
+  }
+}</pre>
+</div>
+
+<div class="lesson-section">
   <h2>效果展示</h2>
   <h3>响应式卡片布局</h3>
   <div class="demo-card">
@@ -364,5 +518,23 @@
 .demo-s9-options { margin: 0 0 8px; padding-left: 20px; color: var(--text-secondary); }
 .demo-s9-options li { margin-bottom: 4px; }
 .demo-s9-answer { background: var(--color-primary-light); padding: 8px 12px; border-radius: 4px; font-size: 14px; color: var(--text-secondary); margin-bottom: 8px; }
+.demo-s9-ex1-layout { display: flex; gap: 16px; flex-wrap: wrap; }
+.demo-s9-ex1-col { flex: 1; min-width: 240px; }
+.demo-s9-ex1-label { font-size: 12px; color: var(--text-tertiary); margin-bottom: 8px; text-align: center; }
+.demo-s9-ex1-phone { background: var(--gray-3); padding: 12px; border-radius: 8px; }
+.demo-s9-ex1-tablet { display: flex; gap: 12px; background: var(--gray-3); padding: 12px; border-radius: 8px; }
+.demo-s9-ex1-desktop { display: flex; gap: 12px; background: var(--gray-3); padding: 12px; border-radius: 8px; }
+.demo-s9-ex1-img { background: var(--color-primary-light); padding: 20px; border-radius: 4px; text-align: center; font-size: 12px; color: var(--color-primary); margin-bottom: 8px; }
+.demo-s9-ex1-tablet .demo-s9-ex1-img { flex: 1; margin-bottom: 0; }
+.demo-s9-ex1-desktop .demo-s9-ex1-left { flex: 5; }
+.demo-s9-ex1-desktop .demo-s9-ex1-center { flex: 4; }
+.demo-s9-ex1-desktop .demo-s9-ex1-right { flex: 3; }
+.demo-s9-ex1-title { font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+.demo-s9-ex1-price { font-size: 16px; color: var(--color-error); font-weight: 600; margin-bottom: 8px; }
+.demo-s9-ex1-sku { font-size: 12px; color: var(--text-secondary); background: var(--gray-4); padding: 6px 8px; border-radius: 4px; margin-bottom: 8px; }
+.demo-s9-ex1-btn { width: 100%; margin-top: 4px; }
+.demo-s9-ex1-detail { font-size: 12px; color: var(--text-tertiary); background: var(--gray-4); padding: 12px; border-radius: 4px; margin-top: 8px; text-align: center; }
+.demo-s9-ex1-rec { font-size: 12px; color: var(--text-secondary); background: var(--color-success-bg); padding: 12px; border-radius: 4px; margin-bottom: 8px; text-align: center; }
+.demo-s9-ex1-rec:last-child { margin-bottom: 0; }
 </style>
 {% endblock %}

@@ -225,6 +225,158 @@
 </div>
 
 <div class="lesson-section">
+  <h2>示例</h2>
+  <p>以下通过一个"B端数据仪表盘"的导航与布局设计案例，展示信息架构如何从业务需求转化为页面结构，以及 Flexbox 与 Grid 在不同层级中的分工。</p>
+
+  <h3>业务背景与信息架构</h3>
+  <p>假设我们为一家制造企业的生产管理部门设计数据仪表盘。用户角色包括：生产主管（关注整体产能）、质量工程师（关注缺陷分析）、设备维护员（关注设备状态）。通过用户访谈和卡片分类法，梳理出以下信息架构：</p>
+
+  <div class="concept-card">
+    <h4>信息架构图（树状结构）</h4>
+    <pre class="code-block">仪表盘（根）
+├── 生产概览（默认页）
+│   ├── 实时产能
+│   ├── 订单进度
+│   └── 人员效率
+├── 质量分析
+│   ├── 缺陷趋势
+│   ├── 批次追溯
+│   └── SPC 控制图
+├── 设备监控
+│   ├── 运行状态
+│   ├── 维保计划
+│   └── 报警记录
+├── 报表中心
+│   ├── 日报
+│   ├── 周报
+│   └── 自定义导出
+└── 系统设置
+    ├── 用户权限
+    ├── 数据对接
+    └── 通知配置</pre>
+  </div>
+
+  <h3>导航层级分析</h3>
+  <p>根据信息架构，导航分为三个层级，每个层级使用不同的组件：</p>
+  <div class="concept-card">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>层级</th>
+          <th>范围</th>
+          <th>组件</th>
+          <th>设计理由</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>L1：全局导航</td>
+          <td>5 个一级模块</td>
+          <td>侧边导航（Side Navigation）</td>
+          <td>模块数 > 7 的阈值虽未到，但未来可能扩展；侧边导航提供稳定的方位感</td>
+        </tr>
+        <tr>
+          <td>L2：模块导航</td>
+          <td>每个模块下 3 个子项</td>
+          <td>标签页（Tabs）或二级侧边菜单</td>
+          <td>子项数量少且同级，标签页切换效率高；若子项 > 5 则改用二级菜单</td>
+        </tr>
+        <tr>
+          <td>L3：页面内导航</td>
+          <td>长页面内的内容区块</td>
+          <td>锚点导航（Anchor）</td>
+          <td>单页内容过多时，锚点帮助用户快速定位，避免无限滚动</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>布局实现：Flexbox 与 Grid 的分工</h3>
+  <p>整个仪表盘页面分为三个区域：顶部 Header（固定 56px）、左侧 Sidebar（固定 200px）、右侧 Main Content（自适应剩余空间）。Main Content 内部是一个 2×2 的卡片网格。</p>
+
+  <h4>1. 页面骨架：Grid 控制二维结构</h4>
+  <pre class="code-block">&lt;style&gt;
+.dashboard {
+  display: grid;
+  grid-template-columns: 200px 1fr;  /* 侧边栏固定，主内容自适应 */
+  grid-template-rows: 56px 1fr;      /* 顶部固定，内容区自适应 */
+  grid-template-areas:
+    "header header"
+    "sidebar main";
+  height: 100vh;
+}
+.header  { grid-area: header; }
+.sidebar { grid-area: sidebar; }
+.main    { grid-area: main; overflow: auto; }
+&lt;/style&gt;
+
+&lt;div class="dashboard"&gt;
+  &lt;header class="header"&gt;...&lt;/header&gt;
+  &lt;aside class="sidebar"&gt;...&lt;/aside&gt;
+  &lt;main class="main"&gt;...&lt;/main&gt;
+&lt;/div&gt;</pre>
+  <p><strong>为何用 Grid？</strong> 页面骨架需要同时控制行列（侧边栏宽 + 主内容宽，Header 高 + 内容高），Grid 的二维能力和 <code>grid-template-areas</code> 使结构一目了然，代码语义清晰。</p>
+
+  <h4>2. 侧边导航：Flexbox 控制一维排列</h4>
+  <pre class="code-block">&lt;style&gt;
+.nav-menu {
+  display: flex;
+  flex-direction: column;  /* 垂直排列 */
+  gap: 4px;
+  list-style: none;
+  padding: 12px;
+}
+.nav-item {
+  padding: 10px 16px;
+  border-radius: 6px;
+  color: rgba(255,255,255,0.85);
+}
+.nav-item:hover, .nav-item.active {
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+}
+&lt;/style&gt;
+
+&lt;ul class="nav-menu"&gt;
+  &lt;li class="nav-item active"&gt;生产概览&lt;/li&gt;
+  &lt;li class="nav-item"&gt;质量分析&lt;/li&gt;
+  &lt;li class="nav-item"&gt;设备监控&lt;/li&gt;
+  &lt;li class="nav-item"&gt;报表中心&lt;/li&gt;
+  &lt;li class="nav-item"&gt;系统设置&lt;/li&gt;
+&lt;/ul&gt;</pre>
+  <p><strong>为何用 Flexbox？</strong> 导航项是单一维度的垂直列表，Flexbox 的 <code>flex-direction: column</code> 和 <code>gap</code> 足以高效处理。相比 Grid，代码更简洁，且天然支持内容高度变化时的自适应。</p>
+
+  <h4>3. 主内容区卡片网格：Grid 控制二维分布</h4>
+  <pre class="code-block">&lt;style&gt;
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);  /* 2列等宽 */
+  gap: 16px;
+  padding: 24px;
+}
+@media (max-width: 1200px) {
+  .card-grid { grid-template-columns: 1fr; }  /* 窄屏单列 */
+}
+&lt;/style&gt;
+
+&lt;div class="card-grid"&gt;
+  &lt;div class="card"&gt;实时产能&lt;/div&gt;
+  &lt;div class="card"&gt;订单进度&lt;/div&gt;
+  &lt;div class="card"&gt;人员效率&lt;/div&gt;
+  &lt;div class="card"&gt;设备 OEE&lt;/div&gt;
+&lt;/div&gt;</pre>
+  <p><strong>为何用 Grid？</strong> 卡片需要严格的 2×2 对齐，Grid 的 <code>repeat(2, 1fr)</code> 确保两列等宽，无需计算百分比。响应式切换只需改一行 <code>grid-template-columns</code>，比 Flexbox 的 <code>flex-basis</code> 计算更直观。</p>
+
+  <h3>设计验证清单</h3>
+  <ul>
+    <li><strong>3 次点击原则</strong>：任何数据从进入仪表盘到展示详情 ≤ 3 次点击（概览 → 模块 → 标签页）。</li>
+    <li><strong>当前位置高亮</strong>：侧边栏当前项使用品牌色背景 + 白色文字，与 hover 态区分。</li>
+    <li><strong>响应式覆盖</strong>：1200px 以上 2 列卡片；768px-1200px 单列卡片；768px 以下侧边栏收起为图标模式。</li>
+    <li><strong>性能预算</strong>：首屏加载 &lt; 2s，Grid/Flexbox 布局计算由浏览器原生完成，无 JavaScript 布局开销。</li>
+  </ul>
+</div>
+
+<div class="lesson-section">
   <h2>效果展示</h2>
   <h3>顶部导航</h3>
   <div class="demo-card">

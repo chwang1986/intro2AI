@@ -230,6 +230,141 @@
 </div>
 
 <div class="lesson-section">
+  <h2>示例</h2>
+  <h3>设计一个订单管理表格</h3>
+  <p>假设你要为后台管理系统设计一个订单管理页面，运营人员每天需要处理 200+ 笔订单。如何从零开始设计一个既信息丰富又操作高效的表格？</p>
+
+  <h4>1. 需求拆解</h4>
+  <p>与产品经理沟通后，梳理出用户的核心诉求：</p>
+  <ul>
+    <li><strong>浏览</strong>：一屏内看到尽可能多的订单，快速识别异常订单（超时未发货、退款中）。</li>
+    <li><strong>筛选</strong>：按状态（待付款/待发货/已发货/已完成）、时间范围、金额区间查找订单。</li>
+    <li><strong>排序</strong>：按下单时间、金额排序，找出最近的大额订单。</li>
+    <li><strong>操作</strong>：对单条订单执行"查看详情""发货""取消"等操作。</li>
+  </ul>
+  <p>由此确定表格列：订单号、下单时间、客户信息、商品摘要、金额、状态、操作，共 7 列。</p>
+
+  <h4>2. 信息密度决策</h4>
+  <p>运营人员的显示器为 1920×1080，表格可用宽度约 1400px。如何分配空间？</p>
+  <ul>
+    <li><strong>订单号</strong>：120px，等宽字体（<code class="code-inline">font-variant-numeric: tabular-nums</code>），方便视觉扫描。</li>
+    <li><strong>下单时间</strong>：160px，格式统一为 2024-01-15 14:32，避免换行。</li>
+    <li><strong>客户信息</strong>：200px，显示昵称 + 手机号后四位，超出截断。</li>
+    <li><strong>商品摘要</strong>：弹性列（<code class="code-inline">min-width: 240px</code>），用省略号截断，hover 显示 tooltip。</li>
+    <li><strong>金额</strong>：120px，右对齐，保留两位小数，千分位分隔。</li>
+    <li><strong>状态</strong>：100px，用带底色标签展示，颜色语义：待付款（橙）、待发货（蓝）、已发货（绿）、已完成（灰）。</li>
+    <li><strong>操作</strong>：140px，居中，放置"查看""发货"文字链接，避免大按钮争抢视觉焦点。</li>
+  </ul>
+  <p>行高选择 48px（Ant Design 默认），在 1080p 屏幕上可展示约 16 行，配合分页每页 20 条，刚好覆盖一屏。</p>
+
+  <h4>3. 排序与筛选交互设计</h4>
+  <div class="demo-card">
+    <div class="demo-label">交互原型</div>
+    <div class="demo-s8-ex1-toolbar">
+      <div class="demo-s8-ex1-filter">
+        <span>状态：</span>
+        <select class="demo-s8-ex1-select">
+          <option>全部</option>
+          <option>待付款</option>
+          <option>待发货</option>
+          <option>已发货</option>
+        </select>
+      </div>
+      <div class="demo-s8-ex1-filter">
+        <span>时间：</span>
+        <input type="text" class="demo-s8-ex1-input" value="2024-01-01 ~ 2024-01-31" readonly>
+      </div>
+      <button class="btn btn-primary">筛选</button>
+    </div>
+    <div class="table-wrap">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>订单号 ↕</th>
+            <th>下单时间 ↕</th>
+            <th>客户</th>
+            <th>商品</th>
+            <th class="demo-s8-num">金额</th>
+            <th>状态</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>ORD-240115-001</td>
+            <td>2024-01-15 09:23</td>
+            <td>张三（**1234）</td>
+            <td>无线蓝牙耳机 Pro...</td>
+            <td class="demo-s8-num">299.00</td>
+            <td><span class="tag tag-brand">待发货</span></td>
+            <td class="demo-s8-ex1-center"><a href="#">查看</a> <a href="#">发货</a></td>
+          </tr>
+          <tr>
+            <td>ORD-240115-002</td>
+            <td>2024-01-15 10:45</td>
+            <td>李四（**5678）</td>
+            <td>机械键盘 RGB版...</td>
+            <td class="demo-s8-num">459.00</td>
+            <td><span class="tag tag-success">已发货</span></td>
+            <td class="demo-s8-ex1-center"><a href="#">查看</a></td>
+          </tr>
+          <tr>
+            <td>ORD-240115-003</td>
+            <td>2024-01-15 11:02</td>
+            <td>王五（**9012）</td>
+            <td>Type-C 扩展坞...</td>
+            <td class="demo-s8-num">128.00</td>
+            <td><span class="tag tag-warning">待付款</span></td>
+            <td class="demo-s8-ex1-center"><a href="#">查看</a> <a href="#">取消</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <p>交互细节：</p>
+  <ol>
+    <li><strong>排序状态可视化</strong>：默认所有表头显示灰色 ↕，点击后变为蓝色 ↑ 或 ↓，其他列恢复灰色。</li>
+    <li><strong>筛选即时生效</strong>：下拉框改变后立即过滤，同时在表格上方显示"当前筛选：待发货 × 清除"，方便用户知道数据为何变少。</li>
+    <li><strong>批量操作</strong>：每行首列加复选框，选中后在表格顶部浮现批量操作栏（批量发货、批量导出）。</li>
+    <li><strong>固定表头 + 固定操作列</strong>：表头用 <code class="code-inline">position: sticky; top: 0</code>，操作列用 <code class="code-inline">position: sticky; right: 0</code>，横向滚动时始终可见。</li>
+  </ol>
+
+  <h4>4. 核心代码片段</h4>
+  <pre class="code-block">/* 固定表头 + 固定右列 */
+.table-wrap {
+  overflow-x: auto;
+  max-height: 600px;
+}
+.table thead th {
+  position: sticky;
+  top: 0;
+  background: #FAFAFA;
+  z-index: 1;
+}
+.table th:last-child,
+.table td:last-child {
+  position: sticky;
+  right: 0;
+  background: #fff;
+  box-shadow: -2px 0 4px rgba(0,0,0,0.05);
+}
+
+/* 数字右对齐 + 等宽 */
+.col-amount {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  font-family: var(--font-mono);
+}
+
+/* 排序状态 */
+th.sortable { cursor: pointer; }
+th.sortable::after { content: ' ↕'; color: #BFBFBF; }
+th.sort-asc::after { content: ' ↑'; color: #1677FF; }
+th.sort-desc::after { content: ' ↓'; color: #1677FF; }</pre>
+</div>
+
+<div class="lesson-section">
   <h2>效果展示</h2>
   <h3>标准表格</h3>
   <div class="demo-card">
@@ -378,5 +513,10 @@
 .demo-s8-answer { background: var(--color-primary-light); padding: 8px 12px; border-radius: 4px; font-size: 14px; color: var(--text-secondary); margin-bottom: 8px; }
 .demo-s8-bar { height: 6px; background: #1677FF; border-radius: 3px; }
 .demo-s8-w75 { width: 75%; }
+.demo-s8-ex1-toolbar { display: flex; gap: 12px; align-items: center; margin-bottom: 16px; flex-wrap: wrap; }
+.demo-s8-ex1-filter { display: flex; align-items: center; gap: 6px; font-size: 14px; color: var(--text-secondary); }
+.demo-s8-ex1-select { padding: 6px 10px; border: 1px solid var(--border-color); border-radius: var(--border-radius-sm); font-size: 14px; background: #fff; }
+.demo-s8-ex1-input { padding: 6px 10px; border: 1px solid var(--border-color); border-radius: var(--border-radius-sm); font-size: 14px; background: var(--gray-3); color: var(--text-secondary); }
+.demo-s8-ex1-center { text-align: center; }
 </style>
 {% endblock %}
