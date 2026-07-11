@@ -15,25 +15,81 @@
 </div>
 
 <div class="lesson-section">
+  <h2>起源</h2>
+  <p>网格系统的历史可以追溯到古希腊和古埃及的建筑比例法则，但现代意义上的页面网格诞生于 20 世纪初的<strong>瑞士国际主义风格</strong>。设计师 Josef Müller-Brockmann 在 1981 年出版的《Grid Systems in Graphic Design》中，系统阐述了如何将页面划分为等宽的栏（Column）和统一的间距（Gutter），从而实现理性的排版秩序。</p>
+  <p>这套方法最初用于印刷品（杂志、海报），核心思想是：<strong>所有的设计元素都应当对齐到隐形的网格线上</strong>。1984 年，Apple 推出 Macintosh 电脑，引入了图形用户界面（GUI），屏幕设计开始借鉴印刷网格的概念。但由于屏幕尺寸不固定（不同于印刷品的固定纸张），响应式网格成为新的挑战。</p>
+  <p>2010 年代，随着移动设备的普及，<strong>8px 网格系统</strong>成为业界共识。Google Material Design（2014）、Ant Design（2015）、TDesign（2021）都将 8px 作为基础单位。这个选择并非偶然，而是基于数学、生理和工程的综合考量。</p>
+</div>
+
+<div class="lesson-section">
+  <h2>思考</h2>
+  <h3>为什么 8px 是基准，而不是 5px 或 10px？</h3>
+  <p>选择 8px 而非其他数字，有三个层面的原因：</p>
+  <ol>
+    <li><strong>数学层面</strong>：8 是最小的"高度合成数"之一（1×8、2×4），可以被 1、2、4、8 整除。这意味着 8px 网格可以灵活地分割为 4px（半格）、2px（四分之一格），在需要精细调整时仍有规律可循。10px 只能被 1、2、5、10 整除，灵活性不足。</li>
+    <li><strong>工程层面</strong>：主流屏幕分辨率（1920×1080、2560×1440、3840×2160）都能被 8 整除，不会出现半个像素的情况。而 5px 或 7px 在某些尺寸下会产生非整数像素，导致渲染模糊。</li>
+    <li><strong>感知层面</strong>：人眼对 8px 的增量有自然的节奏感。从 8px 到 16px、24px、32px，每次增加都是一个"明显的 but 不突兀"的跳跃。5px 的增量太小，用户感知不到变化；10px 的增量又太大，中间缺乏过渡。</li>
+  </ol>
+  <h3>为什么留白不是浪费？</h3>
+  <p>初学者常常觉得"页面太空"，试图用内容填满每一个角落。但认知心理学的研究表明，<strong>信息密度与理解效率呈倒 U 型关系</strong>：密度太低（太空）会让用户觉得内容单薄；密度太高（太满）则会让用户产生认知过载，无法有效处理信息。</p>
+  <p>留白的作用有三个：1) <strong>分组</strong>——间距大小暗示元素之间的关系；2) <strong>呼吸</strong>——给用户的视觉系统提供休息点；3) <strong>强调</strong>——周围的空白让重要元素更突出。Apple 的产品页面是留白的极致运用，大面积空白让产品图和核心文案成为唯一的视觉焦点。</p>
+</div>
+
+<div class="lesson-section">
   <h2>原理</h2>
-  <h3>8px 网格系统</h3>
-  <p>Ant Design 和 TDesign 都使用 8px 作为基础单位。原因很实际：</p>
+  <h3>8px 网格系统的底层逻辑</h3>
+  <p>Ant Design 和 TDesign 都使用 8px 作为基础单位，但这个选择背后有更深层的逻辑：</p>
+  <ol>
+    <li><strong>可整除性</strong>：8 可以被 1、2、4、8 整除，意味着 8px 网格可以灵活地分割为 4px（半格）或 2px（四分之一格）。在需要精细调整时（如图标与文字的对齐），设计师仍然可以基于 8px 的倍数进行推导，而不会陷入"7px vs 8px"的随意选择。</li>
+    <li><strong>屏幕像素对齐</strong>：主流屏幕分辨率（1920×1080、2560×1440、3840×2160）都能被 8 整除。使用 8px 的倍数，元素边缘会精确对齐到物理像素，避免亚像素渲染导致的模糊。</li>
+    <li><strong>韦伯-费希纳定律</strong>：人眼对刺激的感知遵循对数规律，而非线性规律。8px、16px、24px、32px 的增量在感知上形成近似等比的节奏，每个阶梯都"刚好能被注意到"。</li>
+  </ol>
+
+  <h3>留白与认知负荷</h3>
+  <p>留白不是"空着没东西"，而是<strong>主动的信息组织行为</strong>。认知心理学中的<strong>认知负荷理论</strong>（Cognitive Load Theory）指出，人脑的工作记忆容量有限（约 4±1 个组块）。当页面信息密度过高时，用户的认知负荷超载，无法有效处理信息。</p>
+  <p>留白通过三种机制降低认知负荷：</p>
   <ul>
-    <li>8 是偶数，一半（4px）、两倍（16px）、三倍（24px）都是整数，计算方便。</li>
-    <li>主流屏幕分辨率都能被 8 整除，不会出现半个像素的情况。</li>
-    <li>人眼对 8px 的增量有自然的节奏感，不会觉得跳。</li>
+    <li><strong>分组</strong>：间距大小暗示元素之间的关系。相关内容间距小（亲密性），不同模块间距大（分隔）。TDesign 建议模块间距至少 24px，否则用户会误以为这些内容属于同一组。</li>
+    <li><strong>呼吸</strong>：连续的阅读或操作会让视觉系统疲劳。留白提供了"视觉休息点"，让用户在处理下一组信息前有机会重置注意力。</li>
+    <li><strong>强调</strong>：周围的空白让重要元素更突出。一个被大面积空白包围的按钮，比被其他元素挤压的按钮更容易被注意到。</li>
   </ul>
 
-  <h3>留白的心理学</h3>
-  <p>留白不是"空着没东西"，而是<strong>主动的组织行为</strong>。相关内容之间的间距小（亲密性），不同模块之间的间距大（分隔）。TDesign 建议模块间距至少 24px，否则用户会误以为这些内容属于同一组。</p>
-
-  <h3>容器宽度的选择</h3>
-  <p>太宽的容器（比如 100%）会让长文本难以阅读，因为视线移动距离太长。Ant Design 的推荐：</p>
+  <h3>容器宽度的生理学依据</h3>
+  <p>容器宽度的选择不是凭感觉，而是基于人眼视野的生理限制。人眼的<strong>清晰视野</strong>（Foveal Vision）只有约 2° 的视角，对应阅读距离 50cm 时的 1.75cm 宽度。超出这个范围的内容需要通过眼动（Saccade）来扫视，增加认知负担。</p>
+  <p>Ant Design 的容器宽度推荐：</p>
   <ul>
-    <li>阅读型页面（文章、文档）：最大宽度 680px ~ 860px。</li>
-    <li>工具型页面（后台、仪表盘）：最大宽度 1200px ~ 1440px。</li>
-    <li>全屏展示（数据大屏）：100%，但内容区域用网格分块。</li>
+    <li><strong>阅读型页面（680px ~ 860px）</strong>：对应约 60~80 个汉字/行的长度。研究表明，这个长度下读者的回归眼动（Return Sweep）错误率最低。</li>
+    <li><strong>工具型页面（1200px ~ 1440px）</strong>：仪表盘需要并排展示多个数据模块，较宽的容器允许 2~4 列布局，同时保证每列内容不会过宽。</li>
+    <li><strong>全屏展示（100%）</strong>：数据大屏需要最大化利用屏幕空间，但内容区域应当用网格分块，避免单块内容过宽。</li>
   </ul>
+</div>
+
+<div class="lesson-section">
+  <h2>论证</h2>
+  <h3>8px 网格 vs 10px 网格：为什么 8 胜出？</h3>
+  <p>假设我们要设计一个间距系统，覆盖从最小间隙到最大模块间距的所有场景。对比 8px 和 10px 两种基准：</p>
+  <table class="table table-bordered mb-4">
+    <thead>
+      <tr><th>场景</th><th>8px 网格</th><th>10px 网格</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>图标与文字的间隙</td><td>4px（半格）或 8px</td><td>5px（半格，非整数）或 10px（过大）</td></tr>
+      <tr><td>表单标签与输入框</td><td>8px</td><td>10px</td></tr>
+      <tr><td>卡片内边距</td><td>16px 或 24px</td><td>20px 或 30px</td></tr>
+      <tr><td>模块间距</td><td>24px 或 32px</td><td>30px 或 40px</td></tr>
+      <tr><td>页面级留白</td><td>48px 或 64px</td><td>50px 或 60px（节奏不均匀）</td></tr>
+    </tbody>
+  </table>
+  <p>10px 网格的问题在于：半格是 5px，在许多屏幕分辨率下会导致亚像素渲染；生成的间距序列（10、20、30、40、50）在感知上过于均匀，缺乏"小步快跑 + 大步跨越"的节奏感。而 8px 网格生成的序列（4、8、12、16、24、32、48、64）既有精细调整的余地，又有明显的层级跳跃。</p>
+
+  <h3>Flexbox 为什么优于 Float？</h3>
+  <p>在 CSS 布局的历史中，Float 最初是为了实现文字环绕图片而设计的，后来被"借用"来做页面布局。但 Float 有先天缺陷：</p>
+  <ol>
+    <li><strong>高度塌陷</strong>：父元素无法自动包裹浮动的子元素，需要 clearfix  hack。</li>
+    <li><strong>间距控制困难</strong>：Float 布局中，元素间距需要通过 margin 控制，但最后一个元素的 margin 需要手动清除，否则布局会错位。</li>
+    <li><strong>对齐能力弱</strong>：Float 只能实现左对齐或右对齐，无法实现垂直居中或等分分布。</li>
+  </ol>
+  <p>Flexbox 是专门为布局设计的模块。<code class="code-inline">gap</code> 属性可以精确控制子元素间距，且不会影响容器外部；<code class="code-inline">align-items</code> 和 <code class="code-inline">justify-content</code> 提供了完整的对齐能力；弹性伸缩（<code class="code-inline">flex: 1</code>）让元素可以自动填充剩余空间。这些特性使 Flexbox 成为现代布局的首选工具。</p>
 </div>
 
 <div class="lesson-section">
@@ -45,6 +101,106 @@
     <li><strong>移动端减少内边距</strong>：PC 上容器左右内边距 24px，移动端减少到 16px，不浪费宝贵的屏幕空间。</li>
     <li><strong>网格用 Flexbox，不用 Float</strong>：Flex 的 gap 属性可以精确控制子元素间距，而且天然支持响应式。</li>
   </ol>
+</div>
+
+<div class="lesson-section">
+  <h2>实验</h2>
+  <p>创建一个 HTML 文件，复制以下代码并在浏览器中打开。这个实验让你用 8px 网格系统搭建一个卡片布局，并测试不同间距组合的效果。</p>
+
+  <div class="demo-card">
+    <div class="demo-label">EXPERIMENT</div>
+    <p>实验代码（保存为 <code class="code-inline">grid-layout.html</code>）：</p>
+    <pre class="code-block">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;style&gt;
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: sans-serif;
+      background: #F5F7FA;
+      padding: 40px;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+    .col {
+      flex: 1 1 calc(33.333% - 16px);
+      min-width: 280px;
+    }
+    .card {
+      background: #fff;
+      border-radius: 8px;
+      padding: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .card-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    .card-desc {
+      font-size: 14px;
+      color: #666;
+      line-height: 1.5;
+      margin-bottom: 16px;
+    }
+    .card-meta {
+      font-size: 12px;
+      color: #999;
+    }
+    /* 间距调试层：显示 8px 网格线 */
+    .page-title { font-size: 24px; margin-bottom: 24px; }
+    .grid-debug .card {
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 7px,
+        rgba(22,119,255,0.05) 7px,
+        rgba(22,119,255,0.05) 8px
+      ), #fff;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class="container"&gt;
+    &lt;h1 class="page-title"&gt;项目列表&lt;/h1&gt;
+    &lt;div class="row"&gt;
+      &lt;div class="col"&gt;
+        &lt;div class="card"&gt;
+          &lt;div class="card-title"&gt;前端重构&lt;/div&gt;
+          &lt;div class="card-desc"&gt;使用 React + TypeScript 对旧系统进行全面重构，提升可维护性。&lt;/div&gt;
+          &lt;div class="card-meta"&gt;更新于 2 小时前&lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class="col"&gt;
+        &lt;div class="card"&gt;
+          &lt;div class="card-title"&gt;API 网关&lt;/div&gt;
+          &lt;div class="card-desc"&gt;设计并实现微服务统一的 API 网关，支持限流、熔断、日志。&lt;/div&gt;
+          &lt;div class="card-meta"&gt;更新于 1 天前&lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class="col"&gt;
+        &lt;div class="card"&gt;
+          &lt;div class="card-title"&gt;数据可视化&lt;/div&gt;
+          &lt;div class="card-desc"&gt;基于 ECharts 构建实时数据大屏，支持 10 万级数据渲染。&lt;/div&gt;
+          &lt;div class="card-meta"&gt;更新于 3 天前&lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+    <p class="text-secondary text-sm mt-3"><strong>实验任务</strong>：
+      1) 验证所有间距（padding: 24px、gap: 24px、margin-bottom: 12px/16px/24px）是否都是 4px 的倍数；
+      2) 将 <code class="code-inline">gap: 24px</code> 改为 <code class="code-inline">gap: 20px</code>，观察卡片排列是否仍然整齐；
+      3) 在 body 上添加 <code class="code-inline">class="grid-debug"</code>，观察 8px 网格线是否与卡片边缘对齐。</p>
+  </div>
 </div>
 
 <div class="lesson-section">
@@ -64,6 +220,77 @@
     <div class="mistake-title">❌ 移动端和 PC 用一样的内边距</div>
     <p>手机上左右各留 24px，中间内容区域只剩很少空间。移动端应当减少到 16px 甚至 12px。</p>
   </div>
+</div>
+
+<div class="lesson-section">
+  <h2>示例</h2>
+  <h3>为一个仪表盘设计响应式布局</h3>
+  <p>假设你要设计一个数据仪表盘，包含：顶部统计卡片（4 个）、中部趋势图（占 2/3 宽度）、右侧公告列表（占 1/3 宽度）。如何用 8px 网格和 Flexbox 实现响应式布局？</p>
+
+  <div class="demo-card">
+    <div class="demo-label">DASHBOARD LAYOUT</div>
+    <div class="demo-s4-dashboard">
+      <div class="demo-s4-stats">
+        <div class="demo-s4-stat-card">
+          <div class="demo-s4-stat-label">总用户数</div>
+          <div class="demo-s4-stat-value">12,345</div>
+        </div>
+        <div class="demo-s4-stat-card">
+          <div class="demo-s4-stat-label">日活跃用户</div>
+          <div class="demo-s4-stat-value">3,456</div>
+        </div>
+        <div class="demo-s4-stat-card">
+          <div class="demo-s4-stat-label">转化率</div>
+          <div class="demo-s4-stat-value">24.8%</div>
+        </div>
+        <div class="demo-s4-stat-card">
+          <div class="demo-s4-stat-label">平均停留</div>
+          <div class="demo-s4-stat-value">5m 32s</div>
+        </div>
+      </div>
+      <div class="demo-s4-main">
+        <div class="demo-s4-chart">
+          <div class="demo-s4-chart-title">访问趋势</div>
+          <div class="demo-s4-chart-body">
+            <div class="demo-s4-bar demo-s4-bar-1"></div>
+            <div class="demo-s4-bar demo-s4-bar-2"></div>
+            <div class="demo-s4-bar demo-s4-bar-3"></div>
+            <div class="demo-s4-bar demo-s4-bar-4"></div>
+            <div class="demo-s4-bar demo-s4-bar-5"></div>
+            <div class="demo-s4-bar demo-s4-bar-6"></div>
+            <div class="demo-s4-bar demo-s4-bar-7"></div>
+          </div>
+        </div>
+        <div class="demo-s4-sidebar">
+          <div class="demo-s4-chart-title">系统公告</div>
+          <div class="demo-s4-notice">v2.3.0 版本已发布</div>
+          <div class="demo-s4-notice">服务器维护通知</div>
+          <div class="demo-s4-notice">新功能：数据导出</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p>布局分析：</p>
+  <ul>
+    <li><strong>统计卡片</strong>：4 列等宽，<code class="code-inline">gap: 16px</code>，每个卡片 <code class="code-inline">padding: 16px</code>。</li>
+    <li><strong>趋势图 + 公告</strong>：Flex 布局，趋势图 <code class="code-inline">flex: 2</code>，公告 <code class="code-inline">flex: 1</code>，<code class="code-inline">gap: 16px</code>。</li>
+    <li><strong>响应式</strong>：在中等屏幕上（&lt; 992px），统计卡片变为 2 列；在手机上（&lt; 768px），所有元素堆叠为一列。</li>
+    <li><strong>间距规律</strong>：所有间距都是 8px 的倍数（8、16、24），确保视觉节奏统一。</li>
+  </ul>
+
+  <pre class="code-block">/* 核心布局代码 */
+.stats { display: flex; gap: 16px; flex-wrap: wrap; }
+.stat-card { flex: 1 1 calc(25% - 12px); padding: 16px; }
+
+.main { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 16px; }
+.chart { flex: 2; min-width: 300px; padding: 16px; }
+.sidebar { flex: 1; min-width: 200px; padding: 16px; }
+
+@media (max-width: 768px) {
+  .stat-card { flex: 1 1 100%; }
+  .chart, .sidebar { flex: 1 1 100%; }
+}</pre>
 </div>
 
 <div class="lesson-section">
@@ -162,11 +389,48 @@
 }</pre>
 </div>
 
-<div class="exercise-box">
-  <h3>练习</h3>
-  <p><strong>练习 1</strong>：打开一个你做的页面，用浏览器的开发者工具检查所有 margin 和 padding 值，统计有多少个不是 4 的倍数。把它们改成最近的 4 的倍数。</p>
-  <p><strong>练习 2</strong>：用 Flexbox 实现一个三列等宽的卡片布局，卡片间距 16px，在大屏上三列，平板两列，手机一列。</p>
-  <p><strong>练习 3</strong>：用 <code class="code-inline">container-narrow</code>（max-width: 860px）包裹一篇长文章，对比 full-width 和 narrow 的阅读体验。</p>
+<div class="lesson-section">
+  <h2>练习</h2>
+  <ol>
+    <li><strong>间距审计</strong>：打开一个你做的页面，用浏览器的开发者工具检查所有 margin 和 padding 值，统计有多少个不是 4 的倍数。把它们改成最近的 4 的倍数，截图对比修改前后的视觉效果。</li>
+    <li><strong>响应式卡片</strong>：用 Flexbox 实现一个三列等宽的卡片布局，卡片间距 16px，在大屏上三列，平板两列，手机一列。所有间距必须是 8px 的倍数。</li>
+    <li><strong>容器对比</strong>：用 <code class="code-inline">container-narrow</code>（max-width: 860px）包裹一篇长文章，对比 full-width 和 narrow 的阅读体验。记录自己阅读时眼球移动的疲劳感差异。</li>
+    <li><strong>8px 网格化</strong>：找一个现有页面，将其所有间距统一为 8px 网格（4、8、12、16、24、32）。观察页面是否变得更整齐，同时注意是否有"太挤"或"太散"的地方需要微调。</li>
+  </ol>
+</div>
+
+<div class="lesson-section">
+  <h2>测验</h2>
+  <div class="demo-card">
+    <div class="demo-label">QUIZ</div>
+    <p><strong>判断题</strong></p>
+    <ol>
+      <li>8px 网格系统的选择主要是因为 8 是偶数，计算方便。（ ）</li>
+      <li>模块之间的间距应该至少 24px，否则用户会误以为这些内容属于同一组。（ ）</li>
+      <li>Flexbox 的 gap 属性会影响容器外部的布局。（ ）</li>
+      <li>阅读型页面的最佳容器宽度是 1200px，因为可以展示更多内容。（ ）</li>
+    </ol>
+    <p><strong>选择题</strong></p>
+    <ol>
+      <li>以下哪个间距序列最符合 8px 网格系统的规范？
+        <ul>
+          <li>A. 5px, 10px, 15px, 20px, 25px</li>
+          <li>B. 4px, 8px, 12px, 16px, 24px, 32px</li>
+          <li>C. 6px, 12px, 18px, 24px, 30px</li>
+          <li>D. 3px, 6px, 9px, 12px, 15px</li>
+        </ul>
+      </li>
+      <li>一个表单页面中，"标签"与"输入框"间距 8px，"输入框"与"下一组标签"间距 16px。这种设计主要利用了哪项原则？
+        <ul>
+          <li>A. 对齐</li>
+          <li>B. 对比</li>
+          <li>C. 亲密性</li>
+          <li>D. 重复</li>
+        </ul>
+      </li>
+    </ol>
+    <p class="text-secondary text-sm mt-3"><strong>参考答案</strong>：判断题 1.× 2.√ 3.× 4.×；选择题 1.B 2.C</p>
+  </div>
 </div>
 {% endblock %}
 
@@ -190,5 +454,27 @@
 .demo-s4-16 { display:flex;gap:16px;flex-wrap:wrap; }
 .demo-s4-17 { flex:1;min-width:200px;background:var(--color-primary-light);padding:20px;border-radius:8px;text-align:center; }
 .demo-s4-18 { flex:2;min-width:300px;background:var(--color-success-bg);padding:20px;border-radius:8px;text-align:center; }
+
+/* 示例：仪表盘布局 */
+.demo-s4-dashboard { max-width: 600px; }
+.demo-s4-stats { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
+.demo-s4-stat-card { flex: 1 1 calc(25% - 9px); min-width: 100px; background: var(--bg-card); padding: 12px; border-radius: 8px; border: 1px solid var(--border-color-split); text-align: center; }
+.demo-s4-stat-label { font-size: 12px; color: var(--text-secondary); margin-bottom: 4px; }
+.demo-s4-stat-value { font-size: 18px; font-weight: 700; color: var(--color-primary); }
+.demo-s4-main { display: flex; gap: 12px; flex-wrap: wrap; }
+.demo-s4-chart { flex: 2; min-width: 200px; background: var(--bg-card); padding: 12px; border-radius: 8px; border: 1px solid var(--border-color-split); }
+.demo-s4-chart-title { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+.demo-s4-chart-body { display: flex; align-items: flex-end; gap: 8px; height: 100px; padding: 8px; background: var(--bg-code); border-radius: 4px; }
+.demo-s4-bar { flex: 1; background: var(--color-primary); border-radius: 2px 2px 0 0; min-height: 4px; }
+.demo-s4-bar-1 { height: 40%; }
+.demo-s4-bar-2 { height: 65%; }
+.demo-s4-bar-3 { height: 50%; }
+.demo-s4-bar-4 { height: 80%; }
+.demo-s4-bar-5 { height: 55%; }
+.demo-s4-bar-6 { height: 90%; }
+.demo-s4-bar-7 { height: 70%; }
+.demo-s4-sidebar { flex: 1; min-width: 120px; background: var(--bg-card); padding: 12px; border-radius: 8px; border: 1px solid var(--border-color-split); }
+.demo-s4-notice { font-size: 12px; color: var(--text-secondary); padding: 6px 0; border-bottom: 1px solid var(--border-color-split); }
+.demo-s4-notice:last-child { border-bottom: none; }
 </style>
 {% endblock %}

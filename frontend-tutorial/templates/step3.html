@@ -15,20 +15,72 @@
 </div>
 
 <div class="lesson-section">
-  <h2>原理</h2>
-  <h3>为什么用无衬线体（Sans-serif）</h3>
-  <p>屏幕显示环境下，无衬线体比衬线体更清晰。衬线体（如宋体）的笔画装饰在小字号下会变成噪点。这也是 Ant Design、TDesign 都选择无衬线体作为默认字体的原因。</p>
+  <h2>起源</h2>
+  <p>字体设计的历史可以追溯到 15 世纪古腾堡发明活字印刷术。早期的衬线体（Serif）如 Garamond、Times New Roman，其笔画末端的装饰性"衬线"源于雕刻石碑时的起笔和收笔痕迹。这些衬线在纸质媒介上起到了<strong>引导视线</strong>的作用，帮助读者在长篇印刷品中保持行进的节奏。</p>
+  <p>20 世纪 50 年代，<strong>瑞士国际主义风格</strong>推动了无衬线体（Sans-serif）的普及。Helvetica 等字体摒弃了装饰性衬线，以简洁的几何造型适应现代商业传播的需求。进入数字时代，屏幕的像素密度远低于印刷纸张，衬线体的小装饰在低分辨率屏幕上会变成<strong>视觉噪点</strong>，无衬线体因此成为屏幕显示的首选。</p>
+  <p>中文字体的演进则更为复杂。从铅字印刷的宋体、黑体，到激光照排时代的汉仪、方正，再到屏幕时代的<strong>阿里巴巴普惠体</strong>、<strong>思源黑体</strong>，每一次技术变革都伴随着字体设计目标的转变——从"在纸上清晰呈现"到"在屏幕上快速渲染、在小字号下依然可读"。</p>
+</div>
 
-  <h3>阿里巴巴普惠体的优势</h3>
+<div class="lesson-section">
+  <h2>思考</h2>
+  <h3>为什么中文需要更大的行高？</h3>
+  <p>中文和英文的排版需求存在根本差异。英文是<strong>拼音文字</strong>，字形高度一致（x-height），单词之间有空格分隔，天然形成了呼吸节奏。中文是<strong>方块字</strong>，每个字占据相同的字框，连续排列时如果没有足够的行距，会形成密不透风的"文字墙"。</p>
+  <p>此外，中文的笔画复杂度差异极大："一"字只有一横，"曦"字有二十笔。在 14px 及以下的小字号中，复杂笔画的字容易糊成一团。适当增加行高（line-height），不仅给视线换行提供了休息空间，也让每行文字之间的轮廓差异更容易被识别。</p>
+  <p>经验法则：<strong>中文正文行高至少 1.5</strong>，英文正文 1.4 即可；中文长文本（如文章、文档）建议 1.75，英文长文本 1.6 足够。Ant Design 的 line-height-normal 为 1.5，line-height-relaxed 为 1.75，正是基于这一差异。</p>
+  <h3>为什么字重分级比字号分级更重要？</h3>
+  <p>在移动端和小屏幕上，字号的变化空间有限（12px ~ 16px 是安全区）。如果仅靠字号区分层级，小字号之间的差异（如 12px vs 14px）可能不足一个像素在视网膜屏上的物理尺寸差异，用户根本感知不到。而<strong>字重的变化</strong>（Regular 400 vs Medium 500 vs Bold 700）在任意字号下都清晰可见，是更可靠的层级工具。</p>
+</div>
+
+<div class="lesson-section">
+  <h2>原理</h2>
+  <h3>屏幕渲染机制：为什么无衬线体更清晰</h3>
+  <p>屏幕显示文字时，操作系统会将矢量字体<strong>栅格化</strong>（Rasterization）为像素点阵。衬线体（如宋体）的细小装饰笔画（衬线）在栅格化时，宽度可能不足一个像素，被渲染成不规则的锯齿或虚影，变成<strong>视觉噪点</strong>。无衬线体（如黑体）的笔画粗细均匀，横平竖直，在栅格化时更容易与像素网格对齐，保持边缘清晰。</p>
+  <p>现代操作系统使用<strong>子像素渲染</strong>（Subpixel Rendering，如 ClearType）和<strong>灰度抗锯齿</strong>来改善字体清晰度，但这些技术对笔画简单的无衬线体效果更好。这也是 Ant Design、TDesign、Material Design 都选择无衬线体作为默认字体的根本原因。</p>
+
+  <h3>阿里巴巴普惠体的设计优化</h3>
+  <p>阿里巴巴普惠体不是简单地将一款现有字体改名，而是针对屏幕显示进行了系统性优化：</p>
   <ul>
-    <li>专为屏幕显示优化，小字号依然清晰。</li>
-    <li>覆盖中文、英文、数字，风格统一。</li>
-    <li>字重齐全（Light / Regular / Medium / Bold / Heavy），方便建立层级。</li>
-    <li>100% 免费商用，无版权风险。</li>
+    <li><strong>字腔放大</strong>：中文字符的内部空间（字腔）被适度放大，即使在小字号下，"口、日、目"等结构的内部空白依然可见，避免糊成一团。</li>
+    <li><strong>中宫收紧</strong>：字符的中心区域（中宫）略微收紧，使字形在屏幕上更紧凑、更有精神，不会因为屏幕拉伸而显得松散。</li>
+    <li><strong>覆盖中文、英文、数字，风格统一</strong>：避免了中文用黑体、英文用 Arial、数字用 Times 的拼凑感。</li>
+    <li><strong>字重齐全</strong>：Light / Regular / Medium / Bold / Heavy 五级字重，覆盖从正文到标题的所有场景。</li>
+    <li><strong>100% 免费商用</strong>：无版权风险，适合企业级产品。</li>
   </ul>
 
-  <h3>字号梯度的设计逻辑</h3>
-  <p>Ant Design 使用 12px、14px、16px、20px、24px、30px、38px 的梯度。规律是：小字号以 2px 递增（12→14→16），大字号以 4px 或 6px 递增（20→24→30→38）。这样既能区分层级，又不会太跳跃。</p>
+  <h3>字号梯度的信息架构逻辑</h3>
+  <p>Ant Design 使用 12px、14px、16px、20px、24px、30px、38px 的梯度。这个梯度不是随意设定的，而是基于<strong>信息层级理论</strong>：</p>
+  <ol>
+    <li><strong>小字号（12→14→16）</strong>：以 2px 递增，对应辅助信息、正文、强调正文的层级。小字号区间需要精细区分，因为用户在这些区域执行的是"仔细阅读"任务。</li>
+    <li><strong>大字号（20→24→30→38）</strong>：以 4px 或 6px 递增，对应小节标题、区块标题、页面大标题。大字号区间需要明显跳跃，因为用户在这些区域执行的是"快速扫描"任务，差异必须一眼可见。</li>
+  </ol>
+  <p>这种"小字号密集、大字号稀疏"的梯度分布，符合人眼<strong>中央凹视觉</strong>（Foveal Vision）的特性：中央视野对细节敏感，适合小字号的精细区分；周边视野对整体轮廓敏感，需要大字号有足够的尺寸差异才能被捕捉。</p>
+
+  <h3>行高的生理学基础</h3>
+  <p>行高（line-height）本质上控制的是<strong>行间距</strong>（Leading，源自铅字时代的铅条）。适当的行间距让视线的回归运动（Saccade）有明确的终点：行高太小，回归运动会越过目标行，落入下一行（称为"串行"）；行高太大，回归运动的路程变长，阅读效率下降。</p>
+  <p>研究表明，中文的最佳行高约为字号的 1.5 ~ 1.75 倍。低于 1.5 时，串行错误率显著上升；高于 1.75 时，阅读速度开始下降，因为视线需要移动更长的距离才能找到下一行的起点。</p>
+</div>
+
+<div class="lesson-section">
+  <h2>论证</h2>
+  <h3>字号层级与信息架构的关系</h3>
+  <p>信息架构（Information Architecture）的核心问题是"如何让用户快速找到需要的信息"。字号层级是信息架构的视觉表达形式，两者之间存在严格的映射关系：</p>
+  <table class="table table-bordered mb-4">
+    <thead>
+      <tr><th>信息层级</th><th>字号</th><th>字重</th><th>用户任务</th><th>视觉特征</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>页面级</td><td>38px / 30px</td><td>Bold 700</td><td>确认"我在哪里"</td><td>最大、最粗，占据视觉中心</td></tr>
+      <tr><td>区块级</td><td>24px / 20px</td><td>Semibold 600</td><td>理解"这一区块讲什么"</td><td>明显大于正文，形成锚点</td></tr>
+      <tr><td>模块级</td><td>18px / 16px</td><td>Medium 500</td><td>识别"这一模块的功能"</td><td>与正文有适度区分</td></tr>
+      <tr><td>正文级</td><td>16px / 14px</td><td>Regular 400</td><td>阅读详细内容</td><td>最舒适的阅读尺寸</td></tr>
+      <tr><td>辅助级</td><td>14px / 12px</td><td>Regular 400</td><td>获取补充信息</td><td>缩小但保持清晰</td></tr>
+    </tbody>
+  </table>
+  <p>这个映射关系的本质是<strong>注意力经济学</strong>：页面上最重要的信息（页面标题）投入最多的注意力资源（最大的字号 + 最粗的字重），次要信息逐级递减。如果层级混乱（比如正文和标题字号只差 2px），用户的大脑无法快速分配注意力，导致"找不到重点"。</p>
+
+  <h3>中英文混排的挑战</h3>
+  <p>中文字体的默认行高和英文字体的默认行高不同。当一段文字中同时出现中英文时，如果字体 fallback 机制处理不当，会出现行高"跳动"的现象——中文行占用的空间比英文行大，导致整段文字的垂直节奏被打乱。</p>
+  <p>解决方案是显式定义行高（如 <code class="code-inline">line-height: 1.5</code>），而不是依赖字体的默认行高（normal）。显式行高会强制所有字符（无论中文还是英文）在同一个基线网格上对齐，消除跳动。</p>
 </div>
 
 <div class="lesson-section">
@@ -40,6 +92,82 @@
     <li><strong>行高根据场景调整</strong>：标题用 1.25（紧凑），正文用 1.5（舒适），长文本用 1.75（宽松）。</li>
     <li><strong>不要用 font-size 小于 12px 的文字</strong>：低于 12px 在移动端几乎无法阅读，这是 Ant Design 的硬性规定。</li>
   </ol>
+</div>
+
+<div class="lesson-section">
+  <h2>实验</h2>
+  <p>创建一个 HTML 文件，复制以下代码并在浏览器中打开。这个实验展示了不同字号/行高组合对同一段文字可读性的影响。</p>
+
+  <div class="demo-card">
+    <div class="demo-label">EXPERIMENT</div>
+    <p>实验代码（保存为 <code class="code-inline">typography-test.html</code>）：</p>
+    <pre class="code-block">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;style&gt;
+    body {
+      font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      padding: 40px;
+      background: #F5F7FA;
+    }
+    .sample {
+      background: #fff;
+      padding: 24px;
+      margin-bottom: 24px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .sample-title {
+      font-size: 12px;
+      color: #999;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    .text-a { font-size: 14px; line-height: 1.2; }
+    .text-b { font-size: 14px; line-height: 1.5; }
+    .text-c { font-size: 14px; line-height: 1.75; }
+    .text-d { font-size: 16px; line-height: 1.5; }
+    .text-e { font-size: 16px; line-height: 1.75; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class="sample"&gt;
+    &lt;div class="sample-title"&gt;14px / line-height 1.2 — 太紧凑&lt;/div&gt;
+    &lt;div class="text-a"&gt;
+      字体系统是设计系统的基石。一个好的字体系统不仅能让界面美观，更能让信息高效传递。行高太小会导致文字拥挤，阅读时容易串行。尤其在中文环境下，方块字的密度更高，适当的行间距至关重要。
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class="sample"&gt;
+    &lt;div class="sample-title"&gt;14px / line-height 1.5 — 标准&lt;/div&gt;
+    &lt;div class="text-b"&gt;
+      字体系统是设计系统的基石。一个好的字体系统不仅能让界面美观，更能让信息高效传递。行高太小会导致文字拥挤，阅读时容易串行。尤其在中文环境下，方块字的密度更高，适当的行间距至关重要。
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class="sample"&gt;
+    &lt;div class="sample-title"&gt;14px / line-height 1.75 — 宽松&lt;/div&gt;
+    &lt;div class="text-c"&gt;
+      字体系统是设计系统的基石。一个好的字体系统不仅能让界面美观，更能让信息高效传递。行高太小会导致文字拥挤，阅读时容易串行。尤其在中文环境下，方块字的密度更高，适当的行间距至关重要。
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class="sample"&gt;
+    &lt;div class="sample-title"&gt;16px / line-height 1.5 — 舒适&lt;/div&gt;
+    &lt;div class="text-d"&gt;
+      字体系统是设计系统的基石。一个好的字体系统不仅能让界面美观，更能让信息高效传递。行高太小会导致文字拥挤，阅读时容易串行。尤其在中文环境下，方块字的密度更高，适当的行间距至关重要。
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class="sample"&gt;
+    &lt;div class="sample-title"&gt;16px / line-height 1.75 — 长文本首选&lt;/div&gt;
+    &lt;div class="text-e"&gt;
+      字体系统是设计系统的基石。一个好的字体系统不仅能让界面美观，更能让信息高效传递。行高太小会导致文字拥挤，阅读时容易串行。尤其在中文环境下，方块字的密度更高，适当的行间距至关重要。
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+    <p class="text-secondary text-sm mt-3"><strong>观察重点</strong>：
+      1) 14px / 1.2 的样本文字几乎粘在一起，"串行"感最强；
+      2) 16px / 1.75 的样本阅读最轻松，适合长文章；
+      3) 对比 14px 和 16px 在相同行高下的差异，体会字号对可读性的影响远大于行高。</p>
+  </div>
 </div>
 
 <div class="lesson-section">
@@ -59,6 +187,48 @@
     <div class="mistake-title">❌ 正文行高太小</div>
     <p>正文用 line-height: 1.2，文字挤在一起，读起来很喘。中文正文建议至少 1.5。</p>
   </div>
+</div>
+
+<div class="lesson-section">
+  <h2>示例</h2>
+  <h3>为一个文章页面设计字体系统</h3>
+  <p>假设你要设计一个技术博客的文章页，包含文章标题、作者信息、正文、代码块、引用、注释。如何为每个元素分配合适的字号、字重和行高？</p>
+
+  <div class="demo-card">
+    <div class="demo-label">ARTICLE TYPOGRAPHY</div>
+    <div class="demo-s3-article">
+      <div class="demo-s3-article-title">深入理解 CSS Grid 布局</div>
+      <div class="demo-s3-article-meta">作者：张三 · 2024年3月15日 · 阅读时间 8 分钟</div>
+      <div class="demo-s3-article-body">
+        <p>CSS Grid 是现代网页布局最强大的工具之一。与 Flexbox 不同，Grid 是二维布局系统，可以同时控制行和列。</p>
+        <p>在本文中，我们将从基础概念出发，逐步深入到复杂的网格模板和区域命名。无论你是初学者还是有经验的开发者，都能从中获得新的见解。</p>
+        <div class="demo-s3-article-quote">"Grid 让复杂的页面布局变得像画表格一样简单。"</div>
+        <p>首先，让我们创建一个最简单的网格容器：</p>
+        <pre class="code-block demo-s3-article-code">.container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}</pre>
+        <p>上面的代码将容器分为三列，每列等宽，间距 16px。<code class="code-inline">1fr</code> 表示占据可用空间的一等份。</p>
+      </div>
+      <div class="demo-s3-article-note">注：本文示例代码在 Chrome 90+、Firefox 88+、Safari 14+ 中测试通过。</div>
+    </div>
+  </div>
+
+  <p>字体分配方案：</p>
+  <table class="table table-bordered mb-4">
+    <thead>
+      <tr><th>元素</th><th>字号</th><th>字重</th><th>行高</th><th>理由</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>文章标题</td><td>30px</td><td>Bold 700</td><td>1.25</td><td>页面最高层级，需要最强视觉冲击力</td></tr>
+      <tr><td>作者信息</td><td>14px</td><td>Regular 400</td><td>1.5</td><td>辅助信息，不抢正文注意力</td></tr>
+      <tr><td>正文</td><td>16px</td><td>Regular 400</td><td>1.75</td><td>长文本阅读，需要最大舒适度</td></tr>
+      <tr><td>引用</td><td>16px</td><td>Medium 500</td><td>1.75</td><td>与正文同级但需强调，加粗即可</td></tr>
+      <tr><td>代码块</td><td>14px</td><td>Regular 400</td><td>1.75</td><td>等宽字体，略小于正文以区分层级</td></tr>
+      <tr><td>注释</td><td>12px</td><td>Regular 400</td><td>1.5</td><td>最不重要的信息，最小字号</td></tr>
+    </tbody>
+  </table>
 </div>
 
 <div class="lesson-section">
@@ -153,11 +323,48 @@
 }</pre>
 </div>
 
-<div class="exercise-box">
-  <h3>练习</h3>
-  <p><strong>练习 1</strong>：打开你现在在做的项目，统计一共用了多少种不同的 font-size。如果超过 8 种，尝试合并到 5 种以内。</p>
-  <p><strong>练习 2</strong>：用阿里巴巴普惠体（CDN 引入）写一个标题 + 两段正文的页面，测试 12px、14px、16px 在屏幕上的可读性。</p>
-  <p><strong>练习 3</strong>：把一段长文本（超过 300 字）分别用 line-height 1.2、1.5、1.75 展示，对比阅读舒适度。</p>
+<div class="lesson-section">
+  <h2>练习</h2>
+  <ol>
+    <li><strong>字号审计</strong>：打开你现在在做的项目，统计一共用了多少种不同的 font-size。如果超过 8 种，尝试合并到 5 种以内，并建立字号层级表。</li>
+    <li><strong>字体回退测试</strong>：用阿里巴巴普惠体（CDN 引入）写一个标题 + 两段正文的页面，在浏览器开发者工具中禁用网络字体，观察系统回退字体（PingFang SC / Microsoft YaHei）的显示效果是否可接受。</li>
+    <li><strong>行高对比</strong>：把一段长文本（超过 300 字）分别用 line-height 1.2、1.5、1.75 展示，邀请 3 个人阅读，记录他们主观舒适度评分（1-5 分）。</li>
+    <li><strong>字重层级</strong>：找一个只有 Regular 和 Bold 两种字重的页面，尝试加入 Medium（500）作为中间层级，观察信息层级是否更清晰。</li>
+  </ol>
+</div>
+
+<div class="lesson-section">
+  <h2>测验</h2>
+  <div class="demo-card">
+    <div class="demo-label">QUIZ</div>
+    <p><strong>判断题</strong></p>
+    <ol>
+      <li>衬线体在屏幕上的清晰度通常优于无衬线体。（ ）</li>
+      <li>中文正文的最小安全字号是 12px。（ ）</li>
+      <li>字号层级中，大字号区间（标题）应该比小字号区间（正文）有更明显的跳跃。（ ）</li>
+      <li>显式定义 line-height 可以避免中英文混排时的行高跳动。（ ）</li>
+    </ol>
+    <p><strong>选择题</strong></p>
+    <ol>
+      <li>一篇 2000 字的技术文章，正文最适合的字号和行高组合是？
+        <ul>
+          <li>A. 14px / line-height 1.2</li>
+          <li>B. 14px / line-height 1.5</li>
+          <li>C. 16px / line-height 1.75</li>
+          <li>D. 18px / line-height 1.25</li>
+        </ul>
+      </li>
+      <li>在一个页面中，以下哪种字重分配最合理？
+        <ul>
+          <li>A. 所有文字都用 Regular 400</li>
+          <li>B. 正文 400、小标题 500、大标题 700</li>
+          <li>C. 正文 300、标题 400（为了"简洁"）</li>
+          <li>D. 所有标题都用 900 Black</li>
+        </ul>
+      </li>
+    </ol>
+    <p class="text-secondary text-sm mt-3"><strong>参考答案</strong>：判断题 1.× 2.√ 3.√ 4.√；选择题 1.C 2.B</p>
+  </div>
 </div>
 {% endblock %}
 
@@ -175,5 +382,14 @@
 .demo-s3-10 { font-size:18px;font-weight:500;margin-bottom:8px; }
 .demo-s3-11 { font-size:18px;font-weight:600;margin-bottom:8px; }
 .demo-s3-12 { font-size:18px;font-weight:700; }
+
+/* 示例：文章排版 */
+.demo-s3-article { max-width: 600px; }
+.demo-s3-article-title { font-size: 30px; font-weight: 700; line-height: 1.25; margin-bottom: 12px; }
+.demo-s3-article-meta { font-size: 14px; color: var(--text-secondary); margin-bottom: 24px; }
+.demo-s3-article-body p { font-size: 16px; line-height: 1.75; margin-bottom: 16px; }
+.demo-s3-article-quote { font-size: 16px; font-weight: 500; line-height: 1.75; padding: 16px 24px; border-left: 4px solid var(--color-primary); background: var(--bg-code); margin-bottom: 16px; }
+.demo-s3-article-code { font-size: 14px; line-height: 1.75; margin-bottom: 16px; }
+.demo-s3-article-note { font-size: 12px; color: var(--text-tertiary); line-height: 1.5; margin-top: 16px; }
 </style>
 {% endblock %}

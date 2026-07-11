@@ -1,56 +1,207 @@
 {% extends "base.html" %}
 
-{% block title %}Step 8 响应式设计 — 前端设计系统教程{% endblock %}
+{% block title %}Step 8 表格与数据展示 — 前端设计系统教程{% endblock %}
 
 {% block content %}
 <div class="page-header">
-  <h1>Step 8 响应式设计</h1>
-  <p>移动端适配、弹性布局、断点策略</p>
-  <div class="tag tag-brand">进阶</div>
+  <h1>Step 8 表格与数据展示</h1>
+  <p>信息密度、可读性、排序筛选与交互设计</p>
+  <div class="tag tag-brand">组件层</div>
 </div>
 
 <div class="lesson-section">
   <h2>场景</h2>
-  <p>同一个页面，在 27 寸显示器、13 寸笔记本、iPad、手机上都要能正常显示。响应式设计不是"把 PC 页面缩小到手机上"，而是根据不同屏幕尺寸重新排列内容，保证每个设备上的体验都最佳。</p>
+  <p>后台管理系统、数据报表、商品列表、用户管理……这些页面都要展示大量结构化数据。表格是最古老也是最有效的数据展示形式之一。与卡片、时间轴、图表等替代方案相比，表格在信息密度和数据对比方面具有无可替代的优势。</p>
+</div>
+
+<div class="lesson-section">
+  <h2>起源</h2>
+  <p>表格的历史可以追溯到公元前 2000 年的美索不达米亚泥板，当时人们用行列结构记录粮食交易。 double-entry bookkeeping（复式记账法）在 15 世纪的意大利文艺复兴时期成熟，卢卡·帕乔利（Luca Pacioli）在 1494 年的《算术、几何、比及比例概要》中系统阐述了借贷记账法，表格成为商业世界的基础设施。</p>
+  <p>1979 年，Dan Bricklin 发明了 VisiCalc——第一款电子表格软件，被 Steve Jobs 称为"个人电脑的杀手级应用"。VisiCalc 让普通人也能在屏幕上创建和计算表格，彻底改变了商业数据处理的方式。</p>
+  <p>网页中的表格最早只是用来展示静态数据。随着 Web 应用的发展，表格逐渐具备了排序、筛选、分页、行内编辑等交互能力。今天，Ant Design、AG Grid 等组件库提供了功能完备的数据表格，但底层的设计原则仍然延续了纸质时代形成的共识：行列对齐、表头固定、数据右对齐。</p>
+</div>
+
+<div class="lesson-section">
+  <h2>思考</h2>
+  <h3>为什么表格比卡片更适合数据对比？</h3>
+  <p>当用户需要对比多个对象的多项属性时，表格的效率远高于卡片。假设有 5 个用户，每个用户有姓名、邮箱、角色、状态、注册时间 5 个属性：</p>
+  <ul>
+    <li><strong>卡片布局</strong>：每个用户一张卡片，5 张卡片垂直排列。用户需要在卡片之间来回扫视，才能对比同一属性（如"状态"）。视线移动路径呈"之"字形，认知负荷高。</li>
+    <li><strong>表格布局</strong>：5 个用户排成 5 行，5 个属性排成 5 列。用户只需水平扫视一行，就能对比同一属性在所有用户中的值。视线移动路径是直线，认知负荷低。</li>
+  </ul>
+  <p>这是因为表格利用了"格式塔心理学"中的"接近律"和"连续律"：同一列的数据在垂直方向上连续排列，用户的大脑会自动将它们归为一组，从而快速发现模式和异常。</p>
+  <h3>为什么数字要右对齐？</h3>
+  <p>西方文字从左到右阅读，但数字的对比是从右到左进行的（个位→十位→百位）。当一列数字右对齐时，个位数在同一条垂直线上，用户扫视这一列就能快速比较大小。如果左对齐，个位数位置参差不齐，对比效率大幅降低。</p>
 </div>
 
 <div class="lesson-section">
   <h2>原理</h2>
-  <h3>移动优先（Mobile First）</h3>
-  <p>先设计手机端的布局，然后再往大屏扩展。原因：</p>
+  <h3>信息密度的科学</h3>
+  <p>信息密度（Information Density）指单位面积内展示的数据量。表格的信息密度由三个因素决定：</p>
   <ul>
-    <li>手机空间最紧张，迫使你去思考"什么是最重要的"。</li>
-    <li>从小往大加内容，比从大往小删内容更自然。</li>
-    <li>CSS 的 min-width 媒体查询比 max-width 更符合逻辑（ progressively enhance 渐进增强）。</li>
+    <li><strong>行高</strong>：标准行高 48px（Ant Design 默认），紧凑型 40px，宽松型 56px。行高越小，信息密度越高，但误点击风险增加；行高越大，可读性越好，但一屏展示的数据量减少。</li>
+    <li><strong>列宽</strong>：列宽应按内容类型分配。ID 列 80px、日期列 120px、名称列 200px+。过宽的列会浪费水平空间，过窄的列会导致内容换行或截断。</li>
+    <li><strong>内边距</strong>：单元格左右内边距通常为 16px，既保证文字不贴边，又不浪费空间。</li>
+  </ul>
+  <p>信息密度与可读性是一对矛盾。高密度让用户看到更多数据，但增加了视觉疲劳；低密度让阅读更轻松，但需要更多滚动。设计目标是找到"最佳平衡点"——在典型屏幕上展示刚好足够决策的数据量。</p>
+
+  <h3>视觉层级与扫描效率</h3>
+  <p>人眼在浏览表格时并非逐字阅读，而是"扫描"。良好的视觉层级能引导扫描路径：</p>
+  <ul>
+    <li><strong>表头区分</strong>：表头用较深的背景色或底部边框与数据行区分，让用户知道"这是列标题，不是数据"。</li>
+    <li><strong>斑马纹（Zebra Striping）</strong>：交替行背景色能帮助用户保持横向扫描时的位置感。但现代设计更倾向于 hover 高亮（悬停时整行变色），因为斑马纹在数据行较少时反而增加视觉噪音。</li>
+    <li><strong>悬停高亮</strong>：鼠标移到某一行时，该行背景变色。这让用户能明确追踪"当前关注的行"，尤其在宽表格中至关重要。</li>
   </ul>
 
-  <h3>断点选择</h3>
-  <p>Ant Design 的断点：</p>
+  <h3>排序与筛选的交互模型</h3>
   <ul>
-    <li><strong>xs</strong>：&lt; 576px（手机）</li>
-    <li><strong>sm</strong>：576px ~ 768px（大屏手机 / 小平板）</li>
-    <li><strong>md</strong>：768px ~ 992px（平板）</li>
-    <li><strong>lg</strong>：992px ~ 1200px（小笔记本）</li>
-    <li><strong>xl</strong>：&gt; 1200px（桌面）</li>
+    <li><strong>排序（Sorting）</strong>：点击表头按该列排序。第一次点击升序，第二次降序，第三次取消排序。排序状态必须在表头用箭头图标明确指示。</li>
+    <li><strong>筛选（Filtering）</strong>：在表头或表格上方提供筛选控件。筛选条件应当即时生效，并在界面上显示当前生效的筛选条件（方便用户知道"数据为什么变少了"）。</li>
+    <li><strong>分页 vs 无限滚动</strong>：分页适合需要定位到特定页码的场景（如"我记得在第 3 页"）；无限滚动适合浏览型场景（如信息流）。后台管理系统通常使用分页，因为用户需要知道数据总量和当前位置。</li>
   </ul>
-  <p>实际项目中，通常只需要 2-3 个断点：手机（&lt;768px）、平板（768px-1200px）、桌面（&gt;1200px）。</p>
+</div>
 
-  <h3>弹性布局 vs 固定布局</h3>
+<div class="lesson-section">
+  <h2>论证</h2>
+  <h3>信息密度与可读性的平衡</h3>
+  <p>MIT 的研究表明，在标准桌面显示器（1920×1080）上，一个 48px 行高的表格每屏可展示约 18 行数据。如果行高增加到 64px，每屏只剩 13 行，信息量减少 28%；如果行高压缩到 32px，每屏可展示 27 行，但用户更容易看错行、点错按钮。</p>
+  <p>Ant Design 选择 48px 作为默认行高，是基于以下考量：</p>
   <ul>
-    <li><strong>弹性布局（Fluid）</strong>：宽度用百分比或 flex，适应不同屏幕。</li>
-    <li><strong>固定布局（Fixed）</strong>：宽度写死 px，只适配特定尺寸。</li>
-    <li><strong>混合布局</strong>：容器固定最大宽度，内部用弹性布局。这是目前最主流的做法。</li>
+    <li>在 14px 字体大小下，48px 行高提供了约 2.5 倍的行间距，足以区分相邻行。</li>
+    <li>48px 是 8px 网格系统的整数倍（48 = 8 × 6），符合设计系统的网格规范。</li>
+    <li>48px 的高度为操作按钮（28-32px）留出了足够的垂直边距，防止误触。</li>
   </ul>
+  <h3>固定表头的必要性</h3>
+  <p>当表格数据超过一屏时，用户向下滚动后就会看不到表头。此时他们需要记住每一列的含义，这直接挑战了工作记忆的容量限制。固定表头（sticky header）将表头始终固定在视口顶部，让用户随时知道每一列的含义。研究表明，固定表头可以将大表格的任务完成时间缩短 15-20%。</p>
 </div>
 
 <div class="lesson-section">
   <h2>要点</h2>
   <ol>
-    <li><strong>用 Flexbox 和 Grid 做布局</strong>：它们天生支持响应式，配合 flex-wrap 和 gap 可以轻松实现多列变单列。</li>
-    <li><strong>图片要自适应</strong>：<code class="code-inline">max-width: 100%; height: auto;</code>，防止图片撑破容器。</li>
-    <li><strong>触摸目标不小于 44×44px</strong>：按钮、链接在手机上要足够大，方便手指点击。Ant Design 的按钮最小高度就是 28px，但在移动端建议至少 36px。</li>
-    <li><strong>隐藏非核心内容</strong>：手机端可以把侧边栏收起、把次要信息折叠，优先展示核心内容。</li>
-    <li><strong>测试真实设备</strong>：Chrome 的开发者工具只能模拟尺寸，不能模拟真实的触摸、滚动性能。必须在真机上测试。</li>
+    <li><strong>文本左对齐，数字右对齐，操作居中</strong>：这是表格对齐的黄金法则。日期、金额、百分比等可比较的数据必须右对齐，方便纵向对比。</li>
+    <li><strong>表头固定</strong>：数据行超过一屏时，表头应当使用 <code class="code-inline">position: sticky</code> 固定在顶部。</li>
+    <li><strong>长文本截断显示</strong>：用 <code class="code-inline">text-overflow: ellipsis</code> 截断过长内容，鼠标悬停时通过 tooltip 显示完整内容。</li>
+    <li><strong>空状态要统一</strong>：所有"无数据"场景用同一个空状态组件，保持图标、文案、按钮风格一致。空状态要告诉用户"为什么没有数据"以及"可以做什么"。</li>
+    <li><strong>加载状态分级</strong>：局部加载（表格内显示 spinner）、骨架屏（初次加载时模拟内容轮廓）、全屏加载（整页刷新时使用）。</li>
+    <li><strong>操作列要醒目但不过度</strong>：编辑、删除等操作链接用品牌色，但不要用大按钮，避免与主按钮混淆。</li>
+  </ol>
+</div>
+
+<div class="lesson-section">
+  <h2>实验</h2>
+  <p>将以下代码复制到你的编辑器中，保存为 <code class="code-inline">table-experiment.html</code>，用浏览器打开。测试排序和筛选功能。</p>
+  <pre class="code-block">&lt;!DOCTYPE html&gt;
+&lt;html lang="zh-CN"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;title&gt;表格排序筛选实验&lt;/title&gt;
+  &lt;style&gt;
+    body { font-family: system-ui, sans-serif; max-width: 800px; margin: 40px auto; padding: 0 16px; }
+    .toolbar { margin-bottom: 16px; display: flex; gap: 12px; }
+    input, select { padding: 6px 10px; border: 1px solid #D9D9D9; border-radius: 4px; font-size: 14px; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th, td { padding: 12px 16px; text-align: left; border-bottom: 1px solid #F0F0F0; }
+    th { background: #FAFAFA; font-weight: 600; cursor: pointer; user-select: none; }
+    th:hover { background: #F0F0F0; }
+    th.sortable::after { content: ' ↕'; color: #BFBFBF; font-size: 12px; }
+    th.sort-asc::after { content: ' ↑'; color: #1677FF; }
+    th.sort-desc::after { content: ' ↓'; color: #1677FF; }
+    tr:hover { background: #F5F7FA; }
+    .num { text-align: right; font-variant-numeric: tabular-nums; }
+    .tag {
+      display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px;
+    }
+    .tag-success { background: #F6FFED; color: #52C41A; }
+    .tag-warning { background: #FFFBE6; color: #FAAD14; }
+    .tag-error { background: #FFF1F0; color: #F5222D; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h2&gt;项目列表（可排序）&lt;/h2&gt;
+  &lt;div class="toolbar"&gt;
+    &lt;input type="text" id="searchInput" placeholder="搜索项目名称..."&gt;
+    &lt;select id="statusFilter"&gt;
+      &lt;option value=""&gt;全部状态&lt;/option&gt;
+      &lt;option value="进行中"&gt;进行中&lt;/option&gt;
+      &lt;option value="已完成"&gt;已完成&lt;/option&gt;
+      &lt;option value="已暂停"&gt;已暂停&lt;/option&gt;
+    &lt;/select&gt;
+  &lt;/div&gt;
+  &lt;table&gt;
+    &lt;thead&gt;
+      &lt;tr&gt;
+        &lt;th onclick="sortTable('name')" class="sortable" data-col="name"&gt;项目名称&lt;/th&gt;
+        &lt;th onclick="sortTable('status')" class="sortable" data-col="status"&gt;状态&lt;/th&gt;
+        &lt;th onclick="sortTable('progress')" class="sortable" data-col="progress"&gt;进度&lt;/th&gt;
+        &lt;th onclick="sortTable('budget')" class="sortable num" data-col="budget"&gt;预算（元）&lt;/th&gt;
+      &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody id="tableBody"&gt;&lt;/tbody&gt;
+  &lt;/table&gt;
+
+  &lt;script&gt;
+    const rawData = [
+      { name: '前端设计系统', status: '进行中', progress: 75, budget: 50000 },
+      { name: 'Git 教程', status: '已完成', progress: 100, budget: 20000 },
+      { name: 'Python 教程', status: '进行中', progress: 45, budget: 80000 },
+      { name: '后台管理系统', status: '已暂停', progress: 30, budget: 120000 },
+      { name: '移动端适配', status: '已完成', progress: 100, budget: 35000 },
+    ];
+    let currentData = [...rawData];
+    let sortState = { col: null, dir: 'asc' };
+
+    function render(data) {
+      const tbody = document.getElementById('tableBody');
+      tbody.innerHTML = data.map(row =&gt; `<tr>
+        &lt;td&gt;${row.name}&lt;/td&gt;
+        &lt;td&gt;&lt;span class="tag tag-${row.status === '已完成' ? 'success' : row.status === '已暂停' ? 'error' : 'warning'}"&gt;${row.status}&lt;/span&gt;&lt;/td&gt;
+        &lt;td&gt;&lt;div class="demo-s8-bar" data-progress="${row.progress}"&gt;&lt;/div&gt;&lt;/td&gt;
+        &lt;td class="num"&gt;${row.budget.toLocaleString()}&lt;/td&gt;
+      &lt;/tr&gt;`).join('');
+      tbody.querySelectorAll(".demo-s8-bar").forEach(el =&gt; { el.style.width = el.dataset.progress + "%"; });
+    }
+
+    function sortTable(col) {
+      if (sortState.col === col) {
+        sortState.dir = sortState.dir === 'asc' ? 'desc' : 'asc';
+      } else {
+        sortState = { col, dir: 'asc' };
+      }
+      currentData.sort((a, b) =&gt; {
+        if (a[col] &lt; b[col]) return sortState.dir === 'asc' ? -1 : 1;
+        if (a[col] &gt; b[col]) return sortState.dir === 'asc' ? 1 : -1;
+        return 0;
+      });
+      document.querySelectorAll('th').forEach(th =&gt; th.classList.remove('sort-asc', 'sort-desc'));
+      const th = document.querySelector(`th[data-col="${col}"]`);
+      if (th) th.classList.add(sortState.dir === 'asc' ? 'sort-asc' : 'sort-desc');
+      render(currentData);
+    }
+
+    function filterData() {
+      const keyword = document.getElementById('searchInput').value.trim().toLowerCase();
+      const status = document.getElementById('statusFilter').value;
+      currentData = rawData.filter(row =&gt; {
+        const matchName = row.name.toLowerCase().includes(keyword);
+        const matchStatus = !status || row.status === status;
+        return matchName && matchStatus;
+      });
+      render(currentData);
+    }
+
+    document.getElementById('searchInput').addEventListener('input', filterData);
+    document.getElementById('statusFilter').addEventListener('change', filterData);
+    render(currentData);
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+  <p><strong>实验任务</strong>：</p>
+  <ol>
+    <li>点击"预算"列的表头，观察数据按预算升序排列，再次点击变为降序。</li>
+    <li>在搜索框输入"教程"，观察表格只显示包含"教程"的项目。</li>
+    <li>在状态下拉框选择"已完成"，观察筛选与搜索的联合效果。</li>
+    <li>修改 CSS，将进度列的柱状图改为不同颜色（已完成绿色、进行中蓝色、已暂停红色）。</li>
+    <li>尝试添加一个新列"负责人"，并使其也支持排序。</li>
   </ol>
 </div>
 
@@ -58,64 +209,68 @@
   <h2>常见错误</h2>
 
   <div class="mistake-card">
-    <div class="mistake-title">❌ 用 px 定义所有宽度</div>
-    <p>一个 400px 宽的卡片在手机上会撑出屏幕。应当用 max-width 或百分比。</p>
+    <div class="mistake-title">❌ 表格没有横向滚动</div>
+    <p>列太多时在小屏幕上被挤压变形，文字重叠。给表格容器加 <code class="code-inline">overflow-x: auto</code>，确保小屏幕也能正常浏览。</p>
   </div>
 
   <div class="mistake-card">
-    <div class="mistake-title">❌ 断点太多太细</div>
-    <p>定义了 7 个断点，每个都要单独写样式，维护困难。2-3 个断点足够覆盖 95% 的场景。</p>
+    <div class="mistake-title">❌ 数字左对齐</div>
+    <p>金额、百分比、ID 等数字左对齐后，个位、十位、百位不在同一垂直线上，用户无法快速比较大小。数字必须右对齐。</p>
   </div>
 
   <div class="mistake-card">
-    <div class="mistake-title">❌ 忽略横屏模式</div>
-    <p>手机横过来后，高度变小，原本竖屏适配的布局可能会出问题。要测试横屏。</p>
+    <div class="mistake-title">❌ 空状态没有引导操作</div>
+    <p>只写一句"暂无数据"，用户不知道接下来该做什么。应当加一个创建按钮或引导链接，帮助用户脱离空状态。</p>
+  </div>
+
+  <div class="mistake-card">
+    <div class="mistake-title">❌ 排序状态不明显</div>
+    <p>用户点击表头排序后，没有任何视觉反馈表明当前按哪列排序、是升序还是降序。应当在表头显示排序箭头图标。</p>
   </div>
 </div>
 
 <div class="lesson-section">
   <h2>效果展示</h2>
-  <h3>响应式卡片布局</h3>
+  <h3>标准表格</h3>
   <div class="demo-card">
-    <div class="demo-label">RESPONSIVE CARDS</div>
-    <p class="demo-s8-1">缩小浏览器窗口，观察下方卡片如何变化</p>
-    <div class="demo-s8-2">
-      <div class="demo-s8-3">
-        <div class="demo-s8-4">卡片 1</div>
-        <div class="demo-s8-5">flex:1, min-width:280px</div>
-      </div>
-      <div class="demo-s8-6">
-        <div class="demo-s8-7">卡片 2</div>
-        <div class="demo-s8-8">flex:1, min-width:280px</div>
-      </div>
-      <div class="demo-s8-9">
-        <div class="demo-s8-10">卡片 3</div>
-        <div class="demo-s8-11">flex:1, min-width:280px</div>
-      </div>
+    <div class="demo-label">TABLE</div>
+    <div class="table-wrap">
+      <table class="table">
+        <thead>
+          <tr><th>ID</th><th>项目名称</th><th>状态</th><th>进度</th><th>预算</th><th>操作</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>001</td><td>前端设计系统</td><td><span class="tag tag-brand">进行中</span></td><td><div class="progress demo-s8-1"><div class="progress-bar demo-s8-2"></div></div></td><td class="demo-s8-num">50,000</td><td><a href="#">编辑</a></td></tr>
+          <tr><td>002</td><td>Git 教程</td><td><span class="tag tag-success">已完成</span></td><td><div class="progress demo-s8-1"><div class="progress-bar demo-s8-3"></div></div></td><td class="demo-s8-num">20,000</td><td><a href="#">查看</a></td></tr>
+          <tr><td>003</td><td>Python 教程</td><td><span class="tag tag-warning">待审核</span></td><td><div class="progress demo-s8-1"><div class="progress-bar demo-s8-4"></div></div></td><td class="demo-s8-num">80,000</td><td><a href="#">编辑</a></td></tr>
+        </tbody>
+      </table>
     </div>
   </div>
 
-  <h3>断点示意</h3>
+  <h3>空状态</h3>
   <div class="demo-card">
-    <div class="demo-label">BREAKPOINTS</div>
-    <div class="row">
-      <div class="col-4">
-        <div class="demo-s8-12">
-          <div class="demo-s8-13">&lt; 768px</div>
-          <div class="demo-s8-14">手机：单列，内边距 16px</div>
-        </div>
+    <div class="demo-label">EMPTY STATE</div>
+    <div class="empty">
+      <svg class="empty-icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2"><rect x="12" y="12" width="40" height="40" rx="4"/><path d="M20 28h24M20 36h16"/></svg>
+      <div class="empty-title">暂无项目</div>
+      <p class="demo-s8-5">您还没有创建任何项目，点击下方按钮开始</p>
+      <button class="btn btn-primary">创建项目</button>
+    </div>
+  </div>
+
+  <h3>加载状态</h3>
+  <div class="demo-card">
+    <div class="demo-label">LOADING</div>
+    <div class="flex gap-4 items-center">
+      <div class="demo-s8-6">
+        <div class="spinner"></div>
+        <div class="demo-s8-7">加载中...</div>
       </div>
-      <div class="col-4">
-        <div class="demo-s8-15">
-          <div class="demo-s8-16">768px - 1200px</div>
-          <div class="demo-s8-17">平板：两列，内边距 24px</div>
-        </div>
-      </div>
-      <div class="col-4">
-        <div class="demo-s8-18">
-          <div class="demo-s8-19">&gt; 1200px</div>
-          <div class="demo-s8-20">桌面：多列，最大宽度 1200px</div>
-        </div>
+      <div class="demo-s8-8">
+        <div class="demo-s8-9">骨架屏</div>
+        <div class="skeleton demo-s8-10"></div>
+        <div class="skeleton demo-s8-11"></div>
       </div>
     </div>
   </div>
@@ -123,75 +278,105 @@
 
 <div class="lesson-section">
   <h2>完整代码</h2>
-  <pre class="code-block">/* 基础样式（移动端优先） */
-.container {
-  width: 100%;
-  padding-left: 16px;
-  padding-right: 16px;
-}
+  <pre class="code-block">&lt;!-- 表格 --&gt;
+&lt;div class="table-wrap"&gt;
+  &lt;table class="table"&gt;
+    &lt;thead&gt;
+      &lt;tr&gt;&lt;th&gt;ID&lt;/th&gt;&lt;th&gt;名称&lt;/th&gt;&lt;th&gt;状态&lt;/th&gt;&lt;th&gt;进度&lt;/th&gt;&lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+      &lt;tr&gt;
+        &lt;td&gt;001&lt;/td&gt;
+        &lt;td&gt;项目A&lt;/td&gt;
+        &lt;td&gt;&lt;span class="tag tag-brand"&gt;进行中&lt;/span&gt;&lt;/td&gt;
+        &lt;td&gt;
+          &lt;div class="progress"&gt;
+            &lt;div class="progress-bar demo-s8-w75"&gt;&lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+&lt;/div&gt;
 
-.card-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
+&lt;!-- 空状态 --&gt;
+&lt;div class="empty"&gt;
+  &lt;div class="empty-title"&gt;暂无数据&lt;/div&gt;
+  &lt;p&gt;您还没有创建任何项目&lt;/p&gt;
+  &lt;button class="btn btn-primary"&gt;创建项目&lt;/button&gt;
+&lt;/div&gt;
 
-/* 平板 */
-@media (min-width: 768px) {
-  .container {
-    padding-left: 24px;
-    padding-right: 24px;
-  }
-  .card-grid {
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
-  .card-grid > * {
-    flex: 1 1 calc(50% - 8px);
-  }
-}
-
-/* 桌面 */
-@media (min-width: 1200px) {
-  .container {
-    max-width: 1200px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  .card-grid > * {
-    flex: 1 1 calc(33.333% - 11px);
-  }
-}</pre>
+&lt;!-- 固定表头 --&gt;
+&lt;style&gt;
+.table-wrap { max-height: 400px; overflow-y: auto; }
+.table thead th { position: sticky; top: 0; background: #FAFAFA; }
+&lt;/style&gt;</pre>
 </div>
 
-<div class="exercise-box">
-  <h3>练习</h3>
-  <p><strong>练习 1</strong>：用 Flexbox 实现一个三列卡片布局，要求在手机上一列、平板两列、桌面三列。不借助任何 CSS 框架。</p>
-  <p><strong>练习 2</strong>：打开你的项目，在 Chrome DevTools 的手机模拟模式下测试每个页面，记录布局崩坏的地方。</p>
-  <p><strong>练习 3</strong>：为前端设计系统教程的侧边栏添加响应式逻辑：PC 显示侧边栏，手机隐藏侧边栏并添加一个汉堡菜单按钮。</p>
+<div class="lesson-section">
+  <h2>练习</h2>
+  <p><strong>练习 1</strong>：创建一个用户管理表格，包含用户名、邮箱、角色、状态、操作五列。状态用标签组件展示，操作列包含"编辑"和"删除"链接。</p>
+  <p><strong>练习 2</strong>：为上面的表格添加排序功能。点击"用户名"按字母顺序排序，点击"角色"按角色等级排序（管理员 > 编辑 > 访客）。</p>
+  <p><strong>练习 3</strong>：实现一个带搜索和状态筛选的表格。搜索框实时过滤用户名和邮箱，状态下拉框筛选特定状态。两者同时生效。</p>
+</div>
+
+<div class="lesson-section">
+  <h2>测验</h2>
+  <div class="demo-card">
+    <div class="demo-label">QUIZ</div>
+    <div class="demo-s8-quiz">
+      <p class="demo-s8-q"><strong>1. 表格中的数字列应当如何对齐？</strong></p>
+      <ul class="demo-s8-options">
+        <li>A. 左对齐，与文本保持一致</li>
+        <li>B. 居中对齐</li>
+        <li>C. 右对齐，方便纵向比较个位数</li>
+        <li>D. 两端对齐</li>
+      </ul>
+      <p class="demo-s8-answer">答案：C。数字右对齐时，个位、十位、百位在同一垂直线上，用户可以快速比较大小。</p>
+
+      <p class="demo-s8-q"><strong>2. 当表格数据超过一屏时，为什么要固定表头？</strong></p>
+      <ul class="demo-s8-options">
+        <li>A. 为了美观</li>
+        <li>B. 用户滚动后仍能知道每一列的含义，减少记忆负担</li>
+        <li>C. 为了节省页面高度</li>
+        <li>D. 表头固定是 CSS 的默认行为，不需要理由</li>
+      </ul>
+      <p class="demo-s8-answer">答案：B。固定表头让用户在滚动时始终看到列标题，不需要记忆列的顺序和含义。</p>
+
+      <p class="demo-s8-q"><strong>3. 下列哪种场景更适合用卡片而不是表格？</strong></p>
+      <ul class="demo-s8-options">
+        <li>A. 后台管理系统的用户列表</li>
+        <li>B. 需要对比多个对象的多项属性的数据报表</li>
+        <li>C. 电商网站的商品橱窗浏览</li>
+        <li>D. 财务报表中的收支明细</li>
+      </ul>
+      <p class="demo-s8-answer">答案：C。商品橱窗以视觉吸引为主，用户不需要逐项对比属性，卡片布局更适合展示图片和简介。</p>
+    </div>
+  </div>
 </div>
 {% endblock %}
+
 {% block scripts %}
 <style>
-.demo-s8-1 { font-size:12px;color:var(--text-tertiary);margin-bottom:12px; }
-.demo-s8-2 { display:flex;gap:16px;flex-wrap:wrap; }
-.demo-s8-3 { flex:1;min-width:280px;background:var(--color-primary-light);padding:20px;border-radius:8px;text-align:center; }
-.demo-s8-4 { font-weight:600; }
-.demo-s8-5 { font-size:14px;color:var(--text-secondary);margin-top:4px; }
-.demo-s8-6 { flex:1;min-width:280px;background:var(--color-success-bg);padding:20px;border-radius:8px;text-align:center; }
-.demo-s8-7 { font-weight:600; }
-.demo-s8-8 { font-size:14px;color:var(--text-secondary);margin-top:4px; }
-.demo-s8-9 { flex:1;min-width:280px;background:var(--color-warning-bg);padding:20px;border-radius:8px;text-align:center; }
-.demo-s8-10 { font-weight:600; }
-.demo-s8-11 { font-size:14px;color:var(--text-secondary);margin-top:4px; }
-.demo-s8-12 { background:var(--color-primary-light);padding:16px;border-radius:8px;text-align:center; }
-.demo-s8-13 { font-weight:600;color:var(--color-primary); }
-.demo-s8-14 { font-size:12px;color:var(--text-secondary);margin-top:4px; }
-.demo-s8-15 { background:var(--color-success-bg);padding:16px;border-radius:8px;text-align:center; }
-.demo-s8-16 { font-weight:600;color:var(--color-success); }
-.demo-s8-17 { font-size:12px;color:var(--text-secondary);margin-top:4px; }
-.demo-s8-18 { background:var(--color-warning-bg);padding:16px;border-radius:8px;text-align:center; }
-.demo-s8-19 { font-weight:600;color:var(--color-warning); }
-.demo-s8-20 { font-size:12px;color:var(--text-secondary);margin-top:4px; }
+.demo-s8-1 { width: 120px; }
+.demo-s8-2 { width: 75%; }
+.demo-s8-3 { width: 100%; }
+.demo-s8-4 { width: 90%; }
+.demo-s8-num { text-align: right; font-family: var(--font-mono); }
+.demo-s8-5 { margin: 0 0 16px; }
+.demo-s8-6 { text-align: center; }
+.demo-s8-7 { font-size: 12px; color: var(--text-tertiary); margin-top: 8px; }
+.demo-s8-8 { width: 200px; }
+.demo-s8-9 { font-size: 12px; color: var(--text-tertiary); margin-bottom: 4px; }
+.demo-s8-10 { height: 16px; margin-bottom: 8px; }
+.demo-s8-11 { height: 16px; width: 80%; }
+.demo-s8-quiz { padding: 8px; }
+.demo-s8-q { margin-top: 16px; margin-bottom: 8px; }
+.demo-s8-q:first-child { margin-top: 0; }
+.demo-s8-options { margin: 0 0 8px; padding-left: 20px; color: var(--text-secondary); }
+.demo-s8-options li { margin-bottom: 4px; }
+.demo-s8-answer { background: var(--color-primary-light); padding: 8px 12px; border-radius: 4px; font-size: 14px; color: var(--text-secondary); margin-bottom: 8px; }
+.demo-s8-bar { height: 6px; background: #1677FF; border-radius: 3px; }
+.demo-s8-w75 { width: 75%; }
 </style>
 {% endblock %}

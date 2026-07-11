@@ -41,6 +41,36 @@
     <p>在 Python 中，变量不是「装数据的盒子」，而是「贴在数据上的标签」。更准确地说，变量是一个<strong>指向内存地址的指针</strong>。当你写 <code>a = 10</code> 时，Python 先在内存中创建一个整数对象 <code>10</code>，然后让变量 <code>a</code> 指向这个对象。</p>
     <p>这与「静态类型语言」（如 C、Java）截然不同。在静态类型语言中，你必须先声明「a 是整数类型」，然后才能赋值。而在 Python 这样的<strong>动态类型语言</strong>中，类型由赋值的数据自动决定，同一个变量可以先指向整数，再指向字符串。</p>
     <p>这种设计带来了极大的灵活性，但也意味着你需要清楚地知道自己手中的数据是什么类型，否则会在运行时遇到类型错误。</p>
+
+    <div class="concept-card">
+      <h4>Python 对象的内存模型：引用、id、is vs ==</h4>
+      <p>在 CPython 实现中，每个 Python 对象在内存中都是一个 <code>PyObject</code> 结构体，包含<strong>引用计数</strong>和<strong>类型指针</strong>。变量名本身存储在栈帧的命名空间中，而实际的对象数据存储在堆内存中。</p>
+      <ul>
+        <li><code>id(x)</code> 返回对象在内存中的地址（CPython 中即指针值）。</li>
+        <li><code>x is y</code> 比较两个变量是否指向<strong>同一个对象</strong>（即 <code>id(x) == id(y)</code>）。</li>
+        <li><code>x == y</code> 调用对象的 <code>__eq__</code> 方法，比较<strong>值是否相等</strong>。</li>
+      </ul>
+      <p>对于小整数（-5 到 256）和短字符串，CPython 会维护一个全局缓存池。因此 <code>a = 10; b = 10</code> 时，<code>a is b</code> 为 <code>True</code>。但对于大整数或运行时计算的结果，每次都会创建新对象：</p>
+      <pre><code>a = 1000
+b = 1000
+print(a == b)   # True  —— 值相等
+print(a is b)   # False —— 不同对象（CPython 实现相关）</code></pre>
+    </div>
+
+    <div class="highlight-box">
+      <p><strong>可变对象与不可变对象的底层差异</strong></p>
+      <p>Python 中，对象分为<strong>可变</strong>和<strong>不可变</strong>两类，这决定了它们能否"原地修改"：</p>
+      <table>
+        <thead>
+          <tr><th>类型</th><th>示例</th><th>能否原地修改</th><th>操作后果</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>不可变</td><td>int, float, str, tuple</td><td>否</td><td>任何"修改"操作都会创建新对象，变量指向新地址</td></tr>
+          <tr><td>可变</td><td>list, dict, set</td><td>是</td><td>原地修改不改变对象地址，但会影响所有引用该对象的变量</td></tr>
+        </tbody>
+      </table>
+      <p>这个区别是 Python 中绝大多数"意外行为"的根源。例如 <code>a = [1,2]; b = a; b.append(3)</code> 后，<code>a</code> 也变成了 <code>[1,2,3]</code>，因为 <code>a</code> 和 <code>b</code> 指向同一个列表对象。</p>
+    </div>
   </div>
   <div class="lesson-demo">
     <div class="demo-label">图解</div>
@@ -172,6 +202,47 @@ str(123)         # 成功 → "123"
 bool(0)          # 成功 → False
 bool("")         # 成功 → False
 bool("False")    # 成功 → True！非空字符串就是 True</code></pre>
+  </div>
+  <div class="lesson-explain">
+    <p><strong>实验 4：追踪内存变化与拷贝陷阱</strong></p>
+    <p>通过 <code>id()</code> 函数和 <code>is</code> 运算符，验证可变对象与不可变对象在赋值、引用拷贝和深拷贝时的行为差异：</p>
+  </div>
+  <div class="lesson-code">
+    <pre><code># 实验 4-1：不可变对象 —— 整数"修改"实际上是创建新对象
+x = 10
+print("x 初始 id:", id(x))
+x += 1
+print("x 自增后 id:", id(x))   # id 变了！说明产生了新对象
+
+# 实验 4-2：可变对象 —— 列表原地追加，id 不变
+lst = [1, 2, 3]
+print("lst 初始 id:", id(lst))
+lst.append(4)
+print("lst 追加后 id:", id(lst))  # id 不变！原地修改
+
+# 实验 4-3：引用拷贝 —— 两个变量指向同一对象
+a = [1, 2, 3]
+b = a
+print("a is b ?", a is b)        # True
+b[0] = 999
+print("修改 b 后，a =", a)       # [999, 2, 3] —— a 也被改了！
+
+# 实验 4-4：浅拷贝 —— 复制外层容器，但内层对象仍共享
+import copy
+c = [[1, 2], [3, 4]]
+d = copy.copy(c)                 # 浅拷贝
+print("c[0] is d[0] ?", c[0] is d[0])  # True —— 内层列表仍共享
+d[0][0] = 999
+print("修改 d[0][0] 后，c =", c)  # [[999, 2], [3, 4]]
+
+# 实验 4-5：深拷贝 —— 完全独立的对象树
+e = copy.deepcopy(c)
+print("c[0] is e[0] ?", c[0] is e[0])  # False —— 完全独立
+e[0][0] = 111
+print("修改 e[0][0] 后，c =", c)  # [[999, 2], [3, 4]] —— c 不受影响</code></pre>
+  </div>
+  <div class="lesson-explain">
+    <p><strong>实验任务：</strong>运行以上代码，记录每一步的 <code>id()</code> 输出。画出变量与对象之间的引用关系图：在引用拷贝、浅拷贝、深拷贝三种情况下，分别有多少个独立的列表对象被创建？为什么 <code>copy.copy()</code> 被称为"浅"拷贝？</p>
   </div>
 </section>
 

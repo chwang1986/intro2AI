@@ -140,6 +140,40 @@
         <li><strong>$kQ$ 是综合指标</strong>：实际工程中常用 $kQ$ 作为系统设计的核心参数。$kQ > 1$ 时，系统才能实现高效率（>50%）。</li>
       </ul>
     </div>
+
+    <div class="concept-card">
+      <h4>天线方向性与增益的物理推导</h4>
+      <p>在微波输电（远场辐射）场景中，发射天线并非向所有方向均匀辐射能量。天线的<strong>方向性系数 $D$</strong>定义为：在相同辐射总功率下，某方向上的辐射强度与各向同性天线平均辐射强度之比：</p>
+      <div class="formula-box">
+        $$D = \frac{U_{\text{max}}}{U_{\text{avg}}} = \frac{4\pi U_{\text{max}}}{P_{\text{rad}}}$$
+      </div>
+      <p>其中 $U_{\text{max}}$ 为最大辐射强度，$P_{\text{rad}}$ 为总辐射功率。<strong>增益 $G$</strong>则进一步考虑了天线自身的损耗：</p>
+      <div class="formula-box">
+        $$G = \eta_{\text{ant}} \cdot D$$
+      </div>
+      <p>$\eta_{\text{ant}}$ 为天线辐射效率（理想无损耗时 $\eta_{\text{ant}} = 1$，$G = D$）。对于抛物面天线，$G$ 可近似为：</p>
+      <div class="formula-box">
+        $$G \approx \frac{4\pi A_e}{\lambda^2} = \frac{(\pi d)^2}{\lambda^2} \cdot \eta_{\text{ap}}$$
+      </div>
+      <p>其中 $A_e$ 为有效孔径面积，$d$ 为天线直径，$\lambda$ 为波长，$\eta_{\text{ap}}$ 为孔径效率（典型值 0.5~0.7）。可见：天线越大、波长越短（频率越高），增益越高，波束越窄。</p>
+    </div>
+
+    <div class="concept-card">
+      <h4>弗里斯传输方程的完整推导</h4>
+      <p>弗里斯（Friis）传输方程描述了在自由空间中，发射天线与接收天线之间的功率传输关系。设发射功率为 $P_t$，发射天线增益为 $G_t$，则在距离 $r$ 处、与发射天线对准的方向上，<strong>功率通量密度（坡印廷矢量幅值）</strong>为：</p>
+      <div class="formula-box">
+        $$S = \frac{P_t G_t}{4\pi r^2}$$
+      </div>
+      <p>接收天线的有效孔径 $A_r$ 与其增益 $G_r$ 的关系为 $A_r = \frac{G_r \lambda^2}{4\pi}$。因此接收到的功率为：</p>
+      <div class="formula-box">
+        $$P_r = S \cdot A_r = \frac{P_t G_t}{4\pi r^2} \cdot \frac{G_r \lambda^2}{4\pi} = P_t G_t G_r \left( \frac{\lambda}{4\pi r} \right)^2$$
+      </div>
+      <p>定义<strong>自由空间路径损耗</strong> $L_{\text{fs}} = \left( \frac{4\pi r}{\lambda} \right)^2$，则：</p>
+      <div class="formula-box">
+        $$P_r = \frac{P_t G_t G_r}{L_{\text{fs}}}$$
+      </div>
+      <p>用分贝表示时，$P_r(\text{dBm}) = P_t(\text{dBm}) + G_t(\text{dB}) + G_r(\text{dB}) - 20\log_{10}\left(\frac{4\pi r}{\lambda}\right)$。关键结论：距离每增加一倍，接收功率下降 6 dB；频率每提高一倍，路径损耗增加 6 dB。</p>
+    </div>
   </div>
 </section>
 
@@ -200,6 +234,45 @@
     <li>尝试斜放手机，观察功率变化。</li>
   </ol>
   <p><strong>预期现象</strong>：横向偏移会降低耦合系数 $k$，从而降低效率，表现为功率计读数上升（系统试图补偿）或充电功率下降。</p>
+  </div>
+  <div class="lesson-explain">
+    <p><strong>实验 4：用手机测量 WiFi 信号衰减，验证弗里斯方程</strong></p>
+    <p>磁共振耦合实验需要专用设备，但<strong>远场辐射</strong>的规律可以用身边的 WiFi 路由器验证。WiFi 信号本质上也是电磁波，其功率随距离衰减的规律与弗里斯传输方程一致。</p>
+    <ol>
+      <li>在手机上下载一个 WiFi 分析仪 APP（如 "WiFi Analyzer" 或 "WiFi Man"），能够显示当前连接 WiFi 的 <strong>RSSI（接收信号强度指示，单位 dBm）</strong>。</li>
+      <li>将手机放在路由器正前方 1 米处，记录 RSSI 值 $P_1$。</li>
+      <li>保持手机与路由器之间无遮挡，逐步后退至 2 米、3 米、4 米，分别记录 RSSI 值。</li>
+      <li>根据弗里斯方程，在自由空间中，接收功率与距离平方成反比：$P_r \propto 1/r^2$。换算为 dB 尺度，距离每增加一倍，信号强度应下降约 6 dB。</li>
+      <li>将记录的数据绘制成表格，计算相邻距离之间的 dB 差值，与理论值 6 dB 对比。</li>
+    </ol>
+    <p><strong>进阶验证（方向性）</strong>：</p>
+    <ol>
+      <li>在固定距离（如 2 米）处，将手机从路由器正前方水平移动到侧方（30°、60°、90°），记录 RSSI 变化。</li>
+      <li>家用路由器的天线近似全向或弱定向，正前方信号应最强，侧后方会显著衰减。</li>
+    </ol>
+  </div>
+  <div class="lesson-code">
+    <pre><code>【实验 4 数据记录表】
+
+距离 (m) | RSSI (dBm) | 与 1m 的理论差值 (dB) | 实测差值 (dB)
+---------|------------|----------------------|--------------
+1.0      |            | 0                    | 0
+2.0      |            | -6.0                 |
+3.0      |            | -9.5                 |
+4.0      |            | -12.0                |
+
+理论公式：P_r(dBm) = P_1m(dBm) - 20*log10(r)
+
+角度     | RSSI (dBm) | 备注
+---------|------------|------------------
+0° (正前)|            | 天线主瓣方向
+30°      |            |
+60°      |            |
+90° (正侧)|           |
+
+【分析任务】
+1. 你的实测衰减曲线是否接近 1/r² 规律？偏差可能来自墙壁反射、人体遮挡还是天线非理想全向性？
+2. 如果要把 WiFi 信号从 1m 传输到 10m 同时保持相同接收功率，发射端增益需要提高多少 dB？</code></pre>
   </div>
 </section>
 

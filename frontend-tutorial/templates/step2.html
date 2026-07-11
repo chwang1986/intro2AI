@@ -15,16 +15,47 @@
 </div>
 
 <div class="lesson-section">
-  <h2>原理</h2>
-  <h3>Ant Design 的色板生成逻辑</h3>
-  <p>Ant Design 不是凭感觉选颜色，而是基于 HSB 色彩模型（色相 Hue、饱和度 Saturation、亮度 Brightness），从一个主色出发，通过算法生成 10 个梯度的色板。这样做的好处是：</p>
+  <h2>起源</h2>
+  <p>人类对色彩的系统研究始于 1666 年，牛顿用三棱镜将白光分解为七色光谱，首次证明色彩是光的一种属性。19 世纪，<strong>歌德</strong>在《色彩论》中提出色彩具有心理效应，为色彩心理学奠定基础。20 世纪初，<strong>蒙塞尔颜色系统</strong>（Munsell Color System）将色彩描述为色相（Hue）、明度（Value）、彩度（Chroma）三个维度，这是现代色彩模型的雏形。</p>
+  <p>进入数字时代，显示设备使用<strong>RGB 加色模型</strong>（红绿蓝三原色光叠加），而印刷使用<strong>CMYK 减色模型</strong>（青品黄黑油墨叠加）。然而，RGB 对人类不直观——调大 R 值会让颜色偏红，但具体变成什么颜色很难预测。1980 年代，<strong>HSB/HSL 模型</strong>（色相、饱和度、亮度）被引入，它更接近人类描述颜色的自然方式（"偏蓝的、淡一点的、亮一点的"），成为设计师的首选工具。</p>
+  <p>2010 年代后，随着无障碍设计（Accessibility）的普及，<strong>WCAG 对比度标准</strong>成为色彩系统的硬性指标。今天的 Ant Design、TDesign 等系统，都是基于 HSB 模型生成色板，再用 WCAG 公式验证对比度是否达标。</p>
+</div>
+
+<div class="lesson-section">
+  <h2>思考</h2>
+  <h3>为什么 HSB 比 RGB 更适合设计？</h3>
+  <p>假设你要把一个按钮的 hover 状态调"更亮一点"：</p>
   <ul>
-    <li>颜色之间有过渡，不会跳跃感太强。</li>
-    <li>可以保证不同亮度下的对比度都足够。</li>
-    <li>hover、active、disabled 状态有自然的深浅变化。</li>
+    <li>在 RGB 中，你需要同时调整 R、G、B 三个值。比如 #1677FF（主色）调亮后变成 #4096FF，但你很难凭直觉猜出这个变化规律。</li>
+    <li>在 HSB 中，你只需要调整 B（Brightness）一个值。H=213（蓝色相）、S=100%（饱和度不变）、B=100%（亮度提高），逻辑清晰直观。</li>
   </ul>
+  <p>HSB 的另一个优势是<strong>系统性生成色板</strong>。Ant Design 的算法从主色出发，保持色相 H 不变，按固定规律调整 S 和 B，就能生成 10 个梯度的色板。而 RGB 模式下，同样的操作需要复杂的色彩空间转换。</p>
+  <h3>为什么对比度不能凭感觉？</h3>
+  <p>人眼对不同颜色的敏感度不同。比如黄色在白色背景上很显眼，但蓝色在黑色背景上就很难看清。<strong>WCAG 的对比度公式</strong>考虑了人眼的亮度感知特性（相对亮度计算），给出了客观的数值标准：普通文本至少 4.5:1，大文本至少 3:1。这不是审美偏好，而是基于视障用户（低视力、色盲）的实际可读性测试得出的结论。</p>
+</div>
+
+<div class="lesson-section">
+  <h2>原理</h2>
+  <h3>Ant Design 色板生成的底层算法</h3>
+  <p>Ant Design 不是凭感觉选颜色，而是基于 HSB 色彩模型的数学推导。从一个主色（如 #1677FF，HSB: 213, 100%, 100%）出发，算法通过以下逻辑生成 10 个梯度：</p>
+  <ol>
+    <li><strong>色相锁定</strong>：保持 H 不变（或微调 &lt;5°），确保色板始终在同一个色系内，不会出现"这个蓝和那个蓝不一样"的情况。</li>
+    <li><strong>饱和度曲线</strong>：低亮度时适当提高饱和度（避免颜色发灰），高亮度时降低饱和度（避免颜色刺眼）。</li>
+    <li><strong>亮度等差</strong>：按非线性规律调整 B 值，确保视觉上每个梯度的"深浅跳跃感"一致。人眼对暗部的变化更敏感，所以暗色阶的 B 值间隔更小。</li>
+  </ol>
+  <p>这样做的好处是：<strong>颜色之间有过渡</strong>，不会跳跃感太强；<strong>可以保证不同亮度下的对比度都足够</strong>；hover、active、disabled 状态有自然的深浅变化。</p>
+
+  <h3>WCAG 对比度标准的数学推导</h3>
+  <p>WCAG 2.1 的对比度公式不是简单的颜色差值，而是基于人眼的<strong>亮度感知非线性特性</strong>：</p>
+  <pre class="code-block">/* 相对亮度计算（sRGB 色彩空间） */
+L = 0.2126 * R + 0.7152 * G + 0.0722 * B
+
+/* 对比度 */
+Contrast = (L1 + 0.05) / (L2 + 0.05)</pre>
+  <p>公式中的系数 0.2126、0.7152、0.0722 对应人眼对红、绿、蓝三种颜色的敏感度。人眼对绿色最敏感（0.7152），对蓝色最不敏感（0.0722）。这意味着：即使两种颜色的 RGB 差值相同，如果一种偏绿、一种偏蓝，人眼感知的对比度也会不同。<strong>WCAG 公式用科学方法量化了这种感知差异</strong>。</p>
 
   <h3>色彩心理学（实用版）</h3>
+  <p>色彩的心理效应不是文化偏见，而是有生理基础的。例如，蓝色光波长较短（450-495nm），穿透力弱，在视网膜上聚焦的位置更靠前，因此眼睛不需要频繁调节焦距，产生"平静"的感觉。红色光波长较长（620-750nm），穿透力强，容易触发警觉反应。以下是界面设计中的色彩语义：</p>
   <ul>
     <li><strong>蓝色</strong>：科技、信任、冷静。适合做品牌主色。</li>
     <li><strong>绿色</strong>：成功、通过、正常。用于正面反馈。</li>
@@ -32,6 +63,31 @@
     <li><strong>红色</strong>：错误、危险、删除。用于负面反馈。</li>
     <li><strong>灰色</strong>：中性、辅助、禁用。用于文字、边框、背景。</li>
   </ul>
+</div>
+
+<div class="lesson-section">
+  <h2>论证</h2>
+  <h3>为什么 HSB 比 RGB 更适合生成系统色板？</h3>
+  <p>RGB 是<strong>设备依赖型</strong>色彩空间，描述的是"显示器需要发出多少红、绿、蓝光"，而非人类感知的颜色属性。HSB 是<strong>感知型</strong>色彩空间，直接映射人类描述颜色的自然语言。以下是两种模型调整颜色的对比：</p>
+  <table class="table table-bordered mb-4">
+    <thead>
+      <tr><th>操作目标</th><th>RGB 方式</th><th>HSB 方式</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>让颜色更亮</td><td>同时增加 R、G、B，比例难以确定</td><td>增加 B（亮度）一个值</td></tr>
+      <tr><td>让颜色更鲜艳</td><td>拉大 RGB 的差值，结果不可预测</td><td>增加 S（饱和度）一个值</td></tr>
+      <tr><td>生成同色系色板</td><td>需要复杂的色彩空间转换</td><td>固定 H，调整 S 和 B</td></tr>
+      <tr><td>保持品牌一致性</td><td>难以约束颜色范围</td><td>H 的浮动范围可控（&lt;±5°）</td></tr>
+    </tbody>
+  </table>
+
+  <h3>中性色为什么用透明度而非固定灰值？</h3>
+  <p>Ant Design 的文字色使用 <code class="code-inline">rgba(0,0,0,0.88)</code> 而非固定值如 <code class="code-inline">#262626</code>，这个设计决策有深层考虑：</p>
+  <ol>
+    <li><strong>适应性</strong>：在不同背景色上，固定灰值可能需要重新定义；而透明度会自动与背景混合，在浅色背景上显深、在深色背景上显浅。</li>
+    <li><strong>层级表达</strong>：0.88（主文本）、0.65（次要）、0.45（辅助）、0.25（禁用）形成等比递减的感知层级，人眼对"透明度差异"的敏感度比对"灰阶差异"更一致。</li>
+    <li><strong>暗色模式兼容</strong>：切换到暗色主题时，只需将底色从白变黑，文字透明度无需修改，即可自然适配。</li>
+  </ol>
 </div>
 
 <div class="lesson-section">
@@ -43,6 +99,97 @@
     <li><strong>中性色用透明度表示层级</strong>：主要文字 <code class="code-inline">rgba(0,0,0,0.88)</code>，次要 <code class="code-inline">0.65</code>，辅助 <code class="code-inline">0.45</code>，禁用 <code class="code-inline">0.25</code>。</li>
     <li><strong>背景分层</strong>：页面背景 <code class="code-inline">#F5F7FA</code>，卡片背景 <code class="code-inline">#FFFFFF</code>，代码背景 <code class="code-inline">#F6F8FA</code>，形成自然的层级。</li>
   </ol>
+</div>
+
+<div class="lesson-section">
+  <h2>实验</h2>
+  <p>创建一个 HTML 文件，复制以下代码并在浏览器中打开。这个实验让你用 CSS 变量搭建一套完整的色板，并测试不同背景与文字颜色的对比度效果。</p>
+
+  <div class="demo-card">
+    <div class="demo-label">EXPERIMENT</div>
+    <p>实验代码（保存为 <code class="code-inline">color-system.html</code>）：</p>
+    <pre class="code-block">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;style&gt;
+    :root {
+      --color-primary: #1677FF;
+      --color-primary-hover: #4096FF;
+      --color-primary-active: #0958D9;
+      --color-primary-light: #E6F4FF;
+      --color-success: #52C41A;
+      --color-success-bg: #F6FFED;
+      --color-warning: #FAAD14;
+      --color-warning-bg: #FFFBE6;
+      --color-error: #F5222D;
+      --color-error-bg: #FFF1F0;
+      --text-primary: rgba(0, 0, 0, 0.88);
+      --text-secondary: rgba(0, 0, 0, 0.65);
+      --bg-card: #FFFFFF;
+      --bg-page: #F5F7FA;
+    }
+    body {
+      font-family: sans-serif;
+      background: var(--bg-page);
+      padding: 40px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+    .swatch {
+      width: 200px;
+      padding: 16px;
+      border-radius: 8px;
+      background: var(--bg-card);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .swatch-box {
+      height: 60px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+    }
+    .primary { background: var(--color-primary); color: #fff; }
+    .primary-hover { background: var(--color-primary-hover); color: #fff; }
+    .primary-active { background: var(--color-primary-active); color: #fff; }
+    .success { background: var(--color-success); color: #fff; }
+    .warning { background: var(--color-warning); color: #fff; }
+    .error { background: var(--color-error); color: #fff; }
+    .contrast-test {
+      padding: 12px;
+      border-radius: 4px;
+      margin-top: 8px;
+    }
+    .good-contrast { background: var(--color-primary); color: #fff; }
+    .bad-contrast { background: var(--color-primary-light); color: var(--color-primary); }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class="swatch"&gt;
+    &lt;div class="swatch-box primary"&gt;Primary&lt;/div&gt;
+    &lt;div class="swatch-box primary-hover"&gt;Hover&lt;/div&gt;
+    &lt;div class="swatch-box primary-active"&gt;Active&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class="swatch"&gt;
+    &lt;div class="swatch-box success"&gt;Success&lt;/div&gt;
+    &lt;div class="swatch-box warning"&gt;Warning&lt;/div&gt;
+    &lt;div class="swatch-box error"&gt;Error&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class="swatch"&gt;
+    &lt;p class="contrast-label"&gt;对比度测试&lt;/p&gt;
+    &lt;div class="contrast-test good-contrast"&gt;白字深蓝底 — 高对比度&lt;/div&gt;
+    &lt;div class="contrast-test bad-contrast"&gt;蓝字浅蓝底 — 低对比度&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+    <p class="text-secondary text-sm mt-3"><strong>实验任务</strong>：
+      1) 修改 <code class="code-inline">--color-primary</code> 为一个你喜欢的颜色（如 #E60027），观察 hover/active 是否自然过渡；
+      2) 将"低对比度"一行的文字色改为 <code class="code-inline">rgba(0,0,0,0.45)</code>，观察可读性变化；
+      3) 用浏览器开发者工具把页面背景改成黑色，观察 rgba 文字色的自适应效果。</p>
+  </div>
 </div>
 
 <div class="lesson-section">
@@ -62,6 +209,48 @@
     <div class="mistake-title">❌ 忽略暗色文字在有色背景上的表现</div>
     <p>在蓝色背景上直接放黑色文字，看起来脏。有色背景上应当用白色文字。</p>
   </div>
+</div>
+
+<div class="lesson-section">
+  <h2>示例</h2>
+  <h3>为一个表单页面设计完整的色彩方案</h3>
+  <p>假设你要设计一个"用户注册"表单，需要以下元素：主按钮（提交）、次按钮（取消）、输入框边框、错误提示、成功提示、页面背景。如何用色彩系统规范地定义这些颜色？</p>
+
+  <div class="demo-card">
+    <div class="demo-label">COLOR USAGE EXAMPLE</div>
+    <div class="demo-s2-form">
+      <div class="demo-s2-form-title">用户注册</div>
+      <div class="demo-s2-form-item">
+        <label class="demo-s2-form-label">用户名</label>
+        <input class="input demo-s2-form-input" placeholder="请输入用户名">
+      </div>
+      <div class="demo-s2-form-item">
+        <label class="demo-s2-form-label">密码</label>
+        <input class="input demo-s2-form-input demo-s2-form-error" placeholder="密码不能为空">
+        <div class="demo-s2-form-error-text">密码长度至少 8 位</div>
+      </div>
+      <div class="demo-s2-form-item">
+        <label class="demo-s2-form-label">邮箱</label>
+        <input class="input demo-s2-form-input" placeholder="请输入邮箱">
+        <div class="demo-s2-form-success-text">邮箱格式正确</div>
+      </div>
+      <div class="flex gap-3 mt-4">
+        <button class="btn btn-primary">提交</button>
+        <button class="btn btn-ghost">取消</button>
+      </div>
+    </div>
+  </div>
+
+  <p>颜色使用分析：</p>
+  <ul>
+    <li><strong>页面背景</strong>：<code class="code-inline">--bg-page: #F5F7FA</code>，浅灰蓝让白色卡片浮起来。</li>
+    <li><strong>输入框边框</strong>：<code class="code-inline">--border-color: #D9D9D9</code>，中性灰不抢注意力。</li>
+    <li><strong>错误提示</strong>：边框用 <code class="code-inline">--color-error</code>，文字用 <code class="code-inline">--color-error</code>，背景用 <code class="code-inline">--color-error-bg</code>——功能色必须成对出现。</li>
+    <li><strong>成功提示</strong>：文字用 <code class="code-inline">--color-success</code>，背景用 <code class="code-inline">--color-success-bg</code>。</li>
+    <li><strong>主按钮</strong>：<code class="code-inline">--color-primary</code>，页面上只有一个 Primary 按钮。</li>
+    <li><strong>次按钮</strong>：<code class="code-inline">btn-ghost</code>，描边样式，视觉上弱于主按钮。</li>
+  </ul>
+  <p>关键原则：<strong>功能色只用于对应语义</strong>。红色只出现在错误场景，绿色只出现在成功场景，不能互换。</p>
 </div>
 
 <div class="lesson-section">
@@ -158,11 +347,48 @@
 }</pre>
 </div>
 
-<div class="exercise-box">
-  <h3>练习</h3>
-  <p><strong>练习 1</strong>：打开 Ant Design 的色板生成工具（antd color palette），输入一个你喜欢的颜色，观察生成的 10 个梯度。把结果截图保存。</p>
-  <p><strong>练习 2</strong>：在现有项目里搜索所有 <code class="code-inline">#</code> 开头的颜色值，统计有多少种不同的颜色。尝试用 CSS 变量替换重复的颜色。</p>
-  <p><strong>练习 3</strong>：用这套色板设计一个"提交表单"页面，包含主按钮、取消按钮、输入框边框、错误提示，只用变量不用写死颜色。</p>
+<div class="lesson-section">
+  <h2>练习</h2>
+  <ol>
+    <li><strong>色板生成</strong>：打开 Ant Design 的色板生成工具，输入一个你喜欢的颜色（如 #E60027），观察生成的 10 个梯度。记录 H 值的变化范围，是否保持在 ±5° 以内。</li>
+    <li><strong>颜色审计</strong>：在现有项目里搜索所有 <code class="code-inline">#</code> 开头的颜色值，统计有多少种不同的颜色。尝试用 CSS 变量替换重复的颜色，将颜色种类减少到 10 种以内。</li>
+    <li><strong>对比度测试</strong>：找一个你项目中的按钮，用 <a href="https://webaim.org/resources/contrastchecker/" target="_blank">WebAIM 对比度检查器</a>测试按钮文字与背景的对比度。如果低于 4.5:1，调整颜色直到达标。</li>
+    <li><strong>暗色模式实验</strong>：将项目中的文字色从固定灰值（如 #595959）改为 rgba(0,0,0,0.65)，然后在深色背景下观察文字是否自动变浅。</li>
+  </ol>
+</div>
+
+<div class="lesson-section">
+  <h2>测验</h2>
+  <div class="demo-card">
+    <div class="demo-label">QUIZ</div>
+    <p><strong>判断题</strong></p>
+    <ol>
+      <li>RGB 色彩空间比 HSB 更适合人类直观理解和调整颜色。（ ）</li>
+      <li>WCAG 对比度公式中的系数 0.7152 对应人眼对绿色的敏感度。（ ）</li>
+      <li>Ant Design 生成色板时，会大幅改变主色的色相 H 值以产生更多变化。（ ）</li>
+      <li>使用 rgba(0,0,0,0.88) 而非 #262626 作为文字色，主要是为了兼容暗色模式。（ ）</li>
+    </ol>
+    <p><strong>选择题</strong></p>
+    <ol>
+      <li>以下哪种颜色组合最符合 WCAG 的对比度要求？
+        <ul>
+          <li>A. 浅灰底（#F5F5F5）+ 白色文字</li>
+          <li>B. 蓝色底（#1677FF）+ 白色文字</li>
+          <li>C. 黄色底（#FFFBE6）+ 浅黄文字</li>
+          <li>D. 白色底（#FFFFFF）+ 浅灰文字（#BFBFBF）</li>
+        </ul>
+      </li>
+      <li>设计一个错误提示时，正确的颜色组合是？
+        <ul>
+          <li>A. 红色背景 + 黑色文字</li>
+          <li>B. 浅红背景（#FFF1F0）+ 红色文字（#F5222D）</li>
+          <li>C. 绿色背景 + 红色文字</li>
+          <li>D. 黄色背景 + 蓝色文字</li>
+        </ul>
+      </li>
+    </ol>
+    <p class="text-secondary text-sm mt-3"><strong>参考答案</strong>：判断题 1.× 2.√ 3.× 4.√；选择题 1.B 2.B</p>
+  </div>
 </div>
 {% endblock %}
 
@@ -189,5 +415,15 @@
 .demo-s2-19 { width:60px;height:60px;background:#000000;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff; }
 .demo-s2-20 { opacity:0.85; }
 .demo-s2-21 { transform:translateY(1px);opacity:1;background:#0958D9; }
+
+/* 示例：表单色彩方案 */
+.demo-s2-form { max-width: 400px; padding: 24px; background: var(--bg-page); border-radius: var(--border-radius-lg); }
+.demo-s2-form-title { font-size: 20px; font-weight: 600; margin-bottom: 16px; }
+.demo-s2-form-item { margin-bottom: 12px; }
+.demo-s2-form-label { display: block; font-size: 14px; font-weight: 500; margin-bottom: 4px; }
+.demo-s2-form-input { margin-bottom: 4px; }
+.demo-s2-form-error { border-color: var(--color-error) !important; }
+.demo-s2-form-error-text { font-size: 12px; color: var(--color-error); margin-top: 2px; }
+.demo-s2-form-success-text { font-size: 12px; color: var(--color-success); margin-top: 2px; }
 </style>
 {% endblock %}

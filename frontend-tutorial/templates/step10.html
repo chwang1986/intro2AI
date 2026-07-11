@@ -1,41 +1,212 @@
 {% extends "base.html" %}
 
-{% block title %}Step 10 页面模板 — 前端设计系统教程{% endblock %}
+{% block title %}Step 10 设计令牌与主题 — 前端设计系统教程{% endblock %}
 
 {% block content %}
 <div class="page-header">
-  <h1>Step 10 页面模板</h1>
-  <p>可直接套用的页面结构与实战组合</p>
+  <h1>Step 10 设计令牌与主题</h1>
+  <p>CSS 自定义属性、令牌化系统、亮暗模式切换与可维护性</p>
   <div class="tag tag-brand">实战</div>
 </div>
 
 <div class="lesson-section">
   <h2>场景</h2>
-  <p>学完前面的设计令牌、组件和布局，现在需要把它们组合成完整的页面。页面模板就是"现成的配方"，告诉你在什么场景下用什么组件、怎么排列。以后做新页面时，直接选一个最接近的模板，复制粘贴再微调。</p>
+  <p>一个产品需要支持亮色模式和暗色模式；另一个产品需要将品牌色从蓝色改为紫色；还有一个产品需要在不同子品牌之间共享组件但使用不同的主题。如果没有系统化的颜色、间距、字体管理，这些需求会导致大量的"全局搜索替换"，极易出错。设计令牌（Design Tokens）就是解决这一问题的核心机制。</p>
+</div>
+
+<div class="lesson-section">
+  <h2>起源</h2>
+  <p>设计令牌的概念由 Salesforce 的设计团队于 2014 年正式提出。他们在维护 Lightning Design System 时发现：设计师用 Sketch 的样式定义颜色，开发者用 Sass 变量定义颜色，产品经理用文档记录颜色——三个来源很容易不同步。当需要更新品牌色时，设计师改了一个地方，开发者改了另一个地方，导致上线后颜色不一致。</p>
+  <p>Salesforce 的解决方案是将颜色、字体、间距等设计决策抽象为平台无关的"令牌"（Tokens）。这些令牌以 JSON 格式存储，作为单一事实来源（Single Source of Truth）。设计师、开发者、产品经理都引用同一个令牌名，而不是具体的色值。</p>
+  <p>CSS 自定义属性（Custom Properties，又称 CSS 变量）在 2015 年随着 Chrome 49 和 Firefox 31 的普及，成为在 Web 端实现设计令牌的最佳技术方案。与 Sass/Less 等预处理器变量不同，CSS 自定义属性在运行时生效，可以被 JavaScript 动态修改，从而实现主题切换、无障碍适配等动态需求。</p>
+</div>
+
+<div class="lesson-section">
+  <h2>思考</h2>
+  <h3>为什么设计令牌是设计系统的核心？</h3>
+  <p>设计系统的本质是"一致性"。一致性的敌人是"硬编码"——当每个组件都直接使用 #1677FF 这个色值时，一旦品牌色改变，你需要找到所有使用这个色值的地方并修改。在大中型项目中，这可能涉及数百个文件、数千个位置。</p>
+  <p>设计令牌引入了"间接层"。你不再说"这个按钮用 #1677FF"，而是说"这个按钮用 --color-primary"。按钮不关心 --color-primary 到底是蓝色还是紫色，它只关心这是"主色"。这种解耦带来了三个好处：</p>
+  <ul>
+    <li><strong>一处修改，全局生效</strong>：改变 --color-primary 的定义，所有使用它的组件自动更新。</li>
+    <li><strong>语义化管理</strong>：--color-primary 比 #1677FF 更有语义，新成员一看就知道这是"主品牌色"。</li>
+    <li><strong>多主题支持</strong>：同一套组件可以加载不同的令牌值，实现亮/暗模式或子品牌定制。</li>
+  </ul>
+  <h3>为什么 CSS 自定义属性比 Sass 变量更适合主题切换？</h3>
+  <p>Sass 变量在编译时确定值，生成的是静态 CSS。如果你想在运行时切换主题，需要为每个主题生成一套完整的 CSS 文件，然后通过加载不同文件来切换。</p>
+  <p>CSS 自定义属性在运行时生效。你可以在一个 :root 选择器中定义亮色主题的令牌值，在 [data-theme="dark"] 选择器中定义暗色主题的令牌值。切换主题时，只需要修改 HTML 元素的 data-theme 属性，所有使用这些令牌的组件会即时更新，无需重新加载 CSS 文件。</p>
 </div>
 
 <div class="lesson-section">
   <h2>原理</h2>
-  <h3>原子设计方法论（Atomic Design）</h3>
-  <p>Brad Frost 提出的原子设计，把界面分成五个层级：</p>
+  <h3>CSS 自定义属性的底层机制</h3>
+  <p>CSS 自定义属性的底层实现是浏览器渲染引擎中的"属性级联"。与普通的 CSS 属性不同，自定义属性的值不是立即解析的，而是在使用时（通过 var() 函数）才进行计算。这种"惰性求值"机制带来了几个重要特性：</p>
   <ul>
-    <li><strong>原子（Atoms）</strong>：最小的元素，如按钮、输入框、标签。对应我们的 Step 5 基础组件。</li>
-    <li><strong>分子（Molecules）</strong>：原子组合成的小组件，如搜索框（输入框 + 按钮）。</li>
-    <li><strong>有机体（Organisms）</strong>：分子组合成的区块，如导航栏、卡片列表。对应我们的 Step 6 容器组件和 Step 7 数据展示。</li>
-    <li><strong>模板（Templates）</strong>：有机体组合成的页面骨架，没有真实内容。对应本章。</li>
-    <li><strong>页面（Pages）</strong>：模板填充真实内容后的最终页面。</li>
+    <li><strong>作用域继承</strong>：自定义属性遵循 CSS 的层叠和继承规则。子元素可以继承父元素的自定义属性值，也可以在自己的选择器中覆盖。</li>
+    <li><strong>运行时修改</strong>：通过 JavaScript 的 element.style.setProperty('--name', 'value') 可以实时修改自定义属性，所有引用它的样式会立即重绘。</li>
+    <li><strong>回退机制</strong>：var(--name, fallback) 允许在变量未定义时使用默认值，增强了代码的健壮性。</li>
   </ul>
-  <p>这套方法论的核心是<strong>自下而上地构建</strong>：先定义原子，再组合成分子、有机体，最后搭成页面。这样任何一个层级的改动都能自动同步到所有使用它的地方。</p>
+
+  <h3>令牌的层级结构</h3>
+  <p>成熟的设计令牌系统通常分为三个层级（Salesforce 的命名方式）：</p>
+  <ul>
+    <li><strong>全局令牌（Global Tokens）</strong>：最基础的设计决策，如 --blue-500: #1677FF; --spacing-1: 4px;。这些令牌对应设计工具的原始值，通常不直接在组件中使用。</li>
+    <li><strong>别名令牌（Alias Tokens）</strong>：将全局令牌映射到语义化名称，如 --color-primary: var(--blue-500); --color-error: var(--red-500);。别名令牌表达的是"这个颜色用来做什么"。</li>
+    <li><strong>组件令牌（Component Tokens）</strong>：针对特定组件的令牌，如 --button-bg: var(--color-primary); --button-bg-hover: var(--color-primary-hover);。组件令牌将别名令牌绑定到具体组件的具体状态。</li>
+  </ul>
+  <p>三层结构的好处是：全局令牌改变不影响语义（蓝色换成另一种蓝色），别名令牌改变不影响组件逻辑（主色从蓝变紫），组件令牌改变只影响特定组件。</p>
+
+  <h3>暗色模式的实现原理</h3>
+  <p>暗色模式不仅仅是"把白色背景换成黑色"。人眼在暗光环境下对对比度的感知会发生变化——同样的灰度差在暗背景下看起来更不明显。因此，暗色模式需要重新调整整个色板：</p>
+  <ul>
+    <li><strong>背景色</strong>：从浅色（#FFFFFF → #F5F7FA）变为深色（#141414 → #1F1F1F）。</li>
+    <li><strong>文字色</strong>：从黑色系（rgba(0,0,0,0.88)）变为白色系（rgba(255,255,255,0.85)）。</li>
+    <li><strong>边框色</strong>：在暗色模式下，边框应当比背景色稍亮，而不是稍暗。</li>
+    <li><strong>阴影</strong>：暗色模式下的阴影应当用"发光"（高亮背景）替代，因为深色上的黑色阴影几乎不可见。</li>
+  </ul>
+</div>
+
+<div class="lesson-section">
+  <h2>论证</h2>
+  <h3>令牌化对可维护性的量化影响</h3>
+  <p>假设一个中型项目有 200 个组件，每个组件平均使用 10 个颜色值。如果没有令牌化，项目中会有 2000 个硬编码的颜色引用。当品牌色改变时，需要修改 2000 个位置，即使使用全局搜索替换，也存在误改风险（如将非品牌色但色值相同的颜色也替换掉）。</p>
+  <p>引入令牌化后，同样的项目可能只有 50 个全局/别名令牌。品牌色改变只需要修改 1 个令牌的定义。维护工作量从 O(n) 降到了 O(1)。</p>
+  <p>更关键的是"心理成本"：开发者在写样式时，不需要记住"这个按钮的 hover 色是 #4096FF 还是 #3b82f6"，只需要记住"用 --color-primary-hover"。这减少了认知负荷，也降低了出错概率。</p>
+  <h3>暗色模式的用户价值</h3>
+  <p>Google 的研究表明，在暗光环境下使用暗色模式可以将屏幕能耗降低最高 60%（对 OLED 屏幕而言，因为黑色像素不发光）。此外，暗色模式在低光环境下可以减少眼睛疲劳，这也是 iOS 和 Android 都引入系统级暗色模式的原因。作为一个前端设计系统，支持暗色模式已经不再是"加分项"，而是"基本项"。</p>
 </div>
 
 <div class="lesson-section">
   <h2>要点</h2>
   <ol>
-    <li><strong>每个页面有明确的"一页一事"</strong>：一个页面只做一件事（展示数据、填写表单、阅读文档）。不要把所有功能塞进一个页面。</li>
-    <li><strong>页面结构保持一致</strong>：Header + Main + Footer 的大框架不变，具体内容在变。用户打开新页面时，不需要重新学习布局。</li>
-    <li><strong>优先展示核心内容</strong>：页面加载后，用户第一眼应当看到最重要的信息，而不是被广告、提示、弹窗干扰。</li>
-    <li><strong>面包屑用于深层级</strong>：如果页面嵌套超过两层（如 首页 / 教程 / 前端设计 / 色彩系统），用面包屑告诉用户当前位置。</li>
-    <li><strong>预留扩展空间</strong>：模板不要写得太死，给未来可能增加的内容留位置。</li>
+    <li><strong>令牌命名要有语义</strong>：用 --color-primary 而不是 --color-blue，用 --spacing-lg 而不是 --spacing-16px。语义化命名让令牌的目的清晰，不受具体值变化的影响。</li>
+    <li><strong>区分全局、别名和组件令牌</strong>：不要直接在组件中引用全局色值，而是通过别名令牌过渡。这保持了系统的灵活性和可维护性。</li>
+    <li><strong>暗色模式不是简单的反色</strong>：需要为暗色模式单独定义一套色板，确保对比度、可读性和视觉层次在暗背景下仍然成立。</li>
+    <li><strong>使用 CSS 自定义属性而非预处理器变量</strong>：只有 CSS 自定义属性支持运行时修改，这是实现主题切换的前提。</li>
+    <li><strong>提供系统级主题适配</strong>：用 <code class="code-inline">@media (prefers-color-scheme: dark)</code> 检测用户的系统主题偏好，自动匹配。</li>
+    <li><strong>令牌值要有文档</strong>：每个令牌应当说明其用途、使用场景和变更历史，帮助团队成员正确使用。</li>
+  </ol>
+</div>
+
+<div class="lesson-section">
+  <h2>实验</h2>
+  <p>将以下代码复制到你的编辑器中，保存为 <code class="code-inline">theme-experiment.html</code>，用浏览器打开。点击按钮切换亮/暗主题，观察所有元素的颜色变化。</p>
+  <pre class="code-block">&lt;!DOCTYPE html&gt;
+&lt;html lang="zh-CN"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;title&gt;主题切换实验&lt;/title&gt;
+  &lt;style&gt;
+    /* ===== 亮色主题（默认） ===== */
+    :root {
+      --bg-page: #F5F7FA;
+      --bg-card: #FFFFFF;
+      --text-primary: rgba(0, 0, 0, 0.88);
+      --text-secondary: rgba(0, 0, 0, 0.65);
+      --color-primary: #1677FF;
+      --color-primary-hover: #4096FF;
+      --border-color: #D9D9D9;
+      --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    /* ===== 暗色主题 ===== */
+    [data-theme="dark"] {
+      --bg-page: #141414;
+      --bg-card: #1F1F1F;
+      --text-primary: rgba(255, 255, 255, 0.85);
+      --text-secondary: rgba(255, 255, 255, 0.55);
+      --color-primary: #3B82F6;
+      --color-primary-hover: #60A5FA;
+      --border-color: #434343;
+      --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    body {
+      font-family: system-ui, sans-serif;
+      background: var(--bg-page);
+      color: var(--text-primary);
+      transition: background 0.3s, color 0.3s;
+      min-height: 100vh; margin: 0; padding: 40px 16px;
+    }
+
+    .container { max-width: 600px; margin: 0 auto; }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px; padding: 24px;
+      box-shadow: var(--shadow);
+      transition: all 0.3s;
+      margin-bottom: 16px;
+    }
+
+    .btn {
+      padding: 8px 20px; border: none; border-radius: 4px;
+      background: var(--color-primary); color: white;
+      font-size: 14px; cursor: pointer; transition: background 0.15s;
+    }
+    .btn:hover { background: var(--color-primary-hover); }
+
+    .text-secondary { color: var(--text-secondary); }
+
+    .toggle-bar {
+      display: flex; gap: 12px; margin-bottom: 24px;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class="container"&gt;
+    &lt;div class="toggle-bar"&gt;
+      &lt;button class="btn" onclick="setTheme('light')"&gt;☀ 亮色&lt;/button&gt;
+      &lt;button class="btn" onclick="setTheme('dark')"&gt;🌙 暗色&lt;/button&gt;
+      &lt;button class="btn" onclick="setTheme('auto')"&gt;⚙ 跟随系统&lt;/button&gt;
+    &lt;/div&gt;
+
+    &lt;div class="card"&gt;
+      &lt;h3&gt;设计令牌演示&lt;/h3&gt;
+      &lt;p class="text-secondary"&gt;这张卡片的背景、文字、边框和阴影都使用了 CSS 自定义属性。点击上方按钮切换主题，所有颜色会即时更新。&lt;/p&gt;
+    &lt;/div&gt;
+
+    &lt;div class="card"&gt;
+      &lt;h3&gt;核心优势&lt;/h3&gt;
+      &lt;ul class="text-secondary"&gt;
+        &lt;li&gt;无需重新加载页面&lt;/li&gt;
+        &lt;li&gt;所有组件自动同步&lt;/li&gt;
+        &lt;li&gt;过渡动画平滑自然&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;script&gt;
+    function setTheme(mode) {
+      if (mode === 'auto') {
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+      } else {
+        document.documentElement.setAttribute('data-theme', mode);
+      }
+      localStorage.setItem('theme', mode);
+    }
+
+    // 页面加载时恢复主题
+    const saved = localStorage.getItem('theme') || 'auto';
+    setTheme(saved);
+
+    // 监听系统主题变化
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e =&gt; {
+      if (localStorage.getItem('theme') === 'auto') {
+        document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+      }
+    });
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+  <p><strong>实验任务</strong>：</p>
+  <ol>
+    <li>点击"暗色"按钮，观察页面背景、卡片背景、文字颜色和按钮颜色的变化。</li>
+    <li>点击"跟随系统"按钮，然后修改你的操作系统主题（Windows/macOS 的亮/暗模式设置），观察网页是否自动跟随变化。</li>
+    <li>在暗色模式下，修改 <code class="code-inline">--bg-page</code> 为纯黑色（#000000），观察可读性是否下降。思考为什么暗色模式的背景通常不是纯黑。</li>
+    <li>添加一个新组件"警告提示"，使用新的令牌 <code class="code-inline">--color-warning</code> 和 <code class="code-inline">--color-warning-bg</code>，并为其定义亮/暗两种色值。</li>
   </ol>
 </div>
 
@@ -43,123 +214,100 @@
   <h2>常见错误</h2>
 
   <div class="mistake-card">
-    <div class="mistake-title">❌ 每页结构都不一样</div>
-    <p>这个页面有侧边栏，那个没有，另一个侧边栏在右边。用户需要不断适应新布局，增加认知负担。</p>
+    <div class="mistake-title">❌ 直接在组件中硬编码颜色</div>
+    <p>组件中写死 #1677FF，导致需要主题切换时无法适配。所有颜色都应当通过 var() 引用令牌。</p>
   </div>
 
   <div class="mistake-card">
-    <div class="mistake-title">❌ 模板写得太死</div>
-    <p>模板里所有尺寸、颜色都写死 px，复用时只能全盘复制，无法微调。应当用 CSS 变量和 class，方便覆盖。</p>
+    <div class="mistake-title">❌ 暗色模式只是反色</div>
+    <p>将白色背景换成黑色，黑色文字换成白色，结果很多元素的对比度严重不足。暗色模式需要重新设计整个色板，尤其是边框、阴影和次要文字。</p>
   </div>
 
   <div class="mistake-card">
-    <div class="mistake-title">❌ 忽略无数据状态</div>
-    <p>模板里放满了示例数据，但没有考虑真实场景中数据为空、加载失败、权限不足的情况。</p>
+    <div class="mistake-title">❌ 令牌命名过于具体</div>
+    <p>用 --blue-500 作为按钮背景色令牌名，当品牌色从蓝色变为紫色时，令牌名就失去了语义。应当使用 --color-primary 这样的语义化名称。</p>
+  </div>
+
+  <div class="mistake-card">
+    <div class="mistake-title">❌ 忘记处理过渡动画</div>
+    <p>主题切换时，颜色瞬间跳变，用户体验生硬。应当在 body 和常用元素上添加 <code class="code-inline">transition: background 0.3s, color 0.3s</code>，让切换更平滑。</p>
   </div>
 </div>
 
 <div class="lesson-section">
   <h2>效果展示</h2>
-  <h3>模板一：仪表盘（Dashboard）</h3>
+  <h3>令牌层级示意</h3>
   <div class="demo-card">
-    <div class="demo-label">DASHBOARD TEMPLATE</div>
+    <div class="demo-label">TOKEN HIERARCHY</div>
     <div class="demo-s10-1">
-      <div class="demo-s10-2">📊 项目仪表盘</div>
-      <div class="demo-s10-3">
-        <div class="row demo-s10-4">
-          <div class="col-3">
-            <div class="card demo-s10-5">
-              <div class="demo-s10-6">总项目</div>
-              <div class="demo-s10-7">12</div>
-            </div>
-          </div>
-          <div class="col-3">
-            <div class="card demo-s10-8">
-              <div class="demo-s10-9">进行中</div>
-              <div class="demo-s10-10">5</div>
-            </div>
-          </div>
-          <div class="col-3">
-            <div class="card demo-s10-11">
-              <div class="demo-s10-12">已完成</div>
-              <div class="demo-s10-13">7</div>
-            </div>
-          </div>
-          <div class="col-3">
-            <div class="card demo-s10-14">
-              <div class="demo-s10-15">待处理</div>
-              <div class="demo-s10-16">2</div>
-            </div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-header">最近活动</div>
-          <div class="card-body">
-            <p class="demo-s10-17">表格区域...</p>
-          </div>
-        </div>
+      <div class="demo-s10-2">全局令牌</div>
+      <div class="demo-s10-3">--blue-500: #1677FF</div>
+      <div class="demo-s10-3">--red-500: #F5222D</div>
+      <div class="demo-s10-3">--gray-1: #FFFFFF</div>
+    </div>
+    <div class="demo-s10-4">↓</div>
+    <div class="demo-s10-1">
+      <div class="demo-s10-5">别名令牌</div>
+      <div class="demo-s10-3">--color-primary: var(--blue-500)</div>
+      <div class="demo-s10-3">--color-error: var(--red-500)</div>
+      <div class="demo-s10-3">--bg-page: var(--gray-1)</div>
+    </div>
+    <div class="demo-s10-4">↓</div>
+    <div class="demo-s10-1">
+      <div class="demo-s10-6">组件令牌</div>
+      <div class="demo-s10-3">--button-bg: var(--color-primary)</div>
+      <div class="demo-s10-3">--input-border-error: var(--color-error)</div>
+      <div class="demo-s10-3">--card-bg: var(--bg-page)</div>
+    </div>
+  </div>
+
+  <h3>主题色板</h3>
+  <div class="demo-card">
+    <div class="demo-label">COLOR TOKENS</div>
+    <div class="demo-s10-7">
+      <div class="demo-s10-8">
+        <div class="demo-s10-9 demo-s10-primary"></div>
+        <div class="demo-s10-10">--color-primary</div>
+        <div class="demo-s10-11">#1677FF</div>
+      </div>
+      <div class="demo-s10-8">
+        <div class="demo-s10-9 demo-s10-success"></div>
+        <div class="demo-s10-10">--color-success</div>
+        <div class="demo-s10-11">#52C41A</div>
+      </div>
+      <div class="demo-s10-8">
+        <div class="demo-s10-9 demo-s10-warning"></div>
+        <div class="demo-s10-10">--color-warning</div>
+        <div class="demo-s10-11">#FAAD14</div>
+      </div>
+      <div class="demo-s10-8">
+        <div class="demo-s10-9 demo-s10-error"></div>
+        <div class="demo-s10-10">--color-error</div>
+        <div class="demo-s10-11">#F5222D</div>
       </div>
     </div>
   </div>
 
-  <h3>模板二：详情页（Detail）</h3>
+  <h3>亮/暗主题卡片</h3>
   <div class="demo-card">
-    <div class="demo-label">DETAIL TEMPLATE</div>
-    <div class="demo-s10-18">
-      <div class="demo-s10-19">
-        <div class="demo-s10-20">前端设计系统教程</div>
-        <div class="flex gap-2">
-          <span class="tag tag-brand">进行中</span>
-          <span class="tag tag-default">优先级：高</span>
-        </div>
-      </div>
-      <div class="demo-s10-21">
-        <div class="demo-s10-22">
-          <div class="demo-s10-23">项目描述</div>
-          <p class="demo-s10-24">一套可复用的前端设计规范，面向未来所有教程与应用。</p>
-        </div>
-        <div class="row">
-          <div class="col-6">
-            <div class="demo-s10-25">基本信息</div>
-            <div class="demo-s10-26">负责人：张三<br>创建时间：2024-01-15<br>截止日期：2024-06-30</div>
-          </div>
-          <div class="col-6">
-            <div class="demo-s10-27">进度</div>
-            <div class="progress">
-              <div class="progress-bar demo-s10-28"></div>
-            </div>
-            <div class="demo-s10-29">75% 已完成</div>
+    <div class="demo-label">THEME CARDS</div>
+    <div class="row gap-3">
+      <div class="col-6">
+        <div class="demo-s10-12">
+          <div class="demo-s10-13">亮色模式</div>
+          <div class="demo-s10-14 demo-s10-light">
+            <div class="demo-s10-card-title">卡片标题</div>
+            <div class="demo-s10-card-desc">这是亮色模式下的卡片样式</div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-
-  <h3>模板三：表单页（Form）</h3>
-  <div class="demo-card">
-    <div class="demo-label">FORM TEMPLATE</div>
-    <div class="demo-s10-30">
-      <div class="demo-s10-31">新建项目</div>
-      <div class="demo-s10-32">
-        <div class="demo-s10-33">
-          <label class="demo-s10-35">项目名称 <span class="demo-s10-34">*</span></label>
-          <input class="input" placeholder="请输入项目名称">
-        </div>
-        <div class="demo-s10-36">
-          <label class="demo-s10-37">项目描述</label>
-          <textarea class="textarea" placeholder="请输入项目描述"></textarea>
-        </div>
-        <div class="demo-s10-38">
-          <label class="demo-s10-39">优先级</label>
-          <select class="select">
-            <option>高</option>
-            <option>中</option>
-            <option>低</option>
-          </select>
-        </div>
-        <div class="flex gap-3">
-          <button class="btn btn-primary">提交</button>
-          <button class="btn btn-ghost">取消</button>
+      <div class="col-6">
+        <div class="demo-s10-12">
+          <div class="demo-s10-13">暗色模式</div>
+          <div class="demo-s10-14 demo-s10-dark">
+            <div class="demo-s10-card-title">卡片标题</div>
+            <div class="demo-s10-card-desc-dark">这是暗色模式下的卡片样式</div>
+          </div>
         </div>
       </div>
     </div>
@@ -168,96 +316,115 @@
 
 <div class="lesson-section">
   <h2>完整代码</h2>
-  <pre class="code-block">&lt;!-- 仪表盘模板 --&gt;
-&lt;div class="container"&gt;
-  &lt;!-- 统计卡片行 --&gt;
-  &lt;div class="row"&gt;
-    &lt;div class="col-3"&gt;
-      &lt;div class="card"&gt;
-        &lt;div class="card-body demo-s10-t1"&gt;
-          &lt;div class="text-sm text-secondary"&gt;总项目&lt;/div&gt;
-          &lt;div class="text-2xl font-bold text-brand"&gt;12&lt;/div&gt;
-        &lt;/div&gt;
-      &lt;/div&gt;
-    &lt;/div&gt;
-    &lt;!-- 更多卡片... --&gt;
-  &lt;/div&gt;
+  <pre class="code-block">/* ===== 设计令牌定义 ===== */
+:root {
+  /* 全局令牌 */
+  --blue-500: #1677FF;
+  --green-500: #52C41A;
+  --red-500: #F5222D;
 
-  &lt;!-- 数据表格 --&gt;
-  &lt;div class="card mt-4"&gt;
-    &lt;div class="card-header"&gt;最近活动&lt;/div&gt;
-    &lt;div class="card-body"&gt;
-      &lt;table class="table"&gt;...&lt;/table&gt;
-    &lt;/div&gt;
-  &lt;/div&gt;
-&lt;/div&gt;
+  /* 别名令牌 */
+  --color-primary: var(--blue-500);
+  --color-success: var(--green-500);
+  --color-error: var(--red-500);
 
-&lt;!-- 表单模板 --&gt;
-&lt;div class="container-narrow"&gt;
-  &lt;div class="card"&gt;
-    &lt;div class="card-header"&gt;新建项目&lt;/div&gt;
-    &lt;div class="card-body"&gt;
-      &lt;div class="demo-s10-t2"&gt;
-        &lt;label&gt;项目名称&lt;/label&gt;
-        &lt;input class="input"&gt;
-      &lt;/div&gt;
-      &lt;button class="btn btn-primary"&gt;提交&lt;/button&gt;
-    &lt;/div&gt;
-  &lt;/div&gt;
-&lt;/div&gt;</pre>
+  /* 组件令牌 */
+  --button-bg: var(--color-primary);
+  --button-bg-hover: var(--color-primary-hover);
+  --input-border-error: var(--color-error);
+}
+
+/* ===== 暗色主题 ===== */
+[data-theme="dark"] {
+  --blue-500: #3B82F6;
+  --color-primary: var(--blue-500);
+  --bg-page: #141414;
+  --bg-card: #1F1F1F;
+  --text-primary: rgba(255, 255, 255, 0.85);
+}
+
+/* ===== 组件使用令牌 ===== */
+.btn-primary {
+  background: var(--button-bg);
+}
+.btn-primary:hover {
+  background: var(--button-bg-hover);
+}</pre>
 </div>
 
-<div class="exercise-box">
-  <h3>练习</h3>
-  <p><strong>练习 1</strong>：用本教程的组件类，搭建一个"个人博客文章页"模板，包含文章标题、作者信息、正文、评论区。</p>
-  <p><strong>练习 2</strong>：为 Git 教程或 Python 教程设计一个新的首页模板，使用本教程的卡片、按钮、导航组件。</p>
-  <p><strong>练习 3</strong>：把本教程的所有页面模板整理成一个 HTML 文件，作为"快速启动模板"，以后新项目直接复制。</p>
+<div class="lesson-section">
+  <h2>练习</h2>
+  <p><strong>练习 1</strong>：为你正在开发的项目创建一套基础设计令牌，至少包含 5 个颜色令牌（主色、成功、警告、错误、背景）和 3 个间距令牌（sm、md、lg）。</p>
+  <p><strong>练习 2</strong>：用 CSS 自定义属性实现一个支持亮/暗模式切换的个人博客页面。页面包含导航栏、文章列表和页脚，所有元素的颜色都要随主题变化。</p>
+  <p><strong>练习 3</strong>：将本教程的所有组件样式整理为令牌化形式。找出所有硬编码的颜色值，替换为 CSS 自定义属性引用。</p>
+</div>
+
+<div class="lesson-section">
+  <h2>测验</h2>
+  <div class="demo-card">
+    <div class="demo-label">QUIZ</div>
+    <div class="demo-s10-quiz">
+      <p class="demo-s10-q"><strong>1. CSS 自定义属性与 Sass 变量的核心区别是什么？</strong></p>
+      <ul class="demo-s10-options">
+        <li>A. 自定义属性只能在 :root 中定义</li>
+        <li>B. 自定义属性在运行时生效，可以被 JavaScript 动态修改；Sass 变量在编译时确定</li>
+        <li>C. Sass 变量支持回退值，自定义属性不支持</li>
+        <li>D. 自定义属性不支持嵌套作用域</li>
+      </ul>
+      <p class="demo-s10-answer">答案：B。CSS 自定义属性的运行时特性使其成为主题切换的理想选择，而 Sass 变量生成的是静态 CSS。</p>
+
+      <p class="demo-s10-q"><strong>2. 设计令牌通常分为哪三个层级？</strong></p>
+      <ul class="demo-s10-options">
+        <li>A. 颜色、字体、间距</li>
+        <li>B. 全局令牌、别名令牌、组件令牌</li>
+        <li>C. HTML、CSS、JavaScript</li>
+        <li>D. 原子、分子、有机体</li>
+      </ul>
+      <p class="demo-s10-answer">答案：B。全局令牌存储原始值，别名令牌赋予语义，组件令牌绑定到具体组件状态。</p>
+
+      <p class="demo-s10-q"><strong>3. 暗色模式的背景色为什么不使用纯黑色（#000000）？</strong></p>
+      <ul class="demo-s10-options">
+        <li>A. 纯黑色在 OLED 屏幕上太省电了</li>
+        <li>B. 纯黑色会导致文字对比度过高，长时间阅读容易疲劳；且会丢失阴影和层级的表达</li>
+        <li>C. 浏览器不支持纯黑色渲染</li>
+        <li>D. 纯黑色文件体积更大</li>
+      </ul>
+      <p class="demo-s10-answer">答案：B。暗色模式通常使用深灰色（如 #141414）作为背景，因为纯黑的对比度过高，且无法通过阴影表达层级。</p>
+    </div>
+  </div>
 </div>
 {% endblock %}
 
 {% block scripts %}
 <style>
-.demo-s10-1 { border:1px solid var(--border-color-split);border-radius:8px;overflow:hidden; }
-.demo-s10-2 { padding:12px 16px;background:var(--gray-2);border-bottom:1px solid var(--border-color-split);font-weight:600; }
-.demo-s10-3 { padding:16px; }
-.demo-s10-4 { margin-bottom:16px; }
-.demo-s10-5 { text-align:center;padding:16px; }
-.demo-s10-6 { font-size:12px;color:var(--text-secondary); }
-.demo-s10-7 { font-size:24px;font-weight:700;color:var(--color-primary); }
-.demo-s10-8 { text-align:center;padding:16px; }
-.demo-s10-9 { font-size:12px;color:var(--text-secondary); }
-.demo-s10-10 { font-size:24px;font-weight:700;color:var(--color-warning); }
-.demo-s10-11 { text-align:center;padding:16px; }
-.demo-s10-12 { font-size:12px;color:var(--text-secondary); }
-.demo-s10-13 { font-size:24px;font-weight:700;color:var(--color-success); }
-.demo-s10-14 { text-align:center;padding:16px; }
-.demo-s10-15 { font-size:12px;color:var(--text-secondary); }
-.demo-s10-16 { font-size:24px;font-weight:700;color:var(--color-error); }
-.demo-s10-17 { margin:0;color:var(--text-secondary);font-size:14px; }
-.demo-s10-18 { border:1px solid var(--border-color-split);border-radius:8px;overflow:hidden; }
-.demo-s10-19 { padding:24px;background:var(--bg-card);border-bottom:1px solid var(--border-color-split); }
-.demo-s10-20 { font-size:20px;font-weight:600;margin-bottom:8px; }
-.demo-s10-21 { padding:24px; }
-.demo-s10-22 { margin-bottom:24px; }
-.demo-s10-23 { font-weight:600;margin-bottom:8px; }
-.demo-s10-24 { margin:0;color:var(--text-secondary); }
-.demo-s10-25 { font-weight:600;margin-bottom:8px; }
-.demo-s10-26 { font-size:14px;color:var(--text-secondary); }
-.demo-s10-27 { font-weight:600;margin-bottom:8px; }
-.demo-s10-28 { width:75%; }
-.demo-s10-29 { font-size:14px;color:var(--text-secondary);margin-top:4px; }
-.demo-s10-30 { border:1px solid var(--border-color-split);border-radius:8px;overflow:hidden; }
-.demo-s10-31 { padding:20px 24px;border-bottom:1px solid var(--border-color-split);font-weight:600; }
-.demo-s10-32 { padding:24px;max-width:600px; }
-.demo-s10-33 { margin-bottom:16px; }
-.demo-s10-34 { color:var(--color-error); }
-.demo-s10-35 { display:block;font-size:14px;font-weight:500;margin-bottom:6px; }
-.demo-s10-36 { margin-bottom:16px; }
-.demo-s10-37 { display:block;font-size:14px;font-weight:500;margin-bottom:6px; }
-.demo-s10-38 { margin-bottom:16px; }
-.demo-s10-39 { display:block;font-size:14px;font-weight:500;margin-bottom:6px; }
-.demo-s10-t1 { text-align:center; }
-.demo-s10-t2 { margin-bottom:16px; }
+.demo-s10-1 { background: var(--bg-code); padding: 12px; border-radius: 6px; margin-bottom: 8px; }
+.demo-s10-2 { font-size: 12px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+.demo-s10-3 { font-family: var(--font-mono); font-size: 13px; color: var(--text-secondary); margin-bottom: 4px; }
+.demo-s10-4 { text-align: center; color: var(--text-tertiary); font-size: 18px; margin: 4px 0; }
+.demo-s10-5 { font-size: 12px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+.demo-s10-6 { font-size: 12px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+.demo-s10-7 { display: flex; gap: 12px; flex-wrap: wrap; }
+.demo-s10-8 { display: flex; align-items: center; gap: 10px; }
+.demo-s10-9 { width: 32px; height: 32px; border-radius: 6px; border: 1px solid var(--border-color-split); }
+.demo-s10-10 { font-size: 13px; font-weight: 500; color: var(--text-primary); }
+.demo-s10-11 { font-family: var(--font-mono); font-size: 12px; color: var(--text-tertiary); }
+.demo-s10-12 { padding: 8px; }
+.demo-s10-13 { font-size: 12px; color: var(--text-tertiary); margin-bottom: 8px; text-align: center; }
+.demo-s10-14 { padding: 16px; border-radius: 8px; }
+.demo-s10-quiz { padding: 8px; }
+.demo-s10-q { margin-top: 16px; margin-bottom: 8px; }
+.demo-s10-q:first-child { margin-top: 0; }
+.demo-s10-options { margin: 0 0 8px; padding-left: 20px; color: var(--text-secondary); }
+.demo-s10-options li { margin-bottom: 4px; }
+.demo-s10-answer { background: var(--color-primary-light); padding: 8px 12px; border-radius: 4px; font-size: 14px; color: var(--text-secondary); margin-bottom: 8px; }
+.demo-s10-primary { background: var(--color-primary); }
+.demo-s10-success { background: var(--color-success); }
+.demo-s10-warning { background: var(--color-warning); }
+.demo-s10-error { background: var(--color-error); }
+.demo-s10-light { background: #FFFFFF; color: rgba(0,0,0,0.88); border: 1px solid #F0F0F0; }
+.demo-s10-dark { background: #1F1F1F; color: rgba(255,255,255,0.85); border: 1px solid #434343; }
+.demo-s10-card-title { font-weight: 600; margin-bottom: 4px; }
+.demo-s10-card-desc { font-size: 12px; color: rgba(0,0,0,0.65); }
+.demo-s10-card-desc-dark { font-size: 12px; color: rgba(255,255,255,0.55); }
 </style>
 {% endblock %}
-

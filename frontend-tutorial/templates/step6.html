@@ -1,45 +1,190 @@
 {% extends "base.html" %}
 
-{% block title %}Step 6 容器组件 — 前端设计系统教程{% endblock %}
+{% block title %}Step 6 表单与反馈 — 前端设计系统教程{% endblock %}
 
 {% block content %}
 <div class="page-header">
-  <h1>Step 6 容器组件</h1>
-  <p>卡片、面板、模态框、导航栏的设计模式</p>
+  <h1>Step 6 表单与反馈</h1>
+  <p>输入控件、验证状态、错误提示与提交反馈</p>
   <div class="tag tag-brand">组件层</div>
 </div>
 
 <div class="lesson-section">
   <h2>场景</h2>
-  <p>当页面上有很多信息时，需要把相关内容分组。容器组件（卡片、面板、模态框）就是用来"打包"信息的。好的容器能让用户一眼看出哪些内容是一组的，哪些内容是独立的。</p>
+  <p>注册账号、填写订单、发布文章、修改密码……这些任务都需要用户输入信息。表单是用户与系统之间最重要的对话通道。一个设计良好的表单能降低用户的填写成本，减少错误；而糟糕的表单会让用户反复修改、甚至放弃操作。</p>
+</div>
+
+<div class="lesson-section">
+  <h2>起源</h2>
+  <p>表单的概念可以追溯到纸质时代。从 Census 人口普查表到银行开户申请表，纸质表单经过数百年的演化，已经形成了一套成熟的信息收集范式：标签说明字段含义、输入框限定填写区域、必填项用星号标记。</p>
+  <p>20 世纪 90 年代，HTML 引入了 <code class="code-inline">&lt;form&gt;</code>、<code class="code-inline">&lt;input&gt;</code> 等标签，将纸质表单映射到数字世界。早期的网页表单非常简陋——纯文本输入框、没有验证、提交后整页刷新。随着 AJAX 和 JavaScript 的发展，表单逐渐具备了即时验证、异步提交、动态反馈等能力。</p>
+  <p>今天，Ant Design、Material Design 等现代设计系统对表单进行了系统性规范：标签对齐方式、错误提示位置、验证时机、加载状态……这些规范的背后，是对用户认知负荷和行为心理学的深入研究。</p>
+</div>
+
+<div class="lesson-section">
+  <h2>思考</h2>
+  <h3>为什么标签要放在输入框上方？</h3>
+  <p>表单标签有三种常见布局：顶部对齐、左对齐、右对齐。</p>
+  <ul>
+    <li><strong>顶部对齐</strong>：标签在输入框上方。用户视线移动距离最短（只需垂直向下），填写速度最快。适合绝大多数场景。</li>
+    <li><strong>左对齐</strong>：标签在输入框左侧，左对齐。适合需要快速扫描标签的场景，但填写速度较慢，因为视线需要在标签和输入框之间来回跳动。</li>
+    <li><strong>右对齐</strong>：标签在输入框左侧，右对齐。标签与输入框距离更近，但仍不如顶部对齐直接。</li>
+  </ul>
+  <p>研究表明（Matteo Penzo, 2006），顶部对齐表单的完成时间比左对齐快约 50%。这是因为人眼处理垂直信息的效率高于水平信息，且顶部布局为标签提供了更充足的展示空间，不易被截断。</p>
+  <h3>为什么错误提示要紧跟输入框？</h3>
+  <p>当表单验证失败时，用户需要知道两点：哪里错了，以及如何修正。如果错误提示放在页面顶部或表单底部，用户需要在大脑中建立"错误信息→对应字段"的映射关系，增加了认知负担。将错误提示放在输入框下方，直接关联到出错位置，符合"就近原则"。</p>
 </div>
 
 <div class="lesson-section">
   <h2>原理</h2>
-  <h3>卡片 vs 面板 vs 模态框</h3>
+  <h3>表单的认知心理学基础</h3>
+  <p>填写表单本质上是一个"翻译"过程：用户需要将大脑中的信息转换成系统要求的格式。这个过程中存在三重摩擦：</p>
   <ul>
-    <li><strong>卡片（Card）</strong>：最常用的容器，用于展示一组相关信息。可以带标题、内容、操作区。阴影表示它是一个独立的"物体"。</li>
-    <li><strong>面板（Panel）</strong>：比卡片更轻量，通常没有阴影，用边框分隔。用于表单分组、设置项归类。</li>
-    <li><strong>模态框（Modal）</strong>：覆盖在页面上方的弹窗，用于需要用户专注处理的任务（确认删除、填写表单）。模态框出现时，背后的页面应当变暗（mask），防止用户分心。</li>
+    <li><strong>理解摩擦</strong>：用户不明白标签的含义。解决方案是使用通俗语言、添加辅助说明（placeholder 或 hint text）。</li>
+    <li><strong>输入摩擦</strong>：输入格式要求过于严格。例如日期字段要求 "YYYY-MM-DD" 格式，而用户习惯用斜杠分隔。解决方案是放宽格式要求，或提供日期选择器。</li>
+    <li><strong>验证摩擦</strong>：用户提交后才发现错误，且错误提示不清晰。解决方案是即时验证（onBlur 时检查），并提供具体修改建议。</li>
   </ul>
 
-  <h3>导航栏的设计</h3>
-  <p>导航是用户在不同页面之间跳转的工具。Ant Design 的导航原则：</p>
+  <h3>验证状态的底层机制</h3>
+  <p>现代表单的验证通常分三层：</p>
   <ul>
-    <li><strong>顶部导航</strong>：适合页面数量少（3-7 个），一目了然。</li>
-    <li><strong>侧边导航</strong>：适合页面数量多（8 个以上），可以展开/收起。</li>
-    <li><strong>当前页面要高亮</strong>：用户需要知道自己在哪里。高亮样式要足够明显。</li>
+    <li><strong>HTML5 原生验证</strong>：通过 <code class="code-inline">required</code>、<code class="code-inline">type="email"</code>、<code class="code-inline">minlength</code> 等属性实现。优点是无需 JavaScript，缺点是无法自定义样式和提示文案。</li>
+    <li><strong>即时验证（Inline Validation）</strong>：用户离开字段（blur）时进行验证。研究表明（Luke Wroblewski），即时验证可以将表单完成率提高 22%，错误率降低 42%。</li>
+    <li><strong>提交验证（Submit Validation）</strong>：点击提交按钮时对所有字段进行最终校验。这是最后的安全网，防止绕过前端验证的请求。</li>
   </ul>
+
+  <h3>视觉反馈的神经科学</h3>
+  <p>人脑对颜色的感知速度远快于对文字的理解。当输入框边框变为红色时，用户在 100 毫秒内就能感知到"异常"，而阅读一行错误文字需要 300-500 毫秒。因此，验证状态必须同时提供<strong>视觉信号</strong>（颜色、图标）和<strong>文字说明</strong>（具体错误原因），两者缺一不可。</p>
+  <p>Ant Design 的表单状态设计遵循这一原理：</p>
+  <ul>
+    <li><strong>默认态</strong>：灰色边框，表示等待输入。</li>
+    <li><strong>聚焦态</strong>：品牌色边框 + 轻微阴影，引导用户当前位置。</li>
+    <li><strong>成功态</strong>：绿色边框 + 对勾图标，强化正向反馈。</li>
+    <li><strong>错误态</strong>：红色边框 + 警告图标 + 下方文字提示，多重信号确保不被忽略。</li>
+    <li><strong>禁用态</strong>：灰色背景 + 不可点击光标，明确表示不可交互。</li>
+  </ul>
+</div>
+
+<div class="lesson-section">
+  <h2>论证</h2>
+  <h3>表单完成率与字段数量的关系</h3>
+  <p>MarketingExperiments 的一项经典 A/B 测试表明：将表单字段从 11 个减少到 4 个，转化率提升了 160%。每增加一个字段，都会有一部分用户选择放弃。</p>
+  <p>这背后的原理是"认知负荷理论"：人脑的工作记忆容量有限（Miller's Law: 7±2 个组块）。当表单字段过多时，用户会产生"这件事很麻烦"的心理暗示，从而放弃操作。</p>
+  <p>设计策略：</p>
+  <ul>
+    <li><strong>只收集必要信息</strong>：每个字段都要回答"没有它，业务能否正常运转？"</li>
+    <li><strong>分步展示</strong>：将长表单拆分为多个步骤（如注册流程分为"账号信息→个人资料→兴趣爱好"），利用"进度效应"降低心理压力。</li>
+    <li><strong>自动填充</strong>：利用浏览器的 autocomplete 功能，减少用户手动输入。</li>
+  </ul>
+  <h3>反馈时效性与用户耐心的关系</h3>
+  <p>Nielsen Norman Group 的研究指出，系统响应时间超过 1 秒会让用户产生"失去控制"的感觉。表单提交后的加载状态必须在 1 秒内给出反馈。如果网络延迟不可避免，应当显示加载动画或进度条，告知用户"系统正在处理"，而不是让用户对着静止的页面猜测。</p>
 </div>
 
 <div class="lesson-section">
   <h2>要点</h2>
   <ol>
-    <li><strong>卡片用阴影表示层级</strong>：轻微阴影（0 1px 2px）表示普通卡片，hover 时加深（0 4px 12px），给用户可点击的心理暗示。</li>
-    <li><strong>卡片内边距统一</strong>：header 和 body 用同样的左右内边距（20px 或 24px），上下根据内容调整。</li>
-    <li><strong>模态框出现时禁止滚动背景</strong>：否则用户滚动鼠标时，背后的页面在动，模态框不动，体验很怪。</li>
-    <li><strong>导航链接要有 hover 状态</strong>：鼠标移上去变色或变背景，让用户知道这是可点击的。</li>
-    <li><strong>面包屑（Breadcrumb）用于深层级页面</strong>：告诉用户当前页面在结构中的位置，方便返回。</li>
+    <li><strong>标签和输入框一一对应</strong>：每个 <code class="code-inline">input</code> 都要有 <code class="code-inline">label</code>，并通过 <code class="code-inline">for</code> 属性关联。这不仅有利于无障碍访问，也方便用户点击标签时聚焦到输入框。</li>
+    <li><strong>必填项明确标记</strong>：用红色星号（*）标记必填字段，并在表单顶部说明"* 为必填项"。不要默认所有字段必填，也不要让用户提交后才知道哪些必填。</li>
+    <li><strong>错误提示要具体</strong>：不说"输入无效"，而说"密码长度不能少于 8 位"或"邮箱格式不正确"。具体的提示能降低用户的思考成本。</li>
+    <li><strong>禁用态要有明确视觉区分</strong>：禁用按钮不要只降低透明度，还要改变光标样式（<code class="code-inline">cursor: not-allowed</code>），让用户明确知道这不是可交互状态。</li>
+    <li><strong>提交按钮在表单底部右侧</strong>：符合用户的阅读顺序（从上到下，从左到右）。"取消"按钮在左侧，"确认"在右侧，防止误操作。</li>
+    <li><strong>成功反馈不可忽视</strong>：表单提交成功后，用 Toast 提示或页面跳转告知用户操作已完成。没有反馈会让用户怀疑自己是否提交成功。</li>
+  </ol>
+</div>
+
+<div class="lesson-section">
+  <h2>实验</h2>
+  <p>将以下代码复制到你的编辑器中，保存为 <code class="code-inline">form-experiment.html</code>，用浏览器打开。观察不同验证状态下的视觉反馈。</p>
+  <pre class="code-block">&lt;!DOCTYPE html&gt;
+&lt;html lang="zh-CN"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;title&gt;表单验证实验&lt;/title&gt;
+  &lt;style&gt;
+    body { font-family: system-ui, sans-serif; max-width: 480px; margin: 40px auto; padding: 0 16px; }
+    .form-group { margin-bottom: 20px; }
+    label { display: block; font-weight: 500; margin-bottom: 6px; }
+    .required { color: #F5222D; }
+    input {
+      width: 100%; padding: 8px 12px; border: 1px solid #D9D9D9;
+      border-radius: 4px; font-size: 14px; box-sizing: border-box;
+    }
+    input:focus { outline: none; border-color: #1677FF; box-shadow: 0 0 0 2px rgba(22,119,255,0.2); }
+    /* 错误态 */
+    input.error { border-color: #F5222D; background: #FFF1F0; }
+    input.error:focus { box-shadow: 0 0 0 2px rgba(245,34,45,0.2); }
+    .error-text { color: #F5222D; font-size: 12px; margin-top: 4px; display: none; }
+    .error-text.show { display: block; }
+    /* 成功态 */
+    input.success { border-color: #52C41A; background: #F6FFED; }
+    .success-text { color: #52C41A; font-size: 12px; margin-top: 4px; display: none; }
+    .success-text.show { display: block; }
+    button {
+      padding: 8px 24px; border: none; border-radius: 4px;
+      background: #1677FF; color: white; font-size: 14px; cursor: pointer;
+    }
+    button:hover { background: #4096FF; }
+    button:disabled { background: #BFBFBF; cursor: not-allowed; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h2&gt;注册表单&lt;/h2&gt;
+  &lt;form id="demoForm"&gt;
+    &lt;div class="form-group"&gt;
+      &lt;label&gt;用户名 &lt;span class="required"&gt;*&lt;/span&gt;&lt;/label&gt;
+      &lt;input type="text" id="username" placeholder="3-15 位字母或数字"&gt;
+      &lt;div class="error-text" id="username-error"&gt;用户名长度应在 3-15 位之间&lt;/div&gt;
+      &lt;div class="success-text" id="username-success"&gt;用户名可用&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="form-group"&gt;
+      &lt;label&gt;邮箱 &lt;span class="required"&gt;*&lt;/span&gt;&lt;/label&gt;
+      &lt;input type="email" id="email" placeholder="example@mail.com"&gt;
+      &lt;div class="error-text" id="email-error"&gt;请输入有效的邮箱地址&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;button type="submit" id="submitBtn"&gt;提交&lt;/button&gt;
+  &lt;/form&gt;
+
+  &lt;script&gt;
+    const username = document.getElementById('username');
+    const email = document.getElementById('email');
+    const submitBtn = document.getElementById('submitBtn');
+
+    function setStatus(field, isValid, errorId, successId) {
+      field.classList.remove('error', 'success');
+      if (errorId) document.getElementById(errorId).classList.remove('show');
+      if (successId) document.getElementById(successId).classList.remove('show');
+      if (isValid === true) {
+        field.classList.add('success');
+        if (successId) document.getElementById(successId).classList.add('show');
+      } else if (isValid === false) {
+        field.classList.add('error');
+        if (errorId) document.getElementById(errorId).classList.add('show');
+      }
+    }
+
+    username.addEventListener('blur', () =&gt; {
+      const val = username.value.trim();
+      setStatus(username, val.length &gt;= 3 && val.length &lt;= 15, 'username-error', 'username-success');
+    });
+
+    email.addEventListener('blur', () =&gt; {
+      const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim());
+      setStatus(email, valid, 'email-error', null);
+    });
+
+    document.getElementById('demoForm').addEventListener('submit', (e) =&gt; {
+      e.preventDefault();
+      alert('提交成功！这就是表单反馈的效果。');
+    });
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+  <p><strong>实验任务</strong>：</p>
+  <ol>
+    <li>在用户名输入框输入 "ab"，然后点击页面空白处，观察错误态的边框颜色、背景色和提示文字。</li>
+    <li>输入 "myusername"，观察成功态的反馈。</li>
+    <li>尝试删除邮箱中的 "@" 符号，观察即时验证效果。</li>
+    <li>修改 CSS，将错误态改为仅用红色文字提示（无边框变色），对比两种设计的感知速度差异。</li>
   </ol>
 </div>
 
@@ -47,123 +192,145 @@
   <h2>常见错误</h2>
 
   <div class="mistake-card">
-    <div class="mistake-title">❌ 卡片阴影过重</div>
-    <p>阴影太大会让卡片看起来像"浮在空中"，显得不真实。卡片阴影应当轻微，只是用来和背景区分。</p>
+    <div class="mistake-title">❌ 用占位符替代标签</div>
+    <p>Placeholder 在用户开始输入后就会消失，用户可能会忘记这个字段要求输入什么。尤其在长表单中，回头看时会造成困惑。标签必须始终可见。</p>
   </div>
 
   <div class="mistake-card">
-    <div class="mistake-title">❌ 模态框里放太多内容</div>
-    <p>模态框不是第二个页面。如果内容超过一屏，应该单独做一个页面，而不是塞进模态框。</p>
+    <div class="mistake-title">❌ 错误提示只在提交后显示</div>
+    <p>用户填写了 10 个字段，点击提交后弹出 5 个错误，需要返回修改。这种体验非常糟糕。应当在用户离开字段时就进行即时验证。</p>
   </div>
 
   <div class="mistake-card">
-    <div class="mistake-title">❌ 导航高亮不明显</div>
-    <p>当前页面和别的页面看起来完全一样，用户不知道自己在哪里。高亮应当用品牌色背景或边框。</p>
+    <div class="mistake-title">❌ 提交按钮没有加载状态</div>
+    <p>用户点击提交后，按钮没有任何变化。用户不确定是否点击成功，可能会重复点击，导致重复提交。应当在点击后将按钮变为加载态，并禁用再次点击。</p>
+  </div>
+
+  <div class="mistake-card">
+    <div class="mistake-title">❌ 密码要求隐藏在小问号里</div>
+    <p>密码规则（"至少 8 位，包含大小写字母和数字"）藏在 tooltip 或帮助图标里，用户只有出错后才看得到。应当在输入框下方直接展示规则说明。</p>
   </div>
 </div>
 
 <div class="lesson-section">
   <h2>效果展示</h2>
-  <h3>标准卡片</h3>
+  <h3>标准输入框</h3>
   <div class="demo-card">
-    <div class="demo-label">CARD</div>
-    <div class="card demo-s6-1">
-      <div class="card-header">卡片标题</div>
-      <div class="card-body">
-        <p class="demo-s6-2">这是卡片的主体内容区域。可以放置文字、图表、列表等各种信息。</p>
-      </div>
-      <div class="card-footer">
-        <button class="btn btn-primary btn-sm">确认</button>
-        <button class="btn btn-text btn-sm">取消</button>
-      </div>
+    <div class="demo-label">INPUT</div>
+    <div class="demo-s6-1">
+      <label class="demo-s6-2">用户名</label>
+      <input class="input" placeholder="请输入用户名">
     </div>
   </div>
 
-  <h3>扁平卡片（无边框）</h3>
+  <h3>带验证状态的表单</h3>
   <div class="demo-card">
-    <div class="demo-label">FLAT CARD</div>
-    <div class="card card-flat demo-s6-1">
-      <div class="card-body">
-        <div class="demo-s6-3">设置项名称</div>
-        <p class="demo-s6-4">这是一段设置的描述文字，帮助用户理解这个选项的作用。</p>
-      </div>
+    <div class="demo-label">VALIDATION STATES</div>
+    <div class="demo-s6-1">
+      <label class="demo-s6-2">成功状态</label>
+      <input class="input demo-s6-success" value="correct@example.com">
+      <div class="demo-s6-success-text">邮箱格式正确</div>
+    </div>
+    <div class="demo-s6-1">
+      <label class="demo-s6-2">错误状态</label>
+      <input class="input demo-s6-error" value="wrong-email">
+      <div class="demo-s6-error-text">请输入有效的邮箱地址</div>
     </div>
   </div>
 
-  <h3>导航栏</h3>
+  <h3>提交按钮状态</h3>
   <div class="demo-card">
-    <div class="demo-label">NAVIGATION</div>
-    <ul class="nav demo-s6-5">
-      <li><a class="nav-link active" href="#">首页</a></li>
-      <li><a class="nav-link" href="#">教程</a></li>
-      <li><a class="nav-link" href="#">组件</a></li>
-      <li><a class="nav-link" href="#">关于</a></li>
-    </ul>
-    <ul class="nav nav-tabs">
-      <li><a class="nav-link active" href="#">基本信息</a></li>
-      <li><a class="nav-link" href="#">安全设置</a></li>
-      <li><a class="nav-link" href="#">通知偏好</a></li>
-    </ul>
-  </div>
-
-  <h3>模态框示意</h3>
-  <div class="demo-card">
-    <div class="demo-label">MODAL</div>
-    <div class="card demo-s6-6">
-      <div class="card-header">确认删除</div>
-      <div class="card-body">
-        <p class="m-0 text-secondary">删除后数据无法恢复，是否继续？</p>
-      </div>
-      <div class="card-footer demo-s6-7">
-        <button class="btn btn-text">取消</button>
-        <button class="btn btn-danger">确认删除</button>
-      </div>
+    <div class="demo-label">BUTTON STATES</div>
+    <div class="flex gap-3 items-center flex-wrap">
+      <button class="btn btn-primary">正常状态</button>
+      <button class="btn btn-primary" disabled>禁用状态</button>
+      <button class="btn btn-primary demo-s6-loading">加载中...</button>
     </div>
   </div>
 </div>
 
 <div class="lesson-section">
   <h2>完整代码</h2>
-  <pre class="code-block">&lt;!-- 标准卡片 --&gt;
-&lt;div class="card"&gt;
-  &lt;div class="card-header"&gt;卡片标题&lt;/div&gt;
-  &lt;div class="card-body"&gt;
-    卡片内容...
+  <pre class="code-block">&lt;!-- 基础表单结构 --&gt;
+&lt;form&gt;
+  &lt;div class="form-group"&gt;
+    &lt;label for="email"&gt;邮箱 &lt;span class="text-error"&gt;*&lt;/span&gt;&lt;/label&gt;
+    &lt;input class="input" id="email" type="email" placeholder="example@mail.com"&gt;
+    &lt;div class="text-error text-sm mt-1"&gt;请输入有效的邮箱地址&lt;/div&gt;
   &lt;/div&gt;
-  &lt;div class="card-footer"&gt;
-    &lt;button class="btn btn-primary btn-sm"&gt;确认&lt;/button&gt;
+  &lt;div class="form-group"&gt;
+    &lt;label for="password"&gt;密码 &lt;span class="text-error"&gt;*&lt;/span&gt;&lt;/label&gt;
+    &lt;input class="input" id="password" type="password"&gt;
+    &lt;div class="text-tertiary text-sm mt-1"&gt;至少 8 位，包含字母和数字&lt;/div&gt;
   &lt;/div&gt;
-&lt;/div&gt;
+  &lt;div class="flex gap-3 justify-end"&gt;
+    &lt;button type="button" class="btn btn-ghost"&gt;取消&lt;/button&gt;
+    &lt;button type="submit" class="btn btn-primary"&gt;提交&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/form&gt;
 
-&lt;!-- 导航栏 --&gt;
-&lt;ul class="nav"&gt;
-  &lt;li&gt;&lt;a class="nav-link active" href="#"&gt;首页&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a class="nav-link" href="#"&gt;教程&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;!-- Tab 导航 --&gt;
-&lt;ul class="nav nav-tabs"&gt;
-  &lt;li&gt;&lt;a class="nav-link active" href="#"&gt;基本信息&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a class="nav-link" href="#"&gt;安全设置&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</pre>
+&lt;!-- 带验证状态的输入框 --&gt;
+&lt;input class="input input-success" value="正确内容"&gt;
+&lt;input class="input input-error" value="错误内容"&gt;</pre>
 </div>
+
+<div class="lesson-section">
+  <h2>练习</h2>
+  <p><strong>练习 1</strong>：用本教程的组件类创建一个登录表单，包含邮箱、密码、记住我复选框和登录按钮。邮箱和密码均为必填项。</p>
+  <p><strong>练习 2</strong>：为登录表单添加即时验证功能。邮箱在 blur 时验证格式，密码在 blur 时验证长度（不少于 6 位）。验证失败时显示红色边框和错误提示。</p>
+  <p><strong>练习 3</strong>：实现一个注册表单，包含用户名、邮箱、密码、确认密码四个字段。提交时检查两次密码是否一致，不一致则在确认密码下方提示"两次输入的密码不一致"。</p>
+</div>
+
+<div class="lesson-section">
+  <h2>测验</h2>
+  <div class="demo-card">
+    <div class="demo-label">QUIZ</div>
+    <div class="demo-s6-quiz">
+      <p class="demo-s6-q"><strong>1. 下列哪种表单标签布局的填写效率最高？</strong></p>
+      <ul class="demo-s6-options">
+        <li>A. 左对齐（标签在输入框左侧，左对齐）</li>
+        <li>B. 顶部对齐（标签在输入框上方）</li>
+        <li>C. 右对齐（标签在输入框左侧，右对齐）</li>
+        <li>D. 内联占位符（placeholder 替代标签）</li>
+      </ul>
+      <p class="demo-s6-answer">答案：B。顶部对齐减少了视线的水平移动距离，填写速度最快。</p>
+
+      <p class="demo-s6-q"><strong>2. 即时验证（Inline Validation）应当在什么时机触发？</strong></p>
+      <ul class="demo-s6-options">
+        <li>A. 用户每输入一个字符就验证</li>
+        <li>B. 用户离开字段（blur）时验证</li>
+        <li>C. 只有点击提交按钮时才验证</li>
+        <li>D. 页面加载完成后立即验证所有字段</li>
+      </ul>
+      <p class="demo-s6-answer">答案：B。blur 时验证既能及时反馈，又不会因输入中途的临时状态而频繁报错。</p>
+
+      <p class="demo-s6-q"><strong>3. 表单提交按钮在加载状态下应当如何处理？</strong></p>
+      <ul class="demo-s6-options">
+        <li>A. 保持原样，用户应该知道系统在处理</li>
+        <li>B. 显示加载动画并禁用按钮，防止重复提交</li>
+        <li>C. 直接隐藏按钮</li>
+        <li>D. 将按钮文字改为"请稍候"即可，不需要禁用</li>
+      </ul>
+      <p class="demo-s6-answer">答案：B。加载动画提供反馈，禁用按钮防止重复提交，两者缺一不可。</p>
+    </div>
+  </div>
+</div>
+{% endblock %}
 
 {% block scripts %}
 <style>
-.demo-s6-1 { max-width: 400px; }
-.demo-s6-2 { margin: 0; color: var(--text-secondary); }
-.demo-s6-3 { font-weight: 600; margin-bottom: 8px; }
-.demo-s6-4 { margin: 0; color: var(--text-secondary); font-size: 14px; }
-.demo-s6-5 { margin-bottom: 16px; }
-.demo-s6-6 { max-width: 400px; box-shadow: var(--shadow-3); }
-.demo-s6-7 { display: flex; justify-content: flex-end; gap: 8px; }
+.demo-s6-1 { margin-bottom: 16px; }
+.demo-s6-2 { display: block; font-size: 14px; font-weight: 500; margin-bottom: 6px; }
+.demo-s6-success { border-color: var(--color-success); background: var(--color-success-bg); }
+.demo-s6-success-text { color: var(--color-success); font-size: 12px; margin-top: 4px; }
+.demo-s6-error { border-color: var(--color-error); background: var(--color-error-bg); }
+.demo-s6-error-text { color: var(--color-error); font-size: 12px; margin-top: 4px; }
+.demo-s6-loading { opacity: 0.7; cursor: wait; }
+.demo-s6-quiz { padding: 8px; }
+.demo-s6-q { margin-top: 16px; margin-bottom: 8px; }
+.demo-s6-q:first-child { margin-top: 0; }
+.demo-s6-options { margin: 0 0 8px; padding-left: 20px; color: var(--text-secondary); }
+.demo-s6-options li { margin-bottom: 4px; }
+.demo-s6-answer { background: var(--color-primary-light); padding: 8px 12px; border-radius: 4px; font-size: 14px; color: var(--text-secondary); margin-bottom: 8px; }
 </style>
-{% endblock %}
-
-<div class="exercise-box">
-  <h3>练习</h3>
-  <p><strong>练习 1</strong>：用卡片组件做一个个人资料卡片，包含头像区域、用户名、简介、关注按钮。</p>
-  <p><strong>练习 2</strong>：设计一个设置页面，用 Tab 导航分为"基本设置""安全设置""通知设置"三个标签页。</p>
-  <p><strong>练习 3</strong>：实现一个删除确认模态框，包含标题、警告文字、取消按钮和红色确认按钮。点击遮罩层可以关闭。</p>
-</div>
 {% endblock %}

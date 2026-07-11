@@ -43,6 +43,38 @@
   <div class="lesson-explain">
     <p>想象 Git 是一台精密的相机系统。你在工作区编辑文件，就像在现实世界中布置场景。<code>git add</code> 相当于把想拍的物体放进取景框，你可以挑选哪些要拍、哪些不拍。<code>git commit</code> 则是按下快门，把取景框里的内容永久保存到相册——也就是本地仓库。每次快门都会生成一张带编号的照片，以后你可以随时翻出任何一张照片。</p>
     <p>关键是：相册里保存的不是「变化」，而是完整的快照。这就是为什么 Git 能瞬间回到任意历史版本——它直接拿出那张照片即可，不需要逐条撤销。</p>
+
+    <div class="concept-card">
+      <h4>Git 底层数据结构：Blob / Tree / Commit / HEAD</h4>
+      <p>Git 的"快照"不是魔法，而是一套精心设计的对象存储系统。每次提交时，Git 会在 <code>.git/objects</code> 目录中创建三种核心对象：</p>
+      <ul>
+        <li><strong>Blob（二进制大对象）</strong>：存储文件内容的完整快照。即使只改了一个字，也会生成一个全新的 Blob。</li>
+        <li><strong>Tree（树对象）</strong>：存储目录结构，类似于 UNIX 的目录项。它记录了文件名、权限，以及指向对应 Blob 的哈希指针。</li>
+        <li><strong>Commit（提交对象）</strong>：存储提交信息（作者、时间、说明），并指向一个 Tree 对象（项目根目录的快照），以及一个或多个父 Commit 的哈希指针。</li>
+      </ul>
+      <p>这些对象通过<strong>内容寻址哈希（SHA-1）</strong>相互连接，形成一棵有向无环图（DAG）：</p>
+      <pre><code>HEAD -> refs/heads/main -> Commit(abc123)
+  Commit(abc123) -> Tree(root) -> Blob(hello.txt)
+  Commit(abc123) -> Parent Commit(def456)</code></pre>
+      <p>HEAD 是一个特殊的引用指针，它始终指向当前分支的最新 Commit。切换分支时，HEAD 的指向改变，但历史对象保持不变——这就是 Git 分支"轻如鸿毛"的根本原因。</p>
+    </div>
+
+    <div class="highlight-box">
+      <p><strong>快照 vs 差异：存储机制对比</strong></p>
+      <table>
+        <thead>
+          <tr><th>特性</th><th>快照存储（Git）</th><th>增量存储（SVN）</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>存储单位</td><td>每次提交保存完整文件树</td><td>只保存修改的行（diff）</td></tr>
+          <tr><td>回溯速度</td><td>O(1)：直接读取对应 Tree</td><td>O(n)：依次应用 n 个增量</td></tr>
+          <tr><td>磁盘占用</td><td>较大（但压缩率高，packfile 优化后差异不大）</td><td>较小（理论上）</td></tr>
+          <tr><td>数据完整性</td><td>每个对象有 SHA-1 校验，corruption 可被检测</td><td>依赖中心服务器，本地不完整</td></tr>
+          <tr><td>分支成本</td><td>极低（仅创建一个引用指针，约 41 字节）</td><td>较高（需要复制目录结构）</td></tr>
+        </tbody>
+      </table>
+      <p>Git 的 packfile 机制会在后台自动将相似的对象打包并压缩存储，实际磁盘占用与增量存储相当，却保留了快照的随机访问优势。</p>
+    </div>
   </div>
   <div class="lesson-demo">
     <div class="demo-label">三层模型图解</div>
@@ -156,6 +188,36 @@ git log --oneline</code></pre>
   </div>
   <div class="lesson-explain">
     <p><strong>实验任务：</strong>在实验过程中，每次运行 <code>git status</code> 时，仔细观察输出中的文字提示。你能用自己的话解释"Untracked files"、"Changes to be committed" 和 "nothing to commit" 分别对应三层模型中的哪一层吗？</p>
+  </div>
+  <div class="lesson-code">
+    <div class="demo-label">实验 2：用 git cat-file 探索 Commit 内部结构</div>
+    <pre><code># 第 1 步：确保你在 git-lab 目录中，且已有至少一个提交
+cd git-lab
+
+# 第 2 步：查看最新的 commit 哈希
+git log --oneline -1
+
+# 第 3 步：查看该 commit 的对象类型和内容
+# 将 &lt;commit-hash&gt; 替换为上一步看到的哈希前缀（如 a1b2c3）
+git cat-file -t &lt;commit-hash&gt;     # 输出应为 "commit"
+git cat-file -p &lt;commit-hash&gt;     # 查看 commit 对象的内容
+
+# 第 4 步：在 commit 内容中找到 tree 的哈希，继续探索
+# 将 &lt;tree-hash&gt; 替换为上一步输出中的 tree 行
+git cat-file -t &lt;tree-hash&gt;       # 输出应为 "tree"
+git cat-file -p &lt;tree-hash&gt;       # 查看 tree 对象的内容（目录结构）
+
+# 第 5 步：在 tree 内容中找到 blob 的哈希
+# 将 &lt;blob-hash&gt; 替换为上一步输出中的哈希
+git cat-file -t &lt;blob-hash&gt;       # 输出应为 "blob"
+git cat-file -p &lt;blob-hash&gt;       # 查看 blob 对象的内容（文件原始内容）
+
+# 第 6 步：查看 HEAD 指针当前指向哪里
+cat .git/HEAD
+cat .git/refs/heads/main          # 或 master，取决于分支名</code></pre>
+  </div>
+  <div class="lesson-explain">
+    <p><strong>实验任务：</strong>将你在实验 2 中观察到的 commit / tree / blob 的哈希值和对应关系画成一张图。你能看到 DAG 的雏形吗？尝试解释：为什么修改一个文件并提交后，父 commit 的 tree 哈希会变化，但未被修改文件的 blob 哈希保持不变？</p>
   </div>
 </section>
 

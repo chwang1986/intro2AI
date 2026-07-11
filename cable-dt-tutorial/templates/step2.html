@@ -363,6 +363,35 @@
         </div>
       </div>
     </div>
+
+    <div class="concept-card">
+      <h4>数字孪生的五维模型详解</h4>
+      <p>学术界对数字孪生的定义已从早期的"3D 可视化"发展为<strong>五维模型（5D Digital Twin）</strong>，包含以下五个核心要素：</p>
+      <table class="data-table">
+        <thead>
+          <tr><th>维度</th><th>名称</th><th>核心内容</th><th>在电缆厂的映射</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1D</td><td>物理实体（PE）</td><td>真实世界中的设备、产线、产品</td><td>挤出机、牵引机、交联生产线、成品电缆</td></tr>
+          <tr><td>2D</td><td>虚拟实体（VE）</td><td>物理实体在数字空间的高保真模型</td><td>挤出机熔体流动仿真模型、温度场有限元模型</td></tr>
+          <tr><td>3D</td><td>连接（CN）</td><td>PE 与 VE 之间的实时数据通道</td><td>OPC UA 网关、MQTT 消息总线、5G 工业网关</td></tr>
+          <tr><td>4D</td><td>数据（DA）</td><td>驱动孪生运行的全生命周期数据</td><td>传感器时序数据、工艺参数、质检记录、设备档案</td></tr>
+          <tr><td>5D</td><td>服务（SS）</td><td>基于孪生提供的业务应用与决策支持</td><td>质量预测预警、工艺参数推荐、设备维护策略优化</td></tr>
+        </tbody>
+      </table>
+      <p>五维模型的核心思想是：<strong>数字孪生不是"建一个模型"就结束，而是一个持续演化、双向映射、价值闭环的生态系统。</strong>没有"连接"，虚拟实体就是离线仿真；没有"服务"，孪生就是技术盆景。</p>
+    </div>
+
+    <div class="concept-card">
+      <h4>平行系统的 ACP 理论框架</h4>
+      <p>中国科学院王飞跃研究员提出的 ACP 理论，是平行系统的方法论基石，由三个紧密耦合的环节组成：</p>
+      <ul>
+        <li><strong>A — 人工系统（Artificial Systems）</strong>：基于数据驱动或机理建模，在计算机中构建与物理系统"等价"的虚拟代理。它不是简单复制，而是能独立演化的计算实验体。</li>
+        <li><strong>C — 计算实验（Computational Experiments）</strong>：在人工系统中进行"大胆试错"——模拟极端工况、测试新策略、评估风险后果。每一次计算实验的成本都远低于物理实验。</li>
+        <li><strong>P — 平行执行（Parallel Execution）</strong>：将人工系统中的优化策略"平行"地同步到物理系统，实现虚实互动、滚动优化。物理系统的运行数据又持续反馈给人工系统，完成校准和进化。</li>
+      </ul>
+      <p>ACP 框架的精髓在于<strong>"描述+预测+引导"</strong>：人工系统负责描述和理解现状，计算实验负责预测和评估未来，平行执行负责引导物理系统向更优状态演化。这与数字孪生的"状态映射"形成互补——孪生回答"现在发生了什么"，ACP 回答"如果这样做会怎样、我们应该怎么做"。</p>
+    </div>
   </div>
 </section>
 
@@ -626,6 +655,72 @@
         <li><label><input type="checkbox"> 我已确定如果只能选一个概念先落地，选哪个及为什么；选择理由包含 ROI 估算（预期节省金额 / 投入成本 &gt;= 2）</label></li>
       </ul>
     </div>
+  </div>
+  <div class="lesson-explain">
+    <p><strong>实验 4：用 Python + Matplotlib 绘制数字孪生数据闭环流程图</strong></p>
+    <p>理解数据闭环的最好方式，是亲手把它画出来。以下 Python 脚本绘制了一个简化的"挤出机数字孪生"数据流转过程：</p>
+  </div>
+  <div class="lesson-code">
+    <pre><code>import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
+from matplotlib.patches import FancyBboxPatch, FancyArrowPatch
+
+fig, ax = plt.subplots(figsize=(10, 6))
+
+# 定义五个模块的位置和颜色
+modules = [
+    ("物理实体\n挤出机", 1, 3, "#e3f2fd"),
+    ("连接层\nOPC UA/MQTT", 3, 3, "#fff3e0"),
+    ("数据层\n时序数据库", 5, 3, "#e8f5e9"),
+    ("虚拟实体\n熔体流动模型", 7, 3, "#fce4ec"),
+    ("服务层\n质量预警", 9, 3, "#f3e5f5"),
+]
+
+# 绘制模块框
+for name, x, y, color in modules:
+    box = FancyBboxPatch((x-0.6, y-0.5), 1.2, 1.0,
+                         boxstyle="round,pad=0.05",
+                         facecolor=color, edgecolor="#333", linewidth=1.5)
+    ax.add_patch(box)
+    ax.text(x, y, name, ha="center", va="center", fontsize=10, fontweight="bold")
+
+# 绘制主流程箭头
+for i in range(len(modules)-1):
+    x1, y1 = modules[i][1] + 0.6, modules[i][2]
+    x2, y2 = modules[i+1][1] - 0.6, modules[i+1][2]
+    arrow = FancyArrowPatch((x1, y1), (x2, y2),
+                            arrowstyle="-|>", mutation_scale=15,
+                            linewidth=2, color="#1976d2")
+    ax.add_patch(arrow)
+
+# 绘制反馈闭环箭头（从服务层回到物理实体）
+arrow_back = FancyArrowPatch((9, 2.3), (1, 2.3),
+                             arrowstyle="-|>", mutation_scale=15,
+                             linewidth=2, color="#d32f2f",
+                             connectionstyle="arc3,rad=-0.3")
+ax.add_patch(arrow_back)
+ax.text(5, 1.6, "控制指令下发 / 参数优化反馈", ha="center", va="center",
+        fontsize=9, color="#d32f2f")
+
+# 标注五维模型
+ax.text(5, 4.2, "数字孪生五维模型数据闭环示意", ha="center", va="center",
+        fontsize=14, fontweight="bold")
+
+ax.set_xlim(0, 10)
+ax.set_ylim(1, 5)
+ax.set_aspect("equal")
+ax.axis("off")
+plt.tight_layout()
+plt.savefig("digital_twin_loop.png", dpi=150)
+plt.show()</code></pre>
+  </div>
+  <div class="lesson-explain">
+    <p><strong>实验任务：</strong></p>
+    <ol>
+      <li>运行上述代码，观察生成的流程图。五个模块分别对应五维模型中的哪一维？</li>
+      <li>修改代码：在"虚拟实体"和"服务层"之间增加一个"平行系统优化引擎"模块，绘制 ACP 框架中 "C（计算实验）" 和 "P（平行执行）" 的所在位置。</li>
+      <li>思考：图中的红色反馈箭头代表什么？如果这条箭头断裂（即优化结果无法下发到设备），整个闭环会变成什么状态？</li>
+    </ol>
   </div>
 </section>
 

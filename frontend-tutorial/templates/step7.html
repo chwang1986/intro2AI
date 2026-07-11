@@ -1,53 +1,202 @@
 {% extends "base.html" %}
 
-{% block title %}Step 7 数据展示 — 前端设计系统教程{% endblock %}
+{% block title %}Step 7 导航与布局 — 前端设计系统教程{% endblock %}
 
 {% block content %}
 <div class="page-header">
-  <h1>Step 7 数据展示</h1>
-  <p>表格、列表、空状态、加载与进度</p>
+  <h1>Step 7 导航与布局</h1>
+  <p>信息架构、浏览模式、导航组件与页面结构</p>
   <div class="tag tag-brand">组件层</div>
 </div>
 
 <div class="lesson-section">
   <h2>场景</h2>
-  <p>后台管理系统、数据报表、任务列表……这些页面都要展示大量数据。数据展示组件的目标是让信息清晰可读，同时提供良好的交互反馈（加载中、空数据、操作结果）。</p>
+  <p>用户打开一个网站，如何快速找到自己想要的内容？导航是信息架构的具象化表达。从电商网站的分类菜单到后台管理系统的侧边栏，从文档站点的目录树到社交应用的底部 Tab，导航设计决定了用户能否在复杂的信息空间中不迷路。</p>
+</div>
+
+<div class="lesson-section">
+  <h2>起源</h2>
+  <p>导航的物理原型是图书馆的书架分类系统。杜威十进制分类法（1876 年）将书籍按主题编号排列，读者通过目录卡片找到书的位置。这个系统有三个关键特征：层级结构（大类→小类→具体书籍）、唯一路径（每本书只有一个编号）、可预测性（编号规则固定）。</p>
+  <p>互联网的早期导航借鉴了这一模型。1991 年，Tim Berners-Lee 创建的第一个网站使用的就是简单的文本链接列表。随着网站规模扩大，导航逐渐演化出多种形式：顶部导航栏、侧边菜单、面包屑、标签页、分页器……</p>
+  <p>2000 年后，信息架构（Information Architecture, IA）成为一门独立学科。Jesse James Garrett 在《用户体验要素》中提出，导航属于"结构层"，介于"范围层"（功能规格）和"框架层"（界面布局）之间。好的导航设计必须在用户需求与业务目标之间找到平衡。</p>
+</div>
+
+<div class="lesson-section">
+  <h2>思考</h2>
+  <h3>为什么 F 型浏览模式决定了导航布局？</h3>
+  <p>Nielsen Norman Group 的眼动追踪研究发现，用户在浏览网页时呈现典型的 "F" 型模式：先水平扫视页面顶部，然后向下移动，再水平扫视一段，最后沿左侧垂直扫视。</p>
+  <p>这一发现对导航设计的启示：</p>
+  <ul>
+    <li><strong>顶部导航最重要</strong>：用户第一眼就会看到页面顶部的内容，因此核心导航必须放在这里。</li>
+    <li><strong>左侧是次优位置</strong>：F 型的垂直扫视线沿左侧进行，所以侧边导航也能获得较高的注意力。</li>
+    <li><strong>右侧内容容易被忽略</strong>：除非用户明确寻找，否则右侧边栏的内容经常被"视觉盲区"跳过。</li>
+  </ul>
+  <h3>为什么导航层级不能太深？</h3>
+  <p>认知心理学中的"神奇数字 7±2"（George Miller, 1956）指出，人脑短期记忆能同时处理的信息单元约为 5-9 个。如果导航层级超过 3 层，用户需要记住的路径就会超出工作记忆容量，导致"我在哪里？"的迷失感。</p>
+  <p>实际设计中的经验法则：</p>
+  <ul>
+    <li>顶部导航的同级项不超过 7 个。</li>
+    <li>侧边导航的层级不超过 3 层。</li>
+    <li>任何页面都能在 3 次点击内到达（3-Click Rule）。</li>
+  </ul>
 </div>
 
 <div class="lesson-section">
   <h2>原理</h2>
-  <h3>表格的设计原则（来自 Ant Design）</h3>
+  <h3>信息架构的底层逻辑</h3>
+  <p>导航是信息架构的"用户可见部分"。信息架构的核心任务是将海量内容组织成用户能理解的心理模型。常见的组织方式有四种：</p>
   <ul>
-    <li><strong>表头固定</strong>：数据行很多时，滚动后表头要一直可见。</li>
-    <li><strong>行高足够</strong>：标准行高 48px，紧凑型 40px。太挤会导致误点击。</li>
-    <li><strong>悬停高亮</strong>：鼠标移到某一行时，该行背景变色，方便用户追踪。</li>
-    <li><strong>对齐方式</strong>：文本左对齐，数字右对齐，操作按钮居中对齐。</li>
+    <li><strong>层级结构（Hierarchical）</strong>：树状分类，从上往下越来越具体。适合内容有明确从属关系的场景，如电商平台（数码→手机→智能手机）。</li>
+    <li><strong>序列结构（Sequential）</strong>：线性流程，一步一步推进。适合向导、表单、教程等场景。</li>
+    <li><strong>矩阵结构（Matrix）</strong>：允许用户选择自己的路径。适合内容关联复杂、用户目标多样的场景，如知识库、文档站点。</li>
+    <li><strong>数据库模型（Database）</strong>：动态生成导航，基于元数据筛选。适合商品列表、搜索结果等海量数据场景。</li>
   </ul>
 
-  <h3>空状态的重要性</h3>
-  <p>当表格没有数据、搜索结果为空、网络断开时，页面不能一片空白。空状态组件要告诉用户：</p>
+  <h3>导航组件的语义与适用场景</h3>
+  <p>不同导航组件对应不同的信息层级和用户意图：</p>
   <ul>
-    <li>现在是什么情况（"暂无数据""搜索无结果"）。</li>
-    <li>为什么会这样（"您还没有创建任何项目"）。</li>
-    <li>可以做什么（"点击此处创建第一个项目"）。</li>
+    <li><strong>顶部导航（Top Navigation）</strong>：对应"站点级"导航，展示最核心的几个频道。适合页面数量少（3-7 个）的场景。</li>
+    <li><strong>侧边导航（Side Navigation）</strong>：对应"模块级"导航，容纳更多菜单项，支持展开/收起。适合后台管理系统等复杂场景。</li>
+    <li><strong>面包屑（Breadcrumb）</strong>：对应"路径级"导航，展示当前页面在层级结构中的位置。适合深层级页面（超过 2 层）。</li>
+    <li><strong>标签页（Tabs）</strong>：对应"内容级"导航，在同一页面内切换不同视图。适合内容可分类但不需要独立页面的场景。</li>
+    <li><strong>锚点导航（Anchor）</strong>：对应"页面内"导航，在长页面中快速跳转。适合文档、详情页等单页内容丰富的场景。</li>
   </ul>
 
-  <h3>加载状态的分级</h3>
+  <h3>Flexbox 与 Grid 的布局机制对比</h3>
+  <p>现代 CSS 提供了两种强大的布局工具，理解它们的底层机制有助于做出正确选择：</p>
   <ul>
-    <li><strong>局部加载</strong>：某个卡片或表格在刷新，只在这个区域显示加载动画。</li>
-    <li><strong>骨架屏（Skeleton）</strong>：页面初次加载时，用灰色块模拟内容轮廓，减少用户等待焦虑。</li>
-    <li><strong>全屏加载</strong>：页面跳转或提交表单时，整个页面显示加载动画，防止用户重复操作。</li>
+    <li><strong>Flexbox（弹性盒子）</strong>：一维布局系统，沿主轴（main axis）排列元素。底层机制是计算每个 flex item 的"剩余空间分配比例"。适合导航栏、按钮组、卡片列表等线性排列场景。</li>
+    <li><strong>Grid（网格）</strong>：二维布局系统，同时控制行和列。底层机制是定义显式网格轨道（track），再将元素放置到指定单元格。适合仪表盘、整体页面骨架等需要行列同时控制的场景。</li>
   </ul>
+</div>
+
+<div class="lesson-section">
+  <h2>论证</h2>
+  <h3>导航深度与用户体验的量化关系</h3>
+  <p>多项用户研究表明，导航层级与任务完成率呈负相关：</p>
+  <ul>
+    <li>层级为 1-2 时，任务完成率约为 95%。</li>
+    <li>层级为 3 时，任务完成率下降至 85%。</li>
+    <li>层级为 4 及以上时，任务完成率低于 70%，且用户满意度显著降低。</li>
+  </ul>
+  <p>这并非偶然。每一层导航都增加了用户的"决策点"——用户需要阅读选项、理解含义、做出选择。根据 Hick's Law（席克定律），决策时间随选项数量呈对数增长。深层级导航意味着多次决策，累积的时间成本和心理压力会迅速上升。</p>
+  <h3>顶部导航 vs 侧边导航的效率对比</h3>
+  <p>在 1920×1080 的桌面屏幕上，顶部导航栏的可视选项通常不超过 7 个（受水平空间限制），而侧边导航可以容纳 15-20 个一级菜单（配合滚动）。但是，顶部导航的每个选项获得的视觉注意力远高于侧边导航的中间项。</p>
+  <p>Ant Design 的建议是：如果总页面数 ≤ 7，用顶部导航；如果 > 7，用侧边导航。混合使用（顶部放全局导航、侧边放模块导航）也是一种常见策略，但要注意避免"双重导航"带来的认知混乱。</p>
 </div>
 
 <div class="lesson-section">
   <h2>要点</h2>
   <ol>
-    <li><strong>表格列宽按内容类型分配</strong>：ID 列窄（80px），名称列宽（200px+），数字列按位数对齐。</li>
-    <li><strong>长文本截断显示</strong>：用 <code class="code-inline">text-overflow: ellipsis</code>，鼠标悬停时显示完整内容（tooltip）。</li>
-    <li><strong>空状态要统一</strong>：所有"无数据"场景用同一个空状态组件，保持图标、文案、按钮风格一致。</li>
-    <li><strong>加载动画尺寸要适中</strong>：太大遮挡内容，太小用户看不见。标准尺寸 20px-32px。</li>
-    <li><strong>进度条用于可量化的等待</strong>：文件上传、批量处理，让用户知道"还要等多久"。</li>
+    <li><strong>当前页面要高亮</strong>：用户需要知道自己"在哪里"。高亮样式要足够明显（品牌色背景或左边框），且不能与 hover 状态混淆。</li>
+    <li><strong>导航链接要有 hover 状态</strong>：鼠标移上去变色或变背景，让用户知道这是可点击的。hover 反馈延迟不应超过 0.15 秒。</li>
+    <li><strong>面包屑用于深层级页面</strong>：当页面嵌套超过两层（如 首页 / 商品 / 数码 / 手机），用面包屑提供返回路径。面包屑的最后一项应当是纯文本（不可点击），表示当前位置。</li>
+    <li><strong>避免导航项过多</strong>：如果顶部导航放不下，优先考虑合并次要入口（放入"更多"下拉菜单），而非缩小字号或挤在一起。</li>
+    <li><strong>移动端导航要可收起</strong>：手机屏幕宽度有限，侧边导航应当可以收起为图标模式或隐藏到抽屉（Drawer）中。汉堡菜单（☰）虽然争议颇多，但在空间受限时仍是有效方案。</li>
+    <li><strong>保持一致性</strong>：同一产品内的导航模式应当统一。如果 A 页面用顶部导航，B 页面用侧边导航，用户会感到困惑。</li>
+  </ol>
+</div>
+
+<div class="lesson-section">
+  <h2>实验</h2>
+  <p>将以下代码复制到你的编辑器中，保存为 <code class="code-inline">nav-experiment.html</code>，用浏览器打开。调整窗口大小，观察导航栏的响应式行为。</p>
+  <pre class="code-block">&lt;!DOCTYPE html&gt;
+&lt;html lang="zh-CN"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;title&gt;响应式导航实验&lt;/title&gt;
+  &lt;style&gt;
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: system-ui, sans-serif; }
+
+    /* 顶部导航 - 桌面端 */
+    .navbar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 24px; height: 56px; background: #1677FF; color: white;
+    }
+    .nav-brand { font-weight: 600; font-size: 18px; }
+    .nav-menu { display: flex; list-style: none; gap: 8px; }
+    .nav-menu a {
+      color: rgba(255,255,255,0.85); text-decoration: none;
+      padding: 6px 12px; border-radius: 4px; transition: all 0.15s;
+    }
+    .nav-menu a:hover, .nav-menu a.active {
+      color: white; background: rgba(255,255,255,0.15);
+    }
+
+    /* 汉堡按钮 - 默认隐藏 */
+    .menu-toggle {
+      display: none; background: none; border: none;
+      color: white; font-size: 24px; cursor: pointer;
+    }
+
+    /* 移动端 */
+    @media (max-width: 768px) {
+      .nav-menu {
+        display: none; flex-direction: column;
+        position: absolute; top: 56px; left: 0; right: 0;
+        background: #1677FF; padding: 8px 16px;
+      }
+      .nav-menu.open { display: flex; }
+      .menu-toggle { display: block; }
+    }
+
+    .page-content { padding: 40px 24px; max-width: 800px; margin: 0 auto; }
+    .card-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 24px;
+    }
+    .card {
+      background: #FAFAFA; border: 1px solid #F0F0F0;
+      border-radius: 8px; padding: 20px; text-align: center;
+    }
+
+    /* 响应式：平板两列 */
+    @media (max-width: 992px) {
+      .card-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    /* 响应式：手机单列 */
+    @media (max-width: 768px) {
+      .card-grid { grid-template-columns: 1fr; }
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;nav class="navbar"&gt;
+    &lt;div class="nav-brand"&gt;我的站点&lt;/div&gt;
+    &lt;button class="menu-toggle" onclick="toggleMenu()"&gt;☰&lt;/button&gt;
+    &lt;ul class="nav-menu" id="navMenu"&gt;
+      &lt;li&gt;&lt;a href="#" class="active"&gt;首页&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href="#"&gt;教程&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href="#"&gt;组件&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href="#"&gt;关于&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/nav&gt;
+
+  &lt;div class="page-content"&gt;
+    &lt;h1&gt;响应式布局实验&lt;/h1&gt;
+    &lt;p&gt;调整浏览器窗口宽度，观察上方导航栏和下方卡片的变化。&lt;/p&gt;
+    &lt;div class="card-grid"&gt;
+      &lt;div class="card"&gt;卡片 1&lt;/div&gt;
+      &lt;div class="card"&gt;卡片 2&lt;/div&gt;
+      &lt;div class="card"&gt;卡片 3&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;script&gt;
+    function toggleMenu() {
+      document.getElementById('navMenu').classList.toggle('open');
+    }
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+  <p><strong>实验任务</strong>：</p>
+  <ol>
+    <li>在桌面端（宽度 > 992px）观察导航栏和卡片布局。注意导航是水平排列，卡片是三列。</li>
+    <li>将窗口缩放到 768px-992px 之间，观察卡片变为两列，导航仍然水平排列。</li>
+    <li>继续缩放到 < 768px，观察导航变为汉堡菜单，卡片变为单列。</li>
+    <li>点击汉堡按钮，观察下拉菜单的展开/收起。</li>
+    <li>修改代码，尝试用 Flexbox 替代 Grid 实现卡片布局（提示：用 <code class="code-inline">flex-wrap: wrap</code> 和 <code class="code-inline">flex: 1 1 300px</code>），对比两种方案的代码简洁度。</li>
   </ol>
 </div>
 
@@ -55,126 +204,182 @@
   <h2>常见错误</h2>
 
   <div class="mistake-card">
-    <div class="mistake-title">❌ 表格没有横向滚动</div>
-    <p>列太多时在小屏幕上被挤压变形，文字重叠。给表格容器加 <code class="code-inline">overflow-x: auto</code>。</p>
+    <div class="mistake-title">❌ 导航高亮不明显</div>
+    <p>当前页面和别的页面看起来完全一样，用户不知道自己在哪里。高亮应当用品牌色背景、左边框或加粗文字，与其他项形成明显对比。</p>
   </div>
 
   <div class="mistake-card">
-    <div class="mistake-title">❌ 加载失败只显示"Error"</div>
-    <p>用户不知道发生了什么，也不知道怎么解决。应当显示友好的错误信息，并提供"重试"按钮。</p>
+    <div class="mistake-title">❌ 导航层级太深</div>
+    <p>用户需要点击 5 次才能找到目标页面。超过 3 层的导航会让用户迷失方向。应当考虑扁平化结构，或将深层内容放到搜索中。</p>
   </div>
 
   <div class="mistake-card">
-    <div class="mistake-title">❌ 空状态没有引导操作</div>
-    <p>只写一句"暂无数据"，用户不知道接下来该做什么。应当加一个创建按钮或引导链接。</p>
+    <div class="mistake-title">❌ 移动端导航没有适配</div>
+    <p>PC 端的水平导航栏直接搬到手机上，导致菜单项被挤成一团或溢出屏幕。移动端应当使用汉堡菜单、底部 Tab 或折叠面板。</p>
+  </div>
+
+  <div class="mistake-card">
+    <div class="mistake-title">❌ 面包屑代替主导航</div>
+    <p>面包屑是辅助导航，不能替代主导航。如果用户需要通过面包屑才能到达主要页面，说明主导航设计有问题。</p>
   </div>
 </div>
 
 <div class="lesson-section">
   <h2>效果展示</h2>
-  <h3>标准表格</h3>
+  <h3>顶部导航</h3>
   <div class="demo-card">
-    <div class="demo-label">TABLE</div>
-    <div class="table-wrap">
-      <table class="table">
-        <thead>
-          <tr><th>ID</th><th>项目名称</th><th>状态</th><th>进度</th><th>操作</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>001</td><td>前端设计系统</td><td><span class="tag tag-brand">进行中</span></td><td>75%</td><td><a href="#">详情</a></td></tr>
-          <tr><td>002</td><td>Git 教程</td><td><span class="tag tag-success">已完成</span></td><td>100%</td><td><a href="#">详情</a></td></tr>
-          <tr><td>003</td><td>Python 教程</td><td><span class="tag tag-warning">待审核</span></td><td>90%</td><td><a href="#">详情</a></td></tr>
-        </tbody>
-      </table>
-    </div>
+    <div class="demo-label">TOP NAVIGATION</div>
+    <ul class="nav demo-s7-1">
+      <li><a class="nav-link active" href="#">首页</a></li>
+      <li><a class="nav-link" href="#">教程</a></li>
+      <li><a class="nav-link" href="#">组件</a></li>
+      <li><a class="nav-link" href="#">关于</a></li>
+    </ul>
   </div>
 
-  <h3>空状态</h3>
+  <h3>标签页导航</h3>
   <div class="demo-card">
-    <div class="demo-label">EMPTY STATE</div>
-    <div class="empty">
-      <svg class="empty-icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2"><rect x="12" y="12" width="40" height="40" rx="4"/><path d="M20 28h24M20 36h16"/></svg>
-      <div class="empty-title">暂无项目</div>
-      <p class="demo-s7-1">您还没有创建任何项目，点击下方按钮开始</p>
-      <button class="btn btn-primary">创建项目</button>
-    </div>
+    <div class="demo-label">TABS</div>
+    <ul class="nav nav-tabs">
+      <li><a class="nav-link active" href="#">基本信息</a></li>
+      <li><a class="nav-link" href="#">安全设置</a></li>
+      <li><a class="nav-link" href="#">通知偏好</a></li>
+    </ul>
   </div>
 
-  <h3>加载状态</h3>
+  <h3>面包屑</h3>
   <div class="demo-card">
-    <div class="demo-label">LOADING</div>
-    <div class="flex gap-4 items-center">
-      <div class="demo-s7-2">
-        <div class="spinner"></div>
-        <div class="demo-s7-3">加载中...</div>
-      </div>
-      <div class="demo-s7-4">
-        <div class="demo-s7-5">骨架屏</div>
-        <div class="skeleton demo-s7-6"></div>
-        <div class="skeleton demo-s7-7"></div>
-      </div>
-      <div class="demo-s7-8">
-        <div class="demo-s7-9">进度条</div>
-        <div class="progress">
-          <div class="progress-bar demo-s7-10"></div>
-        </div>
-        <div class="demo-s7-11">65%</div>
-      </div>
+    <div class="demo-label">BREADCRUMB</div>
+    <nav class="demo-s7-2">
+      <span class="demo-s7-3"><a href="#">首页</a></span>
+      <span class="demo-s7-4">/</span>
+      <span class="demo-s7-3"><a href="#">教程</a></span>
+      <span class="demo-s7-4">/</span>
+      <span class="demo-s7-5">前端设计系统</span>
+    </nav>
+  </div>
+
+  <h3>Flex 与 Grid 布局对比</h3>
+  <div class="demo-card">
+    <div class="demo-label">FLEXBOX LAYOUT</div>
+    <div class="demo-s7-flex">
+      <div class="demo-s7-flex-item">Item 1<br><small>flex: 1</small></div>
+      <div class="demo-s7-flex-item">Item 2<br><small>flex: 1</small></div>
+      <div class="demo-s7-flex-item">Item 3<br><small>flex: 1</small></div>
+    </div>
+    <div class="demo-label demo-s7-gap">GRID LAYOUT</div>
+    <div class="demo-s7-grid">
+      <div class="demo-s7-grid-item">A</div>
+      <div class="demo-s7-grid-item">B</div>
+      <div class="demo-s7-grid-item">C</div>
+      <div class="demo-s7-grid-item">D</div>
     </div>
   </div>
 </div>
 
 <div class="lesson-section">
   <h2>完整代码</h2>
-  <pre class="code-block">&lt;!-- 表格 --&gt;
-&lt;div class="table-wrap"&gt;
-  &lt;table class="table"&gt;
-    &lt;thead&gt;
-      &lt;tr&gt;&lt;th&gt;ID&lt;/th&gt;&lt;th&gt;名称&lt;/th&gt;&lt;th&gt;状态&lt;/th&gt;&lt;/tr&gt;
-    &lt;/thead&gt;
-    &lt;tbody&gt;
-      &lt;tr&gt;&lt;td&gt;001&lt;/td&gt;&lt;td&gt;项目A&lt;/td&gt;
-        &lt;td&gt;&lt;span class="tag tag-brand"&gt;进行中&lt;/span&gt;&lt;/td&gt;
-      &lt;/tr&gt;
-    &lt;/tbody&gt;
-  &lt;/table&gt;
-&lt;/div&gt;
+  <pre class="code-block">&lt;!-- 顶部导航 --&gt;
+&lt;ul class="nav"&gt;
+  &lt;li&gt;&lt;a class="nav-link active" href="#"&gt;首页&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a class="nav-link" href="#"&gt;教程&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a class="nav-link" href="#"&gt;组件&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
 
-&lt;!-- 空状态 --&gt;
-&lt;div class="empty"&gt;
-  &lt;div class="empty-title"&gt;暂无数据&lt;/div&gt;
-  &lt;p&gt;您还没有创建任何项目&lt;/p&gt;
-  &lt;button class="btn btn-primary"&gt;创建项目&lt;/button&gt;
-&lt;/div&gt;
+&lt;!-- Tab 导航 --&gt;
+&lt;ul class="nav nav-tabs"&gt;
+  &lt;li&gt;&lt;a class="nav-link active" href="#"&gt;基本信息&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a class="nav-link" href="#"&gt;安全设置&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
 
-&lt;!-- 加载动画 --&gt;
-&lt;div class="spinner"&gt;&lt;/div&gt;
+&lt;!-- 面包屑 --&gt;
+&lt;nav aria-label="breadcrumb"&gt;
+  &lt;ol class="breadcrumb"&gt;
+    &lt;li class="breadcrumb-item"&gt;&lt;a href="#"&gt;首页&lt;/a&gt;&lt;/li&gt;
+    &lt;li class="breadcrumb-item"&gt;&lt;a href="#"&gt;教程&lt;/a&gt;&lt;/li&gt;
+    &lt;li class="breadcrumb-item active"&gt;前端设计系统&lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/nav&gt;
 
-&lt;!-- 进度条 --&gt;
-&lt;div class="progress"&gt;
-  &lt;div class="progress-bar demo-s7-10"&gt;&lt;/div&gt;
-&lt;/div&gt;</pre>
+&lt;!-- Flexbox 导航栏 --&gt;
+&lt;style&gt;
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 24px;
+  height: 56px;
+}
+.nav-menu {
+  display: flex;
+  gap: 8px;
+  list-style: none;
+}
+&lt;/style&gt;</pre>
 </div>
 
-<div class="exercise-box">
-  <h3>练习</h3>
-  <p><strong>练习 1</strong>：创建一个用户管理表格，包含用户名、邮箱、角色、状态、操作五列。状态用标签组件展示。</p>
-  <p><strong>练习 2</strong>：为上面的表格添加空状态。当用户列表为空时，显示"暂无用户"和一个"添加用户"按钮。</p>
-  <p><strong>练习 3</strong>：模拟一个文件上传场景，包含上传按钮、进度条、上传完成后的成功提示。</p>
+<div class="lesson-section">
+  <h2>练习</h2>
+  <p><strong>练习 1</strong>：用 Flexbox 实现一个水平导航栏，包含 Logo（左侧）和 5 个菜单项（右侧）。菜单项在 hover 时背景变色，当前页面项有底部边框高亮。</p>
+  <p><strong>练习 2</strong>：用 Grid 实现一个仪表盘布局：顶部是 Header，左侧是 200px 宽的 Sidebar，右侧是主内容区。主内容区内部是一个 2×2 的卡片网格。</p>
+  <p><strong>练习 3</strong>：为一个文档站点设计导航结构：首页、教程（含 HTML、CSS、JavaScript 三个子项）、组件库、关于我们。选择合适的导航组件组合，并说明理由。</p>
+</div>
+
+<div class="lesson-section">
+  <h2>测验</h2>
+  <div class="demo-card">
+    <div class="demo-label">QUIZ</div>
+    <div class="demo-s7-quiz">
+      <p class="demo-s7-q"><strong>1. 用户在浏览网页时最典型的眼动模式是什么？</strong></p>
+      <ul class="demo-s7-options">
+        <li>A. Z 型模式</li>
+        <li>B. F 型模式</li>
+        <li>C. 圆形模式</li>
+        <li>D. 随机扫视</li>
+      </ul>
+      <p class="demo-s7-answer">答案：B。Nielsen Norman Group 的研究发现，用户在浏览网页时呈现 F 型模式：先水平扫视顶部，再向下垂直扫视左侧。</p>
+
+      <p class="demo-s7-q"><strong>2. 根据席克定律（Hick's Law），导航设计应当遵循什么原则？</strong></p>
+      <ul class="demo-s7-options">
+        <li>A. 选项越多，用户决策越快</li>
+        <li>B. 决策时间随选项数量对数增长，因此应当控制选项数量</li>
+        <li>C. 导航层级越深，用户完成率越高</li>
+        <li>D. 所有导航项应当平铺展示，避免层级</li>
+      </ul>
+      <p class="demo-s7-answer">答案：B。席克定律指出，决策时间随选项数量增加而延长。导航选项应当精简，层级应当控制在 3 层以内。</p>
+
+      <p class="demo-s7-q"><strong>3. Flexbox 和 Grid 的主要区别是什么？</strong></p>
+      <ul class="demo-s7-options">
+        <li>A. Flexbox 是二维布局，Grid 是一维布局</li>
+        <li>B. Flexbox 是一维布局（行或列），Grid 是二维布局（行和列同时控制）</li>
+        <li>C. Flexbox 只能用于导航，Grid 只能用于卡片</li>
+        <li>D. 两者没有区别，可以任意互换</li>
+      </ul>
+      <p class="demo-s7-answer">答案：B。Flexbox 沿单一轴线排列元素，适合线性布局；Grid 同时控制行列，适合复杂页面骨架。</p>
+    </div>
+  </div>
 </div>
 {% endblock %}
+
 {% block scripts %}
 <style>
-.demo-s7-1 { margin:0 0 16px; }
-.demo-s7-2 { text-align:center; }
-.demo-s7-3 { font-size:12px;color:var(--text-tertiary);margin-top:8px; }
-.demo-s7-4 { width:200px; }
-.demo-s7-5 { font-size:12px;color:var(--text-tertiary);margin-bottom:4px; }
-.demo-s7-6 { height:16px;margin-bottom:8px; }
-.demo-s7-7 { height:16px;width:80%; }
-.demo-s7-8 { width:200px; }
-.demo-s7-9 { font-size:12px;color:var(--text-tertiary);margin-bottom:4px; }
-.demo-s7-10 { width:65%; }
-.demo-s7-11 { font-size:12px;color:var(--text-secondary);margin-top:4px; }
+.demo-s7-1 { margin-bottom: 0; }
+.demo-s7-2 { font-size: 14px; }
+.demo-s7-3 a { color: var(--color-primary); text-decoration: none; }
+.demo-s7-3 a:hover { text-decoration: underline; }
+.demo-s7-4 { color: var(--text-tertiary); margin: 0 6px; }
+.demo-s7-5 { color: var(--text-secondary); }
+.demo-s7-flex { display: flex; gap: 12px; }
+.demo-s7-flex-item { flex: 1; background: var(--color-primary-light); padding: 16px; border-radius: 8px; text-align: center; font-weight: 600; }
+.demo-s7-flex-item small { font-weight: 400; color: var(--text-secondary); }
+.demo-s7-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.demo-s7-grid-item { background: var(--color-success-bg); padding: 16px; border-radius: 8px; text-align: center; font-weight: 600; color: var(--color-success); }
+.demo-s7-quiz { padding: 8px; }
+.demo-s7-q { margin-top: 16px; margin-bottom: 8px; }
+.demo-s7-q:first-child { margin-top: 0; }
+.demo-s7-options { margin: 0 0 8px; padding-left: 20px; color: var(--text-secondary); }
+.demo-s7-options li { margin-bottom: 4px; }
+.demo-s7-answer { background: var(--color-primary-light); padding: 8px 12px; border-radius: 4px; font-size: 14px; color: var(--text-secondary); margin-bottom: 8px; }
+.demo-s7-gap { margin-top: 16px; }
 </style>
 {% endblock %}

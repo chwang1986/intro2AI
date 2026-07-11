@@ -1,53 +1,180 @@
 {% extends "base.html" %}
 
-{% block title %}Step 9 动画与交互 — 前端设计系统教程{% endblock %}
+{% block title %}Step 9 响应式设计 — 前端设计系统教程{% endblock %}
 
 {% block content %}
 <div class="page-header">
-  <h1>Step 9 动画与交互</h1>
-  <p>过渡曲线、状态反馈、微交互原则</p>
+  <h1>Step 9 响应式设计</h1>
+  <p>移动优先、流式布局、断点策略与媒体查询</p>
   <div class="tag tag-brand">进阶</div>
 </div>
 
 <div class="lesson-section">
   <h2>场景</h2>
-  <p>页面不是静止的图片，用户会和它互动：点击按钮、填写表单、加载数据。动画和交互的作用是让这些变化更自然，给用户即时的反馈，让用户知道"系统收到了我的操作"。</p>
+  <p>同一个页面，在 27 寸显示器、13 寸笔记本、iPad、手机上都要能正常显示。响应式设计不是"把 PC 页面缩小到手机上"，而是根据不同屏幕尺寸重新排列内容，保证每个设备上的体验都最佳。</p>
+</div>
+
+<div class="lesson-section">
+  <h2>起源</h2>
+  <p>2000 年代初期，网页设计采用"固定宽度"模式——最常见的宽度是 960px，因为当时的显示器分辨率主要是 1024×768，960px 能留出适当的浏览器边框和滚动条空间。设计师会为 800×600、1024×768、1280×1024 等几种常见分辨率分别出图。</p>
+  <p>2010 年，Ethan Marcotte 在 A List Apart 上发表文章《Responsive Web Design》，正式提出了"响应式网页设计"的概念。他整合了三种已有技术：流式网格（fluid grids）、弹性图片（flexible images）和媒体查询（media queries），创造了一种能够适应任意屏幕尺寸的设计方法论。</p>
+  <p>同一时期，智能手机迅速普及。2010 年全球智能手机出货量超过 3 亿部，移动流量开始爆发。开发者面临一个选择：为 PC 和移动端分别维护两套代码（m.example.com），还是用一套代码适配所有设备？响应式设计提供了后者的技术方案，大大降低了维护成本。</p>
+</div>
+
+<div class="lesson-section">
+  <h2>思考</h2>
+  <h3>为什么移动优先？</h3>
+  <p>响应式设计有两种策略："桌面优先（Desktop First）"和"移动优先（Mobile First）"。桌面优先先设计大屏布局，再用 <code class="code-inline">max-width</code> 媒体查询适配小屏；移动优先则相反，先设计小屏布局，再用 <code class="code-inline">min-width</code> 媒体查询扩展到大屏。</p>
+  <p>移动优先的优势在于：</p>
+  <ul>
+    <li><strong>强迫聚焦</strong>：手机屏幕只有 375px 宽，你必须决定"什么是最重要的"。这种约束反而有助于理清内容优先级。</li>
+    <li><strong>渐进增强</strong>：小屏布局是功能的最小可用版本，大屏上再添加增强功能（如侧边栏、多列布局）。这符合"为所有人提供核心功能"的无障碍原则。</li>
+    <li><strong>性能优化</strong>：移动设备通常网络较慢、性能较弱。移动优先迫使开发者从最开始就优化性能，而不是事后补救。</li>
+    <li><strong>CSS 更简洁</strong>：<code class="code-inline">min-width</code> 媒体查询更符合直觉——"当屏幕大于 X 时，添加这些样式"，而不是"当屏幕小于 X 时，移除这些样式"。</li>
+  </ul>
+  <h3>为什么断点不能随意选择？</h3>
+  <p>很多初学者会根据具体设备的宽度来设断点："iPhone 是 375px，iPad 是 768px，所以我设两个断点就够了。"这种做法的问题在于：设备尺寸是连续分布的，每年都有新尺寸的设备出现。基于设备的断点很快会过时。</p>
+  <p>正确的做法是"基于内容选择断点"——不断缩小浏览器窗口，当布局开始"崩坏"时（如文字换行、元素重叠），那个宽度就是你的断点。这样选择的断点是"内容驱动"的，不依赖于具体设备。</p>
 </div>
 
 <div class="lesson-section">
   <h2>原理</h2>
-  <h3>为什么需要动画反馈</h3>
-  <ul>
-    <li><strong>降低焦虑</strong>：点击提交后如果没有任何反应，用户会怀疑自己到底点没点上。一个加载动画就能缓解这种焦虑。</li>
-    <li><strong>引导注意力</strong>：新内容出现时带一个淡入动画，用户的视线会自然地被吸引过去。</li>
-    <li><strong>强化因果关系</strong>：按钮按下去时有一个下沉效果，用户会感觉到"是我按下去的"。</li>
-  </ul>
+  <h3>视口（Viewport）的底层机制</h3>
+  <p>移动浏览器的默认行为是模拟桌面浏览器的宽度（通常是 980px），然后将页面缩小到手机屏幕大小。这就是为什么如果不加 viewport meta 标签，手机上的网页会显示为微缩的桌面版。</p>
+  <p><code class="code-inline">&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</code> 告诉浏览器："这个页面的宽度等于设备宽度，不要缩放。"这是响应式设计的基石。</p>
 
-  <h3>Ant Design 的动效规范</h3>
-  <ul>
-    <li><strong>出场动画</strong>：淡入 + 轻微上移，持续 0.2s。用于弹窗、提示、新内容。</li>
-    <li><strong>离场动画</strong>：淡出 + 轻微上移，持续 0.15s。比出场快，因为用户不想再看到它。</li>
-    <li><strong>状态过渡</strong>：颜色、边框、阴影的变化持续 0.15s ~ 0.25s。太快会闪眼，太慢会拖沓。</li>
-  </ul>
+  <h3>媒体查询的解析机制</h3>
+  <p>CSS 媒体查询（Media Query）不是"条件编译"，而是浏览器在解析样式时动态匹配的。当窗口大小改变时，浏览器会重新计算匹配哪些媒体查询，并应用对应的样式。这个过程是实时的，不需要刷新页面。</p>
+  <p>媒体查询的匹配顺序很重要：CSS 的层叠规则（Cascading）意味着后匹配的样式会覆盖先匹配的样式（如果优先级相同）。因此，移动优先的媒体查询应当按断点从小到大排列：</p>
+  <pre class="code-block">/* 基础样式（手机） */
+.container { padding: 16px; }
 
-  <h3>缓动曲线（Easing）</h3>
-  <p>缓动曲线决定了动画的速度变化：</p>
+/* 平板 */
+@media (min-width: 768px) {
+  .container { padding: 24px; }
+}
+
+/* 桌面 */
+@media (min-width: 1200px) {
+  .container { max-width: 1200px; margin: 0 auto; }
+}</pre>
+
+  <h3>弹性单位的选择策略</h3>
+  <p>响应式设计中常用的弹性单位：</p>
   <ul>
-    <li><strong>ease</strong>：默认，先加速后减速。适合大多数过渡效果。</li>
-    <li><strong>ease-out</strong>：开始快，后面慢。适合出场动画（元素进入视野）。</li>
-    <li><strong>ease-in</strong>：开始慢，后面快。适合离场动画（元素离开视野）。</li>
-    <li><strong>linear</strong>：匀速。适合循环动画（加载旋转、进度条）。</li>
+    <li><strong>百分比（%）</strong>：相对于父元素。适合宽度、高度等需要随容器缩放的场景。缺点是无法确定最终像素值，嵌套时容易混淆。</li>
+    <li><strong>em/rem</strong>：相对于字体大小。em 相对于当前元素的字体大小，rem 相对于根元素（html）的字体大小。适合间距、边距等需要随文字缩放的比例关系。</li>
+    <li><strong>vw/vh</strong>：相对于视口宽/高的 1%。适合需要与视口直接关联的场景，如全屏背景、大字标题。</li>
+    <li><strong>fr</strong>：Grid 布局中的分数单位，表示剩余空间的分配比例。适合网格布局中的列宽定义。</li>
   </ul>
+</div>
+
+<div class="lesson-section">
+  <h2>论证</h2>
+  <h3>断点选择的科学依据</h3>
+  <p>Ant Design 的断点系统（xs: <576px, sm: 576-768px, md: 768-992px, lg: 992-1200px, xl: >1200px）并非随意设定，而是基于设备尺寸的统计学分布：</p>
+  <ul>
+    <li><strong>576px</strong>：大屏手机（如 iPhone Plus 系列）的宽度边界。</li>
+    <li><strong>768px</strong>：iPad 竖屏宽度，是手机和平板的分界线。</li>
+    <li><strong>992px</strong>：iPad 横屏和较小笔记本的宽度，是平板和桌面的分界线。</li>
+    <li><strong>1200px</strong>：主流桌面显示器的常用内容区宽度，超过此宽度后内容不应无限拉伸（否则阅读距离过长）。</li>
+  </ul>
+  <p>实际项目中，2-3 个断点足够覆盖 95% 的场景。断点越多，代码越复杂，维护成本越高。</p>
+  <h3>触摸目标的最小尺寸</h3>
+  <p>MIT Touch Lab 的研究发现，成年人食指的接触面积平均为 10-14mm（约 40-55px）。Apple 的 Human Interface Guidelines 建议触摸目标至少为 44×44px，Google 的 Material Design 建议 48×48px。小于这个尺寸，用户的误操作率会显著上升。</p>
+  <p>这意味着：移动端的按钮、链接、表单输入框必须有足够的高度。Ant Design 的移动端按钮最小高度为 36px，但在核心操作按钮上建议达到 40px 以上。</p>
 </div>
 
 <div class="lesson-section">
   <h2>要点</h2>
   <ol>
-    <li><strong>动画时间控制在 0.15s ~ 0.4s</strong>：低于 0.1s 人眼察觉不到，高于 0.5s 会感觉拖沓。</li>
-    <li><strong>优先使用 transform 和 opacity</strong>：这两个属性不会触发浏览器的重排（reflow），性能最好。避免直接改变 width、height、top、left。</li>
-    <li><strong>减少运动偏好（prefers-reduced-motion）</strong>：有些用户不喜欢动画（或因为晕动症）。用 <code class="code-inline">@media (prefers-reduced-motion: reduce)</code> 关闭非必要动画。</li>
-    <li><strong>hover 状态要即时反馈</strong>：鼠标移上去 0.15s 内变色，让用户知道这是可点击的。</li>
-    <li><strong>加载动画要循环</strong>：旋转、跳动、骨架屏的流动，必须循环播放，直到加载完成。</li>
+    <li><strong>用 Flexbox 和 Grid 做布局</strong>：它们天生支持响应式，配合 <code class="code-inline">flex-wrap</code> 和 <code class="code-inline">gap</code> 可以轻松实现多列变单列。</li>
+    <li><strong>图片要自适应</strong>：<code class="code-inline">max-width: 100%; height: auto;</code>，防止图片撑破容器。</li>
+    <li><strong>触摸目标不小于 44×44px</strong>：按钮、链接在手机上要足够大，方便手指点击。</li>
+    <li><strong>隐藏非核心内容</strong>：手机端可以把侧边栏收起、把次要信息折叠，优先展示核心内容。</li>
+    <li><strong>测试真实设备</strong>：Chrome 的开发者工具只能模拟尺寸，不能模拟真实的触摸、滚动性能。必须在真机上测试。</li>
+    <li><strong>使用相对单位</strong>：字体大小用 rem，间距用 px 或 rem，宽度用 % 或 fr。避免在布局中使用固定 px 值定义宽度。</li>
+  </ol>
+</div>
+
+<div class="lesson-section">
+  <h2>实验</h2>
+  <p>将以下代码复制到你的编辑器中，保存为 <code class="code-inline">responsive-experiment.html</code>，用浏览器打开。调整窗口大小，观察三栏布局如何变为单栏。</p>
+  <pre class="code-block">&lt;!DOCTYPE html&gt;
+&lt;html lang="zh-CN"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;title&gt;响应式布局实验&lt;/title&gt;
+  &lt;style&gt;
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: system-ui, sans-serif; background: #F5F7FA; }
+
+    /* 移动优先：单列 */
+    .container { padding: 16px; }
+    .card {
+      background: white; border-radius: 8px; padding: 24px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05); margin-bottom: 16px;
+    }
+    .card h3 { margin-bottom: 8px; color: #1677FF; }
+    .card p { color: #595959; font-size: 14px; line-height: 1.6; }
+
+    /* 断点 1：平板，两列 */
+    @media (min-width: 768px) {
+      .container { padding: 24px; max-width: 1200px; margin: 0 auto; }
+      .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+      .card { margin-bottom: 0; }
+      .card-full { grid-column: 1 / -1; }
+    }
+
+    /* 断点 2：桌面，三列 */
+    @media (min-width: 1200px) {
+      .grid { grid-template-columns: 1fr 1fr 1fr; }
+    }
+
+    /* 断点指示器 */
+    .breakpoint {
+      position: fixed; bottom: 16px; right: 16px;
+      background: #1677FF; color: white; padding: 8px 16px;
+      border-radius: 4px; font-size: 14px; font-weight: 600;
+    }
+    @media (min-width: 768px) { .breakpoint::after { content: '平板 (≥768px)'; } }
+    @media (min-width: 1200px) { .breakpoint::after { content: '桌面 (≥1200px)'; } }
+    @media (max-width: 767px) { .breakpoint::after { content: '手机 (<768px)'; } }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class="container"&gt;
+    &lt;div class="grid"&gt;
+      &lt;div class="card"&gt;
+        &lt;h3&gt;卡片 1&lt;/h3&gt;
+        &lt;p&gt;这是第一张卡片的内容。在手机端，卡片垂直排列；在平板端变为两列；在桌面端变为三列。&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;div class="card"&gt;
+        &lt;h3&gt;卡片 2&lt;/h3&gt;
+        &lt;p&gt;这是第二张卡片的内容。观察 Grid 布局如何根据屏幕宽度自动调整列数。&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;div class="card"&gt;
+        &lt;h3&gt;卡片 3&lt;/h3&gt;
+        &lt;p&gt;这是第三张卡片的内容。不需要写任何 JavaScript，纯 CSS 媒体查询就能实现响应式。&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;div class="card card-full"&gt;
+        &lt;h3&gt;通栏卡片&lt;/h3&gt;
+        &lt;p&gt;这张卡片在平板上会占据两列的宽度（grid-column: 1 / -1），用来展示需要更多空间的内容，比如表格或图表。&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class="breakpoint"&gt;当前断点：&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+  <p><strong>实验任务</strong>：</p>
+  <ol>
+    <li>在手机宽度（< 768px）下观察：卡片垂直排列，内边距为 16px。</li>
+    <li>将窗口拖到 768px-1200px 之间，观察：卡片变为两列，内边距增加为 24px，容器居中。</li>
+    <li>将窗口拖到 > 1200px，观察：卡片变为三列。</li>
+    <li>注意右下角的断点指示器，它随窗口宽度变化而更新。</li>
+    <li>修改代码，在 768px 断点下将"通栏卡片"改为只占据一列（删除 <code class="code-inline">.card-full</code> 的样式），观察布局变化。</li>
+    <li>尝试将 Grid 改为 Flexbox 实现（提示：<code class="code-inline">display: flex; flex-wrap: wrap;</code>），对比两者在响应式场景下的差异。</li>
   </ol>
 </div>
 
@@ -55,65 +182,68 @@
   <h2>常见错误</h2>
 
   <div class="mistake-card">
-    <div class="mistake-title">❌ 动画太长</div>
-    <p>一个弹窗用了 1 秒钟才完全显示，用户已经等不及了。入场动画 0.2s，离场 0.15s 是最佳实践。</p>
+    <div class="mistake-title">❌ 用 px 定义所有宽度</div>
+    <p>一个 400px 宽的卡片在手机上会撑出屏幕。应当用 max-width 限制最大宽度，用百分比或 flex 分配空间。</p>
   </div>
 
   <div class="mistake-card">
-    <div class="mistake-title">❌ 滥用动画</div>
-    <p>每个元素都有动画，页面像个万花筒。动画应当是"调味品"，只在需要引起注意的地方使用。</p>
+    <div class="mistake-title">❌ 断点太多太细</div>
+    <p>定义了 7 个断点，每个都要单独写样式，维护困难。2-3 个断点足够覆盖 95% 的场景。基于内容选择断点，而不是基于设备型号。</p>
   </div>
 
   <div class="mistake-card">
-    <div class="mistake-title">❌ 没有考虑性能</div>
-    <p>用 JavaScript 定时器改变元素的 left/top 来实现动画，会导致每帧都重排，卡顿明显。应当用 CSS transition/animation + transform。</p>
+    <div class="mistake-title">❌ 忽略横屏模式</div>
+    <p>手机横过来后，高度变小，原本竖屏适配的布局可能会出问题。要测试横屏，尤其是固定定位的元素（如底部按钮栏）。</p>
+  </div>
+
+  <div class="mistake-card">
+    <div class="mistake-title">❌ 只在 Chrome DevTools 中测试</div>
+    <p>DevTools 的设备模拟只能模拟视口尺寸和 UA，无法模拟真实设备的字体渲染、触摸事件、滚动惯性和性能特征。必须在真机上验证。</p>
   </div>
 </div>
 
 <div class="lesson-section">
   <h2>效果展示</h2>
-  <h3>按钮交互</h3>
+  <h3>响应式卡片布局</h3>
   <div class="demo-card">
-    <div class="demo-label">BUTTON INTERACTIONS</div>
-    <div class="flex gap-3 items-center flex-wrap">
-      <button class="btn btn-primary demo-s9-1">Hover 我（变色）</button>
-      <button class="btn btn-primary demo-s9-2" onclick="this.style.transform='translateY(1px)'" onmouseup="this.style.transform='translateY(0)'">点击我（下沉）</button>
-    </div>
-  </div>
-
-  <h3>加载动画</h3>
-  <div class="demo-card">
-    <div class="demo-label">LOADING ANIMATIONS</div>
-    <div class="flex gap-4 items-center">
+    <div class="demo-label">RESPONSIVE CARDS</div>
+    <p class="demo-s9-1">缩小浏览器窗口，观察下方卡片如何变化</p>
+    <div class="demo-s9-2">
       <div class="demo-s9-3">
-        <div class="demo-s9-4"></div>
-        <div class="demo-s9-5">旋转加载</div>
+        <div class="demo-s9-4">卡片 1</div>
+        <div class="demo-s9-5">flex:1, min-width:280px</div>
       </div>
       <div class="demo-s9-6">
-        <div class="demo-s9-7">
-          <div class="demo-s9-8"></div>
-          <div class="demo-s9-9"></div>
-          <div class="demo-s9-10"></div>
-        </div>
-        <div class="demo-s9-11">脉冲加载</div>
+        <div class="demo-s9-7">卡片 2</div>
+        <div class="demo-s9-8">flex:1, min-width:280px</div>
       </div>
-      <div class="demo-s9-12">
-        <div class="demo-s9-13">
-          <div class="demo-s9-14"></div>
-        </div>
-        <div class="demo-s9-15">进度条</div>
+      <div class="demo-s9-9">
+        <div class="demo-s9-10">卡片 3</div>
+        <div class="demo-s9-11">flex:1, min-width:280px</div>
       </div>
     </div>
   </div>
 
-  <h3>淡入效果</h3>
+  <h3>断点示意</h3>
   <div class="demo-card">
-    <div class="demo-label">FADE IN</div>
-    <div class="demo-s9-16">
-      <div class="card demo-s9-17">
-        <div class="card-body">
-          <div class="demo-s9-18">新消息</div>
-          <p class="demo-s9-19">这条内容刚刚出现，带有淡入动画。</p>
+    <div class="demo-label">BREAKPOINTS</div>
+    <div class="row">
+      <div class="col-4">
+        <div class="demo-s9-12">
+          <div class="demo-s9-13">&lt; 768px</div>
+          <div class="demo-s9-14">手机：单列，内边距 16px</div>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="demo-s9-15">
+          <div class="demo-s9-16">768px - 1200px</div>
+          <div class="demo-s9-17">平板：两列，内边距 24px</div>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="demo-s9-18">
+          <div class="demo-s9-19">&gt; 1200px</div>
+          <div class="demo-s9-20">桌面：多列，最大宽度 1200px</div>
         </div>
       </div>
     </div>
@@ -122,91 +252,117 @@
 
 <div class="lesson-section">
   <h2>完整代码</h2>
-  <pre class="code-block">/* 旋转加载 */
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-.spinner {
-  width: 20px;
-  height: 20px;
-  border: 2px solid var(--border-color);
-  border-top-color: var(--color-primary);
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
+  <pre class="code-block">/* 基础样式（移动端优先） */
+.container {
+  width: 100%;
+  padding-left: 16px;
+  padding-right: 16px;
 }
 
-/* 淡入上移动画 */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-.fade-in-up {
-  animation: fadeInUp 0.2s ease-out;
+.card-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
-/* 按钮交互 */
-.btn {
-  transition: all 0.15s ease;
-}
-.btn:hover {
-  opacity: 0.85;
-}
-.btn:active {
-  transform: translateY(1px);
+/* 平板 */
+@media (min-width: 768px) {
+  .container {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+  .card-grid {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .card-grid > * {
+    flex: 1 1 calc(50% - 8px);
+  }
 }
 
-/* 减少运动偏好 */
-@media (prefers-reduced-motion: reduce) {
-  .spinner,
-  .fade-in-up {
-    animation: none;
+/* 桌面 */
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
   }
-  .btn {
-    transition: none;
+  .card-grid > * {
+    flex: 1 1 calc(33.333% - 11px);
   }
 }</pre>
 </div>
 
-<div class="exercise-box">
-  <h3>练习</h3>
-  <p><strong>练习 1</strong>：给项目中的所有按钮添加 hover 和 active 过渡效果，使用 transform 而不是改变 width/height。</p>
-  <p><strong>练习 2</strong>：实现一个 toast 提示组件，出现时从上方滑入并淡入，3 秒后向上滑出并淡出。</p>
-  <p><strong>练习 3</strong>：测试你的动画在"减少动态效果"的系统设置下是否仍然可用（macOS：系统偏好设置 → 辅助功能 → 显示 → 减少动态效果）。</p>
+<div class="lesson-section">
+  <h2>练习</h2>
+  <p><strong>练习 1</strong>：用 Flexbox 实现一个三列卡片布局，要求在手机上一列、平板两列、桌面三列。不借助任何 CSS 框架。</p>
+  <p><strong>练习 2</strong>：打开你的项目，在 Chrome DevTools 的手机模拟模式下测试每个页面，记录布局崩坏的地方，并制定修复计划。</p>
+  <p><strong>练习 3</strong>：为前端设计系统教程的侧边栏添加响应式逻辑：PC 显示侧边栏，手机隐藏侧边栏并添加一个汉堡菜单按钮。</p>
 </div>
 
-<style>
-@keyframes spin { to { transform: rotate(360deg); } }
-@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-@keyframes progress { 0% { width: 0%; } 50% { width: 60%; } 100% { width: 60%; } }
-@keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-</style>
+<div class="lesson-section">
+  <h2>测验</h2>
+  <div class="demo-card">
+    <div class="demo-label">QUIZ</div>
+    <div class="demo-s9-quiz">
+      <p class="demo-s9-q"><strong>1. 响应式设计中，为什么推荐"移动优先"策略？</strong></p>
+      <ul class="demo-s9-options">
+        <li>A. 移动端用户比桌面端多</li>
+        <li>B. 手机屏幕小，能强迫设计师聚焦核心内容，且 CSS 用 min-width 更直观</li>
+        <li>C. 移动端开发更简单</li>
+        <li>D. 搜索引擎要求移动优先</li>
+      </ul>
+      <p class="demo-s9-answer">答案：B。移动优先强迫聚焦核心内容，且 min-width 媒体查询符合渐进增强的逻辑。</p>
+
+      <p class="demo-s9-q"><strong>2. 断点应该基于什么来选择？</strong></p>
+      <ul class="demo-s9-options">
+        <li>A. 具体设备的宽度（如 iPhone 375px、iPad 768px）</li>
+        <li>B. 内容开始崩坏的宽度</li>
+        <li>C. 设计师的个人喜好</li>
+        <li>D. 行业平均值 960px</li>
+      </ul>
+      <p class="demo-s9-answer">答案：B。断点应当基于内容——当布局开始崩坏时，就是需要断点的时候。基于设备的断点会很快过时。</p>
+
+      <p class="demo-s9-q"><strong>3. 移动端的触摸目标最小尺寸建议是多少？</strong></p>
+      <ul class="demo-s9-options">
+        <li>A. 24×24px</li>
+        <li>B. 32×32px</li>
+        <li>C. 44×44px（Apple）或 48×48px（Google）</li>
+        <li>D. 60×60px</li>
+      </ul>
+      <p class="demo-s9-answer">答案：C。Apple HIG 建议 44×44px，Material Design 建议 48×48px，这是基于成年人食指平均接触面积的研究数据。</p>
+    </div>
+  </div>
+</div>
 {% endblock %}
+
 {% block scripts %}
 <style>
-.demo-s9-1 { transition:all 0.15s ease; }
-.demo-s9-2 { transition:all 0.15s ease; }
-.demo-s9-3 { text-align:center; }
-.demo-s9-4 { width:24px;height:24px;border:2px solid var(--border-color);border-top-color:var(--color-primary);border-radius:50%;animation:spin 0.8s linear infinite; }
-.demo-s9-5 { font-size:12px;color:var(--text-tertiary);margin-top:8px; }
-.demo-s9-6 { text-align:center; }
-.demo-s9-7 { display:flex;gap:4px; }
-.demo-s9-8 { width:8px;height:8px;background:var(--color-primary);border-radius:50%;animation:pulse 1s ease-in-out infinite; }
-.demo-s9-9 { width:8px;height:8px;background:var(--color-primary);border-radius:50%;animation:pulse 1s ease-in-out 0.2s infinite; }
-.demo-s9-10 { width:8px;height:8px;background:var(--color-primary);border-radius:50%;animation:pulse 1s ease-in-out 0.4s infinite; }
-.demo-s9-11 { font-size:12px;color:var(--text-tertiary);margin-top:8px; }
-.demo-s9-12 { text-align:center; }
-.demo-s9-13 { width:100px;height:8px;background:var(--gray-4);border-radius:4px;overflow:hidden; }
-.demo-s9-14 { height:100%;width:60%;background:var(--color-primary);border-radius:4px;animation:progress 2s ease-in-out infinite; }
-.demo-s9-15 { font-size:12px;color:var(--text-tertiary);margin-top:8px; }
-.demo-s9-16 { animation:fadeInUp 0.3s ease-out; }
-.demo-s9-17 { max-width:300px; }
-.demo-s9-18 { font-weight:600; }
-.demo-s9-19 { margin:4px 0 0;color:var(--text-secondary);font-size:14px; }
+.demo-s9-1 { font-size: 12px; color: var(--text-tertiary); margin-bottom: 12px; }
+.demo-s9-2 { display: flex; gap: 16px; flex-wrap: wrap; }
+.demo-s9-3 { flex: 1; min-width: 280px; background: var(--color-primary-light); padding: 20px; border-radius: 8px; text-align: center; }
+.demo-s9-4 { font-weight: 600; }
+.demo-s9-5 { font-size: 14px; color: var(--text-secondary); margin-top: 4px; }
+.demo-s9-6 { flex: 1; min-width: 280px; background: var(--color-success-bg); padding: 20px; border-radius: 8px; text-align: center; }
+.demo-s9-7 { font-weight: 600; }
+.demo-s9-8 { font-size: 14px; color: var(--text-secondary); margin-top: 4px; }
+.demo-s9-9 { flex: 1; min-width: 280px; background: var(--color-warning-bg); padding: 20px; border-radius: 8px; text-align: center; }
+.demo-s9-10 { font-weight: 600; }
+.demo-s9-11 { font-size: 14px; color: var(--text-secondary); margin-top: 4px; }
+.demo-s9-12 { background: var(--color-primary-light); padding: 16px; border-radius: 8px; text-align: center; }
+.demo-s9-13 { font-weight: 600; color: var(--color-primary); }
+.demo-s9-14 { font-size: 12px; color: var(--text-secondary); margin-top: 4px; }
+.demo-s9-15 { background: var(--color-success-bg); padding: 16px; border-radius: 8px; text-align: center; }
+.demo-s9-16 { font-weight: 600; color: var(--color-success); }
+.demo-s9-17 { font-size: 12px; color: var(--text-secondary); margin-top: 4px; }
+.demo-s9-18 { background: var(--color-warning-bg); padding: 16px; border-radius: 8px; text-align: center; }
+.demo-s9-19 { font-weight: 600; color: var(--color-warning); }
+.demo-s9-20 { font-size: 12px; color: var(--text-secondary); margin-top: 4px; }
+.demo-s9-quiz { padding: 8px; }
+.demo-s9-q { margin-top: 16px; margin-bottom: 8px; }
+.demo-s9-q:first-child { margin-top: 0; }
+.demo-s9-options { margin: 0 0 8px; padding-left: 20px; color: var(--text-secondary); }
+.demo-s9-options li { margin-bottom: 4px; }
+.demo-s9-answer { background: var(--color-primary-light); padding: 8px 12px; border-radius: 4px; font-size: 14px; color: var(--text-secondary); margin-bottom: 8px; }
 </style>
 {% endblock %}

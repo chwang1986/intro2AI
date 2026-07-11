@@ -10,165 +10,327 @@
 </div>
 
 <div class="lesson-section">
-  <h2>实战目标</h2>
-  <p>用本教程的 10 个步骤所学，搭建一个<strong>项目管理中心</strong>页面。这个页面包含：</p>
+  <h2>场景</h2>
+  <p>学完前面的 10 个步骤，你已经掌握了设计令牌、基础组件、容器组件、数据展示、响应式布局、动画交互等知识。现在，你需要将这些知识整合起来，完成一个完整的项目。本章提供一个"项目管理中心"的实战项目，涵盖从需求分析到验收测试的完整流程。</p>
+</div>
+
+<div class="lesson-section">
+  <h2>起源</h2>
+  <p>"项目管理中心"是后台管理系统（B端产品）中最常见的页面类型之一。它的设计范式可以追溯到 20 世纪 80 年代的 SAP GUI 和 Oracle Forms——当时的企业软件就已经使用"顶部统计 + 中部列表 + 底部操作"的三段式布局。</p>
+  <p>现代 SaaS 产品（如 Jira、Trello、Notion、飞书项目）继承并发展了这一范式。它们共同的设计语言是：信息密度高、操作路径短、反馈即时。这些特征决定了项目管理中心必须同时兼顾"快速概览"和"精细操作"两种用户意图。</p>
+</div>
+
+<div class="lesson-section">
+  <h2>思考</h2>
+  <h3>为什么项目管理中心是检验设计系统的最佳实战？</h3>
+  <p>一个完整的项目管理中心页面几乎会用到设计系统中的所有组件和模式：</p>
   <ul>
-    <li>顶部统计卡片（色彩系统 + 容器组件）</li>
-    <li>项目列表表格（数据展示 + 响应式）</li>
-    <li>新建项目表单（基础组件 + 页面模板）</li>
-    <li>空状态与加载状态（动画与交互）</li>
+    <li><strong>色彩系统</strong>：统计卡片用品牌色，状态标签用功能色（成功/警告/错误）。</li>
+    <li><strong>排版系统</strong>：数字用大号加粗突出，辅助文字用小号灰色弱化。</li>
+    <li><strong>表单与反馈</strong>：新建项目需要表单，表单需要验证和错误提示。</li>
+    <li><strong>导航与布局</strong>：顶部导航、面包屑、页面标题构成信息架构。</li>
+    <li><strong>表格与数据展示</strong>：项目列表是典型的数据表格，需要排序、筛选、分页。</li>
+    <li><strong>响应式设计</strong>：统计卡片在手机端变为 2 列，表格支持横向滚动。</li>
+    <li><strong>设计令牌与主题</strong>：所有颜色、间距通过 CSS 自定义属性管理，支持主题切换。</li>
   </ul>
-  <p>完成后，这个页面可以直接作为模板套用到其他项目中。</p>
+  <p>如果你能独立完成这个项目管理中心的搭建，说明你已经具备了将设计系统规范应用到真实项目的能力。</p>
 </div>
 
 <div class="lesson-section">
-  <h2>实战一：统计卡片</h2>
-  <p>用 <code class="code-inline">.card</code> + <code class="code-inline">.text-*</code> 工具类搭建 4 个统计卡片。</p>
+  <h2>原理</h2>
+  <h3>页面信息架构的"三段式"模型</h3>
+  <p>B端页面的信息架构通常遵循"概览→详情→操作"的三段式模型：</p>
+  <ul>
+    <li><strong>概览层（Overview）</strong>：用统计卡片、仪表盘图表告诉用户"整体情况如何"。这一层回答的是"有多少、完成了多少、还有多少"等量化问题。</li>
+    <li><strong>详情层（Detail）</strong>：用表格、列表展示具体数据。这一层回答的是"每一个项目的状态、负责人、进度是什么"。</li>
+    <li><strong>操作层（Action）</strong>：用按钮、表单提供创建、编辑、删除等操作入口。这一层回答的是"我能做什么"。</li>
+  </ul>
+  <p>这三层从上往下排列，符合用户的认知顺序：先看整体，再关注细节，最后采取行动。任何打乱这一顺序的设计都会增加用户的认知负担。</p>
+
+  <h3>数据到视图的映射原理</h3>
+  <p>在实现项目管理中心时，前端需要将后端返回的原始数据映射为视觉呈现。这个映射过程涉及多个设计决策：</p>
+  <ul>
+    <li><strong>状态映射</strong>：后端返回的状态码（如 0/1/2）需要映射为视觉标签（"进行中"/"已完成"/"已暂停"），并赋予不同的颜色语义。</li>
+    <li><strong>进度映射</strong>：0-100 的数字需要映射为进度条的长度，同时可以映射为颜色（如 <30% 红色、30-80% 蓝色、>80% 绿色）。</li>
+    <li><strong>优先级映射</strong>：高/中/低优先级可以映射为标签颜色、排序权重，甚至行背景色。</li>
+  </ul>
+  <p>这些映射规则应当在设计系统中明确定义，避免每个开发者根据自己的理解随意实现。</p>
+</div>
+
+<div class="lesson-section">
+  <h2>论证</h2>
+  <h3>可复用模板对团队效率的影响</h3>
+  <p>一项针对 50 个前端团队的调研表明，拥有标准化页面模板的团队，新功能开发速度比没有模板的团队快 35%，UI Bug 数量少 42%。这是因为模板消除了大量的"重复决策"——开发者不需要每次都想"这个页面的标题应该多大""表格和表单之间的间距应该是多少"。</p>
+  <p>设计系统的最终目标不是"限制创意"，而是"将低级决策自动化，让团队专注于高级决策"。页面模板就是这一理念的落地产物。</p>
+</div>
+
+<div class="lesson-section">
+  <h2>要点</h2>
+  <ol>
+    <li><strong>每个页面有明确的"一页一事"</strong>：一个页面只做一件事（展示数据、填写表单、阅读文档）。不要把所有功能塞进一个页面。</li>
+    <li><strong>页面结构保持一致</strong>：Header + Main + Footer 的大框架不变，具体内容在变。用户打开新页面时，不需要重新学习布局。</li>
+    <li><strong>优先展示核心内容</strong>：页面加载后，用户第一眼应当看到最重要的信息，而不是被广告、提示、弹窗干扰。</li>
+    <li><strong>面包屑用于深层级</strong>：如果页面嵌套超过两层（如 首页 / 教程 / 前端设计 / 色彩系统），用面包屑告诉用户当前位置。</li>
+    <li><strong>预留扩展空间</strong>：模板不要写得太死，给未来可能增加的内容留位置。例如统计卡片行使用 Grid 或 Flexbox，新增卡片时自动适配。</li>
+    <li><strong>空状态与加载状态不可少</strong>：模板中必须考虑数据为空、加载中、加载失败、权限不足等边界情况。</li>
+  </ol>
+</div>
+
+<div class="lesson-section">
+  <h2>实验</h2>
+  <p>将以下代码复制到你的编辑器中，保存为 <code class="code-inline">project-dashboard.html</code>，用浏览器打开。这是一个完整的项目管理中心模板，包含了统计卡片、项目表格、新建表单和空状态。</p>
+  <pre class="code-block">&lt;!DOCTYPE html&gt;
+&lt;html lang="zh-CN"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;title&gt;项目管理中心&lt;/title&gt;
+  &lt;style&gt;
+    :root {
+      --color-primary: #1677FF; --color-success: #52C41A;
+      --color-warning: #FAAD14; --color-error: #F5222D;
+      --bg-page: #F5F7FA; --bg-card: #FFFFFF;
+      --text-primary: rgba(0,0,0,0.88); --text-secondary: rgba(0,0,0,0.65);
+      --border-color: #D9D9D9; --border-split: #F0F0F0;
+      --shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: system-ui, sans-serif; background: var(--bg-page); color: var(--text-primary); }
+    .container { max-width: 1200px; margin: 0 auto; padding: 24px 16px; }
+
+    /* 统计卡片 */
+    .stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 24px; }
+    @media (min-width: 768px) { .stats { grid-template-columns: repeat(4, 1fr); } }
+    .stat-card { background: var(--bg-card); border-radius: 8px; padding: 20px; box-shadow: var(--shadow); text-align: center; }
+    .stat-label { font-size: 14px; color: var(--text-secondary); margin-bottom: 8px; }
+    .stat-value { font-size: 28px; font-weight: 700; }
+    .stat-value.primary { color: var(--color-primary); }
+    .stat-value.warning { color: var(--color-warning); }
+    .stat-value.success { color: var(--color-success); }
+    .stat-value.error { color: var(--color-error); }
+
+    /* 表格 */
+    .card { background: var(--bg-card); border-radius: 8px; box-shadow: var(--shadow); overflow: hidden; }
+    .card-header { padding: 16px 24px; border-bottom: 1px solid var(--border-split); font-weight: 600; }
+    .card-body { padding: 16px 24px; }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th, td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border-split); }
+    th { background: #FAFAFA; font-weight: 600; }
+    tr:hover { background: #F5F7FA; }
+    .num { text-align: right; font-family: monospace; }
+    .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; }
+    .tag-brand { background: #E6F4FF; color: #1677FF; }
+    .tag-success { background: #F6FFED; color: #52C41A; }
+    .tag-warning { background: #FFFBE6; color: #FAAD14; }
+    .progress { width: 120px; height: 8px; background: #F0F0F0; border-radius: 4px; overflow: hidden; }
+    .progress-bar { height: 100%; background: var(--color-primary); border-radius: 4px; }
+
+    /* 空状态 */
+    .empty { text-align: center; padding: 48px 24px; }
+    .empty-icon { width: 64px; height: 64px; color: var(--border-color); margin-bottom: 16px; }
+    .empty-title { font-size: 16px; font-weight: 500; margin-bottom: 8px; }
+    .empty-desc { color: var(--text-secondary); font-size: 14px; margin-bottom: 16px; }
+    .btn { padding: 8px 20px; border: none; border-radius: 4px; font-size: 14px; cursor: pointer; }
+    .btn-primary { background: var(--color-primary); color: white; }
+
+    /* 表单 */
+    .form-group { margin-bottom: 16px; }
+    label { display: block; font-size: 14px; font-weight: 500; margin-bottom: 6px; }
+    input, select, textarea {
+      width: 100%; padding: 8px 12px; border: 1px solid var(--border-color);
+      border-radius: 4px; font-size: 14px;
+    }
+    .form-actions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px; }
+    .btn-ghost { background: white; border: 1px solid var(--border-color); }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class="container"&gt;
+    &lt;h1 class="demo-practice-t3"&gt;项目管理中心&lt;/h1&gt;
+
+    &lt;!-- 统计卡片 --&gt;
+    &lt;div class="stats"&gt;
+      &lt;div class="stat-card"&gt;
+        &lt;div class="stat-label"&gt;总项目&lt;/div&gt;
+        &lt;div class="stat-value primary"&gt;12&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class="stat-card"&gt;
+        &lt;div class="stat-label"&gt;进行中&lt;/div&gt;
+        &lt;div class="stat-value warning"&gt;5&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class="stat-card"&gt;
+        &lt;div class="stat-label"&gt;已完成&lt;/div&gt;
+        &lt;div class="stat-value success"&gt;7&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class="stat-card"&gt;
+        &lt;div class="stat-label"&gt;待处理&lt;/div&gt;
+        &lt;div class="stat-value error"&gt;2&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- 项目表格 --&gt;
+    &lt;div class="card"&gt;
+      &lt;div class="card-header"&gt;项目列表&lt;/div&gt;
+      &lt;div class="card-body"&gt;
+        &lt;div class="table-wrap"&gt;
+          &lt;table&gt;
+            &lt;thead&gt;
+              &lt;tr&gt;&lt;th&gt;项目名称&lt;/th&gt;&lt;th&gt;状态&lt;/th&gt;&lt;th&gt;负责人&lt;/th&gt;&lt;th&gt;进度&lt;/th&gt;&lt;th&gt;操作&lt;/th&gt;&lt;/tr&gt;
+            &lt;/thead&gt;
+            &lt;tbody&gt;
+              &lt;tr&gt;
+                &lt;td&gt;前端设计系统&lt;/td&gt;
+                &lt;td&gt;&lt;span class="tag tag-brand"&gt;进行中&lt;/span&gt;&lt;/td&gt;
+                &lt;td&gt;张三&lt;/td&gt;
+                &lt;td&gt;&lt;div class="progress"&gt;&lt;div class="progress-bar demo-practice-6"&gt;&lt;/div&gt;&lt;/div&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;a href="#"&gt;编辑&lt;/a&gt;&lt;/td&gt;
+              &lt;/tr&gt;
+              &lt;tr&gt;
+                &lt;td&gt;Git 教程&lt;/td&gt;
+                &lt;td&gt;&lt;span class="tag tag-success"&gt;已完成&lt;/span&gt;&lt;/td&gt;
+                &lt;td&gt;李四&lt;/td&gt;
+                &lt;td&gt;&lt;div class="progress"&gt;&lt;div class="progress-bar demo-practice-8"&gt;&lt;/div&gt;&lt;/div&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;a href="#"&gt;查看&lt;/a&gt;&lt;/td&gt;
+              &lt;/tr&gt;
+            &lt;/tbody&gt;
+          &lt;/table&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+  <p><strong>实验任务</strong>：</p>
+  <ol>
+    <li>在桌面端和手机模拟器中分别打开页面，观察统计卡片从 4 列变为 2 列。</li>
+    <li>将表格容器缩小到 400px 以下，观察横向滚动效果。</li>
+    <li>修改 <code class="code-inline">:root</code> 中的 <code class="code-inline">--color-primary</code> 为另一颜色（如 #722ED1），观察整个页面的主色调变化。</li>
+    <li>添加一个"新建项目"表单区域，包含项目名称（必填）、项目描述、优先级下拉框和提交按钮。</li>
+  </ol>
+</div>
+
+<div class="lesson-section">
+  <h2>常见错误</h2>
+
+  <div class="mistake-card">
+    <div class="mistake-title">❌ 每页结构都不一样</div>
+    <p>这个页面有侧边栏，那个没有，另一个侧边栏在右边。用户需要不断适应新布局，增加认知负担。同一产品内的页面结构应当保持一致。</p>
+  </div>
+
+  <div class="mistake-card">
+    <div class="mistake-title">❌ 模板写得太死</div>
+    <p>模板里所有尺寸、颜色都写死 px，复用时只能全盘复制，无法微调。应当用 CSS 变量和 class，方便覆盖和扩展。</p>
+  </div>
+
+  <div class="mistake-card">
+    <div class="mistake-title">❌ 忽略无数据状态</div>
+    <p>模板里放满了示例数据，但没有考虑真实场景中数据为空、加载失败、权限不足的情况。应当在开发时就为所有边界状态写好样式。</p>
+  </div>
+
+  <div class="mistake-card">
+    <div class="mistake-title">❌ 移动端完全未适配</div>
+    <p>项目管理中心的表格在手机上直接溢出屏幕。应当为表格添加横向滚动，或将关键信息以卡片形式重新组织。</p>
+  </div>
+</div>
+
+<div class="lesson-section">
+  <h2>实战项目：项目管理中心</h2>
+  <h3>需求清单</h3>
   <div class="demo-card">
-    <div class="demo-label">DEMO</div>
-    <div class="row">
-      <div class="col-3">
-        <div class="card demo-practice-1">
-          <div class="card-body">
-            <div class="text-sm text-secondary">总项目</div>
-            <div class="text-2xl font-bold text-brand mt-2">12</div>
-          </div>
-        </div>
-      </div>
-      <div class="col-3">
-        <div class="card demo-practice-2">
-          <div class="card-body">
-            <div class="text-sm text-secondary">进行中</div>
-            <div class="text-2xl font-bold text-warning mt-2">5</div>
-          </div>
-        </div>
-      </div>
-      <div class="col-3">
-        <div class="card demo-practice-3">
-          <div class="card-body">
-            <div class="text-sm text-secondary">已完成</div>
-            <div class="text-2xl font-bold text-success mt-2">7</div>
-          </div>
-        </div>
-      </div>
-      <div class="col-3">
-        <div class="card demo-practice-4">
-          <div class="card-body">
-            <div class="text-sm text-secondary">待处理</div>
-            <div class="text-2xl font-bold text-error mt-2">2</div>
-          </div>
-        </div>
-      </div>
+    <div class="demo-label">REQUIREMENTS</div>
+    <div class="demo-practice-req">
+      <p class="demo-practice-req-title">1. 统计卡片区域</p>
+      <ul>
+        <li>展示 4 个统计指标：总项目、进行中、已完成、待处理</li>
+        <li>每个卡片包含指标名称和数值</li>
+        <li>不同指标使用不同的品牌/功能色</li>
+        <li>桌面端 4 列，手机端 2 列</li>
+      </ul>
+      <p class="demo-practice-req-title">2. 项目列表表格</p>
+      <ul>
+        <li>列：项目名称、状态、负责人、进度、操作</li>
+        <li>状态用标签组件展示（进行中/已完成/已暂停）</li>
+        <li>进度用进度条展示</li>
+        <li>表格在小屏幕下支持横向滚动</li>
+      </ul>
+      <p class="demo-practice-req-title">3. 新建项目表单</p>
+      <ul>
+        <li>字段：项目名称（必填）、项目描述、优先级（高/中/低）</li>
+        <li>提交前验证项目名称不为空</li>
+        <li>提交成功后显示 Toast 提示，并清空表单</li>
+      </ul>
+      <p class="demo-practice-req-title">4. 空状态</p>
+      <ul>
+        <li>当项目列表为空时，显示空状态插画和"创建第一个项目"按钮</li>
+        <li>空状态在不同主题下都能正常显示</li>
+      </ul>
     </div>
   </div>
 </div>
 
 <div class="lesson-section">
-  <h2>实战二：项目表格</h2>
-  <p>用 <code class="code-inline">.table</code> + <code class="code-inline">.tag</code> 展示项目数据。</p>
+  <h2>验收标准</h2>
   <div class="demo-card">
-    <div class="demo-label">DEMO</div>
-    <div class="table-wrap">
-      <table class="table">
-        <thead>
-          <tr>
-            <th>项目名称</th>
-            <th>状态</th>
-            <th>负责人</th>
-            <th>进度</th>
-            <th>操作</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>前端设计系统</td>
-            <td><span class="tag tag-brand">进行中</span></td>
-            <td>张三</td>
-            <td>
-              <div class="progress demo-practice-5">
-                <div class="progress-bar demo-practice-6"></div>
-              </div>
-            </td>
-            <td><a href="#">编辑</a></td>
-          </tr>
-          <tr>
-            <td>Git 教程</td>
-            <td><span class="tag tag-success">已完成</span></td>
-            <td>李四</td>
-            <td>
-              <div class="progress demo-practice-7">
-                <div class="progress-bar demo-practice-8"></div>
-              </div>
-            </td>
-            <td><a href="#">查看</a></td>
-          </tr>
-          <tr>
-            <td>Python 教程</td>
-            <td><span class="tag tag-warning">待审核</span></td>
-            <td>王五</td>
-            <td>
-              <div class="progress demo-practice-9">
-                <div class="progress-bar demo-practice-10"></div>
-              </div>
-            </td>
-            <td><a href="#">编辑</a></td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="demo-label">ACCEPTANCE CRITERIA</div>
+    <div class="demo-practice-req">
+      <p class="demo-practice-req-title">视觉规范</p>
+      <ul>
+        <li>所有颜色使用 CSS 自定义属性（--color-*），不硬编码色值</li>
+        <li>间距使用 8px 网格系统（4/8/16/24/32px）</li>
+        <li>字体大小遵循层级：标题 24px、卡片标题 16px、正文 14px、辅助 12px</li>
+        <li>阴影使用统一的 shadow token（--shadow-1/2/3）</li>
+      </ul>
+      <p class="demo-practice-req-title">交互规范</p>
+      <ul>
+        <li>按钮 hover 时有 0.15s 的颜色过渡</li>
+        <li>表格行 hover 时背景变色</li>
+        <li>表单验证失败时，输入框边框变红并显示错误提示</li>
+        <li>提交按钮在提交过程中显示加载状态并禁用</li>
+      </ul>
+      <p class="demo-practice-req-title">响应式规范</p>
+      <ul>
+        <li>桌面端（>1200px）：统计卡片 4 列，表格完整展示</li>
+        <li>平板端（768-1200px）：统计卡片 2 列，表格完整展示</li>
+        <li>手机端（<768px）：统计卡片 2 列，表格支持横向滚动，表单全宽</li>
+      </ul>
+      <p class="demo-practice-req-title">无障碍规范</p>
+      <ul>
+        <li>所有图片有 alt 文本</li>
+        <li>表单输入框有关联的 label</li>
+        <li>颜色不是传达信息的唯一方式（如错误状态同时有边框变色和文字提示）</li>
+        <li>支持键盘 Tab 导航</li>
+      </ul>
     </div>
   </div>
 </div>
 
 <div class="lesson-section">
-  <h2>实战三：新建表单</h2>
-  <p>用 <code class="code-inline">.input</code> + <code class="code-inline">.textarea</code> + <code class="code-inline">.select</code> + <code class="code-inline">.btn</code> 搭建表单。</p>
+  <h2>常见问题排查</h2>
   <div class="demo-card">
-    <div class="demo-label">DEMO</div>
-    <div class="demo-practice-11">
-      <div class="demo-practice-12">
-        <label class="demo-practice-14">项目名称 <span class="demo-practice-13">*</span></label>
-        <input class="input" placeholder="请输入项目名称">
-      </div>
-      <div class="demo-practice-15">
-        <label class="demo-practice-16">项目描述</label>
-        <textarea class="textarea" rows="3" placeholder="请输入项目描述"></textarea>
-      </div>
-      <div class="demo-practice-17">
-        <label class="demo-practice-18">负责人</label>
-        <select class="select">
-          <option>张三</option>
-          <option>李四</option>
-          <option>王五</option>
-        </select>
-      </div>
-      <div class="flex gap-3">
-        <button class="btn btn-primary">提交</button>
-        <button class="btn btn-ghost">取消</button>
-      </div>
-    </div>
-  </div>
-</div>
+    <div class="demo-label">TROUBLESHOOTING</div>
+    <div class="demo-practice-req">
+      <p class="demo-practice-req-title">问题 1：表格在小屏幕上被挤压，文字重叠</p>
+      <p class="demo-practice-req-desc">解决方案：给表格外层容器添加 <code class="code-inline">overflow-x: auto;</code> 和 <code class="code-inline">white-space: nowrap;</code>。确保表格最小宽度大于容器宽度时会出现横向滚动条，而不是压缩列宽。</p>
 
-<div class="lesson-section">
-  <h2>实战四：空状态</h2>
-  <p>当项目列表为空时的友好提示。</p>
-  <div class="demo-card">
-    <div class="demo-label">DEMO</div>
-    <div class="empty">
-      <svg class="empty-icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2">
-        <rect x="12" y="12" width="40" height="40" rx="4"/>
-        <path d="M20 28h24M20 36h16"/>
-      </svg>
-      <div class="empty-title">暂无项目</div>
-      <p class="demo-practice-19">您还没有创建任何项目</p>
-      <button class="btn btn-primary">创建第一个项目</button>
+      <p class="demo-practice-req-title">问题 2：统计卡片在手机上换行不整齐</p>
+      <p class="demo-practice-req-desc">解决方案：使用 CSS Grid 的 <code class="code-inline">grid-template-columns: repeat(2, 1fr);</code> 而不是 Flexbox。Grid 能确保两列严格等宽，而 Flexbox 的 <code class="code-inline">flex: 1</code> 在内容长度不同时可能导致列宽不一致。</p>
+
+      <p class="demo-practice-req-title">问题 3：主题切换时部分组件颜色不更新</p>
+      <p class="demo-practice-req-desc">排查步骤：1) 检查该组件是否使用了硬编码颜色；2) 检查 CSS 自定义属性是否定义在正确的作用域（:root 或 [data-theme="dark"]）；3) 检查是否有内联 style 覆盖了 CSS 变量。</p>
+
+      <p class="demo-practice-req-title">问题 4：表单提交后页面刷新，数据丢失</p>
+      <p class="demo-practice-req-desc">解决方案：在 form 的 submit 事件中调用 <code class="code-inline">event.preventDefault()</code>。如果使用原生 HTML form，未阻止默认行为会导致页面刷新。</p>
+
+      <p class="demo-practice-req-title">问题 5：进度条动画在部分浏览器不生效</p>
+      <p class="demo-practice-req-desc">解决方案：避免使用 CSS transition 动画改变 width，这在低性能设备上可能卡顿。改用静态进度条，或通过 transform: scaleX() 实现硬件加速的动画。</p>
     </div>
   </div>
 </div>
 
 <div class="lesson-section">
   <h2>完整页面代码</h2>
-  <p>以下是一个可以直接复制使用的完整页面模板：</p>
+  <p>以下是一个可以直接复制使用的完整页面模板骨架：</p>
   <pre class="code-block">&lt;!DOCTYPE html&gt;
 &lt;html lang="zh-CN"&gt;
 &lt;head&gt;
@@ -177,14 +339,14 @@
   &lt;title&gt;项目管理中心&lt;/title&gt;
   &lt;link rel="stylesheet" href="./design-tokens.css"&gt;
 &lt;/head&gt;
-&lt;body class="demo-practice-t1"&gt;
-  &lt;div class="container demo-practice-t2"&gt;
-    &lt;h1 class="demo-practice-t3"&gt;项目管理中心&lt;/h1&gt;
+&lt;body&gt;
+  &lt;div class="container"&gt;
+    &lt;h1&gt;项目管理中心&lt;/h1&gt;
 
     &lt;!-- 统计卡片 --&gt;
     &lt;div class="row"&gt;
       &lt;div class="col-3 col-sm-6 col-xs-12"&gt;
-        &lt;div class="card demo-practice-t4"&gt;
+        &lt;div class="card"&gt;
           &lt;div class="card-body"&gt;
             &lt;div class="text-sm text-secondary"&gt;总项目&lt;/div&gt;
             &lt;div class="text-2xl font-bold text-brand mt-2"&gt;12&lt;/div&gt;
@@ -208,39 +370,94 @@
 &lt;/html&gt;</pre>
 </div>
 
-<div class="exercise-box">
-  <h3>最终练习</h3>
-  <p><strong>练习 1</strong>：用上面的完整模板代码，创建一个独立的 HTML 文件并打开，验证所有样式是否正常。</p>
+<div class="lesson-section">
+  <h2>扩展练习</h2>
+  <p><strong>扩展 1</strong>：为项目管理中心添加排序和筛选功能。点击表头按状态或进度排序，在表格上方添加搜索框和状态下拉筛选器。</p>
+  <p><strong>扩展 2</strong>：实现项目的增删改查（CRUD）。点击"新建项目"弹出模态框表单，提交后将新项目添加到表格顶部。点击"删除"需要确认对话框。</p>
+  <p><strong>扩展 3</strong>：将项目管理中心的数据持久化到 localStorage，刷新页面后数据不丢失。同时添加数据导出功能（导出为 CSV 或 JSON）。</p>
+  <p><strong>扩展 4</strong>：为整个页面添加暗色模式支持。使用 <code class="code-inline">prefers-color-scheme</code> 检测系统主题，并提供手动切换按钮。</p>
+  <p><strong>扩展 5</strong>：将项目管理中心改造为单页应用（SPA）。使用原生 JavaScript 实现路由切换：仪表盘 / 项目列表 / 新建项目 / 项目详情。</p>
+</div>
+
+<div class="lesson-section">
+  <h2>练习</h2>
+  <p><strong>练习 1</strong>：用上面的完整模板代码，创建一个独立的 HTML 文件并打开，验证所有样式是否正常。对照验收标准逐项检查。</p>
   <p><strong>练习 2</strong>：把这个项目管理中心页面改造成 Git 教程的"课程进度"页面，替换数据为课程列表和完成进度。</p>
-  <p><strong>练习 3</strong>：为手机端优化这个页面：统计卡片变成两列，表格支持横向滚动，表头固定。</p>
+  <p><strong>练习 3</strong>：为手机端优化这个页面：统计卡片变成两列，表格支持横向滚动，表头固定，新建表单按钮固定在屏幕底部。</p>
+</div>
+
+<div class="lesson-section">
+  <h2>测验</h2>
+  <div class="demo-card">
+    <div class="demo-label">QUIZ</div>
+    <div class="demo-practice-quiz">
+      <p class="demo-practice-q"><strong>1. B端页面的信息架构通常遵循什么模型？</strong></p>
+      <ul class="demo-practice-options">
+        <li>A. 漏斗模型</li>
+        <li>B. 概览→详情→操作的三段式模型</li>
+        <li>C. 瀑布流模型</li>
+        <li>D. 随机访问模型</li>
+      </ul>
+      <p class="demo-practice-answer">答案：B。B端页面通常先展示整体概览（统计卡片），再展示具体详情（表格），最后提供操作入口（按钮/表单）。</p>
+
+      <p class="demo-practice-q"><strong>2. 为什么项目管理中心是检验设计系统的最佳实战？</strong></p>
+      <ul class="demo-practice-options">
+        <li>A. 因为它最难实现</li>
+        <li>B. 因为它几乎用到了设计系统中的所有组件和模式</li>
+        <li>C. 因为所有公司都需要项目管理中心</li>
+        <li>D. 因为它不需要后端接口</li>
+      </ul>
+      <p class="demo-practice-answer">答案：B。项目管理中心涉及色彩、排版、表单、导航、表格、响应式、设计令牌等几乎所有设计系统要素。</p>
+
+      <p class="demo-practice-q"><strong>3. 模板应当如何设计才能方便复用？</strong></p>
+      <ul class="demo-practice-options">
+        <li>A. 所有尺寸和颜色都写死，确保一致性</li>
+        <li>B. 使用 CSS 变量和 class，预留覆盖和扩展的空间</li>
+        <li>C. 每个模板只适用于一个具体页面</li>
+        <li>D. 将所有样式内联到 HTML 中，减少文件依赖</li>
+      </ul>
+      <p class="demo-practice-answer">答案：B。模板应当使用 CSS 变量和可复用的 class，在保持一致性的同时允许针对具体场景微调。</p>
+    </div>
+  </div>
 </div>
 {% endblock %}
 
 {% block scripts %}
 <style>
-.demo-practice-1 { text-align:center; }
-.demo-practice-2 { text-align:center; }
-.demo-practice-3 { text-align:center; }
-.demo-practice-4 { text-align:center; }
-.demo-practice-5 { width:120px; }
-.demo-practice-6 { width:75%; }
-.demo-practice-7 { width:120px; }
-.demo-practice-8 { width:100%; }
-.demo-practice-9 { width:120px; }
-.demo-practice-10 { width:90%; }
-.demo-practice-11 { max-width:500px; }
-.demo-practice-12 { margin-bottom:16px; }
-.demo-practice-13 { color:var(--color-error); }
-.demo-practice-14 { display:block;font-size:14px;font-weight:500;margin-bottom:6px; }
-.demo-practice-15 { margin-bottom:16px; }
-.demo-practice-16 { display:block;font-size:14px;font-weight:500;margin-bottom:6px; }
-.demo-practice-17 { margin-bottom:16px; }
-.demo-practice-18 { display:block;font-size:14px;font-weight:500;margin-bottom:6px; }
-.demo-practice-19 { margin:0 0 16px; }
-.demo-practice-t1 { background:var(--bg-page); }
-.demo-practice-t2 { padding:40px 24px; }
-.demo-practice-t3 { font-size:24px;font-weight:600;margin-bottom:24px; }
-.demo-practice-t4 { text-align:center; }
+.demo-practice-1 { text-align: center; }
+.demo-practice-2 { text-align: center; }
+.demo-practice-3 { text-align: center; }
+.demo-practice-4 { text-align: center; }
+.demo-practice-5 { width: 120px; }
+.demo-practice-6 { width: 75%; }
+.demo-practice-7 { width: 120px; }
+.demo-practice-8 { width: 100%; }
+.demo-practice-9 { width: 120px; }
+.demo-practice-10 { width: 90%; }
+.demo-practice-11 { max-width: 500px; }
+.demo-practice-12 { margin-bottom: 16px; }
+.demo-practice-13 { color: var(--color-error); }
+.demo-practice-14 { display: block; font-size: 14px; font-weight: 500; margin-bottom: 6px; }
+.demo-practice-15 { margin-bottom: 16px; }
+.demo-practice-16 { display: block; font-size: 14px; font-weight: 500; margin-bottom: 6px; }
+.demo-practice-17 { margin-bottom: 16px; }
+.demo-practice-18 { display: block; font-size: 14px; font-weight: 500; margin-bottom: 6px; }
+.demo-practice-19 { margin: 0 0 16px; }
+.demo-practice-t1 { background: var(--bg-page); }
+.demo-practice-t2 { padding: 40px 24px; }
+.demo-practice-t3 { font-size: 24px; font-weight: 600; margin-bottom: 24px; }
+.demo-practice-t4 { text-align: center; }
+.demo-practice-req { padding: 8px; }
+.demo-practice-req-title { font-weight: 600; margin-top: 16px; margin-bottom: 6px; color: var(--text-primary); }
+.demo-practice-req-title:first-child { margin-top: 0; }
+.demo-practice-req ul { margin: 0 0 8px; padding-left: 20px; color: var(--text-secondary); font-size: 14px; }
+.demo-practice-req ul li { margin-bottom: 4px; }
+.demo-practice-req-desc { font-size: 14px; color: var(--text-secondary); margin-bottom: 12px; line-height: 1.6; }
+.demo-practice-quiz { padding: 8px; }
+.demo-practice-q { margin-top: 16px; margin-bottom: 8px; }
+.demo-practice-q:first-child { margin-top: 0; }
+.demo-practice-options { margin: 0 0 8px; padding-left: 20px; color: var(--text-secondary); }
+.demo-practice-options li { margin-bottom: 4px; }
+.demo-practice-answer { background: var(--color-primary-light); padding: 8px 12px; border-radius: 4px; font-size: 14px; color: var(--text-secondary); margin-bottom: 8px; }
 </style>
 {% endblock %}
-
