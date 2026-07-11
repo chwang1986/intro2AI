@@ -41,5 +41,9 @@ def step(step_id):
     return "Not Found", 404
 
 
+@app.route('/appendix')
+def appendix():
+    return render_template('appendix.html')
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5005, debug=True)

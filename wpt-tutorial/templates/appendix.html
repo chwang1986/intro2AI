@@ -1,0 +1,332 @@
+{% extends "base.html" %}
+
+{% block title %}附录 — 核心概念详解 — 无线电能输电教程{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+  <h1>附录</h1>
+  <p>核心物理概念与数学工具的详细参考</p>
+</div>
+
+<!-- 附录目录 -->
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">目录</span>附录内容导航</h2>
+  <div class="lesson-explain">
+    <p>本附录收录了无线输电教程中涉及的核心理论概念。每个条目都比教程正文中的介绍更加深入和完整，适合在理解主线内容后作为参考资料查阅，或者在遇到疑问时回头细读。</p>
+    <div class="step-list mt-4">
+      <a href="#faraday" class="step-item step-link">
+        <div class="step-num">A1</div>
+        <div class="step-info">
+          <div class="step-title">法拉第电磁感应定律</div>
+          <div class="step-desc">磁通量变化产生感应电动势的本质、数学表达与物理直觉</div>
+        </div>
+      </a>
+      <a href="#lenz" class="step-item step-link">
+        <div class="step-num">A2</div>
+        <div class="step-info">
+          <div class="step-title">楞次定律</div>
+          <div class="step-desc">感应电流方向的判断法则，能量守恒的体现</div>
+        </div>
+      </a>
+      <a href="#inductance" class="step-item step-link">
+        <div class="step-num">A3</div>
+        <div class="step-info">
+          <div class="step-title">自感与互感</div>
+          <div class="step-desc">线圈"电磁惯性"的定量描述，耦合系数的定义与意义</div>
+        </div>
+      </a>
+      <a href="#resonance" class="step-item step-link">
+        <div class="step-num">A4</div>
+        <div class="step-info">
+          <div class="step-title">LC 谐振</div>
+          <div class="step-desc">电感与电容的能量交换，谐振频率的推导</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- A1: 法拉第电磁感应定律 -->
+<section class="lesson-block" id="faraday">
+  <h2 class="lesson-title"><span class="lesson-num">A1</span>法拉第电磁感应定律</h2>
+  <div class="lesson-explain">
+
+    <h3>定律的完整表述</h3>
+    <p>法拉第电磁感应定律（Faraday's Law of Electromagnetic Induction）是电磁学的基本定律之一，它揭示了<strong>变化的磁场</strong>与<strong>感应电场</strong>之间的定量关系。</p>
+
+    <div class="highlight-box">
+      <p><strong>定律表述</strong>：闭合回路中感应电动势的大小，等于穿过该回路的磁通量随时间变化率的负值。</p>
+    </div>
+
+    <h3>数学表达式</h3>
+    <p>对于单匝线圈，感应电动势 $\mathcal{E}$ 为：</p>
+
+    <div class="formula-box">
+      $$\mathcal{E} = -\frac{d\Phi_B}{dt}$$
+    </div>
+
+    <p>对于 $N$ 匝线圈（假设每匝的磁通量相同），总电动势为：</p>
+
+    <div class="formula-box">
+      $$\mathcal{E} = -N\frac{d\Phi_B}{dt}$$
+    </div>
+
+    <p>其中，$\Phi_B$ 是穿过单匝线圈的<strong>磁通量</strong>（Magnetic Flux），定义为：</p>
+
+    <div class="formula-box">
+      $$\Phi_B = \int_S \vec{B} \cdot d\vec{A}$$
+    </div>
+
+    <p>也就是说，磁通量是磁场 $\vec{B}$ 在某一面积 $S$ 上的面积分。如果磁场均匀且垂直于面积，则简化为 $\Phi_B = B \cdot A$。</p>
+
+    <h3>公式中每个符号的含义</h3>
+    <table class="data-table">
+      <thead>
+        <tr><th>符号</th><th>名称</th><th>单位</th><th>含义</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>$\mathcal{E}$</td><td>感应电动势</td><td>伏特 (V)</td><td>驱动电荷运动的"电压力"</td></tr>
+        <tr><td>$\Phi_B$</td><td>磁通量</td><td>韦伯 (Wb)</td><td>穿过某一面积的磁场总量</td></tr>
+        <tr><td>$N$</td><td>线圈匝数</td><td>无单位</td><td>线圈的圈数</td></tr>
+        <tr><td>$t$</td><td>时间</td><td>秒 (s)</td><td>变化发生的时间</td></tr>
+        <tr><td>$B$</td><td>磁感应强度</td><td>特斯拉 (T)</td><td>磁场的强弱程度</td></tr>
+      </tbody>
+    </table>
+
+    <h3>负号的物理意义——楞次定律</h3>
+    <p>公式中的负号不是数学装饰，它承载着深刻的物理内涵。这个负号告诉我们：<strong>感应电动势的方向总是试图阻碍磁通量的变化</strong>。这就是楞次定律（Lenz's Law）。</p>
+
+    <p>具体来说：</p>
+    <ul>
+      <li>如果穿过线圈的磁通量<strong>增加</strong>（$d\Phi/dt > 0$），感应电流会产生一个<strong>反向磁场</strong>来"抵抗"这种增加。</li>
+      <li>如果磁通量<strong>减少</strong>（$d\Phi/dt < 0$），感应电流会产生一个<strong>同向磁场</strong>来"补充"这种减少。</li>
+    </ul>
+
+    <div class="concept-card">
+      <h4>为什么自然界要"阻碍变化"？</h4>
+      <p>从能量守恒的角度理解：如果感应电流的方向是"帮助"磁通量变化，那么稍微扰动一下系统，就会产生越来越大的电流，能量凭空产生——这违反了能量守恒定律。因此，感应电流必须"反抗"变化，系统才能稳定。</p>
+    </div>
+
+    <h3>产生感应电动势的三种方式</h3>
+    <p>根据 $\Phi_B = B \cdot A \cdot \cos\theta$（磁场、面积、夹角），磁通量变化有三种途径：</p>
+
+    <table class="data-table">
+      <thead>
+        <tr><th>方式</th><th>变化量</th><th>典型例子</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>磁场变化</strong></td>
+          <td>$B$ 随时间变化</td>
+          <td>变压器：交流电产生变化的磁场</td>
+        </tr>
+        <tr>
+          <td><strong>面积变化</strong></td>
+          <td>$A$ 随时间变化</td>
+          <td>发电机：线圈在磁场中旋转，有效面积变化</td>
+        </tr>
+        <tr>
+          <td><strong>取向变化</strong></td>
+          <td>$\theta$ 随时间变化</td>
+          <td>交流发电机：线圈与磁场夹角周期性变化</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>历史背景</h3>
+    <p>1831 年，迈克尔·法拉第（Michael Faraday, 1791-1867）在伦敦的英国皇家研究所完成了这一发现。值得注意的是，法拉第几乎没有接受过正规数学教育，他的研究完全依靠实验直觉和物理图像。</p>
+
+    <p>法拉第的发现催生了一个全新的物理学分支——电磁学。20 年后，詹姆斯·克拉克·麦克斯韦（James Clerk Maxwell）将法拉第的实验定律数学化，建立了完整的电磁场理论。法拉第定律是麦克斯韦方程组中的两个旋度方程之一。</p>
+
+    <h3>日常生活中的法拉第定律</h3>
+    <ul>
+      <li><strong>手机无线充电</strong>：充电板中的交流电产生变化的磁场，手机线圈中感应出电流——法拉第定律的直接应用。</li>
+      <li><strong>变压器</strong>：发电厂用变压器将电压升高到几十万伏以减少输电损耗，其核心原理就是法拉第定律。</li>
+      <li><strong>电磁炉</strong>：炉盘下的线圈产生高频变化的磁场，在金属锅底感应出涡流，使锅发热。</li>
+      <li><strong>信用卡磁条</strong>：刷卡时磁条相对于读卡器运动，读卡器线圈中感应出电压信号，解码出卡号信息。</li>
+      <li><strong>金属探测器</strong>：探测线圈发出交变磁场，遇到金属时感应出涡流，涡流产生的次级磁场被检测到。</li>
+    </ul>
+
+    <h3>与无线输电的关系</h3>
+    <p>无线输电的本质就是利用法拉第定律实现"隔空传电"：</p>
+    <ol>
+      <li>发射端线圈通入<strong>交流电</strong>，产生<strong>变化的磁场</strong>。</li>
+      <li>这个变化的磁场穿过空气（或真空），到达接收端线圈。</li>
+      <li>根据法拉第定律，接收端线圈中产生<strong>感应电动势</strong>，驱动电流流过负载。</li>
+    </ol>
+
+    <p>整个过程中，电能没有通过导线传输，而是以<strong>电磁场</strong>的形式在空间中传播。法拉第定律告诉我们：只要磁通量变化足够快、线圈匝数足够多，即使隔着空气，也能感应出可观的电压。</p>
+
+    <div class="highlight-box">
+      <p><strong>关键洞察</strong>：无线输电不是"发射电能"，而是"发射变化的磁场"。电能的传递是间接的——磁场变化在先，感应电动势在后。这也是为什么无线输电的效率永远不可能达到 100%：总有一部分磁场没有穿过接收线圈，"浪费"在了空间中。</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- A2: 楞次定律 -->
+<section class="lesson-block" id="lenz">
+  <h2 class="lesson-title"><span class="lesson-num">A2</span>楞次定律</h2>
+  <div class="lesson-explain">
+    <p>楞次定律（Lenz's Law）由俄国物理学家海因里希·楞次（Heinrich Lenz）于 1834 年提出，它描述了感应电流方向的判定法则。</p>
+
+    <div class="highlight-box">
+      <p><strong>楞次定律</strong>：感应电流的方向总是使得它所激发的磁场来<strong>阻碍</strong>引起感应电流的磁通量的变化。</p>
+    </div>
+
+    <h3>为什么感应电流要"反抗"？</h3>
+    <p>假设感应电流的方向是"帮助"磁通量变化。例如，当你把磁铁靠近线圈时，线圈中产生的电流会生成一个更强的磁场把磁铁再拉近一点。磁铁更近 → 磁场更强 → 电流更大 → 磁场更强……这个正反馈过程会让电流无限增大，能量凭空产生。</p>
+    <p>这违反了能量守恒定律。因此，感应电流必须"反抗"变化，系统才能稳定。</p>
+
+    <h3>判断方法：右手定则</h3>
+    <p>对于导线切割磁感线的情况，可以用右手定则判断感应电流方向：</p>
+    <ul>
+      <li>伸开右手，让磁感线垂直穿过掌心。</li>
+      <li>大拇指指向导线运动方向。</li>
+      <li>四指指向就是感应电流的方向。</li>
+    </ul>
+
+    <h3>与法拉第定律的关系</h3>
+    <p>法拉第定律给出了感应电动势的<strong>大小</strong>：$|\mathcal{E}| = |d\Phi/dt|$。楞次定律给出了感应电流的<strong>方向</strong>。两者合在一起，就是完整的电磁感应定律，也就是麦克斯韦方程组中的第三式。</p>
+  </div>
+</section>
+
+<!-- A3: 自感与互感 -->
+<section class="lesson-block" id="inductance">
+  <h2 class="lesson-title"><span class="lesson-num">A3</span>自感与互感</h2>
+  <div class="lesson-explain">
+
+    <h3>自感（Self-Inductance）</h3>
+    <p>当线圈中的电流变化时，它自己产生的磁场也会变化，从而在线圈自身中产生感应电动势。这种现象称为<strong>自感</strong>。</p>
+
+    <p>自感电动势的大小与电流变化率成正比：</p>
+    <div class="formula-box">
+      $$\mathcal{E}_L = -L\frac{dI}{dt}$$
+    </div>
+
+    <p>其中 $L$ 是<strong>自感系数</strong>（Inductance），单位是亨利（H）。$L$ 越大，同样的电流变化产生的感应电动势越大。</p>
+
+    <p>自感系数的物理意义：一个线圈的"电磁惯性"。就像质量大的物体难加速、难减速一样，$L$ 大的线圈也难建立电流、难切断电流。</p>
+
+    <h3>互感（Mutual Inductance）</h3>
+    <p>当两个线圈靠近时，线圈 1 中的电流变化会在线圈 2 中产生感应电动势。这种现象称为<strong>互感</strong>。</p>
+
+    <div class="formula-box">
+      $$\mathcal{E}_2 = -M\frac{dI_1}{dt}$$
+    </div>
+
+    <p>其中 $M$ 是<strong>互感系数</strong>（Mutual Inductance），单位也是亨利（H）。</p>
+
+    <h3>耦合系数</h3>
+    <p>为了描述两个线圈耦合的紧密程度，定义耦合系数 $k$：</p>
+    <div class="formula-box">
+      $$k = \frac{M}{\sqrt{L_1 L_2}}, \quad 0 \leq k \leq 1$$
+    </div>
+
+    <ul>
+      <li>$k = 1$：理想全耦合（所有磁通都穿过两个线圈，现实中不可能）。</li>
+      <li>$k = 0$：无耦合（距离极远或垂直放置）。</li>
+      <li>手机无线充电：$k \approx 0.3 \sim 0.6$。</li>
+      <li>紧密耦合变压器：$k \approx 0.9 \sim 0.99$。</li>
+    </ul>
+
+    <p>耦合系数是无线输电系统的核心参数之一。$k$ 越大，能量传输效率越高；$k$ 越小，漏磁越多，效率越低。</p>
+  </div>
+</section>
+
+<!-- A4: LC 谐振 -->
+<section class="lesson-block" id="resonance">
+  <h2 class="lesson-title"><span class="lesson-num">A4</span>LC 谐振</h2>
+  <div class="lesson-explain">
+    <p>LC 谐振电路由一个电感 $L$ 和一个电容 $C$ 组成，是无线输电（特别是磁共振耦合）的核心结构。</p>
+
+    <h3>谐振频率的推导</h3>
+    <p>在 LC 电路中，电感和电容不断交换能量：</p>
+    <ul>
+      <li>电容放电时，电场能转化为磁场能，储存在电感中。</li>
+      <li>电感反向放电时，磁场能转化为电场能，储存在电容中。</li>
+    </ul>
+
+    <p>这个能量交换的角频率 $\omega_0$ 满足：</p>
+    <div class="formula-box">
+      $$\omega_0 = \frac{1}{\sqrt{LC}}$$
+    </div>
+
+    <p>对应的谐振频率 $f_0$（单位：Hz）为：</p>
+    <div class="formula-box">
+      $$f_0 = \frac{1}{2\pi\sqrt{LC}}$$
+    </div>
+
+    <h3>为什么谐振对无线输电很重要？</h3>
+    <p>在磁共振无线输电中，发射端和接收端都被调谐到<strong>相同的谐振频率</strong>。这意味着：</p>
+    <ol>
+      <li>发射线圈在谐振频率下呈现<strong>高阻抗</strong>，电流可以很大，产生强磁场。</li>
+      <li>接收线圈在谐振频率下对磁场变化最<strong>敏感</strong>，感应电动势最大。</li>
+      <li>非谐振频率的信号被<strong>过滤掉</strong>，减少了干扰和能量损耗。</li>
+    </ol>
+
+    <div class="highlight-box">
+      <p><strong>类比理解</strong>：LC 谐振就像两个音叉。如果你敲击一个音叉，只有频率相同的另一个音叉会被激发振动。频率不同的音叉几乎不会响应。磁共振无线输电利用的就是这个原理——发射端和接收端是"调谐到同一频率的两个音叉"。</p>
+    </div>
+
+    <h3>品质因数 Q</h3>
+    <p>品质因数 $Q$ 描述了谐振电路的"尖锐程度"——$Q$ 越高，谐振峰越窄，选择性越好：</p>
+    <div class="formula-box">
+      $$Q = \frac{\omega_0 L}{R} = \frac{1}{\omega_0 C R}$$
+    </div>
+
+    <p>其中 $R$ 是线圈的等效串联电阻。$Q$ 值越高，意味着：</p>
+    <ul>
+      <li>能量在 LC 电路中振荡的<strong>损耗越小</strong>（$R$ 小）。</li>
+      <li>谐振峰越<strong>窄</strong>，频率选择性越好。</li>
+      <li>无线输电的<strong>传输距离</strong>可以更远（能量在空间中往返更多次才被耗散）。</li>
+    </ul>
+
+    <p>MIT 团队 2007 年的突破就在于：他们使用高 $Q$ 值的谐振线圈（$Q \approx 1000$），使得能量可以在空气中高效地"跳跃"数米之远。</p>
+  </div>
+</section>
+
+<div class="nav-footer">
+  <a href="/" class="btn btn-secondary">← 返回教程首页</a>
+  <a href="/step2" class="btn btn-primary">返回 Step 2 →</a>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<style>
+.step-list { display: flex; flex-direction: column; gap: var(--space-3); }
+.step-item {
+  display: flex; align-items: center; gap: var(--space-4);
+  padding: var(--space-4); background: var(--bg-card);
+  border-radius: var(--border-radius-md); transition: all 0.2s;
+}
+.step-link { text-decoration: none; color: inherit; }
+.step-link:hover { background: var(--gray-3); transform: translateX(4px); }
+.step-num {
+  width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;
+  background: var(--color-primary); color: #fff; font-size: var(--font-size-sm); font-weight: 700;
+  border-radius: var(--border-radius-md); flex-shrink: 0;
+}
+.step-info { flex: 1; }
+.step-title { font-weight: 600; font-size: var(--font-size-md); margin-bottom: 2px; }
+.step-desc { font-size: var(--font-size-sm); color: var(--text-secondary); }
+.data-table {
+  width: 100%; border-collapse: collapse; margin: var(--space-4) 0;
+  font-size: var(--font-size-sm);
+}
+.data-table th, .data-table td {
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--border-color-split);
+  text-align: left;
+}
+.data-table th {
+  background: var(--gray-2); font-weight: 600;
+}
+.data-table tr:nth-child(even) {
+  background: var(--gray-1);
+}
+.nav-footer { display: flex; justify-content: space-between; margin-top: var(--space-6); }
+</style>
+{% endblock %}
