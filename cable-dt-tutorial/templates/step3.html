@@ -1,0 +1,307 @@
+{% extends "base.html" %}
+{% block title %}Step 3：研究思路与技术路线 - 电缆数字孪生教程{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+  <h1>Step 3：研究思路与技术路线</h1>
+  <p>从整体架构到具体步骤，梳理研究工作的完整路径</p>
+</div>
+
+<!-- 场景 -->
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">场景</span>拿到了电缆厂的数据，不知道从何下手</h2>
+  <div class="lesson-explain">
+    <p>你终于拿到了电缆厂的生产数据：挤出机的温度曲线、牵引机的速度日志、成缆机的张力记录、质检部门的实验报告。Excel 表格有几十个 sheet，数据库里有几十张表，时间跨度两年，字段多达上百个。你既兴奋又迷茫——<strong>数据在手，却不知道从何下手。</strong></p>
+    <p>常见困境：</p>
+    <ul>
+      <li>数据量太大，不知道哪些字段与质量相关；</li>
+      <li>工艺参数互相影响，难以判断因果关系；</li>
+      <li>有质量检测结果，但缺陷样本太少，机器学习模型"学不会"；</li>
+      <li>想做预测，但连问题都没定义清楚——到底要预测什么？</li>
+    </ul>
+    <p>这些困境的本质是：<strong>缺乏一套系统化的研究方法论。</strong>本模块将为你提供从数据到成果的完整技术路线。</p>
+  </div>
+</section>
+
+<!-- 起源 -->
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">起源</span>CRISP-DM 在工业界的应用历史</h2>
+  <div class="lesson-explain">
+    <p>CRISP-DM（Cross-Industry Standard Process for Data Mining，跨行业数据挖掘标准流程）诞生于 1996 年，由 SPSS、NCR、Daimler-Benz 等公司联合提出。它是目前全球应用最广泛的数据挖掘方法论，将数据科学项目划分为六个阶段：</p>
+    <div class="concept-card">
+      <h4>CRISP-DM 六阶段</h4>
+      <ol>
+        <li><strong>业务理解（Business Understanding）：</strong>明确项目目标和业务需求。</li>
+        <li><strong>数据理解（Data Understanding）：</strong>收集数据、探索数据质量、发现初步规律。</li>
+        <li><strong>数据准备（Data Preparation）：</strong>清洗、转换、集成，构建最终数据集。</li>
+        <li><strong>建模（Modeling）：</strong>选择和应用多种建模技术，调参优化。</li>
+        <li><strong>评估（Evaluation）：</strong>验证模型是否满足业务目标，检查是否过拟合。</li>
+        <li><strong>部署（Deployment）：</strong>将模型集成到生产环境，持续监控。</li>
+      </ol>
+    </div>
+    <p>在工业界，CRISP-DM 被广泛应用于设备故障预测、质量检测、工艺优化等场景。然而，电缆质量分析有其特殊性——工艺链长、参数耦合强、小样本问题突出——需要对标准流程进行适配和裁剪。</p>
+  </div>
+</section>
+
+<!-- 思考 -->
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">思考</span>电缆质量分析的特殊性</h2>
+  <div class="lesson-explain">
+    <p>电缆生产是一个典型的多工序连续制造过程，其数据特点决定了不能直接套用通用的数据挖掘流程：</p>
+    <div class="highlight-box">
+      <p><strong>工艺链长：</strong>从导体绞制 → 绝缘挤出 → 成缆 → 护套挤出 → 检测，每一步都可能引入质量缺陷。缺陷可能在下游工序才暴露，根因追溯困难。</p>
+      <p><strong>参数耦合：</strong>挤出温度与牵引速度强相关，温度过高需降速，速度变化又影响冷却效果。单一参数异常不一定导致缺陷，参数组合异常才会。</p>
+      <p><strong>小样本：</strong>合格品占绝大多数，缺陷品极少。某电缆厂一年生产 10 万盘电缆，绝缘击穿的不合格品可能只有 50 盘。深度学习模型难以训练。</p>
+      <p><strong>标注困难：</strong>质量缺陷的根因标注需要工艺专家参与，许多工厂只有"合格/不合格"标签，没有细分缺陷类型和根因。</p>
+    </div>
+    <p>这些特殊性要求我们在技术路线设计上做到：<strong>分层解耦、先理解后建模、小样本友好、可解释优先。</strong></p>
+  </div>
+</section>
+
+<!-- 原理 -->
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">原理</span>整体架构：五层技术栈</h2>
+  <div class="lesson-explain">
+    <p>电缆质量数据分析系统的整体架构可分为五层，从下至上依次解决"数据从哪来""如何治理""如何表征""如何决策""如何应用"的问题：</p>
+    <div class="concept-card">
+      <h4>五层架构图</h4>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>层级</th>
+            <th>名称</th>
+            <th>核心任务</th>
+            <th>典型技术</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>第5层</td>
+            <td>应用层</td>
+            <td>质量预警、工艺推荐、报表可视化</td>
+            <td>Web 前端、可视化大屏、API 服务</td>
+          </tr>
+          <tr>
+            <td>第4层</td>
+            <td>模型层</td>
+            <td>质量预测、异常检测、根因分析</td>
+            <td>随机森林、XGBoost、LSTM、SHAP</td>
+          </tr>
+          <tr>
+            <td>第3层</td>
+            <td>特征工程层</td>
+            <td>时域/频域特征提取、工艺交叉特征构建</td>
+            <td>统计特征、FFT、PCA、t-SNE</td>
+          </tr>
+          <tr>
+            <td>第2层</td>
+            <td>数据治理层</td>
+            <td>清洗、对齐、补全、标准化</td>
+            <td>Pandas、规则引擎、插值算法</td>
+          </tr>
+          <tr>
+            <td>第1层</td>
+            <td>数据采集层</td>
+            <td>传感器、MES、质检设备数据接入</td>
+            <td>OPC UA、MQTT、数据库同步</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p>这个架构的核心思想是<strong>"分层解耦"</strong>：每层只与相邻层交互，内部实现变化不影响其他层。例如，你可以把模型层的随机森林换成 XGBoost，而无需改动数据采集和特征工程代码。</p>
+  </div>
+</section>
+
+<!-- 论证 -->
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">论证</span>为什么采用"分层解耦"架构？</h2>
+  <div class="lesson-explain">
+    <p>很多初学者会问：为什么不能直接拿原始数据丢进模型训练？分层解耦是不是过度设计？</p>
+    <p>答案是否定的。在工业场景中，分层解耦不是"过度设计"，而是<strong>工程落地的必要条件</strong>。以下是逐层论证：</p>
+    <div class="concept-card">
+      <h4>每层解决什么问题</h4>
+      <p><strong>数据采集层 → 解决"数据孤岛"问题：</strong>电缆厂的设备数据在 PLC 里，工艺参数在 MES 里，质检报告在 LIMS 里。如果不统一接入，分析时永远在"找数据"。</p>
+      <p><strong>数据治理层 → 解决"垃圾进，垃圾出"问题：</strong>原始数据中有传感器漂移、记录缺失、时间戳错乱。直接建模会得到虚假相关。治理层通过清洗和校验，保证输入模型的数据是可信的。</p>
+      <p><strong>特征工程层 → 解决"模型看不懂工艺语义"问题：</strong>原始温度曲线对模型只是一串数字。提取"升温速率""温度波动方差""温度-速度交叉项"等特征，才能把工艺知识注入模型。</p>
+      <p><strong>模型层 → 解决"从数据到决策"问题：</strong>选择合适的算法，在有限样本下学习质量规律，并给出可解释的预测结果。</p>
+      <p><strong>应用层 → 解决"模型束之高阁"问题：</strong>再精确的模型，如果只能跑在 Jupyter Notebook 里，对工厂没有价值。应用层把模型封装为预警系统、推荐系统、可视化大屏。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 要点 -->
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">要点</span>5 步研究流程</h2>
+  <div class="lesson-explain">
+    <p>基于 CRISP-DM 和电缆行业特点，我们将研究流程精简为 5 个步骤：</p>
+    <div class="concept-card">
+      <h4>Step 1：问题定义</h4>
+      <p>明确研究目标和业务价值。好的问题定义应该包含：研究对象（哪种电缆？哪道工序？）、预测目标（绝缘厚度？击穿电压？缺陷类型？）、评价标准（准确率？召回率？RMSE？）。</p>
+    </div>
+    <div class="concept-card">
+      <h4>Step 2：数据探索（EDA）</h4>
+      <p>在写任何模型代码之前，先回答：数据有多少条？字段含义是什么？缺失率多少？分布如何？有哪些异常？与质量指标的相关性如何？</p>
+    </div>
+    <div class="concept-card">
+      <h4>Step 3：模型构建</h4>
+      <p>从简单模型开始（如逻辑回归、随机森林），建立 baseline。再逐步尝试复杂模型（XGBoost、LSTM）。每次只改一个变量，记录实验结果。</p>
+    </div>
+    <div class="concept-card">
+      <h4>Step 4：验证评估</h4>
+      <p>使用交叉验证、时间序列拆分（防止数据泄露）、独立测试集评估模型性能。不仅看准确率，还要看混淆矩阵、ROC 曲线、SHAP 解释。</p>
+    </div>
+    <div class="concept-card">
+      <h4>Step 5：部署应用</h4>
+      <p>将模型封装为 REST API 或嵌入 MES 系统，设计预警阈值和反馈闭环。持续收集新数据，定期重训练模型。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 实验 -->
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">实验</span>用思维导图梳理你的研究问题</h2>
+  <div class="lesson-explain">
+    <p>以下是一个思维导图模板，帮助你从零梳理自己的研究问题。建议拿一张白纸或在 XMind 中填写：</p>
+    <div class="concept-card">
+      <h4>研究问题梳理模板</h4>
+      <ul>
+        <li><strong>1. 业务背景</strong>
+          <ul>
+            <li>我们生产什么类型的电缆？（低压/高压/通信/特种）</li>
+            <li>当前最大的质量痛点是什么？（绝缘击穿？护套开裂？导体电阻不合格？）</li>
+            <li>质量问题造成的年均损失大约多少？</li>
+          </ul>
+        </li>
+        <li><strong>2. 数据现状</strong>
+          <ul>
+            <li>已有哪些数据？（设备传感器 / MES 工艺参数 / 质检报告 / 环境温湿度）</li>
+            <li>数据时间跨度？采样频率？</li>
+            <li>质量标签的粒度？（合格/不合格？具体缺陷类型？）</li>
+          </ul>
+        </li>
+        <li><strong>3. 研究目标</strong>
+          <ul>
+            <li>我要预测什么？（连续值回归 / 二分类 / 多分类 / 异常检测）</li>
+            <li>预测提前量是多少？（实时 / 当班结束时 / 次日质检后）</li>
+          </ul>
+        </li>
+        <li><strong>4. 技术路线草图</strong>
+          <ul>
+            <li>数据清洗 → 特征提取 → 什么模型？ → 如何评估？</li>
+          </ul>
+        </li>
+        <li><strong>5. 预期成果</strong>
+          <ul>
+            <li>论文？专利？软件系统？工厂落地？</li>
+            <li>时间节点？</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 错误 -->
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">错误</span>常见路线错误</h2>
+  <div class="lesson-explain">
+    <div class="mistake-card">
+      <p><strong>错误 1：跳过 EDA 直接建模</strong></p>
+      <p>很多人拿到数据后，第一件事是 import sklearn，直接 fit 模型。结果模型效果很差，却不知道是数据分布问题、特征尺度问题还是标签泄漏问题。<strong>EDA 不是可选项，是必选项。</strong></p>
+    </div>
+    <div class="mistake-card">
+      <p><strong>错误 2：用测试集调参</strong></p>
+      <p>在测试集上调参、选特征，会导致模型在测试集上过拟合，失去泛化能力的真实评估。<strong>正确做法：</strong>训练集建模 → 验证集调参 → 测试集只评估一次。</p>
+    </div>
+    <div class="mistake-card">
+      <p><strong>错误 3：忽视业务理解</strong></p>
+      <p>只从数据出发，不关心工艺原理，容易得出荒谬结论。例如，发现"护套厚度与车间温度负相关"，实际上是因为夏天车间开空调，同时夏天订单以薄壁电缆为主——混淆了季节因素和产品类型。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 示例 -->
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">示例</span>某研究团队的完整技术路线案例</h2>
+  <div class="lesson-explain">
+    <p>某高校研究团队与某电缆厂合作，开展"基于机器学习的 XLPE 绝缘电缆击穿电压预测"研究。其技术路线如下：</p>
+    <div class="concept-card">
+      <h4>案例：XLPE 绝缘击穿电压预测</h4>
+      <p><strong>问题定义：</strong>在绝缘挤出工序结束后，提前预测该盘电缆的工频击穿电压，替代部分破坏性试验。</p>
+      <p><strong>数据采集：</strong>从挤出机 PLC 读取温度（6 点）、螺杆转速、牵引速度、线径；从质检系统读取击穿电压值。共 3 年数据，约 1200 盘电缆。</p>
+      <p><strong>数据治理：</strong>处理传感器漂移（用相邻时段中位数校准）、对齐时间戳（以盘号为 key 聚合）、剔除停机时段数据。</p>
+      <p><strong>特征工程：</strong>提取时域特征（温度均值、方差、极差）、工艺特征（温度-速度比、挤出量估算）、频域特征（温度序列 FFT 主频率）。</p>
+      <p><strong>模型构建：</strong>先用多元线性回归建立 baseline（R²=0.52）；再用随机森林（R²=0.71）；最终用 XGBoost + SHAP 解释（R²=0.78）。</p>
+      <p><strong>验证评估：</strong>按时间序列划分训练/测试（防止未来信息泄露），5 折交叉验证，测试集 RMSE 为 3.2 kV。</p>
+      <p><strong>部署应用：</strong>开发 Web 系统，每盘电缆下盘后 5 分钟给出击穿电压预测和关键影响因子排序，辅助质检员决策。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 练习 -->
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">练习</span>3 道思考题</h2>
+  <div class="lesson-explain">
+    <div class="exercise-box">
+      <ol>
+        <li>假设你只有 200 条电缆样本，其中缺陷品 10 条。请设计一条适合小样本的技术路线，并说明为什么不适合直接使用深度学习。</li>
+        <li>在分层解耦架构中，如果工厂更换了新的挤出机，传感器型号和字段名都变了，哪些层需要修改？哪些层可以保持不变？</li>
+        <li>为什么电缆质量分析必须强调"可解释性"？请从工程落地和工厂接受度两个角度分析。</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- 测验 -->
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">测验</span>5 道选择题</h2>
+  <div class="lesson-explain">
+    <div class="exercise-box">
+      <ol>
+        <li>CRISP-DM 流程中，"数据准备"阶段的前一个阶段是？
+          <ul>
+            <li>A. 业务理解</li>
+            <li>B. 数据理解</li>
+            <li>C. 建模</li>
+            <li>D. 评估</li>
+          </ul>
+        </li>
+        <li>以下哪项不是电缆质量分析的特殊性？
+          <ul>
+            <li>A. 工艺链长</li>
+            <li>B. 参数耦合</li>
+            <li>C. 数据量极大（千万级）</li>
+            <li>D. 标注困难</li>
+          </ul>
+        </li>
+        <li>五层架构中，"特征工程层"位于哪两层之间？
+          <ul>
+            <li>A. 数据采集层与数据治理层</li>
+            <li>B. 数据治理层与模型层</li>
+            <li>C. 模型层与应用层</li>
+            <li>D. 数据采集层与应用层</li>
+          </ul>
+        </li>
+        <li>用测试集调参会导致什么问题？
+          <ul>
+            <li>A. 训练速度变慢</li>
+            <li>B. 模型过拟合测试集，泛化能力评估失真</li>
+            <li>C. 模型欠拟合</li>
+            <li>D. 无法保存模型</li>
+          </ul>
+        </li>
+        <li>以下哪项是"问题定义"阶段必须明确的？
+          <ul>
+            <li>A. 模型的隐藏层数量</li>
+            <li>B. 学习率的具体数值</li>
+            <li>C. 预测目标和评价标准</li>
+            <li>D. 部署服务器的 IP 地址</li>
+          </ul>
+        </li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

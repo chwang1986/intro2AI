@@ -1,0 +1,603 @@
+{% extends "base.html" %}
+
+{% block title %}Step 8 实施路线图 — 电缆数字孪生教程{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1>Step 8 实施路线图</h1>
+  <p>从想法到落地的科学路径与资源配置</p>
+  <div class="tag tag-brand">项目管理</div>
+</div>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">场景</span>知道了要做什么，但不知道怎么安排时间和资源</h2>
+  <div class="lesson-explain">
+    <p>假设你已经完成了电缆数字孪生系统的技术验证：算法模型在测试数据上表现良好，软件架构也已经设计完成。现在面临的问题是——</p>
+    <ul>
+      <li>老板问："这个项目需要多久？多少钱？需要多少人？"</li>
+      <li>IT 部门问："你们要先接入我们的 MES 系统，还是要先搭数据库？"</li>
+      <li>生产部门问："你们做实验会不会影响正常生产？"</li>
+      <li>财务部门问："能不能分阶段投入？先看看效果再决定后续预算？"</li>
+    </ul>
+    <p><strong>从技术方案到实际落地，中间需要一个科学的实施路线图。</strong>一个好的路线图能够：降低风险、控制成本、争取资源、管理预期。本节课将为你提供一套经过验证的实施方法论。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">起源</span>工业 4.0 和智能制造项目的实施方法论</h2>
+  <div class="lesson-explain">
+    <p>工业 4.0 概念由德国政府在 2011 年汉诺威工业博览会上正式提出，其核心是"智能工厂"——通过 CPS（信息物理系统）实现生产过程的数字化、网络化、智能化。然而，早期的工业 4.0 项目普遍面临一个困境：<strong>投入大、周期长、见效慢。</strong></p>
+    <p>2015 年，麦肯锡在一份研究报告中指出：70% 的工业数字化转型项目未能达到预期目标，主要原因是"贪大求全"——试图一次性改造整个工厂，结果摊子铺得太大，资源分散，风险失控。</p>
+    <p>这一教训催生了<strong>"小步快跑"（Start Small, Scale Fast）</strong>的方法论：</p>
+    <ul>
+      <li><strong>试点验证（Pilot）：</strong>选择一个产线或一个工序，用 3-6 个月完成最小可行产品（MVP），验证技术可行性和业务价值</li>
+      <li><strong>快速迭代（Iterate）：</strong>根据试点反馈优化方案，解决暴露的问题，积累组织能力</li>
+      <li><strong>规模化推广（Scale）：</strong>将验证成功的模式复制到更多产线、更多工厂</li>
+    </ul>
+    <p>这种方法论被西门子、GE、海尔等企业广泛采用，也被证明是工业数字化项目成功率最高的实施策略。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">思考</span>是先做数据治理还是先做模型？是先做试点产线还是全厂推广？</h2>
+  <div class="lesson-explain">
+    <p>在实施路线图设计时，团队经常陷入几个争论：</p>
+    <p><strong>争论 1：数据治理 vs 模型开发，哪个先做？</strong></p>
+    <p>观点 A："没有干净的数据，模型就是垃圾进垃圾出（GIGO），必须先做数据治理。"</p>
+    <p>观点 B："数据治理是无底洞，永远做不完。应该先快速做出模型原型，证明价值，再逐步优化数据。"</p>
+    <p><strong>正确答案是：两者并行，但优先级有侧重。</strong>在第一阶段（1-3 个月），以"摸底+基础清洗"为主，不需要追求完美，目标是让数据"可用"。在第二阶段（4-6 个月），在模型开发过程中不断发现数据问题，反向推动数据治理深化。数据治理和模型开发是<strong>螺旋上升</strong>的关系，而非先后关系。</p>
+
+    <p><strong>争论 2：试点产线 vs 全厂推广？</strong></p>
+    <p>观点 A："全厂推广可以一次性解决问题，避免重复建设。"</p>
+    <p>观点 B："试点可以降低风险，万一失败也只影响一条产线。"</p>
+    <p><strong>正确答案是：必须先试点。</strong>工业现场的环境复杂度远超实验室：网络稳定性、设备兼容性、操作员配合度、管理制度……只有在真实生产环境中跑通，才能发现那些"想不到的问题"。试点成功后，不仅有了可复制的方法论，更重要的是有了<strong>内部标杆案例</strong>——这比任何外部咨询都更有说服力。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">原理</span>分阶段实施的逻辑</h2>
+  <div class="lesson-explain">
+    <p>分阶段实施的核心逻辑可以用一个公式概括：</p>
+    <div class="formula-box">
+      <p><strong>低风险验证 → 快速迭代 → 规模化推广</strong></p>
+    </div>
+
+    <div class="concept-card">
+      <h4>第一阶段：低风险验证</h4>
+      <p>目标是用最小成本验证"核心假设"——这个技术方案在真实环境中是否可行？是否真的能产生价值？</p>
+      <p>关键特征：范围小（一条产线）、投入少（3-5 人团队）、周期短（1-3 个月）、目标明确（数据可用率&gt;90%）。</p>
+    </div>
+
+    <div class="concept-card">
+      <h4>第二阶段：快速迭代</h4>
+      <p>在验证可行后，快速完善系统功能，提升模型效果，优化用户体验。</p>
+      <p>关键特征：需求来自真实用户反馈、功能按优先级迭代、每 2 周一个发布周期、预测准确率从"可用"提升到"好用"。</p>
+    </div>
+
+    <div class="concept-card">
+      <h4>第三阶段：规模化推广</h4>
+      <p>将验证成功的方案复制到更多场景，实现投资回报最大化。</p>
+      <p>关键特征：标准化部署流程、培训内部团队、建立运维体系、持续监控效果、形成知识产权（专利/软著）。</p>
+    </div>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">论证</span>为什么采用"小步快跑"而不是"大爆炸"式实施？</h2>
+  <div class="lesson-explain">
+    <p>"大爆炸"式实施（Big Bang）指的是：投入大量资源，经过漫长开发，然后一次性全量上线。这种方式在传统软件时代偶有成功案例，但在工业数字化项目中几乎注定失败。原因如下：</p>
+    <p><strong>1. 工业环境的不确定性太高</strong></p>
+    <p>实验室里跑通的算法，到了生产现场可能因为电磁干扰导致传感器数据跳变，因为网络波动导致数据丢失，因为操作员误操作导致标签错误。这些不确定性只有在真实环境中才能暴露，而"大爆炸"式实施把暴露风险的时机推迟到了最后——此时已投入大量资源，失败代价极高。</p>
+    <p><strong>2. 用户需求在开发过程中会变化</strong></p>
+    <p>项目初期，用户说"我们需要一个预测系统"。但当他们真正用上系统后，会发现："预警阈值能不能按产品型号分别设置？""能不能把预警信息推送到我的企业微信？""这个报表能不能导出成 PDF？"这些需求在立项时很难预见，只有在迭代中逐步清晰。</p>
+    <p><strong>3. 组织能力的建设需要时间</strong></p>
+    <p>数字化项目不只是技术项目，更是组织变革项目。操作员需要学习新系统、IT 部门需要建立运维能力、管理层需要适应数据驱动的决策方式。这些"软能力"无法通过一次培训建立，只能在持续使用中养成。</p>
+    <p><strong>4. 资金的时间价值和风险对冲</strong></p>
+    <p>分阶段投入意味着：如果第一阶段验证失败，可以及时止损，总损失可控；如果第一阶段成功，后续阶段更容易争取预算——因为已经有了"看得见的效果"。</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">要点</span>三阶段实施计划</h2>
+  <div class="lesson-explain">
+    <div class="concept-card">
+      <h4>第一阶段（1-3 个月）：数据摸底与治理</h4>
+      <p><strong>目标：</strong>完成数据采集、清洗、标准化</p>
+      <p><strong>关键任务：</strong></p>
+      <ul>
+        <li>调研现有数据源：PLC 型号及寄存器地址、SCADA 系统接口、MES/ERP 数据库</li>
+        <li>部署数据采集网关，建立基础数据通道</li>
+        <li>清洗历史数据：处理缺失值、异常值、重复值</li>
+        <li>建立数据字典：统一字段命名、单位、编码规则</li>
+      </ul>
+      <p><strong>产出物：</strong>数据字典、数据质量报告、基础数据集</p>
+      <p><strong>里程碑：</strong>数据可用率 &gt; 90%</p>
+      <p><strong>团队配置：</strong>1 名数据工程师 + 1 名熟悉现场的工艺工程师 + 0.5 名项目经理</p>
+    </div>
+
+    <div class="concept-card">
+      <h4>第二阶段（4-6 个月）：模型开发与验证</h4>
+      <p><strong>目标：</strong>完成质量预测模型开发和验证</p>
+      <p><strong>关键任务：</strong></p>
+      <ul>
+        <li>特征工程：基于工艺知识构建特征，验证特征有效性</li>
+        <li>模型训练：尝试多种算法（XGBoost、LSTM、Transformer），交叉验证</li>
+        <li>模型部署：将训练好的模型封装为推理服务，接入实时数据流</li>
+        <li>现场验证：在试点产线运行模型，对比预测结果与实际检测结果</li>
+      </ul>
+      <p><strong>产出物：</strong>训练好的模型、验证报告、API 接口文档</p>
+      <p><strong>里程碑：</strong>预测准确率 &gt; 85%</p>
+      <p><strong>团队配置：</strong>1 名算法工程师 + 1 名后端工程师 + 1 名数据工程师</p>
+    </div>
+
+    <div class="concept-card">
+      <h4>第三阶段（7-12 个月）：系统集成与推广</h4>
+      <p><strong>目标：</strong>完成软件系统开发和 pilot 产线部署</p>
+      <p><strong>关键任务：</strong></p>
+      <ul>
+        <li>开发前端界面：监控大屏、分析报表、3D 数字孪生</li>
+        <li>集成预警推送：短信、企业微信、邮件等多渠道告警</li>
+        <li>用户培训：操作员培训、工程师培训、管理层汇报</li>
+        <li>知识产权：撰写专利交底书、登记软件著作权</li>
+        <li>推广复制：将试点经验复制到第二条、第三条产线</li>
+      </ul>
+      <p><strong>产出物：</strong>可运行的软件系统、用户手册、专利/论文初稿</p>
+      <p><strong>里程碑：</strong>系统上线运行、废品率降低 &gt; 30%</p>
+      <p><strong>团队配置：</strong>1 名前端工程师 + 1 名后端工程师 + 1 名项目经理 + 1 名算法工程师（0.5）</p>
+    </div>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">要点</span>资源配置建议（人员、设备、预算）</h2>
+  <div class="lesson-explain">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>资源类型</th>
+          <th>第一阶段</th>
+          <th>第二阶段</th>
+          <th>第三阶段</th>
+          <th>总计</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>人员（人月）</td>
+          <td>4.5</td>
+          <td>9</td>
+          <td>13.5</td>
+          <td>27</td>
+        </tr>
+        <tr>
+          <td>服务器/边缘设备</td>
+          <td>2 台边缘网关</td>
+          <td>1 台 GPU 训练服务器</td>
+          <td>3 台生产服务器</td>
+          <td>6 台</td>
+        </tr>
+        <tr>
+          <td>软件授权</td>
+          <td>开源为主</td>
+          <td>InfluxDB 企业版（可选）</td>
+          <td>Grafana、监控工具</td>
+          <td>约 5 万元</td>
+        </tr>
+        <tr>
+          <td>外部服务</td>
+          <td>无</td>
+          <td>云存储/算力（可选）</td>
+          <td>域名、SSL、短信服务</td>
+          <td>约 2 万元</td>
+        </tr>
+        <tr>
+          <td>预算估算</td>
+          <td>15-20 万</td>
+          <td>20-30 万</td>
+          <td>25-40 万</td>
+          <td>60-90 万</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="highlight-box">
+      <p><strong>预算说明：</strong>以上预算为中小型企业参考值，包含人员工资、硬件采购、软件授权、外包服务。大型集团项目预算可能翻倍。建议预留 10-15% 的应急资金应对需求变更和技术风险。</p>
+    </div>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">要点</span>风险与应对</h2>
+  <div class="lesson-explain">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>风险类型</th>
+          <th>具体表现</th>
+          <th>发生概率</th>
+          <th>应对策略</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>数据质量问题</td>
+          <td>传感器数据缺失、跳变、延迟；不同系统数据口径不一致</td>
+          <td>高</td>
+          <td>第一阶段重点投入数据治理；建立数据质量监控看板；与设备厂商协作修复传感器</td>
+        </tr>
+        <tr>
+          <td>模型效果不达预期</td>
+          <td>预测准确率低于 80%；模型在生产环境漂移</td>
+          <td>中</td>
+          <td>设置合理的准确率目标（分阶段提升）；建立模型监控和自动重训练机制；准备规则引擎作为兜底方案</td>
+        </tr>
+        <tr>
+          <td>用户接受度低</td>
+          <td>操作员不愿使用新系统；管理层看不到明显效益</td>
+          <td>中</td>
+          <td>早期让业务代表参与需求讨论；设计简洁直观的界面；定期汇报量化成果（废品率、成本节约）</td>
+        </tr>
+        <tr>
+          <td>系统集成困难</td>
+          <td>老设备没有标准接口；MES/ERP 系统封闭不开放</td>
+          <td>中</td>
+          <td>提前进行接口调研和技术可行性评估；准备协议转换网关；与 IT 部门建立协作机制</td>
+        </tr>
+        <tr>
+          <td>核心人员流失</td>
+          <td>关键工程师离职，知识断层</td>
+          <td>低</td>
+          <td>建立技术文档规范；推行代码审查和知识分享；避免"单点依赖"，关键岗位设置 AB 角</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">实验</span>制定你自己的实施计划</h2>
+  <div class="lesson-explain">
+    <p>以下是一个实施计划模板，请根据你的实际项目情况填写：</p>
+
+    <div class="lesson-code">
+      <div class="demo-label">实施计划模板</div>
+      <pre><code>项目名称：______________________________
+项目目标：______________________________
+预期收益：______________________________
+
+【第一阶段：数据摸底与治理】
+起止时间：____年__月 至 ____年__月
+负责人：______________________________
+关键任务：
+1. ___________________________________
+2. ___________________________________
+3. ___________________________________
+里程碑：______________________________
+所需资源：______________________________
+
+【第二阶段：模型开发与验证】
+起止时间：____年__月 至 ____年__月
+负责人：______________________________
+关键任务：
+1. ___________________________________
+2. ___________________________________
+3. ___________________________________
+里程碑：______________________________
+所需资源：______________________________
+
+【第三阶段：系统集成与推广】
+起止时间：____年__月 至 ____年__月
+负责人：______________________________
+关键任务：
+1. ___________________________________
+2. ___________________________________
+3. ___________________________________
+里程碑：______________________________
+所需资源：______________________________
+
+【风险预案】
+最大风险：______________________________
+应对措施：______________________________
+</code></pre>
+    </div>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">错误</span>实施误区</h2>
+  <div class="lesson-explain">
+    <div class="mistake-card">
+      <p><strong>误区 1：贪大求全</strong></p>
+      <p>试图一次性覆盖全厂所有产线、所有设备、所有质量指标。结果是：数据接入拖了 6 个月还没完成，模型一个都没训练出来，团队士气低落，项目被质疑"花了钱没效果"。<strong>正确做法：</strong>选择一个价值最高、数据基础最好的产线作为试点，先做出"最小可用产品"。</p>
+    </div>
+
+    <div class="mistake-card">
+      <p><strong>误区 2：忽视数据质量</strong></p>
+      <p>把 80% 的资源投入模型开发和界面设计，只留 20% 给数据治理。结果是：模型训练时发现数据缺失严重、标签不准确、特征不可用，不得不回头补课。<strong>正确做法：</strong>第一阶段至少投入 40% 的精力做数据摸底和清洗，数据是模型的地基。</p>
+    </div>
+
+    <div class="mistake-card">
+      <p><strong>误区 3：没有业务人员参与</strong></p>
+      <p>技术团队"闭门造车"，做出来的系统操作员觉得不好用，工程师觉得不专业，管理层觉得没价值。<strong>正确做法：</strong>从第一天起就让工艺工程师、质量检验员、车间主任参与需求讨论和原型评审，他们是最终用户，他们的认可是项目成功的关键。</p>
+    </div>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">示例</span>某电缆厂 12 个月实施计划的甘特图</h2>
+  <div class="lesson-explain">
+    <p>以下用文字表格描述某电缆厂 12 个月的实施计划甘特图：</p>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>任务/月份</th>
+          <th>1</th>
+          <th>2</th>
+          <th>3</th>
+          <th>4</th>
+          <th>5</th>
+          <th>6</th>
+          <th>7</th>
+          <th>8</th>
+          <th>9</th>
+          <th>10</th>
+          <th>11</th>
+          <th>12</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>数据源调研</td>
+          <td>█</td>
+          <td>█</td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+        </tr>
+        <tr>
+          <td>数据采集部署</td>
+          <td> </td>
+          <td>█</td>
+          <td>█</td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+        </tr>
+        <tr>
+          <td>数据清洗与标准化</td>
+          <td> </td>
+          <td>█</td>
+          <td>█</td>
+          <td>█</td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+        </tr>
+        <tr>
+          <td>特征工程</td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td>█</td>
+          <td>█</td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+        </tr>
+        <tr>
+          <td>模型训练与调优</td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td>█</td>
+          <td>█</td>
+          <td>█</td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+        </tr>
+        <tr>
+          <td>模型现场验证</td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td>█</td>
+          <td>█</td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+        </tr>
+        <tr>
+          <td>后端 API 开发</td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td>█</td>
+          <td>█</td>
+          <td>█</td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+        </tr>
+        <tr>
+          <td>前端界面开发</td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td>█</td>
+          <td>█</td>
+          <td>█</td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+        </tr>
+        <tr>
+          <td>3D 数字孪生开发</td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td>█</td>
+          <td>█</td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+        </tr>
+        <tr>
+          <td>系统集成测试</td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td>█</td>
+          <td>█</td>
+          <td> </td>
+          <td> </td>
+        </tr>
+        <tr>
+          <td>用户培训与上线</td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td>█</td>
+          <td>█</td>
+          <td> </td>
+        </tr>
+        <tr>
+          <td>推广至其他产线</td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td>█</td>
+          <td>█</td>
+        </tr>
+        <tr>
+          <td>专利申请与论文</td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td>█</td>
+          <td>█</td>
+          <td>█</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">练习</span>动手试一试</h2>
+  <div class="lesson-explain">
+    <p><strong>练习 1（验证）：</strong>假设你的项目预算是 50 万元，团队有 4 人，需要在 9 个月内完成。请根据三阶段方法论，为电缆数字孪生项目制定一个简化版实施计划，包含每个阶段的起止时间、关键任务、里程碑和所需资源。</p>
+    <p><strong>练习 2（验证）：</strong>识别你项目中的 top 3 风险，并为每个风险制定应对措施。假设其中一个风险发生了（如"模型准确率只有 70%，达不到 85% 的目标"），你的备选方案是什么？</p>
+    <p><strong>练习 3（设计）：</strong>设计一个"项目汇报 PPT"的大纲（只需文字大纲，不需做 PPT）。面向对象是工厂总经理，目标是在第三阶段中期争取追加预算。请考虑：总经理最关心什么指标？如何用数据说话？如何展示阶段性成果？</p>
+  </div>
+</section>
+
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">测验</span>快速检验一下</h2>
+  <div class="demo-card">
+    <p><strong>1. 单选题：</strong>工业数字化项目最适合采用哪种实施策略？</p>
+    <p>A. 大爆炸式——一次性投入全部资源，全面改造</p>
+    <p>B. 小步快跑式——先试点验证，再迭代优化，最后规模化推广</p>
+    <p>C. 外包式——全部交给外部供应商，内部不参与</p>
+    <p>D. 等待式——等技术完全成熟后再行动</p>
+    <details><summary>点击查看答案</summary><p><strong>正确答案：B</strong>。工业现场环境复杂、需求变化快、不确定性高，"小步快跑"通过试点降低风险、通过迭代适应变化、通过规模化实现价值最大化，是成功率最高的策略。</p></details>
+  </div>
+  <div class="demo-card">
+    <p><strong>2. 判断题：</strong>数据治理和模型开发应该严格按先后顺序执行，先完成数据治理再做模型。</p>
+    <p>A. 正确，数据治理是模型开发的前提</p>
+    <p>B. 错误，两者应并行推进、螺旋上升</p>
+    <details><summary>点击查看答案</summary><p><strong>正确答案：B</strong>。虽然数据质量对模型效果至关重要，但"完美"的数据治理是无底洞。正确的做法是：第一阶段完成基础数据摸底和清洗（让数据"可用"），第二阶段在模型开发过程中不断发现数据问题并反向推动治理深化。</p></details>
+  </div>
+  <div class="demo-card">
+    <p><strong>3. 单选题：</strong>第一阶段（数据摸底与治理）的核心里程碑是什么？</p>
+    <p>A. 训练出准确率 90% 的预测模型</p>
+    <p>B. 完成前端界面开发</p>
+    <p>C. 数据可用率 &gt; 90%</p>
+    <p>D. 申请到第一件专利</p>
+    <details><summary>点击查看答案</summary><p><strong>正确答案：C</strong>。第一阶段的核心目标是建立可靠的数据基础，里程碑是数据可用率超过 90%。模型训练、界面开发、专利申请都是后续阶段的任务。</p></details>
+  </div>
+  <div class="demo-card">
+    <p><strong>4. 单选题：</strong>为什么"试点产线"策略比"全厂推广"更优？</p>
+    <p>A. 试点产线投入更少，失败成本可控</p>
+    <p>B. 试点可以暴露真实环境中的问题，积累可复制经验</p>
+    <p>C. 试点成功后更容易争取后续预算和资源</p>
+    <p>D. 以上全部</p>
+    <details><summary>点击查看答案</summary><p><strong>正确答案：D</strong>。试点策略的优势是多方面的：降低风险（A）、验证方案（B）、争取资源（C）。三者都是正确理由。</p></details>
+  </div>
+  <div class="demo-card">
+    <p><strong>5. 判断题：</strong>项目实施过程中，技术团队可以独立完成任务，不需要业务人员参与。</p>
+    <p>A. 正确，技术人员更懂技术，业务人员参与会拖慢进度</p>
+    <p>B. 错误，业务人员是最终用户，他们的参与是项目成功的关键</p>
+    <details><summary>点击查看答案</summary><p><strong>正确答案：B</strong>。工业数字化项目不是纯技术项目，而是技术与业务深度融合的项目。工艺工程师提供领域知识、操作员提供使用反馈、管理层提供资源支持——缺少任何一方，项目都很难成功。</p></details>
+  </div>
+</section>
+
+<nav class="nav-footer">
+  <a href="/step7" class="btn btn-secondary">← 上一步</a>
+  <a href="/" class="btn btn-primary">完成教程 →</a>
+</nav>
+{% endblock %}

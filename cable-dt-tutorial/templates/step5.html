@@ -1,0 +1,582 @@
+{% extends "base.html" %}
+{% block title %}Step 5：论文发表方向 - 电缆数字孪生教程{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+  <h1>Step 5：论文发表方向</h1>
+  <p>可投稿的期刊、会议、选题角度和写作要点</p>
+</div>
+
+<!-- 场景 -->
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">场景</span>研究成果出来了，不知道往哪里投稿</h2>
+  <div class="lesson-explain">
+    <p>经过几个月的努力，你终于跑出了不错的模型结果：XGBoost 在测试集上的 AUC 达到了 0.85，SHAP 分析也发现了几个关键工艺参数。你兴冲冲地打开期刊投稿系统，却在搜索框前愣住了——<strong>这篇工作到底该投哪个期刊？投高了怕拒稿，投低了怕浪费成果。</strong></p>
+    <p>更棘手的是：你的研究涉及电缆工艺、机器学习、数字孪生三个领域，到底属于哪个学科？审稿人会是电气工程师还是计算机科学家？他们关心的重点有何不同？本模块将帮你找到答案。</p>
+  </div>
+</section>
+
+<!-- 起源 -->
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">起源</span>工业大数据和数字孪生领域的学术期刊与会议发展史</h2>
+  <div class="lesson-explain">
+    <p>工业大数据和数字孪生的学术发表经历了从传统制造期刊到跨学科智能期刊的演进：</p>
+    <ul>
+      <li><strong>1990s - 2000s：</strong>制造领域的核心论文主要发表在《Journal of Manufacturing Systems》《Computers & Industrial Engineering》等传统期刊，聚焦调度优化、质量控制，方法以运筹学和统计为主。</li>
+      <li><strong>2005s - 2015s：</strong>随着机器学习兴起，IEEE 系列期刊开始设立工业信息学方向。IEEE Transactions on Industrial Informatics（TII）于 2005 年创刊，迅速成为工业 AI 领域的顶刊。</li>
+      <li><strong>2015s - 2020s：</strong>数字孪生概念爆发，多个期刊开设专刊（Special Issue）。IEEE TSMCS、Journal of Manufacturing Systems 相继推出"Digital Twin in Manufacturing"主题。</li>
+      <li><strong>2020s - 至今：</strong>交叉学科论文成为主流。同一篇论文可能同时涉及制造工艺、深度学习、物联网架构，投稿方向更加多元。中文核心如《计算机集成制造系统》也大量收录工业大数据方向论文。</li>
+    </ul>
+    <p>了解这段历史，有助于你判断哪些期刊"正热"、哪些方向"已过气"，从而精准投稿。</p>
+  </div>
+</section>
+
+<!-- 思考 -->
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">思考</span>电缆质量分析属于哪个学科交叉领域？如何找到合适的期刊？</h2>
+  <div class="lesson-explain">
+    <p>电缆质量分析论文天然具有<strong>跨学科属性</strong>。它至少横跨以下领域：</p>
+    <div class="highlight-box">
+      <p><strong>电气工程：</strong>电缆绝缘材料、击穿机理、电气试验标准。</p>
+      <p><strong>机械工程：</strong>挤出工艺、成缆工艺、设备动力学。</p>
+      <p><strong>计算机科学：</strong>机器学习、时序分析、异常检测、可解释 AI。</p>
+      <p><strong>工业工程：</strong>质量控制、统计过程控制、生产系统优化。</p>
+    </div>
+    <p>选择期刊的关键是：<strong>看你的核心贡献落在哪个领域。</strong>如果你主要提出了一种新的预测算法，投计算机/信息学期刊；如果你主要解决了一个具体的电缆工艺问题，投制造/电气期刊；如果你构建了完整的数字孪生系统，投交叉学科期刊或会议。</p>
+  </div>
+</section>
+
+<!-- 原理 -->
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">原理</span>论文写作的核心逻辑</h2>
+  <div class="lesson-explain">
+    <p>无论投哪个期刊，论文的核心结构都遵循 IMRaD 框架（Introduction, Methods, Results, and Discussion）。但在工业应用中，每个部分有特殊的写作要点：</p>
+    <div class="concept-card">
+      <h4>Introduction：为什么这个问题值得研究？</h4>
+      <p>工业论文的 Introduction 必须回答三个问题：（1）这个工艺问题在工业上有多重要？（2）现有方法为什么解决不了？（3）你的思路有何不同？<strong>避免</strong>泛泛而谈"工业 4.0 很重要"，要具体到"某型号电缆的绝缘击穿不合格率常年在 2% 以上，造成年损失超千万元"。</p>
+    </div>
+    <div class="concept-card">
+      <h4>Methods：方法要可复现，但不要堆砌公式</h4>
+      <p>方法部分的目的是让读者能复现你的工作。给出模型结构、损失函数、训练细节（学习率、 batch size、硬件环境）。<strong>注意：</strong>如果使用了已有方法（如 XGBoost），不必从头推导公式，引用原文即可；重点描述你如何将其适配到电缆场景（特征如何构建、损失如何调整）。</p>
+    </div>
+    <div class="concept-card">
+      <h4>Results：用数据说话，但不要只堆图表</h4>
+      <p>每个图表都必须有明确的结论支撑。不要只写"图 3 展示了不同模型的准确率"，而要写"XGBoost 的 AUC（0.87）显著优于随机森林（0.81）和逻辑回归（0.74），这说明工艺参数与质量之间存在非线性关系，需要树模型的特征交互能力"。</p>
+    </div>
+    <div class="concept-card">
+      <h4>Discussion：解释结果的物理/工程意义</h4>
+      <p>工业论文的 Discussion 不能止步于"模型效果很好"，要回答：<strong>为什么这个方法有效？结果对工艺改进有什么指导？</strong>例如："SHAP 分析表明温度波动方差是最重要的负向因子，建议将挤出机温控系统的 PID 参数重新整定，将温度波动控制在 ±2°C 以内。"</p>
+    </div>
+  </div>
+</section>
+
+<!-- 论证 -->
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">论证</span>为什么这些选题角度有创新性？</h2>
+  <div class="lesson-explain">
+    <p>很多研究者困惑：我的方法并不新（用的都是公开算法），论文创新性在哪里？<strong>在工业应用领域，创新性往往不在于"算法新"，而在于"问题新""应用新""洞察新"。</strong></p>
+    <div class="concept-card">
+      <h4>工业论文的三种创新路径</h4>
+      <p><strong>路径 1：新问题 + 成熟方法</strong></p>
+      <p>首次将某方法应用于电缆领域。例如："首次将 LSTM 应用于交联聚乙烯电缆的绝缘老化预测"。创新性在于问题本身未被充分研究，而非方法。</p>
+      <p><strong>路径 2：已知问题 + 方法改进</strong></p>
+      <p>针对电缆数据的特殊性，改进已有方法。例如："针对电缆缺陷样本不平衡问题，提出基于 SMOTE 和代价敏感学习的混合策略"。创新性在于方法适配。</p>
+      <p><strong>路径 3：系统级创新</strong></p>
+      <p>不是单点算法，而是完整系统。例如："构建电缆挤出工序的数字孪生系统，实现工艺参数实时监控-质量预测-工艺优化闭环"。创新性在于架构设计和工程整合。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 参考论文 -->
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">文献</span>5 篇高质量参考论文</h2>
+  <div class="lesson-explain">
+    <p>以下论文覆盖了本教程涉及的五大核心领域，建议在撰写论文时精读并引用：</p>
+    <div class="concept-card">
+      <h4>1. 数字孪生在制造业中的应用综述</h4>
+      <p><strong>Tao, F., Zhang, H., Liu, A., &amp; Nee, A. Y. C.</strong> (2019). Digital Twin in Industry: State-of-the-Art. <em>IEEE Transactions on Industrial Informatics</em>, 15(4), 2405–2415.</p>
+      <p><strong>核心创新点：</strong>提出数字孪生五维模型（物理实体、虚拟实体、服务、孪生数据、连接），系统梳理了数字孪生在产品设计、生产、服务全生命周期的应用框架，被引用超过 4000 次，是制造业数字化转型的奠基性综述。</p>
+    </div>
+    <div class="concept-card">
+      <h4>2. 工业时序数据的异常检测</h4>
+      <p><strong>Blázquez-García, A., Conde, A., Mori, U., &amp; Lozano, J. A.</strong> (2021). A Review on Outlier/Anomaly Detection in Time Series Data. <em>ACM Computing Surveys</em>, 54(3), 1–33.</p>
+      <p><strong>核心创新点：</strong>系统分类了时间序列异常检测方法，将异常细分为点异常、子序列异常和模式异常三类，并对比了传统统计方法、机器学习与深度学习的适用场景，为工业传感器数据异常监测提供了方法选型指南。</p>
+    </div>
+    <div class="concept-card">
+      <h4>3. 基于机器学习的质量预测</h4>
+      <p><strong>Wang, J., Ma, Y., Zhang, L., Gao, R. X., &amp; Wu, D.</strong> (2018). Deep Learning for Smart Manufacturing: Methods and Applications. <em>Journal of Manufacturing Systems</em>, 48, 144–156.</p>
+      <p><strong>核心创新点：</strong>系统综述了深度学习在制造系统状态监测、质量预测、剩余使用寿命预测中的应用范式，提出了从"数据驱动"到"知识融合"的智能制造转换路径，是工业 AI 应用的方法论基石。</p>
+    </div>
+    <div class="concept-card">
+      <h4>4. 数据治理方法论</h4>
+      <p><strong>Khatri, V., &amp; Brown, C. V.</strong> (2010). Designing Data Governance. <em>Communications of the ACM</em>, 53(1), 148–152.</p>
+      <p><strong>核心创新点：</strong>提出了数据治理的决策权分配框架（基于数据资产类型、活动类型和组织层级），明确了数据治理与 IT 治理的本质区别，是企业级数据治理的奠基性理论，被引用超过 2500 次。</p>
+    </div>
+    <div class="concept-card">
+      <h4>5. 电缆/电线行业的智能制造</h4>
+      <p><strong>Liu, C., Le Roux, L., Körner, C., Tabaste, O., &amp; Bigot, S.</strong> (2021). Knowledge-based Industrial Quality Prediction: A Review. <em>Journal of Manufacturing Systems</em>, 59, 307–317.</p>
+      <p><strong>核心创新点：</strong>系统综述了知识驱动的工业质量预测方法，涵盖挤出、注塑等连续生产过程，提出了多尺度特征提取与工艺知识融合的预测框架。电缆绝缘挤出属于典型连续挤出过程，该框架对其质量预测具有直接指导意义。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 要点：期刊/会议清单 -->
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">要点</span>可投稿期刊/会议清单（按难度分级）</h2>
+  <div class="lesson-explain">
+    <p>以下清单根据难度和影响因子分级，供你根据研究成熟度选择：</p>
+    <div class="concept-card">
+      <h4>中文核心期刊</h4>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>期刊名称</th>
+            <th>级别</th>
+            <th>特点与偏好</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>《计算机集成制造系统》</td>
+            <td>中文核心 / EI</td>
+            <td>侧重智能制造、数字孪生、MES/ERP 集成，对系统架构类论文友好</td>
+          </tr>
+          <tr>
+            <td>《中国机械工程》</td>
+            <td>中文核心 / EI</td>
+            <td>覆盖面广，工艺优化、质量控制、设备诊断均可投</td>
+          </tr>
+          <tr>
+            <td>《仪器仪表学报》</td>
+            <td>中文核心 / EI</td>
+            <td>偏好传感器、信号处理、检测技术，适合有硬件/数据采集内容的论文</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="concept-card">
+      <h4>英文 SCI 期刊</h4>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>期刊名称</th>
+            <th>分区/IF</th>
+            <th>特点与偏好</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>IEEE Transactions on Industrial Informatics (TII)</td>
+            <td>JCR Q1 / IF ~11</td>
+            <td>工业信息学顶刊，偏好工业 AI、物联网、数字孪生，要求有实际工业验证</td>
+          </tr>
+          <tr>
+            <td>IEEE Transactions on SMC: Systems</td>
+            <td>JCR Q1 / IF ~8</td>
+            <td>复杂系统方向，偏好系统工程、人机协同、平行系统理论应用</td>
+          </tr>
+          <tr>
+            <td>Computers & Industrial Engineering</td>
+            <td>JCR Q1 / IF ~7</td>
+            <td>运筹与计算交叉，偏好调度优化、质量预测、数据分析在制造中的应用</td>
+          </tr>
+          <tr>
+            <td>Journal of Manufacturing Systems</td>
+            <td>JCR Q1 / IF ~6</td>
+            <td>制造系统方向，偏好产线级/车间级研究，数字孪生专刊多</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="concept-card">
+      <h4>国际会议</h4>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>会议名称</th>
+            <th>级别</th>
+            <th>特点与偏好</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>IEEE CASE</td>
+            <td>IEEE 旗舰会议</td>
+            <td>自动化科学与工程，偏好工业应用和系统集成</td>
+          </tr>
+          <tr>
+            <td>IEEE SMC</td>
+            <td>IEEE 年会</td>
+            <td>系统、人与控制论，接受平行系统、数字孪生方向论文</td>
+          </tr>
+          <tr>
+            <td>Prognostics and Health Management (PHM)</td>
+            <td>国际会议</td>
+            <td>故障预测与健康管理，适合设备预测性维护和异常检测方向</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 要点：10个具体选题角度 -->
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">要点</span>10 个具体选题角度</h2>
+  <div class="lesson-explain">
+    <p>以下选题角度经过可行性评估，既有研究价值，也有数据可获得性：</p>
+    <div class="concept-card">
+      <ol>
+        <li>
+          <p><strong>基于 LSTM 的电缆绝缘层厚度预测：</strong>用挤出过程时序数据预测绝缘厚度，替代离线测量。方法成熟，工业价值明确。</p>
+          <p class="mt-2"><em>研究空白：</em>现有研究多聚焦于金属切削或注塑成型，针对电缆绝缘挤出的厚度预测极少；且现有方法未充分考虑挤出机螺杆转速与牵引速度的耦合时序关系，导致预测滞后。该选题填补了电缆挤出工序在线质量预测的空白。</p>
+        </li>
+        <li>
+          <p><strong>基于数字孪生的电缆挤出工艺优化：</strong>构建挤出工序的数字孪生体，实现虚拟调试和参数优化。系统级论文，适合投 TII 或 JMS。</p>
+          <p class="mt-2"><em>研究空白：</em>数字孪生研究多集中在航空航天、汽车零部件等离散制造，对电缆挤出这类连续流程制造的数字孪生研究几乎空白；且现有数字孪生系统缺乏与 MES/SCADA 的实时闭环集成。该选题将数字孪生理论落地到流程制造场景。</p>
+        </li>
+        <li>
+          <p><strong>小样本条件下的电缆缺陷检测：</strong>针对缺陷样本极少的问题，研究迁移学习、数据增强或代价敏感学习策略。适合投方法类期刊。</p>
+          <p class="mt-2"><em>研究空白：</em>工业缺陷检测的深度学习研究多基于大量标注数据（如钢板、PCB 缺陷），电缆缺陷样本极不均衡且标注成本高；现有小样本学习方法在电缆领域的迁移效果缺乏验证。该选题解决了电缆行业"缺陷少、标注难"的痛点。</p>
+        </li>
+        <li>
+          <p><strong>基于 SHAP 的电缆质量关键影响因子分析：</strong>用可解释 AI 方法识别影响击穿电压/绝缘电阻的关键工艺参数，输出工艺改进建议。</p>
+          <p class="mt-2"><em>研究空白：</em>可解释 AI 研究多聚焦于金融、医疗领域，在电缆工艺领域的应用刚刚起步；现有研究多使用相关性分析，无法捕捉工艺参数间的非线性交互效应。该选题将 SHAP 等前沿可解释方法引入电缆工艺分析。</p>
+        </li>
+        <li>
+          <p><strong>电缆生产多源异构数据融合方法：</strong>研究 PLC 时序数据、MES 工艺参数、LIMS 质检数据的时序对齐和融合方法。</p>
+          <p class="mt-2"><em>研究空白：</em>PLC 时序数据、MES 工艺参数、LIMS 质检数据的采样频率与数据格式差异巨大，现有数据融合方法多针对同构数据；跨系统的时序对齐和语义对齐缺乏通用框架。该选题构建面向电缆行业的多源数据融合规范。</p>
+        </li>
+        <li>
+          <p><strong>基于 Isolation Forest 的挤出过程异常检测：</strong>无监督检测工艺偏离，无需缺陷标签，适合数据标注困难的工厂。</p>
+          <p class="mt-2"><em>研究空白：</em>无监督异常检测研究多基于公开数据集（如 Yahoo S5、NASA），电缆挤出过程的正常工况边界模糊，异常定义依赖工艺专家知识；现有方法在强噪声工业环境下的虚警率偏高。该选题建立面向电缆挤出的无监督异常检测基准。</p>
+        </li>
+        <li>
+          <p><strong>电缆护套挤出能耗预测与优化：</strong>用机器学习预测能耗，结合工艺约束优化参数，实现节能降耗。</p>
+          <p class="mt-2"><em>研究空白：</em>制造过程能耗预测研究多集中在钢铁、水泥等高耗能行业，电缆挤出工序的能耗模型缺乏；且现有能耗优化未同时考虑质量约束，存在"为节能而降质"的风险。该选题实现能耗与质量的协同优化。</p>
+        </li>
+        <li>
+          <p><strong>基于平行系统的电缆质量闭环控制：</strong>用 ACP（人工系统-计算实验-平行执行）理论指导电缆工艺优化，理论深度高。</p>
+          <p class="mt-2"><em>研究空白：</em>ACP 理论多应用于交通、社会系统，在电缆制造等物理化学过程中的应用几乎空白；平行系统与物理挤出过程的虚实交互机制尚不成熟。该选题拓展了平行系统理论在流程制造中的适用边界。</p>
+        </li>
+        <li>
+          <p><strong>电缆生产线数字孪生可视化平台：</strong>研究三维可视化、实时数据接入、虚实映射技术，工程系统类论文。</p>
+          <p class="mt-2"><em>研究空白：</em>工业可视化研究多关注三维几何建模，缺乏工艺机理与实时数据的可视化融合；电缆生产线的设备布局复杂，现有平台在虚实映射的实时性和精度上难以兼顾。该选题构建"机理+数据"双驱动的可视化方案。</p>
+        </li>
+        <li>
+          <p><strong>基于联邦学习的多工厂电缆质量协同建模：</strong>在不共享原始数据的前提下，联合多个电缆厂训练质量预测模型，符合数据安全趋势。</p>
+          <p class="mt-2"><em>研究空白：</em>联邦学习研究多应用于医疗、金融，在工业质量预测中的研究极少；电缆厂之间的产品规格、设备型号差异大，现有联邦聚合算法（如 FedAvg）在非独立同分布数据下的收敛性差。该选题提出面向异构工业设备的联邦学习改进策略。</p>
+        </li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- 实验 -->
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">实验</span>分析一篇相关论文的结构（论文拆解模板）</h2>
+  <div class="lesson-explain">
+    <p>选择一篇与你研究方向相近的论文（建议从 IEEE TII 或 Journal of Manufacturing Systems 中选），用以下模板拆解：</p>
+    <div class="concept-card">
+      <h4>论文拆解模板</h4>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>拆解维度</th>
+            <th>分析要点</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>题目</td>
+            <td>题目包含哪些关键词？方法名？应用场景？</td>
+          </tr>
+          <tr>
+            <td>摘要结构</td>
+            <td>背景（1-2句）→ 问题（1句）→ 方法（2-3句）→ 实验（2句）→ 结论（1句）</td>
+          </tr>
+          <tr>
+            <td>Introduction</td>
+            <td>作者如何论证"这个问题很重要"？引用了哪些经典文献？研究 gap 在哪里？</td>
+          </tr>
+          <tr>
+            <td>Related Work</td>
+            <td>文献综述如何组织？按时间？按方法类别？按应用场景？</td>
+          </tr>
+          <tr>
+            <td>Method</td>
+            <td>方法描述占多少篇幅？公式多还是流程图多？超参数在哪里说明？</td>
+          </tr>
+          <tr>
+            <td>Experiment</td>
+            <td>数据集规模？对比了哪些 baseline？评价指标有哪些？显著性检验用了吗？</td>
+          </tr>
+          <tr>
+            <td>Discussion</td>
+            <td>作者如何解释结果的物理/工程意义？是否给出了工艺改进建议？</td>
+          </tr>
+          <tr>
+            <td>Limitation</td>
+            <td>是否讨论了方法局限？这往往是审稿人最关心的部分之一。</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>实验任务：</strong>下载 3 篇目标期刊的论文，用上述模板拆解。完成后，你会清楚自己的论文与已发表工作的差距，以及需要补充哪些内容。</p>
+  </div>
+</section>
+
+<!-- 错误 -->
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">错误</span>投稿误区</h2>
+  <div class="lesson-explain">
+    <div class="mistake-card">
+      <p><strong>误区 1：一稿多投</strong></p>
+      <p>同时将同一篇论文投给两个期刊，或会议录用后未撤稿就改投期刊。这是学术不端，一旦被发现将严重影响学术声誉。<strong>正确做法：</strong>一稿一投，收到明确拒稿或撤稿确认后再投下一家。</p>
+    </div>
+    <div class="mistake-card">
+      <p><strong>误区 2：期刊主题不符</strong></p>
+      <p>把纯算法论文投给制造工程期刊，或把纯工艺论文投给计算机期刊。审稿人会以"不在本期刊 scope 内"直接拒稿（Desk Reject），浪费数周等待时间。<strong>正确做法：</strong>仔细阅读期刊的 Aim & Scope，参考该期刊最近 2 年发表的类似论文。</p>
+    </div>
+    <div class="mistake-card">
+      <p><strong>误区 3：实验不充分</strong></p>
+      <p>只做了一组实验，没有对比 baseline，没有消融实验，没有显著性检验。工业期刊对实验严谨性要求越来越高。<strong>正确做法：</strong>至少对比 2-3 个相关 baseline；做消融实验验证每个模块的贡献；必要时做 t-test 或 Wilcoxon 检验。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 时间规划 -->
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">规划</span>论文投稿时间规划建议</h2>
+  <div class="lesson-explain">
+    <p>从实验完成到论文正式发表，通常需要 6–18 个月。合理的时间规划可以避免赶稿导致的质量下降：</p>
+    <div class="steps mt-4 mb-6">
+      <div class="step completed">
+        <div class="step-dot">1</div>
+        <div class="step-title">实验收尾<br><span class="text-sm text-secondary">2–4 周</span></div>
+      </div>
+      <div class="step completed">
+        <div class="step-dot">2</div>
+        <div class="step-title">图表制作<br><span class="text-sm text-secondary">1–2 周</span></div>
+      </div>
+      <div class="step active">
+        <div class="step-dot">3</div>
+        <div class="step-title">初稿撰写<br><span class="text-sm text-secondary">3–4 周</span></div>
+      </div>
+      <div class="step">
+        <div class="step-dot">4</div>
+        <div class="step-title">内部评审<br><span class="text-sm text-secondary">2–3 周</span></div>
+      </div>
+      <div class="step">
+        <div class="step-dot">5</div>
+        <div class="step-title">修改润色<br><span class="text-sm text-secondary">2–3 周</span></div>
+      </div>
+      <div class="step">
+        <div class="step-dot">6</div>
+        <div class="step-title">投稿等待<br><span class="text-sm text-secondary">3–6 月</span></div>
+      </div>
+    </div>
+    <div class="concept-card">
+      <h4>各阶段关键任务</h4>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>阶段</th>
+            <th>关键任务</th>
+            <th>常见陷阱</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>实验收尾</td>
+            <td>补全缺失实验、整理原始数据、备份代码与参数</td>
+            <td>数据未备份、实验记录不全</td>
+          </tr>
+          <tr>
+            <td>图表制作</td>
+            <td>确定图表风格统一、制作核心结果图、准备补充材料</td>
+            <td>图表分辨率低、配色不统一</td>
+          </tr>
+          <tr>
+            <td>初稿撰写</td>
+            <td>按 IMRaD 框架撰写、同步整理参考文献</td>
+            <td>Introduction 逻辑不清、Method 过于简略</td>
+          </tr>
+          <tr>
+            <td>内部评审</td>
+            <td>请导师/同事审阅、检查英语语法、验证公式与数据</td>
+            <td>只给导师看、忽视同行反馈</td>
+          </tr>
+          <tr>
+            <td>修改润色</td>
+            <td>根据反馈修改、使用 Grammarly/母语润色、降重</td>
+            <td>只改语法不改逻辑、忽视 Cover Letter</td>
+          </tr>
+          <tr>
+            <td>投稿等待</td>
+            <td>准备 Cover Letter、推荐审稿人、跟踪审稿状态</td>
+            <td>盲目投稿不查 scope、一稿多投</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 审稿意见应对 -->
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">策略</span>论文审稿意见的应对策略</h2>
+  <div class="lesson-explain">
+    <p>收到审稿意见后，不要急于反驳或立刻修改。按照以下策略系统应对，可以大幅提高录用概率：</p>
+    <div class="concept-card">
+      <h4>第一步：情绪管理与分类（1–2 天）</h4>
+      <p>收到意见后先放 24 小时，避免情绪化回复。将所有意见分类：</p>
+      <ul>
+        <li><strong>致命性问题：</strong>创新性不足、实验不充分、结论不成立——必须实质性修改。</li>
+        <li><strong>建设性问题：</strong>补充对比实验、增加消融实验、完善讨论——积极采纳。</li>
+        <li><strong>细节性问题：</strong>语法错误、格式调整、文献补全——逐一修改。</li>
+        <li><strong>误解性问题：</strong>审稿人未理解你的方法——礼貌澄清并补充说明。</li>
+      </ul>
+    </div>
+    <div class="concept-card">
+      <h4>第二步：撰写回复信（Response Letter）</h4>
+      <p>回复信的结构直接影响编辑决策。推荐采用"逐条回复"格式：</p>
+      <div class="highlight-box">
+        <p><strong>格式模板：</strong></p>
+        <p><strong>Comment 1：</strong>审稿人原文或摘要。</p>
+        <p><strong>Response：</strong>感谢审稿人意见 + 你的处理方案（修改/澄清/补充）。</p>
+        <p><strong>Action：</strong>具体修改了哪里（页码、段落、新增图表编号）。</p>
+        <p><strong>Revision：</strong>修改后的正文内容（可选，方便审稿人快速查看）。</p>
+      </div>
+      <p><strong>关键原则：</strong>即使不同意审稿人意见，也要先感谢再解释；所有修改用蓝色或高亮标注在修订稿中；绝不隐瞒未修改的内容。</p>
+    </div>
+    <div class="concept-card">
+      <h4>第三步：常见审稿意见及应对模板</h4>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>常见意见</th>
+            <th>应对策略</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>"创新性不足"</td>
+            <td>在 Introduction 和 Discussion 中强化"问题新"或"应用新"的论述；补充与最新文献的对比，明确你的 unique contribution。</td>
+          </tr>
+          <tr>
+            <td>"实验不充分"</td>
+            <td>补充 2–3 个 baseline 对比；增加消融实验验证每个模块；补充显著性检验（t-test / Wilcoxon）。</td>
+          </tr>
+          <tr>
+            <td>"缺乏物理/工程意义解释"</td>
+            <td>在 Discussion 中增加工艺机理分析；将 SHAP/LIME 结果与工艺知识对照，给出可操作的改进建议。</td>
+          </tr>
+          <tr>
+            <td>"数据集规模太小"</td>
+            <td>如无法扩充数据，可补充交叉验证、数据增强实验；或在 Limitation 中坦诚说明，并讨论方法对数据规模的鲁棒性。</td>
+          </tr>
+          <tr>
+            <td>"方法描述不清"</td>
+            <td>补充算法流程图、超参数表格、伪代码；明确训练/验证/测试集的划分方式。</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="highlight-box">
+      <p><strong>重要提醒：</strong>如果收到"Major Revision"，说明编辑认为论文有价值但需大幅修改，这是录用的前奏。务必在截止日期前提交，且回复信长度通常是修改稿的 20%–50%。如果收到"Reject &amp; Resubmit"，建议认真评估是否有必要改投，或者按要求重写后重新投稿同一期刊。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 示例 -->
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">示例</span>一篇高质量论文的摘要和结构分析</h2>
+  <div class="lesson-explain">
+    <p>以下是一篇虚拟但典型的高质量论文摘要，展示工业应用类论文的写作范式：</p>
+    <div class="concept-card">
+      <h4>论文标题：Data-Driven Quality Prediction for XLPE Cable Insulation Extrusion Using Multi-Scale Temporal Features</h4>
+      <p><strong>摘要：</strong></p>
+      <p>Cross-linked polyethylene (XLPE) cable insulation extrusion is a critical process where subtle variations in temperature and pressure can lead to significant quality defects. Existing quality control relies heavily on offline sampling tests, which are time-consuming and cannot prevent defects in real time. This paper proposes a data-driven quality prediction framework that integrates multi-scale temporal features from extrusion process data. Specifically, we extract time-domain statistics, frequency-domain characteristics via FFT, and cross-process features from synchronized sensor streams. A hybrid model combining XGBoost and SHAP-based interpretation is employed to predict insulation breakdown voltage and identify key influencing factors. Experiments on real-world production data from a cable manufacturer (covering 1,200 coils over 18 months) demonstrate that the proposed method achieves an R² of 0.78 and outperforms baseline methods including linear regression, random forest, and standard LSTM. SHAP analysis reveals that temperature variance and draw ratio are the most critical factors, providing actionable guidance for process optimization. The framework has been deployed as a module in the plant's MES system, reducing the defect detection cycle from 24 hours to 5 minutes.</p>
+      <p><strong>结构分析：</strong></p>
+      <ul>
+        <li><strong>第一句：</strong>背景（XLPE 挤出很重要）。</li>
+        <li><strong>第二句：</strong>现有问题（离线检测滞后）。</li>
+        <li><strong>第三-四句：</strong>方法（多尺度时序特征 + XGBoost + SHAP）。</li>
+        <li><strong>第五句：</strong>实验规模和数据来源（增强可信度）。</li>
+        <li><strong>第六句：</strong>定量结果（R²=0.78，对比 baseline）。</li>
+        <li><strong>第七句：</strong>洞察（关键因子及工程指导）。</li>
+        <li><strong>第八句：</strong>落地价值（部署在 MES，检测周期缩短）。</li>
+      </ul>
+      <p><strong>亮点：</strong>摘要中同时包含方法创新、定量结果、可解释洞察和工程落地——这是工业期刊审稿人最希望看到的内容。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 练习 -->
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">练习</span>3 道思考题</h2>
+  <div class="lesson-explain">
+    <div class="exercise-box">
+      <ol>
+        <li>假设你的研究核心是"用随机森林预测电缆击穿电压"，请比较投《中国机械工程》和 IEEE TII 的利弊。审稿人可能分别关心什么问题？</li>
+        <li>你的实验数据来自某电缆厂的真实生产线，但在论文中如何描述数据来源才能既保证可信度，又不泄露商业机密？</li>
+        <li>为什么工业应用类论文的 Discussion 部分必须包含"对工艺改进的指导建议"？如果缺少这部分，审稿人可能提出什么质疑？</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- 测验 -->
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">测验</span>5 道选择题</h2>
+  <div class="lesson-explain">
+    <div class="exercise-box">
+      <ol>
+        <li>以下哪本期刊最适合投递"电缆挤出数字孪生系统"方向的论文？
+          <ul>
+            <li>A. 《仪器仪表学报》</li>
+            <li>B. IEEE Transactions on Industrial Informatics</li>
+            <li>C. 纯数学期刊</li>
+            <li>D. 文学评论</li>
+          </ul>
+        </li>
+        <li>工业应用论文的创新性可以体现在？
+          <ul>
+            <li>A. 必须提出全新的算法</li>
+            <li>B. 可以是新问题 + 成熟方法</li>
+            <li>C. 只能做理论证明</li>
+            <li>D. 不需要任何创新</li>
+          </ul>
+        </li>
+        <li>以下哪种行为属于学术不端？
+          <ul>
+            <li>A. 在训练集上调参</li>
+            <li>B. 一稿多投</li>
+            <li>C. 引用经典文献</li>
+            <li>D. 做消融实验</li>
+          </ul>
+        </li>
+        <li>论文摘要中，以下哪项信息最不重要？
+          <ul>
+            <li>A. 研究背景与问题</li>
+            <li>B. 核心方法</li>
+            <li>C. 实验数据来源与规模</li>
+            <li>D. 作者的个人爱好</li>
+          </ul>
+        </li>
+        <li>Discussion 部分的核心任务是？
+          <ul>
+            <li>A. 重复 Results 中的图表数据</li>
+            <li>B. 解释结果的物理/工程意义，给出指导建议</li>
+            <li>C. 介绍研究团队的组成</li>
+            <li>D. 列出所有参考文献</li>
+          </ul>
+        </li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+{% block title %}电缆数字孪生教程 - 数据驱动的电缆质量分析{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+  <h1>电缆数字孪生教程</h1>
+  <p>用数据治理、数字孪生与平行系统，驱动电缆质量分析从经验走向科学</p>
+</div>
+
+<!-- 愿景 -->
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">愿景</span>为什么电缆行业需要数据驱动质量分析</h2>
+  <div class="lesson-explain">
+    <p><strong>电缆是工业的血脉。</strong>从高压输电到通信网络，从轨道交通到新能源充电桩，几乎所有现代基础设施都依赖电缆。一根质量不合格的电缆，可能导致整座城市的停电、一场火灾、一次通信中断——损失以千万计。</p>
+
+    <p><strong>但电缆质量控制的现状是什么？</strong>大多数电缆厂家仍然依赖「老师傅的经验」和「抽检合格报告」。生产过程中的温度、压力、速度、张力等关键参数，要么没有被系统记录，要么记录后从未被分析。质量问题往往在产品出厂后、甚至运行多年后才暴露，此时追责和改进都太晚了。</p>
+
+    <p><strong>数据驱动能改变什么？</strong></p>
+    <ul>
+      <li><strong>从抽检到全检：</strong>不再依赖抽样检测，而是通过生产过程中的传感器数据，对每一米电缆进行"在线体检"。</li>
+      <li><strong>从事后追溯到事前预测：</strong>通过分析历史数据，建立质量预测模型，在质量问题发生前就预警。</li>
+      <li><strong>从经验到科学：</strong>把老师傅的「手感」转化为可量化、可复制、可优化的数字模型。</li>
+      <li><strong>从单点到系统：</strong>通过数字孪生，把设备、工艺、环境、人员的数据打通，找到质量问题的系统性根因。</li>
+    </ul>
+
+    <p><strong>不做数据驱动的代价：</strong>质量问题频发、客户投诉不断、召回成本高昂、品牌信誉受损。更长远地看，当竞争对手已经用 AI 优化了生产工艺、用数字孪生降低了废品率时，你还在靠人工巡检——差距会指数级拉开。</p>
+
+    <p><strong>这个教程能帮你做什么？</strong>无论你是电缆厂家的技术人员、高校的研究人员，还是工业大数据方向的研究生，这个教程都会从研究背景、技术路线、论文专利、软件系统、实施计划五个维度，给你一个完整的行动指南。学完它，你会清楚：这个问题为什么值得做、应该怎么做、做到什么程度可以发论文、做到什么程度可以申请专利、最终如何落地为一个可用的软件系统。</p>
+  </div>
+</section>
+
+<!-- 纲领 -->
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">纲领</span>这个教程要达成什么</h2>
+  <div class="lesson-explain">
+    <p><strong>最终目标：</strong>读完这个教程后，你能够独立设计并实施一个「电缆生产过程数据驱动的质量分析系统」——从数据采集到模型训练，从论文撰写到专利申请，从原型开发到系统上线，整个过程心中有数。</p>
+    <p><strong>面向读者：</strong>有电缆行业背景的技术人员、工业工程/数据科学方向的研究生、对数字孪生和平行系统感兴趣的研究者。不需要深度学习或编程的深厚基础，但需要愿意动手实践。</p>
+    <p><strong>学习路径：</strong>理解背景与价值 → 掌握核心概念 → 梳理研究思路 → 学会数据处理方法 → 明确论文发表方向 → 掌握专利挖掘方法 → 设计软件系统 → 制定实施计划。</p>
+  </div>
+</section>
+
+<!-- 发展脉络 -->
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">发展脉络</span>从经验质检到智能工厂的演进</h2>
+  <div class="lesson-explain">
+    <p>电缆行业的质量控制，经历了从「人工经验」到「数据智能」的百年演进。了解这段历史，你会明白为什么现在正是切入这个方向的最佳时机。</p>
+    <ul>
+      <li><strong>1950s - 人工质检时代：</strong>电缆质量完全依赖工人的目视检查和经验判断。老师傅用手摸、用眼看来判断绝缘层厚度是否均匀。效率低、一致性差、标准难以统一。</li>
+      <li><strong>1980s - 仪器检测时代：</strong>引入拉力试验机、耐压测试仪、绝缘电阻测试仪等专用设备。质量检测从主观判断变为客观测量，但仍然是「事后抽检」——产品生产完了才检测。</li>
+      <li><strong>2000s - 信息化时代：</strong>ERP、MES 系统进入工厂，生产数据开始被记录。但数据分散在各个系统中，"有数据、无分析"是普遍现象。</li>
+      <li><strong>2010s - 大数据时代：</strong>工业物联网（IIoT）兴起，传感器成本大幅下降，生产过程中的温度、压力、速度等参数可以被实时采集。但"数据多、洞察少"——缺乏分析方法和工具。</li>
+      <li><strong>2015s - 数字孪生兴起：</strong>GE、西门子提出工业数字孪生概念。在航空、汽车领域，数字孪生已用于预测性维护和质量优化。电缆行业起步较晚，但潜力巨大。</li>
+      <li><strong>2017s - 平行系统理论：</strong>中国科学院王飞跃研究员提出平行系统（Parallel Systems）理论，强调用人工系统（模型）引导实际系统（物理）的优化。为工业数据驱动的闭环优化提供了理论框架。</li>
+      <li><strong>2020s - AI 质检时代：</strong>深度学习、时序预测、异常检测等技术成熟。电缆行业开始出现基于机器学习的质量预测和缺陷检测研究。数字孪生标准（如 GBT 47691-2026）开始立项。</li>
+      <li><strong>2025s - 现在：</strong>5G + 数字孪生 + AI 的融合成为趋势。电缆制造 5G 智能工厂物联数字孪生平台已出现。数据驱动的质量分析不再是概念，而是可以落地的工程方案。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 怎么学 -->
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">怎么学</span>给研究者的学习建议</h2>
+  <div class="lesson-explain">
+    <p><strong>建议用时：</strong>每天 1~1.5 小时，约 3~4 周完成。这个教程不是纯理论阅读——你需要结合自己的数据和研究目标来思考。</p>
+    <p><strong>学习方法：</strong></p>
+    <ul>
+      <li><strong>第一步：通读背景与概念</strong>（Step 1-2，20 分钟）——理解这个方向的研究价值和核心概念。</li>
+      <li><strong>第二步：梳理自己的研究思路</strong>（Step 3，30 分钟）——拿一张纸，画出你的数据流、问题定义和技术路线。</li>
+      <li><strong>第三步：深入学习数据处理方法</strong>（Step 4，40 分钟）——选择 1-2 种最适合你数据特点的方法，理解其原理和适用场景。</li>
+      <li><strong>第四步：明确论文和专利方向</strong>（Step 5-6，30 分钟）——根据你的研究进展，确定短期和长期的成果产出计划。</li>
+      <li><strong>第五步：设计软件系统</strong>（Step 7，30 分钟）——用系统架构图把你的想法可视化。</li>
+      <li><strong>第六步：制定实施计划</strong>（Step 8，20 分钟）——把大目标拆分为可执行的阶段任务。</li>
+    </ul>
+    <p><strong>检验标准：</strong>如果你能向一个不懂电缆行业的同学解释清楚「数字孪生」和「平行系统」的区别，并能画出你所在工厂的数据流图，说明你已经掌握了这个教程的核心内容。</p>
+  </div>
+</section>
+
+<!-- 目标 -->
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">目标</span>8 个阶段逐步深入</h2>
+  <div class="lesson-explain">
+    <p>每个阶段对应一个可操作的页面，你可以在浏览器中边看边思考。</p>
+  </div>
+  <div class="step-grid">
+    {% for step in steps %}
+    <a href="/{{ step.id }}" class="step-card">
+      <div class="step-num">{{ step.num }}</div>
+      <div class="step-title">{{ step.title }}</div>
+      <div class="step-desc">{{ step.desc }}</div>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- 前置知识 -->
+<section class="lesson-block">
+  <h2 class="lesson-title"><span class="lesson-num">前置</span>需要准备什么</h2>
+  <div class="lesson-explain">
+    <ul>
+      <li><strong>数据基础：</strong>你已经拥有或即将拥有电缆生产过程的设备数据、工艺数据、质量检测数据。数据量越大越好，但至少要有几百条记录。</li>
+      <li><strong>编程基础：</strong>会 Python 基础（能读写文件、会用 Pandas 处理表格）。不会也没关系，Step 4 会提供完整的代码示例。</li>
+      <li><strong>行业认知：</strong>了解电缆的基本生产工艺（导体绞制 → 绝缘挤出 → 成缆 → 护套挤出 → 检测）。不了解也没关系，Step 1 会快速扫盲。</li>
+      <li><strong>数学基础：</strong>高中数学即可（理解函数、概率、平均值、标准差）。涉及的高级算法会在教程中从零解释。</li>
+    </ul>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<style>
+.step-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--space-4);
+  margin-top: var(--space-4);
+}
+.step-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: var(--space-5);
+  background: var(--bg-card);
+  border-radius: var(--border-radius-md);
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.2s;
+  border: 1px solid var(--border-color);
+}
+.step-card:hover {
+  background: var(--gray-3);
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+.step-card .step-num {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-primary);
+  color: #fff;
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  border-radius: var(--border-radius-md);
+  margin-bottom: var(--space-3);
+}
+.step-card .step-title {
+  font-weight: 600;
+  font-size: var(--font-size-md);
+  margin-bottom: 4px;
+}
+.step-card .step-desc {
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+}
+</style>
+{% endblock %}

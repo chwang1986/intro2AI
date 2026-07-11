@@ -1,0 +1,23 @@
+{% extends "system_base.html" %}
+
+{% block sidebar_brand %}
+<a href="/" class="sidebar-brand">
+  <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+  <span class="font-semibold text-lg">电缆数字孪生</span>
+</a>
+{% endblock %}
+
+{% block sidebar_menu %}
+<ul class="sider-menu">
+  <li><a href="/" class="{% if request.endpoint == 'index' %}active{% endif %}">教程大纲</a></li>
+  {% for s in steps %}
+  <li><a href="/{{ s.id }}" class="{% if request.endpoint == 'step' and request.view_args.step_id == s.id %}active{% endif %}">{{ s.num }} {{ s.title }}</a></li>
+  {% endfor %}
+</ul>
+{% endblock %}
+
+{% block sider_footer %}
+<div class="sider-footer text-center">
+  <p class="text-secondary text-sm">电缆质量数据驱动分析</p>
+</div>
+{% endblock %}
