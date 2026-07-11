@@ -235,6 +235,159 @@
 </div>
 
 <div class="lesson-section">
+  <h2>示例</h2>
+  <h3>企业级设计系统：设计令牌定义案例</h3>
+  <p>以下展示一个真实的企业级设计系统中，设计令牌如何从"全局原始值"逐层映射到"组件具体状态"，并支持亮/暗双主题切换。</p>
+
+  <h4>令牌分层表格</h4>
+  <div class="table-wrap">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>层级</th>
+          <th>维度</th>
+          <th>令牌名</th>
+          <th>亮色值</th>
+          <th>暗色值</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td rowspan="4">全局令牌</td>
+          <td>色彩</td>
+          <td><code class="code-inline">--blue-500</code></td>
+          <td><code class="code-inline">#1677FF</code></td>
+          <td><code class="code-inline">#3B82F6</code></td>
+        </tr>
+        <tr>
+          <td>字体</td>
+          <td><code class="code-inline">--font-size-base</code></td>
+          <td><code class="code-inline">14px</code></td>
+          <td><code class="code-inline">14px</code></td>
+        </tr>
+        <tr>
+          <td>间距</td>
+          <td><code class="code-inline">--space-unit</code></td>
+          <td><code class="code-inline">4px</code></td>
+          <td><code class="code-inline">4px</code></td>
+        </tr>
+        <tr>
+          <td>阴影</td>
+          <td><code class="code-inline">--shadow-color</code></td>
+          <td><code class="code-inline">rgba(0,0,0,0.08)</code></td>
+          <td><code class="code-inline">rgba(0,0,0,0.3)</code></td>
+        </tr>
+        <tr>
+          <td rowspan="4">别名令牌</td>
+          <td>色彩</td>
+          <td><code class="code-inline">--color-primary</code></td>
+          <td><code class="code-inline">var(--blue-500)</code></td>
+          <td><code class="code-inline">var(--blue-500)</code></td>
+        </tr>
+        <tr>
+          <td>字体</td>
+          <td><code class="code-inline">--text-body</code></td>
+          <td><code class="code-inline">var(--font-size-base)</code></td>
+          <td><code class="code-inline">var(--font-size-base)</code></td>
+        </tr>
+        <tr>
+          <td>间距</td>
+          <td><code class="code-inline">--spacing-md</code></td>
+          <td><code class="code-inline">calc(var(--space-unit) * 4)</code></td>
+          <td><code class="code-inline">calc(var(--space-unit) * 4)</code></td>
+        </tr>
+        <tr>
+          <td>阴影</td>
+          <td><code class="code-inline">--shadow-card</code></td>
+          <td><code class="code-inline">0 4px 12px var(--shadow-color)</code></td>
+          <td><code class="code-inline">0 4px 12px var(--shadow-color)</code></td>
+        </tr>
+        <tr>
+          <td rowspan="4">组件令牌</td>
+          <td>色彩</td>
+          <td><code class="code-inline">--button-bg</code></td>
+          <td><code class="code-inline">var(--color-primary)</code></td>
+          <td><code class="code-inline">var(--color-primary)</code></td>
+        </tr>
+        <tr>
+          <td>字体</td>
+          <td><code class="code-inline">--button-font-size</code></td>
+          <td><code class="code-inline">var(--text-body)</code></td>
+          <td><code class="code-inline">var(--text-body)</code></td>
+        </tr>
+        <tr>
+          <td>间距</td>
+          <td><code class="code-inline">--button-padding</code></td>
+          <td><code class="code-inline">var(--spacing-md)</code></td>
+          <td><code class="code-inline">var(--spacing-md)</code></td>
+        </tr>
+        <tr>
+          <td>阴影</td>
+          <td><code class="code-inline">--button-shadow</code></td>
+          <td><code class="code-inline">var(--shadow-card)</code></td>
+          <td><code class="code-inline">none</code></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>亮/暗双主题切换实现代码</h4>
+  <pre class="code-block">/* ===== 亮色主题（默认）===== */
+:root {
+  --blue-500: #1677FF;
+  --color-primary: var(--blue-500);
+  --bg-page: #F5F7FA;
+  --bg-card: #FFFFFF;
+  --text-primary: rgba(0, 0, 0, 0.88);
+  --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* ===== 暗色主题 ===== */
+[data-theme="dark"] {
+  --blue-500: #3B82F6;
+  --color-primary: var(--blue-500);
+  --bg-page: #141414;
+  --bg-card: #1F1F1F;
+  --text-primary: rgba(255, 255, 255, 0.85);
+  --shadow-card: none;
+}
+
+/* 组件使用令牌 */
+.btn-primary {
+  background: var(--button-bg);
+  color: #fff;
+}</pre>
+
+  <h4>主题切换前后对比</h4>
+  <div class="row gap-3">
+    <div class="col-6">
+      <div class="demo-card">
+        <div class="demo-label">亮色主题</div>
+        <div class="demo-s10-ex-light">
+          <div class="demo-s10-ex-card-l">
+            <div class="demo-s10-ex-title-l">卡片标题</div>
+            <div class="demo-s10-ex-desc-l">亮色模式下的卡片样式</div>
+            <button class="demo-s10-ex-btn-l">主要按钮</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="demo-card">
+        <div class="demo-label">暗色主题</div>
+        <div class="demo-s10-ex-dark">
+          <div class="demo-s10-ex-card-d">
+            <div class="demo-s10-ex-title-d">卡片标题</div>
+            <div class="demo-s10-ex-desc-d">暗色模式下的卡片样式</div>
+            <button class="demo-s10-ex-btn-d">主要按钮</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="lesson-section">
   <h2>效果展示</h2>
   <h3>令牌层级示意</h3>
   <div class="demo-card">
@@ -426,5 +579,15 @@
 .demo-s10-card-title { font-weight: 600; margin-bottom: 4px; }
 .demo-s10-card-desc { font-size: 12px; color: rgba(0,0,0,0.65); }
 .demo-s10-card-desc-dark { font-size: 12px; color: rgba(255,255,255,0.55); }
+.demo-s10-ex-light { padding: 16px; background: #F5F7FA; border-radius: 8px; }
+.demo-s10-ex-card-l { background: #FFFFFF; border: 1px solid #F0F0F0; border-radius: 8px; padding: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+.demo-s10-ex-title-l { font-weight: 600; margin-bottom: 8px; color: rgba(0,0,0,0.88); }
+.demo-s10-ex-desc-l { font-size: 12px; color: rgba(0,0,0,0.65); margin-bottom: 12px; }
+.demo-s10-ex-btn-l { padding: 6px 16px; border: none; border-radius: 4px; background: #1677FF; color: #fff; font-size: 13px; cursor: pointer; }
+.demo-s10-ex-dark { padding: 16px; background: #141414; border-radius: 8px; }
+.demo-s10-ex-card-d { background: #1F1F1F; border: 1px solid #434343; border-radius: 8px; padding: 16px; }
+.demo-s10-ex-title-d { font-weight: 600; margin-bottom: 8px; color: rgba(255,255,255,0.85); }
+.demo-s10-ex-desc-d { font-size: 12px; color: rgba(255,255,255,0.55); margin-bottom: 12px; }
+.demo-s10-ex-btn-d { padding: 6px 16px; border: none; border-radius: 4px; background: #3B82F6; color: #fff; font-size: 13px; cursor: pointer; }
 </style>
 {% endblock %}

@@ -77,6 +77,84 @@
       <text x="360" y="210" text-anchor="middle" font-size="11" fill="#86868b">初始化后 .git 目录自动创建，你不需要手动修改里面的内容</text>
     </svg>
   </div>
+  <div class="lesson-explain">
+    <h3>Git 的底层指针机制</h3>
+    <div class="concept-card">
+      <h4>HEAD、分支引用与 Commit 的 DAG 关系</h4>
+      <p>Git 的分支本质上是一个指向某个 commit 的<strong>轻量指针</strong>（文本文件），存储在 <code>.git/refs/heads/</code> 目录下。例如 <code>.git/refs/heads/main</code> 的内容就是一个 40 位的 SHA-1 哈希值。</p>
+      <p><strong>HEAD</strong> 是一个特殊的指针，它通常指向当前分支（如 <code>ref: refs/heads/main</code>），也可以直接指向某个 commit（detached HEAD 状态）。</p>
+      <p>所有 commit 对象通过 <code>parent</code> 字段链接，形成一棵<strong>有向无环图（DAG）</strong>：</p>
+      <pre class="code-block">A --- B --- C  &lt;- main
+       \
+        D --- E  &lt;- feature</pre>
+      <p>每个 commit 节点包含：tree（快照）、parent（0~n 个）、作者信息、提交信息。</p>
+    </div>
+
+    <h3>Merge 的三种策略</h3>
+    <div class="concept-card">
+      <h4>Fast-Forward</h4>
+      <p>当目标分支（如 main）的历史是当前分支（如 feature）的直系祖先时，Git 只需将 main 的指针向前移动到 feature 的位置，无需创建新的 merge commit。</p>
+      <pre class="code-block">Before:  A --- B  &lt;- main
+                 \
+                  C --- D  &lt;- feature
+
+After:   A --- B --- C --- D  &lt;- main, feature</pre>
+    </div>
+    <div class="concept-card">
+      <h4>Three-Way Merge</h4>
+      <p>当两个分支有分叉历史时，Git 找到它们的<strong>最近公共祖先（LCA, Merge Base）</strong>，然后比较三个快照：LCA、当前分支末端、目标分支末端，自动合并差异。</p>
+      <pre class="code-block">Before:  A --- B --- C  &lt;- main
+            \
+             D --- E  &lt;- feature
+
+After:   A --- B --- C --- M  &lt;- main
+            \            /
+             D -------- E  &lt;- feature</pre>
+      <p>如果两个分支对同一文件的同一区域做了不同修改，Git 无法自动判断，就会产生<strong>合并冲突</strong>。</p>
+    </div>
+    <div class="concept-card">
+      <h4>Octopus Merge</h4>
+      <p>Git 支持一次合并多个分支（<code>git merge branch1 branch2 branch3</code>）。这需要一个以上的 parent，生成的 merge commit 会有多个 parent 指针。仅在没有冲突时才能使用。</p>
+    </div>
+
+    <h3>Rebase vs Merge 的 DAG 对比</h3>
+    <div class="highlight-box">
+      <p><strong>核心区别</strong>：Merge 保留分叉历史，Rebase 重写历史为线性。</p>
+    </div>
+    <div class="concept-card">
+      <h4>Merge 结果：保留分叉历史</h4>
+      <pre class="code-block">*   3a8f2e1 (main) Merge branch 'feature'
+|\
+| * 7b4c9d2 (feature) 新增功能 B
+| * 2e5f8a1 新增功能 A
+|/
+*   9c1d4e5 基础版本</pre>
+    </div>
+    <div class="concept-card">
+      <h4>Rebase 结果：线性历史</h4>
+      <pre class="code-block">* 7b4c9d2 (main, feature) 新增功能 B
+* 2e5f8a1 新增功能 A
+* 9c1d4e5 基础版本</pre>
+      <p>Rebase 的原理是将 feature 分支上的每个 commit 逐个"移植"到 main 的最新 commit 之上，生成新的 commit SHA（因为 parent 变了）。</p>
+    </div>
+
+    <h3>Merge 冲突的底层文件状态</h3>
+    <div class="concept-card">
+      <h4>冲突时 Git 如何标记文件</h4>
+      <p>当 Three-Way Merge 遇到冲突时，Git 会在工作区文件中插入冲突标记，并创建三个<strong>暂存区版本</strong>：</p>
+      <ul>
+        <li><code>stage 1</code>：公共祖先（Base）版本</li>
+        <li><code>stage 2</code>：当前分支（OURS）版本</li>
+        <li><code>stage 3</code>：目标分支（THEIRS）版本</li>
+      </ul>
+      <pre class="code-block">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+当前分支的代码
+=======
+目标分支的代码
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; feature</pre>
+      <p>使用 <code>git ls-files -u</code> 可以查看暂存区中这三个版本的 blob 对象哈希。</p>
+    </div>
+  </div>
 </section>
 
 <section class="lesson-block">
@@ -255,6 +333,51 @@ async function resetWorkspace() {
 runCmd('git status');
 </script>
 <style>
+.concept-card {
+  background: var(--bg-card);
+  border-radius: var(--border-radius-lg);
+  padding: 20px 24px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow-1);
+  border: 1px solid var(--border-color-split);
+}
+.concept-card h4 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: var(--color-primary);
+}
+.concept-card p {
+  margin-bottom: 10px;
+  line-height: 1.75;
+  color: var(--text-secondary);
+}
+.concept-card ul, .concept-card ol {
+  padding-left: 20px;
+  line-height: 1.75;
+  color: var(--text-secondary);
+}
+.concept-card pre {
+  background: var(--bg-code);
+  border-radius: var(--border-radius-md);
+  padding: 16px 20px;
+  overflow-x: auto;
+  margin: 12px 0;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.highlight-box {
+  background: var(--color-primary-bg);
+  border-left: 4px solid var(--color-primary);
+  border-radius: var(--border-radius-md);
+  padding: 16px 20px;
+  margin: 16px 0;
+}
+.highlight-box p {
+  margin: 0;
+  line-height: 1.75;
+  color: var(--text-primary);
+}
 .terminal {
   background: #1d1d1f; color: #f5f5f7; padding: var(--space-4);
   border-radius: var(--border-radius-md); font-family: var(--font-mono);

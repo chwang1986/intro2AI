@@ -131,6 +131,116 @@ ollama pull deepseek-coder:6.7b
 
     <p>所有接口都返回 JSON。请求体也是 JSON，包含 <code>model</code>（模型名）和 <code>prompt</code>（输入文本）等字段。</p>
   </div>
+
+  <div class="concept-card">
+    <h4>模型量化算法：从 FP32 到 INT4</h4>
+    <p>大模型推理的瓶颈往往是显存/内存带宽，而非计算。量化（Quantization）通过降低权重的数值精度来减少模型体积和内存占用。</p>
+    <p><strong>核心数学原理</strong></p>
+    <p>量化将浮点数映射到整数，反量化再还原。以<strong>对称量化</strong>为例，缩放因子 scale 由权重的最大绝对值决定：</p>
+    <pre><code>scale = max(|w|) / 127
+q = round(w / scale)        # 量化：FP32 → INT8
+w_hat = q * scale           # 反量化：INT8 → FP32</code></pre>
+    <p><strong>非对称量化</strong>引入零点（zero_point），适合权重分布不关于零对称的场景（如激活值）：</p>
+    <pre><code>scale = (max(w) - min(w)) / 255
+zero_point = round(-min(w) / scale)
+q = round(w / scale + zero_point)
+w_hat = scale * (q - zero_point)</code></pre>
+    <p>INT4 量化将每 32 个权重打包到一个块中，每块共享一个缩放因子，进一步压缩至原体积的 1/8。</p>
+    <p><strong>精度/速度/内存对比</strong></p>
+    <div class="table-wrap">
+      <table class="table table-compact">
+        <thead>
+          <tr><th>格式</th><th>位宽</th><th>7B 模型大小</th><th>相对精度</th><th>推理速度</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>FP32</td><td>32 bit</td><td>~28 GB</td><td>基准 100%</td><td>最慢</td></tr>
+          <tr><td>FP16</td><td>16 bit</td><td>~14 GB</td><td>~99%</td><td>较快</td></tr>
+          <tr><td>INT8</td><td>8 bit</td><td>~7 GB</td><td>~97%</td><td>快</td></tr>
+          <tr><td>INT4</td><td>4 bit</td><td>~3.5 GB</td><td>~92%</td><td>最快</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="concept-card">
+    <h4>GGUF 格式结构</h4>
+    <p>Ollama 底层使用 llama.cpp 的 GGUF（GPT-Generated Unified Format）格式存储模型。理解其结构有助于排查加载问题。</p>
+    <p>GGUF 文件由以下部分组成：</p>
+    <ul>
+      <li><strong>文件头（Header）</strong>：魔数（magic）、版本号、张量数量、键值对元数据数量。</li>
+      <li><strong>元数据（Metadata KV pairs）</strong>：模型架构、上下文长度、RoPE 参数、词汇表大小等。</li>
+      <li><strong>张量信息（Tensor Info）</strong>：每个张量的名称、维度、数据类型、文件中的字节偏移量、量化类型。</li>
+      <li><strong>对齐填充（Alignment Padding）</strong>：张量数据按 32 字节对齐，便于 SIMD 向量指令和 GPU 直接内存访问（DMA）。</li>
+      <li><strong>张量数据（Tensor Data）</strong>：实际的量化权重块，按张量信息中的偏移量顺序存储。量化块内每 32/128 个元素共享一个 <code>scale</code> 和 <code>min</code>。</li>
+    </ul>
+    <p>对齐方式的意义：llama.cpp 在读取权重时会使用 AVX2/NEON 等向量指令，要求内存地址是 32 字节对齐的。如果张量数据没有对齐，CPU 需要多次访问内存，带宽利用率下降。</p>
+  </div>
+
+  <div class="concept-card">
+    <h4>KV Cache：自回归生成的加速器</h4>
+    <p>Transformer 在生成第 N 个 Token 时，需要计算第 N 个 Query 与之前所有 Token 的 Key、Value 的注意力。如果不做缓存，每次生成都要重新计算前 N-1 个 Token 的 K 和 V，时间复杂度为 O(N²)。</p>
+    <p><strong>原理</strong>：在生成第 1 个 Token 时，计算并保存其 K₁、V₁；生成第 2 个 Token 时，只计算 K₂、V₂，然后与缓存的 K₁、V₁ 拼接，以此类推。</p>
+    <p><strong>生成第 N 个 Token 时的 KV Cache 时序</strong></p>
+    <div class="card">
+      <div class="flex flex-col gap-3">
+        <div>
+          <div class="text-sm font-semibold">Step 1: 输入 "今天"</div>
+          <div class="text-xs text-secondary">计算 Q₁, K₁, V₁ → 输出 "今天"</div>
+          <div class="text-xs text-secondary">Cache: [K₁, V₁]</div>
+        </div>
+        <div class="text-center text-secondary">↓</div>
+        <div>
+          <div class="text-sm font-semibold">Step 2: 输入 "天气"</div>
+          <div class="text-xs text-secondary">计算 Q₂, K₂, V₂；Attention(Q₂, [K₁, K₂], [V₁, V₂]) → 输出 "天气"</div>
+          <div class="text-xs text-secondary">Cache: [K₁, V₁], [K₂, V₂]</div>
+        </div>
+        <div class="text-center text-secondary">↓</div>
+        <div>
+          <div class="text-sm font-semibold">Step N: 输入 "如何"</div>
+          <div class="text-xs text-secondary">计算 Qₙ, Kₙ, Vₙ；Attention(Qₙ, [K₁…Kₙ], [V₁…Vₙ]) → 输出 "如何"</div>
+          <div class="text-xs text-secondary">Cache 命中前 N-1 层 K/V，仅需计算当前 Token</div>
+        </div>
+      </div>
+    </div>
+    <p><strong>缓存命中率与推理速度</strong></p>
+    <p>在长文本生成中，KV Cache 的命中率直接决定推理速度。首次生成（prefill）需要填充整个 Cache，延迟较高；后续每个 Token 的生成（decode）只需一次前向传播和 Attention 计算，延迟显著降低。当上下文长度超过可用显存时，部分 K/V 会被卸载到内存甚至磁盘，导致命中率下降、速度骤降，这就是"长文本卡顿"的根本原因。</p>
+  </div>
+
+  <div class="concept-card">
+    <h4>Ollama 的模型加载与卸载策略</h4>
+    <p>Ollama 基于 llama.cpp 构建，其加载策略充分利用了操作系统特性：</p>
+    <ul>
+      <li><strong>内存映射（mmap）</strong>：Ollama 使用 mmap 将 GGUF 文件映射到虚拟内存，而不是一次性全部读入 RAM。操作系统按需将磁盘页载入物理内存，未使用的权重页可被换出。这使得 70B 模型也能在 32GB 内存的机器上启动，尽管速度会慢。</li>
+      <li><strong>按需加载层（Layer Offloading）</strong>：Transformer 模型由数十个相同的 Decoder 层堆叠而成。Ollama 会根据可用显存（或 Metal/GPU 内存）决定有多少层加载到加速设备上，剩余层保留在 CPU 内存。例如，"33/33 layers on GPU"表示全部卸载，"20/33 layers on GPU"表示部分卸载，层间数据传输会成为瓶颈。</li>
+      <li><strong>动态卸载</strong>：当多个模型同时运行时，Ollama 会根据调用频率将不活跃模型的层从显存卸载，给活跃模型腾出空间。</li>
+    </ul>
+    <p>你可以在启动时通过环境变量观察加载行为：<code>OLLAMA_DEBUG=1 ollama run qwen2.5:7b</code></p>
+  </div>
+
+  <div class="highlight-box">
+    <p><strong>动手实验：用 NumPy 实现 INT8 对称量化与反量化</strong></p>
+    <pre><code>import numpy as np
+
+# 模拟一组 Transformer 权重
+weights = np.random.randn(10).astype(np.float32)
+print("原始权重:", weights)
+
+# 对称量化参数
+scale = np.max(np.abs(weights)) / 127.0
+
+# 量化：FP32 -> INT8
+quantized = np.round(weights / scale).astype(np.int8)
+print("INT8 量化后:", quantized)
+
+# 反量化：INT8 -> FP32
+dequantized = quantized.astype(np.float32) * scale
+print("反量化后:  ", dequantized)
+
+# 计算精度损失
+mse = np.mean((weights - dequantized) ** 2)
+print(f"均方误差(MSE): {mse:.6f}")
+</code></pre>
+    <p>运行这段代码，你会看到 INT8 量化后的值域被限制在 [-127, 127]，反量化后的权重与原始值接近但不完全相等，误差在 10⁻⁴ ~ 10⁻³ 量级。</p>
   </div>
 </section>
 
